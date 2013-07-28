@@ -4,82 +4,311 @@
 
     <parent>
         <groupId>com.mycila</groupId>
-        <artifactId>mycila-pom</artifactId>
-        <version>1</version>
-        <relativePath>../pom</relativePath>
+        <artifactId>parent-pom</artifactId>
+        <version>5</version>
     </parent>
 
-    <groupId>com.mycila</groupId>
-    <artifactId>mycila-jmx</artifactId>
-    <version>1.1.rc1-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <groupId>com.mycila.maven-license-plugin</groupId>
+    <artifactId>maven-license-plugin</artifactId>
+    <version>1.11.b1-SNAPSHOT</version>
+    <packaging>maven-plugin</packaging>
 
-    <name>mycila-jmx</name>
-    <url>http://mycila.github.io/jmx</url>
-    <inceptionYear>2010</inceptionYear>
+    <name>${project.artifactId}</name>
+    <description>Maven 2 plugin to check and update license headers in source files</description>
+    <url>http://code.google.com/p/${project.artifactId}/</url>
+    <inceptionYear>2008</inceptionYear>
 
-    <scm>
-        <connection>scm:git:git@github.com:mycila/jmx.git</connection>
-        <developerConnection>scm:git:git@github.com:mycila/jmx.git</developerConnection>
-        <url>http://github.com/mycila/jmx</url>
-        <tag>HEAD</tag>
-    </scm>
+    <!--
+        Properties
+    -->
 
     <properties>
-        <osgi.export>!com.mycila.internal*,com.mycila.jmx*;version="${project.version}";-noimport:=true</osgi.export>
+        <jdk>1.5</jdk>
     </properties>
 
+    <!--
+        Versionning system
+    -->
+
+    <scm>
+        <connection>scm:svn:https://maven-license-plugin.googlecode.com/svn/branches/maven-license-plugin-1.x.x</connection>
+        <developerConnection>scm:svn:https://maven-license-plugin.googlecode.com/svn/branches/maven-license-plugin-1.x.x</developerConnection>
+        <url>https://maven-license-plugin.googlecode.com/svn/branches/maven-license-plugin-1.x.x</url>
+    </scm>
+
+    <!--
+         Project settings
+     -->
+
+    <organization>
+        <name>Mathieu Carbou</name>
+        <url>http://mathieu.carbou.free.fr/</url>
+    </organization>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>mimilowns</id>
+            <name>Cédric</name>
+            <email>mimilowns@gmail.com</email>
+            <timezone>+1</timezone>
+            <roles>
+                <role>developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>mathieu.carbou</id>
+            <name>Mathieu Carbou</name>
+            <email>mathieu.carbou@gmail.com</email>
+            <organization>Mycila</organization>
+            <organizationUrl>http://mathieu.carbou.free.fr/</organizationUrl>
+            <timezone>-5</timezone>
+            <roles>
+                <role>project owner</role>
+                <role>developer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <issueManagement>
+        <system>Google Code</system>
+        <url>http://code.google.com/p/${project.artifactId}/issues/list</url>
+    </issueManagement>
+
+    <ciManagement />
+
+    <mailingLists>
+        <mailingList>
+            <name>maven-license-plugin-announce</name>
+            <subscribe>maven-license-plugin-announce-subscribe@googlegroups.com</subscribe>
+            <unsubscribe>maven-license-plugin-announce-unsubscribe@googlegroups.com</unsubscribe>
+            <archive>http://groups.google.com/group/maven-license-plugin-announce</archive>
+        </mailingList>
+        <mailingList>
+            <name>maven-license-plugin-codesite</name>
+            <subscribe>maven-license-plugin-codesite-subscribe@googlegroups.com</subscribe>
+            <unsubscribe>maven-license-plugin-codesite-unsubscribe@googlegroups.com</unsubscribe>
+            <archive>http://groups.google.com/group/maven-license-plugin-codesite</archive>
+        </mailingList>
+    </mailingLists>
+
+    <!--
+        Distributions
+    -->
+
+    <distributionManagement>
+        <repository>
+            <id>mc-release</id>
+            <name>Local Maven repository of releases</name>
+            <url>dav:https://mc-repo.googlecode.com/svn/maven2/releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>mc-snapshot</id>
+            <name>Local Maven repository of snapshots</name>
+            <url>dav:https://mc-repo.googlecode.com/svn/maven2/snapshots</url>
+            <uniqueVersion>false</uniqueVersion>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <!--
+        BUILD
+    -->
+
     <build>
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-webdav</artifactId>
+                <version>1.0-beta-2</version>
+            </extension>
+        </extensions>
         <plugins>
+            <!-- for maven plugins -->
+            <plugin>
+                <artifactId>maven-plugin-plugin</artifactId>
+                <version>2.6</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>.clover</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>test-output</directory>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+            <!-- compilation -->
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${jdk}</source>
+                    <target>${jdk}</target>
+                </configuration>
+            </plugin>
+            <!-- testing -->
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
+            <!-- packaging -->
             <plugin>
                 <artifactId>maven-jar-plugin</artifactId>
                 <configuration>
-                    <useDefaultManifestFile>true</useDefaultManifestFile>
+                    <archive>
+                        <manifest>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                        </manifest>
+                    </archive>
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>maven-bundle-plugin</artifactId>
-                <extensions>true</extensions>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-remote-resources-plugin</artifactId>
+                <version>1.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>process</goal>
+                        </goals>
+                        <configuration>
+                            <resourceBundles>
+                                <resourceBundle>org.apache:apache-jar-resource-bundle:1.3</resourceBundle>
+                            </resourceBundles>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>project</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+            </plugin>
+            <!-- releasing -->
+            <plugin>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <updateReleaseInfo>true</updateReleaseInfo>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-release-plugin</artifactId>
+            </plugin>
+            <!-- documentation -->
+            <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>com.google.code.maven-license-plugin</groupId>
+                <artifactId>maven-license-plugin</artifactId>
+                <version>1.3.1</version>
+                <configuration>
+                    <header>${basedir}/src/etc/header.txt</header>
+                    <failIfMissing>true</failIfMissing>
+                    <excludes>
+                        <exclude>LICENSE.txt</exclude>
+                        <exclude>NOTICE.txt</exclude>
+                        <exclude>src/test/data/**</exclude>
+                        <exclude>src/test/integration/**</exclude>
+                        <exclude>src/test/resources/**</exclude>
+                    </excludes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
 
+    <!--
+         LIBS
+    -->
+
     <dependencies>
         <dependency>
-            <groupId>org.sonatype.sisu</groupId>
-            <artifactId>sisu-guice</artifactId>
-            <version>3.1.0</version>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-plugin-api</artifactId>
+            <version>3.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.mycila.xmltool</groupId>
+            <artifactId>xmltool</artifactId>
+            <version>3.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-project</artifactId>
+            <version>3.0-alpha-2</version>
             <exclusions>
                 <exclusion>
-                    <groupId>org.sonatype.sisu</groupId>
-                    <artifactId>sisu-guava</artifactId>
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>14.0.1</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.google.code.findbugs</groupId>
-                    <artifactId>jsr305</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>org.codehaus.plexus</groupId>
+            <artifactId>plexus-utils</artifactId>
+            <version>2.0.5</version>
         </dependency>
-
+        <!-- testing -->
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit-dep</artifactId>
-            <version>4.10</version>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>5.7</version>
+            <classifier>jdk15</classifier>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
-            <groupId>mx4j</groupId>
-            <artifactId>mx4j-tools</artifactId>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-embedder</artifactId>
             <version>3.0.1</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven.plugin-testing</groupId>
+            <artifactId>maven-plugin-testing-harness</artifactId>
+            <version>2.0-alpha-1</version>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 
