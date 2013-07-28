@@ -1,0 +1,86 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.mycila</groupId>
+        <artifactId>mycila-pom</artifactId>
+        <version>1</version>
+        <relativePath>../pom</relativePath>
+    </parent>
+
+    <groupId>com.mycila</groupId>
+    <artifactId>mycila-jmx</artifactId>
+    <version>1.1.rc1-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>mycila-jmx</name>
+    <url>http://mycila.github.io/jmx</url>
+    <inceptionYear>2010</inceptionYear>
+
+    <scm>
+        <connection>scm:git:git@github.com:mycila/jmx.git</connection>
+        <developerConnection>scm:git:git@github.com:mycila/jmx.git</developerConnection>
+        <url>http://github.com/mycila/jmx</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <properties>
+        <osgi.export>!com.mycila.internal*,com.mycila.jmx*;version="${project.version}";-noimport:=true</osgi.export>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <useDefaultManifestFile>true</useDefaultManifestFile>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <extensions>true</extensions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.sonatype.sisu</groupId>
+            <artifactId>sisu-guice</artifactId>
+            <version>3.1.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.sonatype.sisu</groupId>
+                    <artifactId>sisu-guava</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>14.0.1</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.code.findbugs</groupId>
+                    <artifactId>jsr305</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit-dep</artifactId>
+            <version>4.10</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>mx4j</groupId>
+            <artifactId>mx4j-tools</artifactId>
+            <version>3.0.1</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+</project>
