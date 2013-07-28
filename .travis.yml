@@ -1,0 +1,17 @@
+language: java
+
+script: mvn clean install --quiet -B
+
+install: /bin/true
+
+jdk:
+  - openjdk7
+  - oraclejdk7
+
+branches:
+  only:
+    - master
+
+notifications:
+  email:
+    - mathieu.carbou@gmail.com

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   Licensed to the Apache Software Foundation (ASF) under one or more
+   contributor license agreements.	See the NOTICE file distributed with
+   this work for additional information regarding copyright ownership.
+   The ASF licenses this file to you under the Apache License, Version 2.0
+   (the "License"); you may not use this file except in compliance with
+   the License.	 You may obtain a copy of the License at
+
+		http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<config>
+
+	<properties>
+		<!-- provider name must match the property-section containing the connection data -->
+		<jdbcClass>oracle.jdbc.driver.OracleDriver</jdbcClass>
+		<jdbcURL>jdbc:oracle:thin:@192.168.0.2:1521:ora10</jdbcURL>
+		<jdbcUser>DBSAMPLE</jdbcUser>
+		<jdbcPwd>DBSAMPLE</jdbcPwd>
+
+		<!-- Schema options -->
+		<dbCatalog></dbCatalog>
+		<dbSchema>DBSAMPLE</dbSchema>
+		<dbTablePattern></dbTablePattern>
+		<timestampColumn>CREATIONDATE</timestampColumn>
+		
+		<!-- generation options -->
+		<targetFolder>target/generated/dbsample</targetFolder>
+		<packageName>org.apache.empire.db.samples.dbsample</packageName>
+		<dbClassName>SampleDB</dbClassName>
+		<tableBaseName>SampleTable</tableBaseName>
+		<viewBaseName>SampleView</viewBaseName>
+		<recordBaseName>SampleRecord</recordBaseName>
+		<tableClassPrefix>T</tableClassPrefix>
+		<tableClassSuffix>Table</tableClassSuffix>
+		<viewClassPrefix>V</viewClassPrefix>
+		<nestTables>True</nestTables>
+		<nestViews>False</nestViews>
+		<createRecordProperties>true</createRecordProperties>
+	</properties>
+	
+	<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+		<appender name="default" class="org.apache.log4j.ConsoleAppender">
+			<!-- layout class="org.apache.log4j.TTCCLayout"/ -->
+			<layout class="org.apache.log4j.PatternLayout">
+				<!-- param name="ConversionPattern" value="NSB(%c) %-5p %m	at %l%n"/ -->
+				<param name="ConversionPattern" value="%-5p [%d{yyyy/MM/dd HH:mm}]: %m		at %l %n"/>
+			</layout>
+		</appender>
+	
+		<!-- log detail configuration -->
+		<logger name="org.apache.empire.commons" additivity="false">
+			<level value="warn"/>
+			<appender-ref ref="default"/>
+		</logger>
+	
+		<root>
+			<priority value="info"/>
+			<appender-ref ref="default"/>
+		</root>
+
+	</log4j:configuration>
+	
+</config>

@@ -1,0 +1,3 @@
+COPYRIGHT_SECTION
+
+My License

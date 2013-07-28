@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<additionalHeaders>
+    <smiley>
+        <firstLine>(:</firstLine>
+        <beforeEachLine> : </beforeEachLine>
+        <endLine>:)</endLine>
+        <!--skipLine></skipLine-->
+        <firstLineDetectionPattern>\(\:</firstLineDetectionPattern>
+        <lastLineDetectionPattern>\:\)</lastLineDetectionPattern>
+        <allowBlankLines>false</allowBlankLines>
+        <isMultiline>false</isMultiline>
+    </smiley>
+    <text>
+        <firstLine>:(</firstLine>
+        <beforeEachLine> ( </beforeEachLine>
+        <endLine>:(</endLine>
+        <!--skipLine></skipLine-->
+        <firstLineDetectionPattern>\:\(</firstLineDetectionPattern>
+        <lastLineDetectionPattern>\:\(</lastLineDetectionPattern>
+        <allowBlankLines>false</allowBlankLines>
+        <isMultiline>false</isMultiline>
+    </text>
+</additionalHeaders>
+        

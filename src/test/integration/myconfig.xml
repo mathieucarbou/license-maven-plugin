@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!--
+XQUERY.firstLine=(:
+XQUERY.beforeEachLine=\u0020:\u0020
+XQUERY.endLine=\u0020:)
+#<headerType>.skipLine=
+XQUERY.firstLineDetectionPattern=\\\\\\(:$
+XQUERY.lastLineDetectionPattern=$:\\\\\\)
+-->
+<additionalHeaders>
+    <xquery>
+        <firstLine>(:</firstLine>
+        <beforeEachLine> : </beforeEachLine>
+        <endLine>:)</endLine>
+        <!--skipLine></skipLine-->
+        <firstLineDetectionPattern>\(:$</firstLineDetectionPattern>
+        <lastLineDetectionPattern>$:\)</lastLineDetectionPattern>
+    </xquery>
+</additionalHeaders>

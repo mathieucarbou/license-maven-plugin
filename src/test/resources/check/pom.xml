@@ -1,0 +1,454 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <!--
+         POM settings
+     -->
+
+    <groupId>com.google.code.maven-license-plugin</groupId>
+    <artifactId>maven-license-plugin</artifactId>
+    <version>1.4.0-SNAPSHOT</version>
+    <packaging>maven-plugin</packaging>
+
+    <name>${project.artifactId}</name>
+    <description>Maven 2 plugin to check and update license headers in source files</description>
+    <url>http://code.google.com/p/${project.artifactId}/</url>
+    <inceptionYear>2008</inceptionYear>
+
+    <!--
+        Properties
+    -->
+
+    <properties>
+        <jdk>1.5</jdk>
+    </properties>
+
+    <!--
+        Versionning system
+    -->
+
+    <scm>
+        <connection>scm:svn:http://maven-license-plugin.googlecode.com/svn/branches/maven-license-plugin-1.4.0</connection>
+        <developerConnection>scm:svn:https://maven-license-plugin.googlecode.com/svn/branches/maven-license-plugin-1.4.0</developerConnection>
+        <url>https://maven-license-plugin.googlecode.com/svn/branches/maven-license-plugin-1.4.0</url>
+    </scm>
+
+    <!--
+         Project settings
+     -->
+
+    <organization>
+        <name>Mathieu Carbou</name>
+        <url>http://mathieu.carbou.free.fr/</url>
+    </organization>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>mimilowns</id>
+            <name>Cédric</name>
+            <email>mimilowns@gmail.com</email>
+            <timezone>+1</timezone>
+            <roles>
+                <role>developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>mathieu.carbou</id>
+            <name>Mathieu Carbou</name>
+            <email>mathieu.carbou@gmail.com</email>
+            <organization>Mycila</organization>
+            <organizationUrl>http://mathieu.carbou.free.fr/</organizationUrl>
+            <timezone>-5</timezone>
+            <roles>
+                <role>project owner</role>
+                <role>developer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <issueManagement>
+        <system>Google Code</system>
+        <url>http://code.google.com/p/${project.artifactId}/issues/list</url>
+    </issueManagement>
+
+    <ciManagement/>
+
+    <mailingLists>
+        <mailingList>
+            <name>maven-license-plugin-announce</name>
+            <subscribe>maven-license-plugin-announce-subscribe@googlegroups.com</subscribe>
+            <unsubscribe>maven-license-plugin-announce-unsubscribe@googlegroups.com</unsubscribe>
+            <archive>http://groups.google.com/group/maven-license-plugin-announce</archive>
+        </mailingList>
+        <mailingList>
+            <name>maven-license-plugin-codesite</name>
+            <subscribe>maven-license-plugin-codesite-subscribe@googlegroups.com</subscribe>
+            <unsubscribe>maven-license-plugin-codesite-unsubscribe@googlegroups.com</unsubscribe>
+            <archive>http://groups.google.com/group/maven-license-plugin-codesite</archive>
+        </mailingList>
+    </mailingLists>
+
+    <!--
+        Distributions
+    -->
+
+    <distributionManagement>
+        <repository>
+            <id>mc-release</id>
+            <name>Local Maven repository of releases</name>
+            <url>dav:https://mc-repo.googlecode.com/svn/maven2/releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>mc-snapshot</id>
+            <name>Local Maven repository of snapshots</name>
+            <url>dav:https://mc-repo.googlecode.com/svn/maven2/snapshots</url>
+            <uniqueVersion>false</uniqueVersion>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <!--
+        BUILD
+    -->
+
+    <build>
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-webdav</artifactId>
+                <version>1.0-beta-2</version>
+            </extension>
+        </extensions>
+        <plugins>
+            <!-- for maven plugins -->
+            <plugin>
+                <artifactId>maven-plugin-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>.clover</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>test-output</directory>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+            <!-- IDE descriptors -->
+            <plugin>
+                <artifactId>maven-eclipse-plugin</artifactId>
+                <configuration>
+                    <downloadSources>true</downloadSources>
+                    <downloadJavadocs>false</downloadJavadocs>
+                    <addVersionToProjectName>true</addVersionToProjectName>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-idea-plugin</artifactId>
+                <configuration>
+                    <downloadSources>true</downloadSources>
+                    <downloadJavadocs>false</downloadJavadocs>
+                </configuration>
+            </plugin>
+            <!-- compilation -->
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${jdk}</source>
+                    <target>${jdk}</target>
+                </configuration>
+            </plugin>
+            <!-- testing -->
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
+            <!-- packaging -->
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-remote-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>process</goal>
+                        </goals>
+                        <configuration>
+                            <resourceBundles>
+                                <resourceBundle>org.apache:apache-jar-resource-bundle:1.3</resourceBundle>
+                            </resourceBundles>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>project</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+            </plugin>
+            <!-- releasing -->
+            <plugin>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <updateReleaseInfo>true</updateReleaseInfo>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-release-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <artifactId>maven-repository-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>bundle-create</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>bundle-create</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- documentation -->
+            <plugin>
+                <artifactId>maven-site-plugin</artifactId>
+                <configuration>
+                    <locales>en</locales>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-help-plugin</artifactId>
+                <configuration>
+                    <full>true</full>
+                    <output>target/help-output.txt</output>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>com.google.code.maven-license-plugin</groupId>
+                <artifactId>maven-license-plugin</artifactId>
+                <version>1.3.1</version>
+                <configuration>
+                    <header>${basedir}/src/etc/header.txt</header>
+                    <failIfMissing>true</failIfMissing>
+                    <excludes>
+                        <exclude>LICENSE.txt</exclude>
+                        <exclude>NOTICE.txt</exclude>
+                        <exclude>src/test/data/**</exclude>
+                        <exclude>src/test/integration/**</exclude>
+                        <exclude>src/test/resources/**</exclude>
+                    </excludes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <reporting>
+        <plugins>
+            <!-- for maven plugins -->
+            <plugin>
+                <artifactId>maven-plugin-plugin</artifactId>
+            </plugin>
+            <!-- surefire and other -->
+            <plugin>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <artifactId>maven-jxr-plugin</artifactId>
+                <configuration>
+                    <linkJavadoc>true</linkJavadoc>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <configuration>
+                    <quiet>true</quiet>
+                </configuration>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>javadoc</report>
+                        </reports>
+                        <configuration>
+                            <links>
+                                <link>http://java.sun.com/javase/6/docs/api/</link>
+                            </links>
+                        </configuration>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+            <plugin>
+                <artifactId>maven-changelog-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <configuration>
+                    <linkXref>true</linkXref>
+                    <targetJdk>${jdk}</targetJdk>
+                    <minimumTokens>100</minimumTokens>
+                    <rulesets>
+                        <!-- Rule sets that come bundled with PMD -->
+                        <ruleset>/rulesets/basic.xml</ruleset>
+                        <ruleset>/rulesets/braces.xml</ruleset>
+                        <ruleset>/rulesets/finalizers.xml</ruleset>
+                        <ruleset>/rulesets/imports.xml</ruleset>
+                        <ruleset>/rulesets/migrating.xml</ruleset>
+                        <ruleset>/rulesets/strings.xml</ruleset>
+                        <ruleset>/rulesets/unusedcode.xml</ruleset>
+                    </rulesets>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jdepend-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>javancss-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>taglist-maven-plugin</artifactId>
+                <configuration>
+                    <tags>
+                        <tag>TODO</tag>
+                        <tag>FIXME</tag>
+                        <tag>@todo</tag>
+                        <tag>@fixme</tag>
+                        <tag>@deprecated</tag>
+                    </tags>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-changes-plugin</artifactId>
+                <configuration>
+                    <issueLinkTemplate>%URL%/detail?id=%ISSUE%&amp;can=1</issueLinkTemplate>
+                </configuration>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>changes-report</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+            <plugin>
+                <artifactId>maven-changelog-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </reporting>
+
+    <!--
+         LIBS
+    -->
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-plugin-api</artifactId>
+            <version>2.0.9</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.xmltool</groupId>
+            <artifactId>xmltool</artifactId>
+            <version>1.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-project</artifactId>
+            <version>2.0.9</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.plexus</groupId>
+            <artifactId>plexus-utils</artifactId>
+            <version>1.5.1</version>
+        </dependency>
+        <!-- testing -->
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>5.7</version>
+            <classifier>jdk15</classifier>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-embedder</artifactId>
+            <version>2.0.4</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven.plugin-testing</groupId>
+            <artifactId>maven-plugin-testing-harness</artifactId>
+            <version>1.2</version>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+    </dependencies>
+
+</project>
