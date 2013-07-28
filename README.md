@@ -1,4 +1,4 @@
-**Table of Contents**  *generated with [DocToc](http://doctoc.herokuapp.com/)*
+**Table of Contents**
 
 - [Maven License Plugin](#maven-license-plugin)
 	- [Maven Repository](#maven-repository)
