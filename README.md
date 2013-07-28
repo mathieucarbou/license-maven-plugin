@@ -1,14 +1,8 @@
-**Table of Contents**
+**Table of Contents**  *generated with [DocToc](http://doctoc.herokuapp.com/)*
 
-- [Mycila JMX](#mycila-jmx)
+- [Maven License Plugin](#maven-license-plugin)
 	- [Maven Repository](#maven-repository)
 	- [Documentation](#documentation)
-		- [1. Annotations](#1-annotations)
-		- [2. Dynamic naming](#2-dynamic-naming)
-		- [3. How to use](#3-how-to-use)
-		- [4. JmxMetadataAssembler](#4-jmxmetadataassembler)
-		- [5. Mycile Guice Integration](#5-mycile-guice-integration)
-		- [6. Tools](#6-tools)
 
 # Maven License Plugin #
 
