@@ -85,129 +85,149 @@ public final class Selection {
     static final String[] DEFAULT_INCLUDE = new String[]{"**"};
 
     static final String[] DEFAULT_EXCLUDES = {
-            // Miscellaneous typical temporary files
-            "**/*~",
-            "**/#*#",
-            "**/.#*",
-            "**/%*%",
-            "**/._*",
-            "**/.repository/**",
+        // Miscellaneous typical temporary files
+        "**/*~",
+        "**/#*#",
+        "**/.#*",
+        "**/%*%",
+        "**/._*",
+        "**/.repository/**",
 
-            // CVS
-            "**/CVS",
-            "**/CVS/**",
-            "**/.cvsignore",
+        // CVS
+        "**/CVS",
+        "**/CVS/**",
+        "**/.cvsignore",
 
-            // RCS
-            "**/RCS",
-            "**/RCS/**",
+        // RCS
+        "**/RCS",
+        "**/RCS/**",
 
-            // SCCS
-            "**/SCCS",
-            "**/SCCS/**",
+        // SCCS
+        "**/SCCS",
+        "**/SCCS/**",
 
-            // Visual SourceSafe
-            "**/vssver.scc",
+        // Visual SourceSafe
+        "**/vssver.scc",
 
-            // Subversion
-            "**/.svn",
-            "**/.svn/**",
+        // Subversion
+        "**/.svn",
+        "**/.svn/**",
 
-            // Arch
-            "**/.arch-ids",
-            "**/.arch-ids/**",
+        // Arch
+        "**/.arch-ids",
+        "**/.arch-ids/**",
 
-            //Bazaar
-            "**/.bzr",
-            "**/.bzr/**",
+        //Bazaar
+        "**/.bzr",
+        "**/.bzr/**",
 
-            //SurroundSCM
-            "**/.MySCMServerInfo",
+        //SurroundSCM
+        "**/.MySCMServerInfo",
 
-            // Mac
-            "**/.DS_Store",
+        // Mac
+        "**/.DS_Store",
 
-            // Serena Dimensions Version 10
-            "**/.metadata",
-            "**/.metadata/**",
+        // Serena Dimensions Version 10
+        "**/.metadata",
+        "**/.metadata/**",
 
-            // Mercurial
-            "**/.hg",
-            "**/.hg/**",
+        // Mercurial
+        "**/.hg",
+        "**/.hg/**",
+        "**/.hgignore",
 
-            // git
-            "**/.git",
-            "**/.git/**",
+        // git
+        "**/.git",
+        "**/.git/**",
+        "**/.gitignore/**",
 
-            // BitKeeper
-            "**/BitKeeper",
-            "**/BitKeeper/**",
-            "**/ChangeSet",
-            "**/ChangeSet/**",
+        // BitKeeper
+        "**/BitKeeper",
+        "**/BitKeeper/**",
+        "**/ChangeSet",
+        "**/ChangeSet/**",
 
-            // darcs
-            "**/_darcs",
-            "**/_darcs/**",
-            "**/.darcsrepo",
-            "**/.darcsrepo/**",
-            "**/-darcs-backup*",
-            "**/.darcs-temp-mail",
+        // darcs
+        "**/_darcs",
+        "**/_darcs/**",
+        "**/.darcsrepo",
+        "**/.darcsrepo/**",
+        "**/-darcs-backup*",
+        "**/.darcs-temp-mail",
 
-            // maven project's temporary files
-            "**/target/**",
-            "**/test-output/**",
-            "**/release.properties",
-            "**/pom.xml",
-            "**/dependency-reduced-pom.xml",
+        // maven project's temporary files
+        "**/target/**",
+        "**/test-output/**",
+        "**/release.properties",
+        "**/dependency-reduced-pom.xml",
+        "**/pom.xml.releaseBackup",
 
-            // code coverage tools
-            "**/cobertura.ser",
-            "**/.clover/**",
+        // code coverage tools
+        "**/cobertura.ser",
+        "**/.clover/**",
 
-            // eclipse project files
-            "**/.classpath",
-            "**/.project",
-            "**/.settings/**",
+        // eclipse project files
+        "**/.classpath",
+        "**/.project",
+        "**/.settings/**",
 
-            // IDEA projet files
-            "**/*.iml", "**/*.ipr", "**/*.iws",
+        // IDEA projet files
+        "**/*.iml",
+        "**/*.ipr",
+        "**/*.iws",
+        ".idea/**",
 
-            // descriptors
-            "**/MANIFEST.MF",
+        // descriptors
+        "**/MANIFEST.MF",
 
-            // binary files - images
-            "**/*.jpg",
-            "**/*.png",
-            "**/*.gif",
-            "**/*.ico",
-            "**/*.bmp",
-            "**/*.tiff",
-            "**/*.tif",
-            "**/*.cr2",
-            "**/*.xcf",
+        // binary files - images
+        "**/*.jpg",
+        "**/*.png",
+        "**/*.gif",
+        "**/*.ico",
+        "**/*.bmp",
+        "**/*.tiff",
+        "**/*.tif",
+        "**/*.cr2",
+        "**/*.xcf",
 
-            // binary files - programs
-            "**/*.class",
-            "**/*.exe",
+        // binary files - programs
+        "**/*.class",
+        "**/*.exe",
+        "**/*.dll",
+        "**/*.so",
 
-            // checksum files
-            "**/*.md5",
-            "**/*.sha1",
+        // checksum files
+        "**/*.md5",
+        "**/*.sha1",
 
-            // binary files - archives
-            "**/*.jar",
-            "**/*.zip",
-            "**/*.rar",
-            "**/*.tar",
-            "**/*.tar.gz",
-            "**/*.tar.bz2",
-            "**/*.gz",
+        // binary files - archives
+        "**/*.jar",
+        "**/*.zip",
+        "**/*.rar",
+        "**/*.tar",
+        "**/*.tar.gz",
+        "**/*.tar.bz2",
+        "**/*.gz",
 
-            // binary files - documents
-            "**/*.xls",
+        // binary files - documents
+        "**/*.xls",
 
-            // ServiceLoader files
-            "**/META-INF/services/**"
+        // ServiceLoader files
+        "**/META-INF/services/**",
+
+        // Markdown files
+        "**/*.md",
+
+        // Office documents
+        "**/*.xls",
+        "**/*.doc",
+        "**/*.odt",
+        "**/*.ods",
+        "**/*.pdf",
+
+        // flash
+        "**/*.swf",
     };
 
 }
