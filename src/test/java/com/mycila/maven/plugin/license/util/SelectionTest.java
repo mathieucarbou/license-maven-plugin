@@ -15,13 +15,13 @@
  */
 package com.mycila.maven.plugin.license.util;
 
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 import java.io.File;
 import java.util.Arrays;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
@@ -46,7 +46,7 @@ public final class SelectionTest {
     @Test
     public void test_limit_inclusion_and_check_default_excludes() {
         Selection selection = new Selection(new File("."), new String[]{"toto"}, new String[0], true);
-        assertEquals(selection.getExcluded().length, 74); // default exludes from Scanner and Selection + toto
+        assertEquals(selection.getExcluded().length, 86); // default exludes from Scanner and Selection + toto
         assertEquals(selection.getIncluded().length, 1);
         assertEquals(selection.getSelectedFiles().length, 0);
         assertTrue(Arrays.asList(selection.getExcluded()).containsAll(Arrays.asList(Selection.DEFAULT_EXCLUDES)));

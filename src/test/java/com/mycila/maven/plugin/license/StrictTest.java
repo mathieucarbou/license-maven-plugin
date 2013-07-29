@@ -17,11 +17,11 @@ package com.mycila.maven.plugin.license;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 import java.io.File;
 
-import static org.testng.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
@@ -43,6 +43,7 @@ public final class StrictTest {
         check.basedir = new File("src/test/resources/check/issue76");
         check.header = "src/test/resources/test-header1.txt";
         check.project = project;
+        check.strictCheck = false;
         check.execute();
 
         // all the headers are by default checked not strictlty

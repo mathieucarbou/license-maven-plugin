@@ -16,14 +16,14 @@
 package com.mycila.maven.plugin.license.header;
 
 import com.mycila.maven.plugin.license.util.FileUtils;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
 import static java.lang.String.format;
-import static org.testng.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
@@ -36,8 +36,7 @@ public final class DefaultHeaderDefinitionTest {
         Header header = new Header(getClass().getResource("/test-header1.txt"), props, null);
         for (HeaderDefinition definition : HeaderType.defaultDefinitions().values()) {
             final String content = FileUtils.read(new File(format("src/test/resources/styles/%s.txt", definition.getType())), System.getProperty("file.encoding"));
-            assertEquals(content, header.buildForDefinition(definition, content.indexOf("\n") == -1),
-                    "Bad header for type: " + definition.getType());
+            assertEquals("Bad header for type: " + definition.getType(), content, header.buildForDefinition(definition, !content.contains("\n")));
         }
     }
 }

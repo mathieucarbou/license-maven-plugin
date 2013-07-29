@@ -212,7 +212,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
             }
             if (!strictCheck) {
                 warn("Property 'strictCheck' is not enabled. Please consider adding <strictCheck>true</strictCheck> in your pom.xml file.");
-                warn("See http://code.google.com/p/license-maven-plugin/wiki/Configuration for more information.");
+                warn("See http://mycila.github.io/license-maven-plugin for more information.");
             }
 
             finder = new ResourceFinder(basedir);
@@ -339,7 +339,9 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
     }
 
     protected final void warn(String format, Object... params) {
-        getLog().warn(format(format, params));
+        if (!quiet) {
+            getLog().warn(format(format, params));
+        }
     }
 
     private Map<String, String> buildMapping() {

@@ -18,14 +18,14 @@ package com.mycila.maven.plugin.license.header;
 import com.mycila.maven.plugin.license.util.FileUtils;
 import com.mycila.xmltool.XMLDoc;
 import com.mycila.xmltool.XMLTag;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNull;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)

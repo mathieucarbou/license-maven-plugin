@@ -15,7 +15,7 @@
  */
 package com.mycila.maven.plugin.license.header;
 
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
@@ -34,31 +34,31 @@ public final class HeaderDefinitionTest {
         def.validate();
     }
 
-    @Test(expectedExceptions = IllegalStateException.class)
+    @Test(expected = IllegalStateException.class)
     public void test_missing_firstLine() throws Exception {
         HeaderDefinition def = new HeaderDefinition("aa", "", "before", "end", null, "firstDetect", "lastDetect", false, false);
         def.validate();
     }
 
-    @Test(expectedExceptions = IllegalStateException.class)
+    @Test(expected = IllegalStateException.class)
     public void test_missing_before() throws Exception {
         HeaderDefinition def = new HeaderDefinition("aa", "firstLine", "", "end", null, "firstDetect", "lastDetect", false, false);
         def.validate();
     }
 
-    @Test(expectedExceptions = IllegalStateException.class)
+    @Test(expected = IllegalStateException.class)
     public void test_missing_end() throws Exception {
         HeaderDefinition def = new HeaderDefinition("aa", "firstLine", "before", "", null, "firstDetect", "lastDetect", false, false);
         def.validate();
     }
 
-    @Test(expectedExceptions = IllegalStateException.class)
+    @Test(expected = IllegalStateException.class)
     public void test_missing_firstDetect() throws Exception {
         HeaderDefinition def = new HeaderDefinition("aa", "firstLine", "before", "end", null, "", "lastDetect", false, false);
         def.validate();
     }
 
-    @Test(expectedExceptions = IllegalStateException.class)
+    @Test(expected = IllegalStateException.class)
     public void test_missing_lastDetect() throws Exception {
         HeaderDefinition def = new HeaderDefinition("aa", "firstLine", "before", "end", null, "firstDetect", "", false, false);
         def.validate();

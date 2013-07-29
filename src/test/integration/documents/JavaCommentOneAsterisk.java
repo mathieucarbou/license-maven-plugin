@@ -18,7 +18,7 @@
 package com.mathieucarbou.mojo.license.document.impl;
 
 import com.mathieucarbou.mojo.license.LicenseCheckMojo;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 import java.io.File;
 

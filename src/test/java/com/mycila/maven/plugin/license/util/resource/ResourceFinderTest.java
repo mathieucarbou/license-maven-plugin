@@ -16,27 +16,29 @@
 package com.mycila.maven.plugin.license.util.resource;
 
 import org.apache.maven.plugin.MojoFailureException;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import java.io.File;
 import java.net.URL;
 import java.util.Arrays;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
 public final class ResourceFinderTest {
 
-    ResourceFinder finder;
+    static ResourceFinder finder;
 
     @BeforeClass
-    public void setup() {
+    public static void setup() {
         finder = new ResourceFinder(new File("."));
         finder.setCompileClassPath(Arrays.asList("src/test/data/compileCP"));
-        finder.setPluginClassPath(getClass().getClassLoader());
+        finder.setPluginClassPath(ResourceFinderTest.class.getClassLoader());
     }
 
     @Test
@@ -46,7 +48,7 @@ public final class ResourceFinderTest {
         assertEquals(new File(u.toURI()).getCanonicalPath(), path);
     }
 
-    @Test(expectedExceptions = MojoFailureException.class)
+    @Test(expected = MojoFailureException.class)
     public void test_load_inexisting() throws Exception {
         finder.findResource("ho ho");
     }

@@ -17,7 +17,7 @@ package com.mycila.maven.plugin.license;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 import java.io.File;
 
@@ -26,7 +26,7 @@ import java.io.File;
  */
 public final class FailIfMissingMojoTest {
 
-    @Test(expectedExceptions = MojoExecutionException.class)
+    @Test(expected = MojoExecutionException.class)
     public void test_fail() throws Exception {
         LicenseCheckMojo check = new LicenseCheckMojo();
         check.basedir = new File("src/test/resources/check");

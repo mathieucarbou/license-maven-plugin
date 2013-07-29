@@ -15,11 +15,12 @@
  */
 package com.mycila.maven.plugin.license.util;
 
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 import java.io.File;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)

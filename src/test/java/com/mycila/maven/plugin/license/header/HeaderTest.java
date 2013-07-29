@@ -17,7 +17,7 @@ package com.mycila.maven.plugin.license.header;
 
 import com.mycila.maven.plugin.license.HeaderSection;
 import com.mycila.maven.plugin.license.util.FileUtils;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -25,9 +25,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
