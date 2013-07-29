@@ -10,7 +10,7 @@
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <title>Maven License Plugin by mycila</title>
+    <title>License Maven Plugin by mycila</title>
   </head>
 
   <body>
@@ -18,14 +18,14 @@
       <div class="inner">
 
         <header>
-          <h1>Maven License Plugin</h1>
+          <h1>License Maven Plugin</h1>
           <h2>Manage license headers in your source files</h2>
         </header>
 
         <section id="downloads" class="clearfix">
-          <a href="https://github.com/mycila/maven-license-plugin/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
-          <a href="https://github.com/mycila/maven-license-plugin/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
-          <a href="https://github.com/mycila/maven-license-plugin" id="view-on-github" class="button"><span>View on GitHub</span></a>
+          <a href="https://github.com/mycila/license-maven-plugin/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/mycila/license-maven-plugin/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/mycila/license-maven-plugin" id="view-on-github" class="button"><span>View on GitHub</span></a>
         </section>
 
         <hr>
@@ -58,6 +58,7 @@
 <ul>
 <li>
 <strong>Releases</strong> </li>
+<li>
 </ul><p>Available in Maven Central Repository: <a href="http://repo1.maven.org/maven2/com/mycila/maven-license-plugin/">http://repo1.maven.org/maven2/com/mycila/maven-license-plugin/</a></p>
 
 <ul>
@@ -75,10 +76,837 @@
 
 <h2>
 <a name="documentation" class="anchor" href="#documentation"><span class="octicon octicon-link"></span></a>Documentation</h2>
+
+<p>= Introduction =</p>
+
+<p><strong>2010-12-12 - Version 1.9.0has been released. See [ReleaseNotes release notes]</strong></p>
+
+<p><em>maven-license-plugin</em> is a [<a href="http://maven.apache.org/">http://maven.apache.org/</a> Maven 2] plugin that help you managing license headers in source files.</p>
+
+<p>Basically, when you are developing a project either in open source or in a company, you often need to add at the top of your source files a license to protect your work.</p>
+
+<p>I didn't find any maven plugin on Internet to help you maintain these license headers. By maintaining, i mean checking if the header is here or not, generating a report and of course having the possibility to update / reformat missing license headers.</p>
+
+<p>I only found [<a href="http://mojo.codehaus.org/rat-maven-plugin/">http://mojo.codehaus.org/rat-maven-plugin/</a> RAT Maven plugin] but this plugin only does a check.</p>
+
+<p></p>
+
+<p>= Features =</p>
+
+<ul>
+<li>
+<em>Check</em>: check if header is missing in some source file</li>
+<li>
+<em>Reformat</em>: add headers if missing</li>
+<li>
+<em>Remove</em>: can remove existing header</li>
+<li>
+<em>Update</em>: update existing header with a new one</li>
+<li>
+<em>Custom mappings</em>: enables easy support of new file extensions</li>
+<li>
+<em>Variable replacement:</em> You can add some variable in your header, such as ${year}, ${owner} and they will be replaced by the corresponding values taken from the pom or system properties.</li>
+</ul><p>= Be up to date ! =</p>
+
+<p>For the most recent version, see the [ReleaseNotes Release Notes].</p>
+
+<p>You can also subscribe to the google group mailing lists or RSS feeds to get the latest announcements, issues updates, svn updates, ...
+See [MailingLists the mailing lists section].</p>
+
+<p>= How to use and configure the plugin =</p>
+
+<p>The usage of the plugin is very simple. It is described in detail in <em>[HowTo the How To page]</em>.</p>
+
+<p>To configure the plugin, see <em>[Configuration the configuration reference guide]</em>.</p>
+
+<p>You can also have a check on the maven website of this plugin at <a href="http://mathieu.carbou.free.fr/p/maven-license-plugin/plugin-info.html">http://mathieu.carbou.free.fr/p/maven-license-plugin/plugin-info.html</a></p>
+
+<p>= Supported formats =</p>
+
+<p>All listed [SupportedFormats there]</p>
+
+<p>= variable replacement in header =</p>
+
+<p>You can define some variable in your header, and they will be replaced when the header file will be read. The values of the properties are taken first from the command line (java system properties), then from the plugin properties, then from the system properties.</p>
+
+<p>See [Configuration the configuration reference guide] to see how to use it.</p>
+
+<p>= Getting help =</p>
+
+<ul>
+<li>Maven 2 project website, with plugin description: <a href="http://mathieu.carbou.free.fr/p/maven-license-plugin/plugin-info.html">http://mathieu.carbou.free.fr/p/maven-license-plugin/plugin-info.html</a>
+</li>
+<li>My website: <a href="http://mathieu.carbou.free.fr/">http://mathieu.carbou.free.fr/</a>
+</li>
+<li>Issue tab of this project</li>
+<li>Email...</li>
+</ul><p>== Other interesting projects ==</p>
+
+<ul>
+<li>Mycila : <a href="http://code.mycila.com/">http://code.mycila.com/</a>
+</li>
+</ul><p></p>
+
+<h1></h1>
+
+<h1>
+<a name="summary-maven-license-plugin-configuration-reference-guide" class="anchor" href="#summary-maven-license-plugin-configuration-reference-guide"><span class="octicon octicon-link"></span></a>summary maven-license-plugin configuration reference guide</h1>
+
+<p> 
+= Plugin info on maven website = </p>
+
+<p>See <a href="http://mathieu.carbou.free.fr/p/maven-license-plugin/plugin-info.html">http://mathieu.carbou.free.fr/p/maven-license-plugin/plugin-info.html</a></p>
+
+<p>= Available goals =</p>
+
+<ul>
+<li>
+<em>[<a href="http://mathieu.carbou.free.fr/p/maven-license-plugin/check-mojo.html">http://mathieu.carbou.free.fr/p/maven-license-plugin/check-mojo.html</a> license:check]</em>: verify if some files miss license header</li>
+<li>
+<em>[<a href="http://mathieu.carbou.free.fr/p/maven-license-plugin/format-mojo.html">http://mathieu.carbou.free.fr/p/maven-license-plugin/format-mojo.html</a> license:format]</em>: add the license header when missing. If a header is existing, it is updated to the new one.</li>
+<li>
+<em>[<a href="http://mathieu.carbou.free.fr/p/maven-license-plugin/remove-mojo.html">http://mathieu.carbou.free.fr/p/maven-license-plugin/remove-mojo.html</a> license:remove]</em>: remove existing license header</li>
+</ul><p>= maven-license-plugin configuration options =</p>
+
+<p>A lot of configuration options can be passed to the command line as parameters to override those in the POM. This is described below.</p>
+
+<p>Here is an example of a full declaration of the plugin with all its options</p>
+
+<p>{{{
+com.mycila.maven-license-pluginmaven-license-plugin${basedir} ${basedir}/src/etc/header.txt /otherSupportedHeader.txt<a href="http://www.company.com/yetAnotherSupportedHeader.txt">http://www.company.com/yetAnotherSupportedHeader.txt</a>falsetruefalsesrc/**<strong>/test/</strong>target/**.clover/**trueXML_STYLEXML_STYLEJAVADOC_STYLEtrue${project.inceptionYear}<a href="mailto:my@email.com">my@email.com</a>UTF-8def1.xmldef2.xmlcheck
+}}}</p>
+
+<p>The table below shows all the available options you can use in the configure section of the plugin. A lot of are also available from the command-line. To use them, simply launch your maven command with a property like <code>-Dproperty=value</code> (i.e. <code>mvn license:check -Dlicense.header=src/etc/header.txt</code>)</p>
+
+<p>|| <em>option</em> || <em>status</em> || <em>default</em> || <em>command-line</em> || <em>description</em> ||
+|| <em><em>basedir</em></em> || optional || ${basedir} || -Dlicense.basedir=folder || Specify the folder as the base directory for the search ||
+|| <em><em>header</em></em> || <em>required</em> || || -Dlicense.header=path to header file || Location of the header. It can be a relative path, absolute path, classpath resource, any URL. The plugin first check if the name specified is a relative file, then an absolute file, then in the claspath. If not found, it tries to construct a URL from the location. An example of the content for Apache 2 license is [<a href="http://code.google.com/p/maven-license-plugin/wiki/HowTo">http://code.google.com/p/maven-license-plugin/wiki/HowTo</a> here] ||
+|| <em><em>quiet</em></em> || optional || false || -Dlicense.quiet=true || If you do not want to see the list of file having a missing header, you can add the quiet flag that will shorten the output ||
+|| <em><em>failIfMissing</em></em> || optional || true || -Dlicense.failIfMissing=false || You can set this flag to false if you do not want the build to fail when some headers are missing. This flag is only available with goal <code>check</code> ||
+|| <em><em>aggregate</em></em> || optional || false|| -Dlicense.aggregate=false || You can set this flag to true if you want to check the headers for all modules of your project. Only used for multi-modules projects, to check for example the header licenses in the parent pom for all sub modules ||
+|| <em><em>includes</em></em> || optional || <code>**</code> (all) || || By default all files are included. You can reduce the set of included files by adding include tags with patterns ||
+|| <em><em>excludes</em></em> || optional || empty || || You can exclude some files in your project from the check by specifying a list of pattern ||
+|| <em><em>useDefaultExcludes</em></em> || optional || true || -Dlicense.useDefaultExcludes=false || Specify if you want to use default exclusions besides the files you have excluded. Default exclusion removes CVS and SVN folders, IDE descriptors and so on. The default value of these exclusions is shown below this table ||
+|| <em><em>mapping</em></em> || optional || empty || || This section is very useful when you want to customize the supported extensions. Is your project is using file extensions not supported by default by this plugin, you can add a mapping to attach the extension to an existing type of comment. The tag name is the new extension name to support, and the value is the name of the comment type to use. The list of the comment type names is listed on the page  [<a href="http://code.google.com/p/maven-license-plugin/">http://code.google.com/p/maven-license-plugin/</a> here] and below the table ||
+|| <em><em>useDefaultMapping</em></em> || optional || true || -Dlicense.useDefaultMapping=false || Specify if you want to use or not the default extension mapping for supported file extensions. If you do not use it, you will have to add mappings manual for each extension you want to use. See more details below ||
+|| <em><em>properties</em></em> || optional || empty || || You can set here some properties that you want to use when reading the header file. You can use in your header file some properties like ${year}, ${owner} or whatever you want for the name. They will be replaced when the header file is read by those you specified in the command line, in the POM and in system environment. ||
+|| <em><em>encoding</em></em> || optional || ${file.encoding} || -Dlicense.encoding=encoding || Specify the encoding of your files. Default to current system encoding ||
+|| <em><em>headerDefinitions</em></em> || optional || empty ||  || Enables to redefine the header detection patterns and the header templates ||
+|| <em><em>dryRun</em></em> || optional || false || -Dlicense.dryRun=true || If dryRun is enabled, calls to license:format and license:remove will not overwrite the existing file but instead write the result to a new file with the same name but ending with <code>.licensed</code> ||
+|| <em><em>keywords</em></em> || optional || copyright || || Specify the list of keywords to use to detect a header. A header must include all keywords to be valid. By default, the word 'copyright' is used. Detection is done case insensitive. ||
+|| <em><em>skip</em></em> || optional || false || -Dlicense.skip=true || Skip the plugin execution if true ||
+|| <em><em>skipExistingHeaders</em></em> || optional || false || -Dlicense.skipExistingHeaders=true || Skip the formatting of the files which already contains a detected header ||
+|| <em><em>validHeaders</em></em> || optional || ||  || Specifies additional header files to use when checking for the presence of a valid header in your sources. When using format goal, this property will be used to detect all valid headers that don't need formatting. When using remove goal, this property will be used to detect all valid headers that also must be removed. ||
+|| <em><em>strictCheck</em></em> || optional || false || -Dlicense.strictCheck=true || Since version 1.8.0, maven-license-plugin supports strict checking of licenses. This will be the default behavior for all future majors releases. Set to true if you need a strict check against the headers. By default, the existence of a header is verified by taking the top portion of a file and checking if it contains the headers text, not considering special characters (spaces, tabs, ...). We highly recommend to set this option to true. It is by default set to false for backward compatibility. ||
+|| <em><em>concurrencyFactor</em></em> || optional || 1.5 || -Dlicense.concurrencyFactor=2 || Maven license plugin uses concurrency to check license headers. This factor is used to control the number of threads used to check. The rule is: <code>&lt;nThreads&gt; = &lt;number of cores&gt; *  concurrencyFactor</code> ||</p>
+
+<p>= Default excludes =</p>
+
+<p>Patterns that are excluded by default when using <code>useDefaultExcludes</code> (default to true):</p>
+
+<p>{{{
+// Miscellaneous typical temporary files
+"**/*~",
+"**/#*#",
+"**/.#*",
+"**/%*%",
+"**/._*",
+"**/.repository/**",</p>
+
+<p>// CVS
+"**/CVS",
+"**/CVS/**",
+"**/.cvsignore",</p>
+
+<p>// RCS
+"**/RCS",
+"**/RCS/**",</p>
+
+<p>// SCCS
+"**/SCCS",
+"**/SCCS/**",</p>
+
+<p>// Visual SourceSafe
+"**/vssver.scc",</p>
+
+<p>// Subversion
+"**/.svn",
+"**/.svn/**",</p>
+
+<p>// Arch
+"**/.arch-ids",
+"**/.arch-ids/**",</p>
+
+<p>//Bazaar
+"**/.bzr",
+"**/.bzr/**",</p>
+
+<p>//SurroundSCM
+"**/.MySCMServerInfo",</p>
+
+<p>// Mac
+"**/.DS_Store",</p>
+
+<p>// Serena Dimensions Version 10
+"**/.metadata",
+"**/.metadata/**",</p>
+
+<p>// Mercurial
+"**/.hg",
+"**/.hg/**",</p>
+
+<p>// git
+"**/.git",
+"**/.git/**",</p>
+
+<p>// BitKeeper
+"**/BitKeeper",
+"**/BitKeeper/**",
+"**/ChangeSet",
+"**/ChangeSet/**",</p>
+
+<p>// darcs
+"**/_darcs",
+"**/_darcs/**",
+"**/.darcsrepo",
+"**/.darcsrepo/**",
+"**/-darcs-backup*",
+"**/.darcs-temp-mail",</p>
+
+<p>// maven project's temporary files
+"**/target/**",
+"**/test-output/**",
+"**/release.properties",
+"**/pom.xml",
+"**/dependency-reduced-pom.xml",</p>
+
+<p>// code coverage tools
+"**/cobertura.ser",
+"**/.clover/**",</p>
+
+<p>// eclipse project files
+"**/.classpath",
+"**/.project",
+"**/.settings/**",</p>
+
+<p>// IDEA projet files
+"**/*.iml", "**/*.ipr", "**/*.iws",</p>
+
+<p>// descriptors
+"**/MANIFEST.MF",</p>
+
+<p>// binary files - images
+"**/*.jpg",
+"**/*.png",
+"**/*.gif",
+"**/*.ico",
+"**/*.bmp",
+"**/*.tiff",
+"**/*.tif",
+"**/*.cr2",
+"**/*.xcf",</p>
+
+<p>// binary files - programs
+"**/*.class",
+"**/*.exe",</p>
+
+<p>// checksum files
+"**/*.md5",
+"**/*.sha1",</p>
+
+<p>// binary files - archives
+"**/*.jar",
+"**/*.zip",
+"**/*.rar",
+"**/*.tar",
+"**/*.tar.gz",
+"**/*.tar.bz2",
+"**/*.gz",</p>
+
+<p>// binary files - documents
+"**/*.xls",</p>
+
+<p>// ServiceLoader files
+"**/META-INF/services/**"
+}}}</p>
+
+<p>= Supported comment types =</p>
+
+<p>There are all described in [<a href="http://code.google.com/p/maven-license-plugin/">http://code.google.com/p/maven-license-plugin/</a> the Home page]. The list contains:</p>
+
+<p><code>java, xml, properties, apt, batch, text, sql, jsp, ftl, ...</code></p>
+
+<p>= Default mappings =</p>
+
+<p>The default mapping is built using the file extension and the style of comment to use. By default, the mapping between supported extensions and comment type contains the supported extensions [<a href="http://code.google.com/p/maven-license-plugin/wiki/SupportedFormats">http://code.google.com/p/maven-license-plugin/wiki/SupportedFormats</a> here]. You can customize the default mapping by providing your own one:</p>
+
+<p>{{{
+JAVADOC_STYLEJAVADOC_STYLEJAVADOC_STYLEJAVADOC_STYLEXML_STYLEXML_STYLEXML_STYLEXML_STYLE
+    XML_STYLEXML_STYLEXML_STYLEDOUBLETILDE_STYLESCRIPT_STYLESCRIPT_STYLETEXTBATCHBATCHDOUBLEDASHES_STYLEDYNASCRIPT_STYLEFTLXML_STYLESHARPSTAR_STYLEXML_STYLE
+}}}</p>
+
+<p>= Variable replacement =</p>
+
+<p>If you have a header that contains variable like this one:</p>
+
+<p>{{{
+Copyright (C) ${year} ${user.name} &lt;${email}&gt;</p>
+
+<p>Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+
+<pre><code>    http://www.apache.org/licenses/LICENSE-2.0
+</code></pre>
+
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+}}}</p>
+
+<p>The plugin will try to replace them using the properties supplied in the command line, then those supplied in the POM, and then those from the system environment.</p>
+
+<p>To test, you can launch the check goal in debug mode like this:</p>
+
+<p><code>mvn -X license:check -Dyear=2010</code></p>
+
+<p>Outputs for me:</p>
+
+<p>{{{
+Copyright (C) 2010 kha <a href="mailto:my@email.com">my@email.com</a>
+}}}</p>
+
+<p>Notice that the year 2008 specified in the POM above has been overridden by the java property. And since the user.name is already a java system property, you don't need to specify it.</p>
+
+<p>= Debugging, controlling the output =</p>
+
+<p>The plugin let you control the output by the <em><code>license.quiet</code></em> property.</p>
+
+<p>But to see if the plugin is working well, if your header is parsed correctly with properties, you may need to activate the Maven debug flag <em>-X</em> to see the plugin debug output.</p>
+
+<p>Example: <code>mvn -X license:check</code></p>
+
+<p>= Changing header style definitions =</p>
+
+<p>In maven-license-plugin, each header style is defined by patterns to detect it and also strings to insert it correctly in files. If we take for example the Javadoc style header definition. It is defined as follow:</p>
+
+<p>{{{
+&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;
+/** * <em>/</em>
+        &lt;!--skipLine&gt;
+        (\s|\t)/*.*$.**/(\s|\t)*$falsetrue
+}}}</p>
+
+<p>And for XML:</p>
+
+<p>{{{
+&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;
+&lt;![CDATA[&lt;!--\n]]&gt;&lt;![CDATA[--&gt;]]&gt;&lt;![CDATA[^&lt;\?xml.*&gt;$]]&gt;&lt;![CDATA[(\s|\t)*&lt;!--.*$]]&gt;&lt;![CDATA[.*--&gt;(\s|\t)*$]]&gt;falsetrue
+}}}</p>
+
+<p>With the <em>headerDefinitions</em> option, you can redefine existing header styles and also add some if we do not support the styles you want yet. You just have to provide a list of <em>headerDefinition</em> containing a resource name. Like the header, the resource is searched on the file system, in the classpath of the project, the plugin and also as a URL.</p>
+
+<p>See [AdvancedHeaders Advanced Headers configuration] for more information</p>
+
+<p>= Working with multi-module projects =</p>
+
+<p>here is an example of configuration you can have in a parent pom, when working in a multimodule project:</p>
+
+<p>{{{
+falsecom.mycila.maven-license-pluginmaven-license-plugin1.4.0 ${basedir}/etc/header.txt truetrueMathieu Carbou${project.inceptionYear}<a href="mailto:mathieu.carbou@gmail.com">mathieu.carbou@gmail.com</a>LICENSE.txt<strong>/src/test/resources/</strong><strong>/src/test/data/</strong>check-headersverifycheck
+}}}</p>
+
+<h1></h1>
+
+<h1>
+<a name="summary-supported-formats" class="anchor" href="#summary-supported-formats"><span class="octicon octicon-link"></span></a>summary Supported formats</h1>
+
+<p>= Supported comments =</p>
+
+<p>The plugin has been designed so that it is very easy to add new supports for new sorts of comment.</p>
+
+<p>The plugin currently support these types of comment:</p>
+
+<ul>
+<li>
+<em>JAVADOC_STYLE</em> (Java-like comments)</li>
+</ul><p>{{{
+/**</p>
+
+<ul>
+<li>
+<p>My comment
+*/
+}}}</p>
+
+<ul>
+<li>
+<em>XML_STYLE</em> (XML-like comments)</li>
+</ul>
+</li>
+</ul><p>{{{</p>
+
+
+
+<p>}}}</p>
+
+<ul>
+<li>
+<em>DOUBLETILDE_STYLE</em> (APT-like comments)</li>
+</ul><p>{{{
+~~ My comment
+}}}</p>
+
+<ul>
+<li>
+<em>SCRIPT_STYLE</em> (Property file or shell comments)</li>
+</ul><p>{{{</p>
+
+<h1>
+<a name="my-comment" class="anchor" href="#my-comment"><span class="octicon octicon-link"></span></a>My comment</h1>
+
+<p>}}}</p>
+
+<ul>
+<li><em>HAML_STYLE</em></li>
+</ul><p>{{{
+-# My comment
+}}}</p>
+
+<ul>
+<li>
+<em>BATCH</em> (Windows batch comments)</li>
+</ul><p>{{{
+<a href="https://github.com/REM" class="user-mention">@REM</a> My comment
+}}}</p>
+
+<ul>
+<li>
+<em>TEXT</em> (Text like comments)</li>
+</ul><h1>
+<a name="-2" class="anchor" href="#-2"><span class="octicon octicon-link"></span></a>{{{</h1>
+
+<pre><code>My comment
+</code></pre>
+
+<h1></h1>
+
+<p>}}}</p>
+
+<p>(4 spaces, then the lines of the header)</p>
+
+<ul>
+<li>
+<em>DOUBLEDASHES_STYLE</em> (Sql like comments)</li>
+</ul><h2>
+<a name="-4" class="anchor" href="#-4"><span class="octicon octicon-link"></span></a>{{{</h2>
+
+<h2>
+<a name="---test-comment" class="anchor" href="#---test-comment"><span class="octicon octicon-link"></span></a>-- test comment</h2>
+
+<p>}}}</p>
+
+<ul>
+<li>
+<em>DYNASCRIPT_STYLE</em> (JSP like comments)</li>
+</ul><p>{{{
+&lt;%--
+    comment
+--%&gt;
+}}}</p>
+
+<ul>
+<li>
+<em>FTL</em> (FreeMarker like comments)</li>
+</ul><p>{{{
+&lt;#--
+    comment
+--&gt;
+}}}</p>
+
+<ul>
+<li>
+<em>FTL_ALT</em> (FreeMarker Alternative Syntax comments)</li>
+</ul><p>{{{
+[#ftl ...]
+[#--
+    comment
+--]
+}}}</p>
+
+<ul>
+<li>
+<em>SHARPSTAR_STYLE</em> (Velocity templates comments)</li>
+</ul><p>{{{</p>
+
+<h1>
+<a name="-5" class="anchor" href="#-5"><span class="octicon octicon-link"></span></a>*</h1>
+
+<pre><code>comment
+</code></pre>
+
+<p>*##
+}}}</p>
+
+<ul>
+<li>
+<em>SEMICOLON_STYLE</em> (Assembler like comments)</li>
+</ul><p>{{{
+;
+; comment
+;
+}}}</p>
+
+<ul>
+<li>
+<em>BRACESSTAR_STYLE</em> (Delphi like comments)</li>
+</ul><p>{{{
+{*</p>
+
+<ul>
+<li>
+<p>comment
+*}
+}}}</p>
+
+<ul>
+<li>
+<em>APOSTROPHE_STYLE</em> (VisualBasic like comments)</li>
+</ul>
+</li>
+</ul><p>{{{
+'
+' comment
+'
+}}}</p>
+
+<ul>
+<li>
+<em>EXCLAMATION_STYLE</em> (Fortran like comments)</li>
+</ul><p>{{{
+!
+! comment
+!
+}}}</p>
+
+<ul>
+<li>
+<em>SLASHSTAR_STYLE</em> (JavaScript like comments)</li>
+</ul><p>{{{
+/*</p>
+
+<ul>
+<li>
+<p>comment
+*/
+}}}</p>
+
+<ul>
+<li>
+<em>DYNASCRIPT3_STYLE</em> (Coldfusion like comments)</li>
+</ul>
+</li>
+</ul><p>{{{</p>
+
+
+
+<p>}}}</p>
+
+<ul>
+<li>
+<em>PERCENT3_STYLE</em> (Erlang like comments)</li>
+</ul><p>{{{
+%%%
+%%% comment
+%%%
+}}}</p>
+
+<ul>
+<li>
+<em>EXCLAMATION3_STYLE</em> (Lisp like comments)</li>
+</ul><p>{{{
+!!!
+!!! comment
+!!!
+}}}</p>
+
+<ul>
+<li>
+<em>LUA</em> (Lua like comments)</li>
+</ul><p>{{{
+--[[
+comment
+]]
+}}}</p>
+
+<ul>
+<li>
+<em>ASP</em> (Asp like comments)</li>
+</ul><p>{{{
+&lt;%
+' comment
+%&gt;
+}}}</p>
+
+<ul>
+<li>
+<em>PHP</em> (PHP comments)</li>
+</ul><p>{{{
+/*</p>
+
+<ul>
+<li>
+<p>comment
+*/
+}}}
+(inserted after the &lt;?php&gt; tag)</p>
+
+<ul>
+<li>
+<em>DOUBLESLASH_STYLE</em> (often used comments style)</li>
+</ul>
+</li>
+</ul><p>{{{
+//
+// comment
+//
+}}}</p>
+
+<p>= Supported file extensions =</p>
+
+<p>From the different supported comment types, we can add any mapping we want. By default, the plugin includes the mappings below between the extension of the file and the comment type above:</p>
+
+<p>|| <em>File extension</em> || <em>Comment type</em> ||
+|| java || JAVADOC_STYLE||
+|| groovy || JAVADOC_STYLE||
+|| js || SLASHSTAR_STYLE||
+|| css || JAVADOC_STYLE||
+|| cs || JAVADOC_STYLE||
+|| as || JAVADOC_STYLE||
+|| aj || JAVADOC_STYLE||
+|| c || JAVADOC_STYLE||
+|| h || JAVADOC_STYLE||
+|| cpp || JAVADOC_STYLE||
+|| pom || XML_STYLE||
+|| xml || XML_STYLE||
+|| xhtml || XML_STYLE||
+|| mxml || XML_STYLE||
+|| dtd || XML_STYLE||
+|| xsd || XML_STYLE||
+|| jspx || XML_STYLE||
+|| fml || XML_STYLE||
+|| xsl || XML_STYLE||
+|| html || XML_STYLE||
+|| htm || XML_STYLE||
+|| apt || DOUBLETILDE_STYLE||
+|| properties || SCRIPT_STYLE||
+|| sh || SCRIPT_STYLE||
+|| py || SCRIPT_STYLE||
+|| rb || SCRIPT_STYLE||
+|| pl || SCRIPT_STYLE||
+|| pm || SCRIPT_STYLE||
+|| txt || TEXT||
+|| bat || BATCH||
+|| cmd || BATCH||
+|| sql || DOUBLEDASHES_STYLE||
+|| adb || DOUBLEDASHES_STYLE||
+|| ads || DOUBLEDASHES_STYLE||
+|| e || DOUBLEDASHES_STYLE||
+|| jsp || DYNASCRIPT_STYLE||
+|| asp || ASP||
+|| php || PHP||
+|| vm || SHARPSTAR_STYLE||
+|| ftl || FTL||
+|| asm || SEMICOLON_STYLE||
+|| cfc || DYNASCRIPT3_STYLE||
+|| cfm || DYNASCRIPT3_STYLE||
+|| pas || BRACESSTAR_STYLE||
+|| erl || PERCENT3_STYLE||
+|| hrl || PERCENT3_STYLE||
+|| f || EXCLAMATION_STYLE||
+|| el || EXCLAMATION3_STYLE||
+|| lua || LUA||
+|| bas || APOSTROPHE_STYLE||
+|| kml || XML_STYLE||
+|| gsp || XML_STYLE||
+|| haml || HAML_STYLE||
+|| scaml || HAML_STYLE||
+|| tld || XML_STYLE||</p>
+
+<p><em>The plugin enables you to add any other mapping you want.</em> I.e., if you are developing a Tapestry web application, you may need to add license header in .jwc files and .application files. since these files are xml files, you only need to add in your project pom the following mapping for the maven-license-plugin:</p>
+
+<p>{{{
+XML_STYLEXML_STYLE
+}}}</p>
+
+<h1></h1>
+
+<h1>
+<a name="summary-give-an-example-of-an-additional-header-definition-for-net-regions" class="anchor" href="#summary-give-an-example-of-an-additional-header-definition-for-net-regions"><span class="octicon octicon-link"></span></a>summary Give an example of an additional header definition for .Net regions.</h1>
+
+<p>= Introduction =</p>
+
+<p>This page will show you how you can define extended header definitions to feet your needs. The next example will define headers in a <em>region</em> area allowed in C# source files:</p>
+
+<p>{{{
+&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;
+#region LicenseEOL/** * <em>/EOL#endregion</em>#region.^EOL/**.*$*/EOL#endregion"truetrue
+}}}</p>
+
+<ul>
+<li>The <em>EOL</em> string will be replaced with the proper end of line depending the file format your are processing.</li>
+<li>We also have defined the <em>skipLine</em> attribute to skip the region tags (which starts with a '#')</li>
+<li>
+<em>allowBlankLines</em> allows you to define if this header style supports blank lines in it or not. In example, in XML headers, you could have blank lines after the &lt;!-- and before --&gt; because XML delimiters delimit a multiline block. When you work with script style comments like in Ruby, Porperties files, the # character delimit a comment for only one line. So when you create the header, for it to be uniform, you place # on each line. So allowBlankLines will be false.</li>
+<li>
+<em>isMultiline</em> specifies if your header has tokens to delimit a multiline comment of if the tokens are a one-line comment. I.E.: XML style comments are multiline whereas script style comment where each line starts with # are not multiline</li>
+</ul><p>You now have to add this new header definition file to the plugin configuration. It is done as the following in your pom:</p>
+
+<p>{{{
+yourdefinition.xml
+}}}</p>
+
+<p>You now have to add the new mapping for <code>*.cs</code> files to use this new header definition. It is done as the following in your pom:</p>
+
+<p>{{{
+CSREGION_STYLE
+}}}</p>
+
+<p>If you need more information on the pom configuration, just read the [<a href="http://code.google.com/p/maven-license-plugin/w/edit/Configuration">http://code.google.com/p/maven-license-plugin/w/edit/Configuration</a> Configuration page].</p>
+
+<p>And it should generate headers like:
+{{{</p>
+
+<h1>
+<a name="region-license" class="anchor" href="#region-license"><span class="octicon octicon-link"></span></a>region License</h1>
+
+<p>/**</p>
+
+<ul>
+<li>Copyright (C) 2008 <a href="http://code.google.com/p/maven-license-plugin/">http://code.google.com/p/maven-license-plugin/</a>
+*</li>
+<li>Licensed under the Apache License, Version 2.0 (the "License");</li>
+<li>you may not use this file except in compliance with the License.</li>
+<li>You may obtain a copy of the License at
+*</li>
+<li>        <a href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a>
+*</li>
+<li>Unless required by applicable law or agreed to in writing, software</li>
+<li>distributed under the License is distributed on an "AS IS" BASIS,</li>
+<li>WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</li>
+<li>See the License for the specific language governing permissions and</li>
+<li>limitations under the License.
+*/
+#endregion
+}}}</li>
+</ul><h1></h1>
+
+<h1>
+<a name="summary-how-to-use-maven-license-plugin" class="anchor" href="#summary-how-to-use-maven-license-plugin"><span class="octicon octicon-link"></span></a>summary How to use maven-license-plugin</h1>
+
+<p> 
+= maven-license-plugin configuration reference =</p>
+
+<p>See [Configuration the maven-license-plugin configuration reference wiki page] to have for information about all the possible configuration options of this plugin !</p>
+
+<p>= STEP 1: Set Maven 2 repository =</p>
+
+<p>*maven-license-plugin is available in Maven Central Repo at <a href="http://repo1.maven.org/maven2/com/mycila/maven-license-plugin/">http://repo1.maven.org/maven2/com/mycila/maven-license-plugin/</a> *</p>
+
+<p><em>to get the really latest releases and snapshots</em></p>
+
+<p>Since it can take some weeks before releases are uploaded in the central repo by the maven team, i provide a maven repository that you can use to get the plugin.</p>
+
+<p>Add in your POM or settings.xml file the plugin repository mc-repo here. See explanations at <a href="http://code.google.com/p/mc-repo/wiki/HowToUse">http://code.google.com/p/mc-repo/wiki/HowToUse</a>.</p>
+
+<p>You should only need to add this:</p>
+
+<p>{{{
+mc-releaseLocal Maven repository of releases<a href="http://mc-repo.googlecode.com/svn/maven2/releases">http://mc-repo.googlecode.com/svn/maven2/releases</a>falsetrue
+}}}</p>
+
+<p>and for snapshots</p>
+
+<p>{{{
+mc-releaseLocal Maven repository of releases<a href="http://mc-repo.googlecode.com/svn/maven2/snapshots">http://mc-repo.googlecode.com/svn/maven2/snapshots</a>truefalse
+}}}</p>
+
+<p>= STEP 2: Create a header file =</p>
+
+<p>The plugin needs that you put a file on your project that contain the header, license or whatever text you want to see on the top of your source files. In the examples below, the file <em>header.txt</em> has the following content:</p>
+
+<p>{{{
+Copyright (C) ${year} ${user.name} &lt;${email}&gt;</p>
+
+<p>Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+
+<pre><code>    http://www.apache.org/licenses/LICENSE-2.0
+</code></pre>
+
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+}}}</p>
+
+<p>You can also provide for the header any valid URL or a resource from the classpath</p>
+
+<p>== Be careful about line end ! ==</p>
+
+<p>On Windows, lines end with CRLF (\r\n) whereas on Unix they end with LF (\n). If you apply a header file saved in Windows format to your files developed on Unix, you will end up with files having line ends like in Unix, except for the header part: you will have \r\n. The side effect is that in some Unix editors, you could see ^M characters at line ends for the header part.</p>
+
+<p>The solution is very simple: you just have to convert your header with dos2unix. You can also convert all your project files like this:</p>
+
+<p><code>for i in</code><code>find src -type f | grep -v .svn | grep -v java</code><code>; do dos2unix $i; done</code></p>
+
+<ul>
+<li>Thanks to [<a href="http://code.google.com/p/maven-license-plugin/issues/detail?id=26">http://code.google.com/p/maven-license-plugin/issues/detail?id=26</a> Erik Drolshammer's report]</li>
+</ul><p>= STEP 3: Check for missing headers (goal: check) =</p>
+
+<p>To launch a check, simply add the plugin to your POM and issue:</p>
+
+<p><em><code>mvn license:check -Dyear=2008 -Demail=myemail@company.com</code></em></p>
+
+<p>{{{
+com.mycila.maven-license-pluginmaven-license-plugin src/etc/header.txt 
+}}}</p>
+
+<p>You can also automatically bind the check to the verify phase if you want a build to fail when missing headers are found. You just have to include the following declaration to check for missing headers, and then issue:</p>
+
+<p><em><code>mvn verify -Dyear=2008 -Demail=myemail@company.com</code></em></p>
+
+<p>{{{
+com.mycila.maven-license-pluginmaven-license-plugin src/etc/header.txt check
+}}}</p>
+
+<p>If you want to bind to another phase, i.e. the test phase, you just have to declare the phase in the execution tag like this:</p>
+
+<p>{{{
+com.mycila.maven-license-pluginmaven-license-plugin src/etc/header.txt testcheck
+}}}</p>
+
+<p>With this, you will then check the headers after the tests by doing <em><code>mvn test  -Dyear=2008 -Demail=myemail@company.com</code></em></p>
+
+<p><em>Note:</em> The properties in the header and in the command line are optional. If you prefer, you can set directly the values in the header and not use properties. Also, you would prefer configuring the plugin for your needs to set properties in the maven POM. See [Configuration the maven-license-plugin configuration guide] to see all the possibilities of this plugin.</p>
+
+<p>= STEP 4: Add missing headers (goal: format) =</p>
+
+<p>This goal enables you to add or update existing license headers to put the one in the header file you have specified.</p>
+
+<p>To launch it: <em><code>mvn license:format -Dyear=2008 -Demail=myemail@company.com</code></em> (having the configuration below)</p>
+
+<p>{{{
+com.mycila.maven-license-pluginmaven-license-plugin src/etc/header.txt 
+}}}</p>
         </section>
 
         <footer>
-          Maven License Plugin is maintained by <a href="https://github.com/mycila">mycila</a><br>
+          License Maven Plugin is maintained by <a href="https://github.com/mycila">mycila</a><br>
           This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
         </footer>
 
