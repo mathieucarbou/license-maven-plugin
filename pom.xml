@@ -36,7 +36,6 @@
                 </configuration>
                 <executions>
                     <execution>
-                        <id>generated-helpmojo</id>
                         <goals>
                             <goal>helpmojo</goal>
                         </goals>
