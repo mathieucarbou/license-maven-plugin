@@ -186,7 +186,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
      *
      * @parameter expression="${license.strictCheck}" default-value="false"
      */
-    protected boolean strictCheck = false;
+    protected boolean strictCheck = true;
 
     /**
      * Set the charcter encoding for files
@@ -213,7 +213,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
             }
             if (!strictCheck) {
                 warn("Property 'strictCheck' is not enabled. Please consider adding <strictCheck>true</strictCheck> in your pom.xml file.");
-                warn("See http://code.google.com/p/maven-license-plugin/wiki/Configuration for more information.");
+                warn("See http://code.google.com/p/license-maven-plugin/wiki/Configuration for more information.");
             }
 
             finder = new ResourceFinder(basedir);
