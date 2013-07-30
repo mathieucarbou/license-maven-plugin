@@ -6,177 +6,81 @@
 
 # Maven License Plugin #
 
-This small project enables to export your classes easily through JMX.
+Basically, when you are developing a project either in open source or in a company, you often need to add at the top of your source files a license to protect your work. I didn't find any maven plugin on Internet to help you maintain these license headers. By maintaining, i mean checking if the header is here or not, generating a report and of course having the possibility to update / reformat missing license headers.
+
+__Features:__
+
+  * `check`: check if header is missing in some source file
+  * `format`: add headers if missing
+  * `remove`: can remove existing header
+  * `update`: update existing header with a new one
+  * `custom mappings`: enables easy support of new file extensions
+  * `variable replacement`: You can add some variable in your header, such as ${year}, ${owner} and they will be replaced by the corresponding values taken from the pom or system properties.
+
+__Project:__
 
  - __Issues:__ https://github.com/mycila/license-maven-plugin/issues
  - __Build Status:__ [![Build Status](https://travis-ci.org/mycila/license-maven-plugin.png?branch=master)](https://travis-ci.org/mycila/license-maven-plugin)
 
-[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/1cff289591701ebe8f738c19916b60bd "githalytics.com")](http://githalytics.com/mycila/license-maven-plugin)
-
 ## Maven Repository ##
 
- - __Releases__ 
- - 
+ __Releases__ 
 
 Available in Maven Central Repository: http://repo1.maven.org/maven2/com/mycila/license-maven-plugin/
 
- - __Snapshots__
+ __Snapshots__
  
 Available in OSS Repository:  https://oss.sonatype.org/content/repositories/snapshots/com/mycila/license-maven-plugin/
 
 __Maven dependency__
 
-    <dependency>
+    <plugin>
         <groupId>com.mycila</groupId>
         <artifactId>license-maven-plugin</artifactId>
         <version>X.Y.ga</version>
-    </dependency>
+        <configuration>
+            <header>com/mycila/licenses/APACHE-2</header>
+            <properties>
+                <owner>Mycila</owner>
+                <year>${project.inceptionYear}</year>
+                <email>mathieu.carbou@gmail.com</email>
+            </properties>
+            <excludes>
+                <exclude>**/README</exclude>
+                <exclude>src/test/resources/**</exclude>
+                <exclude>src/main/resources/**</exclude>
+            </excludes>
+        </configuration>
+        <dependencies>
+            <dependency>
+                <groupId>com.mycila</groupId>
+                <artifactId>licenses</artifactId>
+                <version>1</version>
+            </dependency>
+        </dependencies>
+    </plugin>
 
-## Documentation ##
+# Documentation #
 
+## Goals ##
 
-= Introduction =
+  * `license:check`: verify if some files miss license header
+  * `license:format`: add the license header when missing. If a header is existing, it is updated to the new one.
+  * `license:remove`: remove existing license header
 
-<strong><font color='red'>2010-12-12 - Version 1.9.0has been released.</font> See [ReleaseNotes release notes]</strong>
-
-*license-maven-plugin* is a [http://maven.apache.org/ Maven 2] plugin that help you managing license headers in source files.
-
-Basically, when you are developing a project either in open source or in a company, you often need to add at the top of your source files a license to protect your work.
-
-I didn't find any maven plugin on Internet to help you maintain these license headers. By maintaining, i mean checking if the header is here or not, generating a report and of course having the possibility to update / reformat missing license headers.
-
-I only found [http://mojo.codehaus.org/rat-maven-plugin/ RAT Maven plugin] but this plugin only does a check.
-
-<wiki:gadget url="http://www.ohloh.net/p/14921/widgets/project_partner_badge.xml" border="0" height="53"/>
-
-= Features =
-
-  * *Check*: check if header is missing in some source file
-  * *Reformat*: add headers if missing
-  * *Remove*: can remove existing header
-  * *Update*: update existing header with a new one
-  * *Custom mappings*: enables easy support of new file extensions
-  * *Variable replacement:* You can add some variable in your header, such as ${year}, ${owner} and they will be replaced by the corresponding values taken from the pom or system properties.
-
-= Be up to date ! =
-
-For the most recent version, see the [ReleaseNotes Release Notes].
-
-You can also subscribe to the google group mailing lists or RSS feeds to get the latest announcements, issues updates, svn updates, ...
-See [MailingLists the mailing lists section].
-
-= How to use and configure the plugin =
-
-The usage of the plugin is very simple. It is described in detail in *[HowTo the How To page]*.
-
-To configure the plugin, see *[Configuration the configuration reference guide]*.
-
-You can also have a check on the maven website of this plugin at http://mathieu.carbou.free.fr/p/license-maven-plugin/plugin-info.html
-
-= Supported formats =
-
-All listed [SupportedFormats there]
-
-= variable replacement in header =
-
-You can define some variable in your header, and they will be replaced when the header file will be read. The values of the properties are taken first from the command line (java system properties), then from the plugin properties, then from the system properties.
-
-See [Configuration the configuration reference guide] to see how to use it.
-
-= Getting help =
-
-  * Maven 2 project website, with plugin description: http://mathieu.carbou.free.fr/p/license-maven-plugin/plugin-info.html
-  * My website: http://mathieu.carbou.free.fr/
-  * Issue tab of this project
-  * Email...
-
-== Other interesting projects ==
-
- * Mycila : http://code.mycila.com/
-
-
-<wiki:gadget url="http://www.ohloh.net/p/14921/widgets/project_languages.xml" width="360" height="200" border="0"/>
-<wiki:gadget url="http://www.ohloh.net/p/14921/widgets/project_cocomo.xml" width="340" height="270" border="0"/>
-<wiki:gadget url="http://www.ohloh.net/p/14921/widgets/project_basic_stats.xml" width="340" height="270" border="0"/>
-
-
-==================================
-
-#summary license-maven-plugin configuration reference guide
-<wiki:toc max_depth="2" /> 
-= Plugin info on maven website = 
-
-See http://mathieu.carbou.free.fr/p/license-maven-plugin/plugin-info.html
-
-= Available goals =
-
-  * *[http://mathieu.carbou.free.fr/p/license-maven-plugin/check-mojo.html license:check]*: verify if some files miss license header
-  * *[http://mathieu.carbou.free.fr/p/license-maven-plugin/format-mojo.html license:format]*: add the license header when missing. If a header is existing, it is updated to the new one.
-  * *[http://mathieu.carbou.free.fr/p/license-maven-plugin/remove-mojo.html license:remove]*: remove existing license header
-
-= license-maven-plugin configuration options =
-
-A lot of configuration options can be passed to the command line as parameters to override those in the POM. This is described below.
-
-Here is an example of a full declaration of the plugin with all its options
-
-{{{
-<build>
-    <plugins>
-        <plugin>
-            <groupId>com.mycila.license-maven-plugin</groupId>
-            <artifactId>license-maven-plugin</artifactId>
-            <configuration>
-                <basedir>${basedir}</basedir>
-                <header>${basedir}/src/etc/header.txt</header>
-                <validHeaders>
-                    <validHeader>/otherSupportedHeader.txt</validHeader>
-                    <validHeader>http://www.company.com/yetAnotherSupportedHeader.txt</validHeader>
-                </validHeaders>
-                <quiet>false</quiet>
-                <failIfMissing>true</failIfMissing>
-                <aggregate>false</aggregate>
-                <includes>
-                    <include>src/**</include>
-                    <include>**/test/**</include>
-                </includes>
-                <excludes>
-                    <exclude>target/**</exclude>
-                    <exclude>.clover/**</exclude>
-                </excludes>
-                <useDefaultExcludes>true</useDefaultExcludes>
-                <mapping>
-                    <jwc>XML_STYLE</jwc>
-                    <application>XML_STYLE</application>
-                    <myFileExtension>JAVADOC_STYLE</myFileExtension>
-                </mapping>
-                <useDefaultMapping>true</useDefaultMapping>
-                <properties>
-                    <year>${project.inceptionYear}</year>
-                    <email>my@email.com</email>
-                </properties>
-                <encoding>UTF-8</encoding>
-                <headerDefinitions>
-                    <headerDefinition>def1.xml</headerDefinition>
-                    <headerDefinition>def2.xml</headerDefinition>
-                </headerDefinitions>
-            </configuration>
-            <executions>
-                <execution>
-                    <goals>
-                        <goal>check</goal>
-                    </goals>
-                </execution>
-            </executions>
-        </plugin>
-    </plugins>
-</build>
-}}}
+## Configuration ##
 
 The table below shows all the available options you can use in the configure section of the plugin. A lot of are also available from the command-line. To use them, simply launch your maven command with a property like `-Dproperty=value` (i.e. `mvn license:check -Dlicense.header=src/etc/header.txt`)
 
-|| *option* || *status* || *default* || *command-line* || *description* ||
-|| *_basedir_* || optional || ${basedir} || -Dlicense.basedir=folder || Specify the folder as the base directory for the search ||
+<table>
+
+<tr><th>option</th><th>status</th><th>default</th><th>command-line</th><th>description</th></tr>
+
+<tr><td>basedir</td><td>optional</td><td>${basedir}</td><td>-Dlicense.basedir=folder</td><td>Specify the folder as the base directory for the search</td></tr>
+
+</table>
+
+ ||  ||
 || *_header_* || *required* || || -Dlicense.header=path to header file || Location of the header. It can be a relative path, absolute path, classpath resource, any URL. The plugin first check if the name specified is a relative file, then an absolute file, then in the claspath. If not found, it tries to construct a URL from the location. An example of the content for Apache 2 license is [http://code.google.com/p/license-maven-plugin/wiki/HowTo here] ||
 || *_quiet_* || optional || false || -Dlicense.quiet=true || If you do not want to see the list of file having a missing header, you can add the quiet flag that will shorten the output ||
 || *_failIfMissing_* || optional || true || -Dlicense.failIfMissing=false || You can set this flag to false if you do not want the build to fail when some headers are missing. This flag is only available with goal `check` ||
@@ -196,6 +100,19 @@ The table below shows all the available options you can use in the configure sec
 || *_validHeaders_* || optional || ||  || Specifies additional header files to use when checking for the presence of a valid header in your sources. When using format goal, this property will be used to detect all valid headers that don't need formatting. When using remove goal, this property will be used to detect all valid headers that also must be removed. ||
 || *_strictCheck_* || optional || false || -Dlicense.strictCheck=true || Since version 1.8.0, license-maven-plugin supports strict checking of licenses. This will be the default behavior for all future majors releases. Set to true if you need a strict check against the headers. By default, the existence of a header is verified by taking the top portion of a file and checking if it contains the headers text, not considering special characters (spaces, tabs, ...). We highly recommend to set this option to true. It is by default set to false for backward compatibility. ||
 || *_concurrencyFactor_* || optional || 1.5 || -Dlicense.concurrencyFactor=2 || Maven license plugin uses concurrency to check license headers. This factor is used to control the number of threads used to check. The rule is: `<nThreads> = <number of cores> *  concurrencyFactor` ||
+
+
+
+= Supported formats =
+
+All listed [SupportedFormats there]
+
+= variable replacement in header =
+
+You can define some variable in your header, and they will be replaced when the header file will be read. The values of the properties are taken first from the command line (java system properties), then from the plugin properties, then from the system properties.
+
+See [Configuration the configuration reference guide] to see how to use it.
+
 
 = Default excludes =
 
@@ -1011,3 +928,8 @@ To launch it: *`mvn license:format -Dyear=2008 -Demail=myemail@company.com`* (ha
 </build>
 }}}
 
+
+
+
+
+[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/1cff289591701ebe8f738c19916b60bd "githalytics.com")](http://githalytics.com/mycila/license-maven-plugin)
