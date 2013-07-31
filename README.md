@@ -19,8 +19,8 @@ __Features:__
 
 __Project:__
 
- - __Issues:__ https://github.com/mycila/license-maven-plugin/issues
  - __Build Status:__ [![Build Status](https://travis-ci.org/mycila/license-maven-plugin.png?branch=master)](https://travis-ci.org/mycila/license-maven-plugin)
+ - __Issues:__ https://github.com/mycila/license-maven-plugin/issues
 
 ## Maven Repository ##
 
@@ -32,7 +32,7 @@ Available in Maven Central Repository: http://repo1.maven.org/maven2/com/mycila/
  
 Available in OSS Repository:  https://oss.sonatype.org/content/repositories/snapshots/com/mycila/license-maven-plugin/
 
-__Maven dependency__
+__Plugin declaration__
 
     <plugin>
         <groupId>com.mycila</groupId>
@@ -62,13 +62,19 @@ __Maven dependency__
 
 # Documentation #
 
+## Detailed Maven documentation ##
+
+The detailed Maven Plugin Documentation generated for each build is available here:
+
+ - [2.0.rc1](http://mycila.github.io/license-maven-plugin/reports/2.0.rc1/index.html)
+
 ## Goals ##
 
   * `license:check`: verify if some files miss license header
   * `license:format`: add the license header when missing. If a header is existing, it is updated to the new one.
   * `license:remove`: remove existing license header
 
-## Configuration ##
+## Options ##
 
 The table below shows all the available options you can use in the configure section of the plugin. A lot of are also available from the command-line. To use them, simply launch your maven command with a property like `-Dproperty=value` (i.e. `mvn license:check -Dlicense.header=src/etc/header.txt`)
 
@@ -101,327 +107,15 @@ The table below shows all the available options you can use in the configure sec
 || *_strictCheck_* || optional || false || -Dlicense.strictCheck=true || Since version 1.8.0, license-maven-plugin supports strict checking of licenses. This will be the default behavior for all future majors releases. Set to true if you need a strict check against the headers. By default, the existence of a header is verified by taking the top portion of a file and checking if it contains the headers text, not considering special characters (spaces, tabs, ...). We highly recommend to set this option to true. It is by default set to false for backward compatibility. ||
 || *_concurrencyFactor_* || optional || 1.5 || -Dlicense.concurrencyFactor=2 || Maven license plugin uses concurrency to check license headers. This factor is used to control the number of threads used to check. The rule is: `<nThreads> = <number of cores> *  concurrencyFactor` ||
 
+## Supported comment types ##
 
+The plugin has been designed so that it is very easy to add new supports for new sorts of comment. The plugin currently support these types of comment:
 
-= Supported formats =
+  * `JAVADOC_STYLE` (Java-like comments)
 
-All listed [SupportedFormats there]
-
-= variable replacement in header =
-
-You can define some variable in your header, and they will be replaced when the header file will be read. The values of the properties are taken first from the command line (java system properties), then from the plugin properties, then from the system properties.
-
-See [Configuration the configuration reference guide] to see how to use it.
-
-
-= Default excludes =
-
-Patterns that are excluded by default when using `useDefaultExcludes` (default to true):
-
-{{{
-// Miscellaneous typical temporary files
-"**/*~",
-"**/#*#",
-"**/.#*",
-"**/%*%",
-"**/._*",
-"**/.repository/**",
-
-// CVS
-"**/CVS",
-"**/CVS/**",
-"**/.cvsignore",
-
-// RCS
-"**/RCS",
-"**/RCS/**",
-
-// SCCS
-"**/SCCS",
-"**/SCCS/**",
-
-// Visual SourceSafe
-"**/vssver.scc",
-
-// Subversion
-"**/.svn",
-"**/.svn/**",
-
-// Arch
-"**/.arch-ids",
-"**/.arch-ids/**",
-
-//Bazaar
-"**/.bzr",
-"**/.bzr/**",
-
-//SurroundSCM
-"**/.MySCMServerInfo",
-
-// Mac
-"**/.DS_Store",
-
-// Serena Dimensions Version 10
-"**/.metadata",
-"**/.metadata/**",
-
-// Mercurial
-"**/.hg",
-"**/.hg/**",
-
-// git
-"**/.git",
-"**/.git/**",
-
-// BitKeeper
-"**/BitKeeper",
-"**/BitKeeper/**",
-"**/ChangeSet",
-"**/ChangeSet/**",
-
-// darcs
-"**/_darcs",
-"**/_darcs/**",
-"**/.darcsrepo",
-"**/.darcsrepo/**",
-"**/-darcs-backup*",
-"**/.darcs-temp-mail",
-
-// maven project's temporary files
-"**/target/**",
-"**/test-output/**",
-"**/release.properties",
-"**/pom.xml",
-"**/dependency-reduced-pom.xml",
-
-// code coverage tools
-"**/cobertura.ser",
-"**/.clover/**",
-
-// eclipse project files
-"**/.classpath",
-"**/.project",
-"**/.settings/**",
-
-// IDEA projet files
-"**/*.iml", "**/*.ipr", "**/*.iws",
-
-// descriptors
-"**/MANIFEST.MF",
-
-// binary files - images
-"**/*.jpg",
-"**/*.png",
-"**/*.gif",
-"**/*.ico",
-"**/*.bmp",
-"**/*.tiff",
-"**/*.tif",
-"**/*.cr2",
-"**/*.xcf",
-
-// binary files - programs
-"**/*.class",
-"**/*.exe",
-
-// checksum files
-"**/*.md5",
-"**/*.sha1",
-
-// binary files - archives
-"**/*.jar",
-"**/*.zip",
-"**/*.rar",
-"**/*.tar",
-"**/*.tar.gz",
-"**/*.tar.bz2",
-"**/*.gz",
-
-// binary files - documents
-"**/*.xls",
-
-// ServiceLoader files
-"**/META-INF/services/**"
-}}}
-
-= Supported comment types =
-
-There are all described in [http://code.google.com/p/license-maven-plugin/ the Home page]. The list contains:
-
-`java, xml, properties, apt, batch, text, sql, jsp, ftl, ...`
-
-= Default mappings =
-
-The default mapping is built using the file extension and the style of comment to use. By default, the mapping between supported extensions and comment type contains the supported extensions [http://code.google.com/p/license-maven-plugin/wiki/SupportedFormats here]. You can customize the default mapping by providing your own one:
-
-{{{
-<mapping>
-    <java>JAVADOC_STYLE</java>
-    <groovy>JAVADOC_STYLE</groovy>
-    <js>JAVADOC_STYLE</js>
-    <css>JAVADOC_STYLE</css>
-    <xml>XML_STYLE</xml>
-    <dtd>XML_STYLE</dtd>
-    <xsd>XML_STYLE</xsd>
-    <html>XML_STYLE</html>
-    <htm>XML_STYLE</htm>
-    <xsl>XML_STYLE</xsl>
-    <fml>XML_STYLE</fml>
-    <apt>DOUBLETILDE_STYLE</apt>
-    <properties>SCRIPT_STYLE</properties>
-    <sh>SCRIPT_STYLE</sh>
-    <txt>TEXT</txt>
-    <bat>BATCH</bat>
-    <cmd>BATCH</cmd>
-    <sql>DOUBLEDASHES_STYLE</sql>
-    <jsp>DYNASCRIPT_STYLE</jsp>
-    <ftl>FTL</ftl>
-    <xhtml>XML_STYLE</xhtml>
-    <vm>SHARPSTAR_STYLE</vm>
-    <jspx>XML_STYLE</jspx>
-</mapping>
-}}}
-
-= Variable replacement =
-
-If you have a header that contains variable like this one:
-
-{{{
-Copyright (C) ${year} ${user.name} <${email}>
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-        http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-}}}
-
-The plugin will try to replace them using the properties supplied in the command line, then those supplied in the POM, and then those from the system environment.
-
-To test, you can launch the check goal in debug mode like this:
-
-`mvn -X license:check -Dyear=2010`
-
-Outputs for me:
-
-{{{
-Copyright (C) 2010 kha <my@email.com>
-}}}
-
-Notice that the year 2008 specified in the POM above has been overridden by the java property. And since the user.name is already a java system property, you don't need to specify it.
-
-= Debugging, controlling the output =
-
-The plugin let you control the output by the *`license.quiet`* property.
-
-But to see if the plugin is working well, if your header is parsed correctly with properties, you may need to activate the Maven debug flag *-X* to see the plugin debug output.
-
-Example: `mvn -X license:check`
-
-= Changing header style definitions =
-
-In license-maven-plugin, each header style is defined by patterns to detect it and also strings to insert it correctly in files. If we take for example the Javadoc style header definition. It is defined as follow:
-
-{{{
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<additionalHeaders>
-    <javadoc_style>
-        <firstLine>/**</firstLine>
-        <beforeEachLine> * </beforeEachLine>
-        <endLine> */</endLine>
-        <!--skipLine></skipLine-->
-        <firstLineDetectionPattern>(\s|\t)*/\*.*$</firstLineDetectionPattern>
-        <lastLineDetectionPattern>.*\*/(\s|\t)*$</lastLineDetectionPattern>
-        <allowBlankLines>false</allowBlankLines>
-        <isMultiline>true</isMultiline>
-    </javadoc_style>
-</additionalHeaders>
-}}}
-
-And for XML:
-
-{{{
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<additionalHeaders>
-    <javadoc_style>
-        <firstLine><![CDATA[<!--\n]]></firstLine>
-        <beforeEachLine>    </beforeEachLine>
-        <endLine><![CDATA[-->]]></endLine>
-        <skipLine><![CDATA[^<\?xml.*>$]]></skipLine>
-        <firstLineDetectionPattern><![CDATA[(\s|\t)*<!--.*$]]></firstLineDetectionPattern>
-        <lastLineDetectionPattern><![CDATA[.*-->(\s|\t)*$]]></lastLineDetectionPattern>
-        <allowBlankLines>false</allowBlankLines>
-        <isMultiline>true</isMultiline>
-    </javadoc_style>
-</additionalHeaders>
-}}}
-
-With the *headerDefinitions* option, you can redefine existing header styles and also add some if we do not support the styles you want yet. You just have to provide a list of *headerDefinition* containing a resource name. Like the header, the resource is searched on the file system, in the classpath of the project, the plugin and also as a URL.
-
-See [AdvancedHeaders Advanced Headers configuration] for more information
-
-= Working with multi-module projects =
-
-here is an example of configuration you can have in a parent pom, when working in a multimodule project:
-
-{{{
-<plugin>
-    <inherited>false</inherited>
-    <groupId>com.mycila.license-maven-plugin</groupId>
-    <artifactId>license-maven-plugin</artifactId>
-    <version>1.4.0</version>
-    <configuration>
-        <header>${basedir}/etc/header.txt</header>
-        <failIfMissing>true</failIfMissing>
-        <aggregate>true</aggregate>
-        <properties>
-            <owner>Mathieu Carbou</owner>
-            <year>${project.inceptionYear}</year>
-            <email>mathieu.carbou@gmail.com</email>
-        </properties>
-        <excludes>
-            <exclude>LICENSE.txt</exclude>
-            <exclude>**/src/test/resources/**</exclude>
-            <exclude>**/src/test/data/**</exclude>
-        </excludes>
-    </configuration>
-    <executions>
-        <execution>
-            <id>check-headers</id>
-            <phase>verify</phase>
-            <goals>
-                <goal>check</goal>
-            </goals>
-        </execution>
-    </executions>
-</plugin>
-}}}
-
-
-==================================
-
-
-#summary Supported formats
-
-= Supported comments =
-
-The plugin has been designed so that it is very easy to add new supports for new sorts of comment.
-
-The plugin currently support these types of comment:
-
-  * *JAVADOC_STYLE* (Java-like comments)
-
-{{{
-/**
- * My comment
- */
-}}}
+    /**
+     * My comment
+     */
 
   * *XML_STYLE* (XML-like comments)
 
@@ -676,6 +370,183 @@ From the different supported comment types, we can add any mapping we want. By d
     <application>XML_STYLE</application>
 </mapping>
 }}}
+
+
+
+
+= variable replacement in header =
+
+You can define some variable in your header, and they will be replaced when the header file will be read. The values of the properties are taken first from the command line (java system properties), then from the plugin properties, then from the system properties.
+
+See [Configuration the configuration reference guide] to see how to use it.
+
+
+= Default excludes =
+
+Patterns that are excluded by default when using `useDefaultExcludes` (default to true):
+
+= Supported comment types =
+
+There are all described in [http://code.google.com/p/license-maven-plugin/ the Home page]. The list contains:
+
+`java, xml, properties, apt, batch, text, sql, jsp, ftl, ...`
+
+= Default mappings =
+
+The default mapping is built using the file extension and the style of comment to use. By default, the mapping between supported extensions and comment type contains the supported extensions [http://code.google.com/p/license-maven-plugin/wiki/SupportedFormats here]. You can customize the default mapping by providing your own one:
+
+{{{
+<mapping>
+    <java>JAVADOC_STYLE</java>
+    <groovy>JAVADOC_STYLE</groovy>
+    <js>JAVADOC_STYLE</js>
+    <css>JAVADOC_STYLE</css>
+    <xml>XML_STYLE</xml>
+    <dtd>XML_STYLE</dtd>
+    <xsd>XML_STYLE</xsd>
+    <html>XML_STYLE</html>
+    <htm>XML_STYLE</htm>
+    <xsl>XML_STYLE</xsl>
+    <fml>XML_STYLE</fml>
+    <apt>DOUBLETILDE_STYLE</apt>
+    <properties>SCRIPT_STYLE</properties>
+    <sh>SCRIPT_STYLE</sh>
+    <txt>TEXT</txt>
+    <bat>BATCH</bat>
+    <cmd>BATCH</cmd>
+    <sql>DOUBLEDASHES_STYLE</sql>
+    <jsp>DYNASCRIPT_STYLE</jsp>
+    <ftl>FTL</ftl>
+    <xhtml>XML_STYLE</xhtml>
+    <vm>SHARPSTAR_STYLE</vm>
+    <jspx>XML_STYLE</jspx>
+</mapping>
+}}}
+
+= Variable replacement =
+
+If you have a header that contains variable like this one:
+
+{{{
+Copyright (C) ${year} ${user.name} <${email}>
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+}}}
+
+The plugin will try to replace them using the properties supplied in the command line, then those supplied in the POM, and then those from the system environment.
+
+To test, you can launch the check goal in debug mode like this:
+
+`mvn -X license:check -Dyear=2010`
+
+Outputs for me:
+
+{{{
+Copyright (C) 2010 kha <my@email.com>
+}}}
+
+Notice that the year 2008 specified in the POM above has been overridden by the java property. And since the user.name is already a java system property, you don't need to specify it.
+
+= Debugging, controlling the output =
+
+The plugin let you control the output by the *`license.quiet`* property.
+
+But to see if the plugin is working well, if your header is parsed correctly with properties, you may need to activate the Maven debug flag *-X* to see the plugin debug output.
+
+Example: `mvn -X license:check`
+
+= Changing header style definitions =
+
+In license-maven-plugin, each header style is defined by patterns to detect it and also strings to insert it correctly in files. If we take for example the Javadoc style header definition. It is defined as follow:
+
+{{{
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<additionalHeaders>
+    <javadoc_style>
+        <firstLine>/**</firstLine>
+        <beforeEachLine> * </beforeEachLine>
+        <endLine> */</endLine>
+        <!--skipLine></skipLine-->
+        <firstLineDetectionPattern>(\s|\t)*/\*.*$</firstLineDetectionPattern>
+        <lastLineDetectionPattern>.*\*/(\s|\t)*$</lastLineDetectionPattern>
+        <allowBlankLines>false</allowBlankLines>
+        <isMultiline>true</isMultiline>
+    </javadoc_style>
+</additionalHeaders>
+}}}
+
+And for XML:
+
+{{{
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<additionalHeaders>
+    <javadoc_style>
+        <firstLine><![CDATA[<!--\n]]></firstLine>
+        <beforeEachLine>    </beforeEachLine>
+        <endLine><![CDATA[-->]]></endLine>
+        <skipLine><![CDATA[^<\?xml.*>$]]></skipLine>
+        <firstLineDetectionPattern><![CDATA[(\s|\t)*<!--.*$]]></firstLineDetectionPattern>
+        <lastLineDetectionPattern><![CDATA[.*-->(\s|\t)*$]]></lastLineDetectionPattern>
+        <allowBlankLines>false</allowBlankLines>
+        <isMultiline>true</isMultiline>
+    </javadoc_style>
+</additionalHeaders>
+}}}
+
+With the *headerDefinitions* option, you can redefine existing header styles and also add some if we do not support the styles you want yet. You just have to provide a list of *headerDefinition* containing a resource name. Like the header, the resource is searched on the file system, in the classpath of the project, the plugin and also as a URL.
+
+See [AdvancedHeaders Advanced Headers configuration] for more information
+
+= Working with multi-module projects =
+
+here is an example of configuration you can have in a parent pom, when working in a multimodule project:
+
+{{{
+<plugin>
+    <inherited>false</inherited>
+    <groupId>com.mycila.license-maven-plugin</groupId>
+    <artifactId>license-maven-plugin</artifactId>
+    <version>1.4.0</version>
+    <configuration>
+        <header>${basedir}/etc/header.txt</header>
+        <failIfMissing>true</failIfMissing>
+        <aggregate>true</aggregate>
+        <properties>
+            <owner>Mathieu Carbou</owner>
+            <year>${project.inceptionYear}</year>
+            <email>mathieu.carbou@gmail.com</email>
+        </properties>
+        <excludes>
+            <exclude>LICENSE.txt</exclude>
+            <exclude>**/src/test/resources/**</exclude>
+            <exclude>**/src/test/data/**</exclude>
+        </excludes>
+    </configuration>
+    <executions>
+        <execution>
+            <id>check-headers</id>
+            <phase>verify</phase>
+            <goals>
+                <goal>check</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+}}}
+
+
+==================================
+
 
 
 
