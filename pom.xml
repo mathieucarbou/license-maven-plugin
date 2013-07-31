@@ -20,11 +20,21 @@
     <inceptionYear>2008</inceptionYear>
 
     <scm>
-        <connection>scm:git:git@github.com:mycila/license-maven-plugin.git</connection>
+        <connection>scm:git:https://github.com/mycila/license-maven-plugin.git</connection>
         <developerConnection>scm:git:git@github.com:mycila/license-maven-plugin.git</developerConnection>
         <url>http://github.com/mycila/license-maven-plugin</url>
         <tag>HEAD</tag>
     </scm>
+
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/mycila/license-maven-plugin/issues</url>
+    </issueManagement>
+
+    <ciManagement>
+        <system>Travis</system>
+        <url>https://travis-ci.org/mycila/license-maven-plugin</url>
+    </ciManagement>
 
     <build>
         <plugins>
@@ -70,6 +80,21 @@
             </plugin>
         </plugins>
     </build>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-plugin-plugin</artifactId>
+                <version>3.2</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>2.7</version>
+            </plugin>
+        </plugins>
+    </reporting>
 
     <dependencies>
 
