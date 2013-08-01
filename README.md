@@ -2,18 +2,31 @@
 
 - [Maven License Plugin](#maven-license-plugin)
 	- [Maven Repository](#maven-repository)
-	- [Documentation](#documentation)
-		- [Detailed Maven documentation](#detailed-maven-documentation)
-		- [Goals](#goals)
-		- [Configuration](#configuration)
+- [Documentation](#documentation)
+	- [Detailed Maven documentation](#detailed-maven-documentation)
+	- [Goals](#goals)
+	- [Options](#options)
 	- [Supported comment types](#supported-comment-types)
+	- [    My comment](#my-comment)
+- [My comment](#my-comment)
+- [{{{](#{{{)
+- [    My comment](#my-comment-1)
+	- [{{{](#{{{-1)
+	- [--](#--)
+	- [-- test comment](#---test-comment)
+	- [    comment](#comment)
+	- [    comment](#comment-1)
+	- [    comment](#comment-2)
+- [*](#)
+	- [    comment](#comment-3)
+	- [{{{](#{{{-2)
+- [](#)
+- [](#-1)
 - [summary Give an example of an additional header definition for .Net regions.](#summary-give-an-example-of-an-additional-header-definition-for-net-regions)
 - [region License](#region-license)
 - [endregion](#endregion)
-- [summary How to use license-maven-plugin](#summary-how-to-use-license-maven-plugin)
-- [](#)
-- [](#-1)
 - [](#-2)
+- [summary How to use license-maven-plugin](#summary-how-to-use-license-maven-plugin)
 - [](#-3)
 
 # Maven License Plugin #
@@ -94,7 +107,7 @@ All plugin configuration options are described in the [Detailed Maven documentat
 
  - `useDefaultExcludes`: The default exclusion list can be found [here](https://github.com/mycila/license-maven-plugin/blob/master/src/main/java/com/mycila/maven/plugin/license/Default.java)
 
-## Supported comment types ##
+### Supported comment types ###
 
 The plugin has been designed so that it is very easy to add new supports for new sorts of comment. The plugin currently support these types of comment:
 
