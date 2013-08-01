@@ -36,11 +36,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletionService;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorCompletionService;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 import static com.mycila.maven.plugin.license.document.DocumentType.defaultMapping;
 import static java.lang.String.format;
@@ -53,7 +49,7 @@ import static java.util.Arrays.deepToString;
 public abstract class AbstractLicenseMojo extends AbstractMojo {
 
     /**
-     * The base directory, in which to search for files.
+     * The base directory, in which to search for project files.
      *
      * @parameter expression="${license.basedir}" default-value="${basedir}"
      * @required
@@ -61,7 +57,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
     protected File basedir;
 
     /**
-     * The text document containing the license header to check or use for reformatting
+     * Location of the header. It can be a relative path, absolute path, classpath resource, any URL. The plugin first check if the name specified is a relative file, then an absolute file, then in the claspath. If not found, it tries to construct a URL from the location
      *
      * @parameter expression="${license.header}"
      */
@@ -106,7 +102,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
     protected String[] includes = new String[0];
 
     /**
-     * Specifies files, which are excluded in the check. By default, no files are excluded.
+     * Specifies files, which are excluded in the check. By default, only the files matching the default exclude patterns are excluded.
      *
      * @parameter
      */
@@ -121,15 +117,14 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
     protected String[] keywords = new String[]{"copyright"};
 
     /**
-     * Whether to use the default excludes when scanning for files.
+     * Specify if you want to use default exclusions besides the files you have excluded. Default exclusions exclude CVS and SVN folders, IDE descriptors and so on.
      *
      * @parameter expression="${license.useDefaultExcludes}" default-value="true"
      */
     protected boolean useDefaultExcludes = true;
 
     /**
-     * Wheter to treat multi-modules projects as only one project (true) or treat multi-module projects separately
-     * (false, by default)
+     * You can set this flag to true if you want to check the headers for all modules of your project. Only used for multi-modules projects, to check for example the header licenses from the parent module for all sub modules
      *
      * @parameter expression="${license.aggregate}" default-value="false"
      */
@@ -169,7 +164,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
     protected boolean skip = false;
 
     /**
-     * Set this to "true" to cause no output
+     * If you do not want to see the list of file having a missing header, you can add the quiet flag that will shorten the output
      *
      * @parameter expression="${license.quiet}" default-value="false"
      */
@@ -193,6 +188,28 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
      * @parameter expression="${license.encoding}" default-value="${file.encoding}"
      */
     protected String encoding = System.getProperty("file.encoding");
+
+    /**
+     * You can set this flag to false if you do not want the build to fail when some headers are missing.
+     *
+     * @parameter expression="${license.failIfMissing}" default-value="true"
+     */
+    protected boolean failIfMissing = true;
+
+    /**
+     * Wheter to treat multi-modules projects as only one project (true) or treat multi-module projects separately
+     * (false, by default)
+     *
+     * @parameter expression="${license.dryRun}" default-value="false"
+     */
+    protected boolean dryRun = false;
+
+    /**
+     * Wheter to skip file where a header has been detected
+     *
+     * @parameter expression="${license.skipExistingHeaders}" default-value="false"
+     */
+    protected boolean skipExistingHeaders = false;
 
     /**
      * @parameter default-value="${project}"

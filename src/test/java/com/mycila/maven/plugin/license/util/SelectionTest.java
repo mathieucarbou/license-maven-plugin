@@ -15,6 +15,7 @@
  */
 package com.mycila.maven.plugin.license.util;
 
+import com.mycila.maven.plugin.license.Default;
 import org.junit.Test;
 
 import java.io.File;
@@ -49,6 +50,6 @@ public final class SelectionTest {
         assertEquals(selection.getExcluded().length, 86); // default exludes from Scanner and Selection + toto
         assertEquals(selection.getIncluded().length, 1);
         assertEquals(selection.getSelectedFiles().length, 0);
-        assertTrue(Arrays.asList(selection.getExcluded()).containsAll(Arrays.asList(Selection.DEFAULT_EXCLUDES)));
+        assertTrue(Arrays.asList(selection.getExcluded()).containsAll(Arrays.asList(Default.EXCLUDES)));
     }
 }

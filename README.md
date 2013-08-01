@@ -1,8 +1,33 @@
-**Table of Contents**
+**Table of Contents**  *generated with [DocToc](http://doctoc.herokuapp.com/)*
 
-- [Maven License Plugin](#license-maven-plugin)
+- [Maven License Plugin](#maven-license-plugin)
 	- [Maven Repository](#maven-repository)
-	- [Documentation](#documentation)
+- [Documentation](#documentation)
+	- [Detailed Maven documentation](#detailed-maven-documentation)
+	- [Goals](#goals)
+	- [Options](#options)
+	- [Supported comment types](#supported-comment-types)
+	- [    My comment](#my-comment)
+- [My comment](#my-comment)
+- [{{{](#{{{)
+- [    My comment](#my-comment-1)
+	- [{{{](#{{{-1)
+	- [--](#--)
+	- [-- test comment](#---test-comment)
+	- [    comment](#comment)
+	- [    comment](#comment-1)
+	- [    comment](#comment-2)
+- [*](#)
+	- [    comment](#comment-3)
+	- [{{{](#{{{-2)
+- [](#)
+- [](#-1)
+- [summary Give an example of an additional header definition for .Net regions.](#summary-give-an-example-of-an-additional-header-definition-for-net-regions)
+- [region License](#region-license)
+- [endregion](#endregion)
+- [](#-2)
+- [summary How to use license-maven-plugin](#summary-how-to-use-license-maven-plugin)
+- [](#-3)
 
 # Maven License Plugin #
 
@@ -74,28 +99,22 @@ The detailed Maven Plugin Documentation generated for each build is available he
   * `license:format`: add the license header when missing. If a header is existing, it is updated to the new one.
   * `license:remove`: remove existing license header
 
-## Options ##
+## Configuration ##
 
 The table below shows all the available options you can use in the configure section of the plugin. A lot of are also available from the command-line. To use them, simply launch your maven command with a property like `-Dproperty=value` (i.e. `mvn license:check -Dlicense.header=src/etc/header.txt`)
 
-<table>
+All plugin configuration options are described in the [Detailed Maven documentation](#detailed-maven-documentation) but here are some details.
 
-<tr><th>option</th><th>status</th><th>default</th><th>command-line</th><th>description</th></tr>
+__useDefaultExcludes__
 
-<tr><td>basedir</td><td>optional</td><td>${basedir}</td><td>-Dlicense.basedir=folder</td><td>Specify the folder as the base directory for the search</td></tr>
+The default exclusion list can be 
 
-</table>
-
- ||  ||
-|| *_header_* || *required* || || -Dlicense.header=path to header file || Location of the header. It can be a relative path, absolute path, classpath resource, any URL. The plugin first check if the name specified is a relative file, then an absolute file, then in the claspath. If not found, it tries to construct a URL from the location. An example of the content for Apache 2 license is [http://code.google.com/p/license-maven-plugin/wiki/HowTo here] ||
-|| *_quiet_* || optional || false || -Dlicense.quiet=true || If you do not want to see the list of file having a missing header, you can add the quiet flag that will shorten the output ||
-|| *_failIfMissing_* || optional || true || -Dlicense.failIfMissing=false || You can set this flag to false if you do not want the build to fail when some headers are missing. This flag is only available with goal `check` ||
-|| *_aggregate_* || optional || false|| -Dlicense.aggregate=false || You can set this flag to true if you want to check the headers for all modules of your project. Only used for multi-modules projects, to check for example the header licenses in the parent pom for all sub modules ||
-|| *_includes_* || optional || `**` (all) || || By default all files are included. You can reduce the set of included files by adding include tags with patterns ||
-|| *_excludes_* || optional || empty || || You can exclude some files in your project from the check by specifying a list of pattern ||
 || *_useDefaultExcludes_* || optional || true || -Dlicense.useDefaultExcludes=false || Specify if you want to use default exclusions besides the files you have excluded. Default exclusion removes CVS and SVN folders, IDE descriptors and so on. The default value of these exclusions is shown below this table ||
+
 || *_mapping_* || optional || empty || || This section is very useful when you want to customize the supported extensions. Is your project is using file extensions not supported by default by this plugin, you can add a mapping to attach the extension to an existing type of comment. The tag name is the new extension name to support, and the value is the name of the comment type to use. The list of the comment type names is listed on the page  [http://code.google.com/p/license-maven-plugin/ here] and below the table ||
+
 || *_useDefaultMapping_* || optional || true || -Dlicense.useDefaultMapping=false || Specify if you want to use or not the default extension mapping for supported file extensions. If you do not use it, you will have to add mappings manual for each extension you want to use. See more details below ||
+
 || *_properties_* || optional || empty || || You can set here some properties that you want to use when reading the header file. You can use in your header file some properties like ${year}, ${owner} or whatever you want for the name. They will be replaced when the header file is read by those you specified in the command line, in the POM and in system environment. ||
 || *_encoding_* || optional || ${file.encoding} || -Dlicense.encoding=encoding || Specify the encoding of your files. Default to current system encoding ||
 || *_headerDefinitions_* || optional || empty ||  || Enables to redefine the header detection patterns and the header templates ||

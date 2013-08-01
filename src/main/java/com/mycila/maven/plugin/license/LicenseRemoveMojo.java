@@ -31,14 +31,6 @@ import java.io.File;
  */
 public final class LicenseRemoveMojo extends AbstractLicenseMojo {
 
-    /**
-     * Wheter to treat multi-modules projects as only one project (true) or treat multi-module projects separately
-     * (false, by default)
-     *
-     * @parameter expression="${license.dryRun}" default-value="false"
-     */
-    protected boolean dryRun = false;
-
     public void execute() throws MojoExecutionException, MojoFailureException {
         getLog().info("Removing license headers...");
 

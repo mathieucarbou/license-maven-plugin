@@ -34,13 +34,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public final class LicenseCheckMojo extends AbstractLicenseMojo {
 
-    /**
-     * Whether to fail the build if some file miss license header
-     *
-     * @parameter expression="${license.failIfMissing}" default-value="true"
-     */
-    protected boolean failIfMissing = true;
-
     public final Collection<File> missingHeaders = new ConcurrentLinkedQueue<File>();
 
     public void execute() throws MojoExecutionException, MojoFailureException {
