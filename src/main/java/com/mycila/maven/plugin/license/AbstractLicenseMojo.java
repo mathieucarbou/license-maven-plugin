@@ -75,24 +75,25 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
     protected String[] validHeaders = new String[0];
 
     /**
-     * Allows the use of external header definitions files. These files are properties like.
+     * Allows the use of external header definitions files. These files are properties like files.
      *
      * @parameter
      */
     protected String[] headerDefinitions = new String[0];
-    
+
     /**
      * HeadSections define special regions of a header that allow for dynamic substitution and validation
+     *
      * @parameter
      */
     protected HeaderSection[] headerSections = new HeaderSection[0];
 
     /**
-     * The properties to use when reading the header, to replace tokens
+     * You can set here some properties that you want to use when reading the header file. You can use in your header file some properties like ${year}, ${owner} or whatever you want for the name. They will be replaced when the header file is read by those you specified in the command line, in the POM and in system environment.
      *
      * @parameter
      */
-    protected Map<String, String> properties = new HashMap<String, String>();
+    protected Map<String, String> properties = new HashMap<>();
 
     /**
      * Specifies files, which are included in the check. By default, all files are included.
@@ -131,14 +132,14 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
     protected boolean aggregate = false;
 
     /**
-     * Set mapping between document mapping and a supported type to use
+     * Set mapping between document mapping and a supported type to use. This section is very useful when you want to customize the supported extensions. Is your project is using file extensions not supported by default by this plugin, you can add a mapping to attach the extension to an existing type of comment. The tag name is the new extension name to support, and the value is the name of the comment type to use.
      *
      * @parameter
      */
     protected Map<String, String> mapping = new HashMap<String, String>();
 
     /**
-     * Whether to use the default mapping between fiel extensions and comments to use, or only the one your provide
+     * Whether to use the default mapping between file extensions and comment types, or only the one your provide
      *
      * @parameter expression="${license.useDefaultMapping}" default-value="true"
      */
@@ -183,11 +184,11 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
     protected boolean strictCheck = true;
 
     /**
-     * Set the charcter encoding for files
+     * Specify the encoding of your files. Default to the project source encoding property (project.build.sourceEncoding)
      *
-     * @parameter expression="${license.encoding}" default-value="${file.encoding}"
+     * @parameter expression="${license.encoding}" default-value="${project.build.sourceEncoding}"
      */
-    protected String encoding = System.getProperty("file.encoding");
+    protected String encoding = "UTF-8";
 
     /**
      * You can set this flag to false if you do not want the build to fail when some headers are missing.
@@ -197,15 +198,14 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
     protected boolean failIfMissing = true;
 
     /**
-     * Wheter to treat multi-modules projects as only one project (true) or treat multi-module projects separately
-     * (false, by default)
+     * If dryRun is enabled, calls to license:format and license:remove will not overwrite the existing file but instead write the result to a new file with the same name but ending with `.licensed`
      *
      * @parameter expression="${license.dryRun}" default-value="false"
      */
     protected boolean dryRun = false;
 
     /**
-     * Wheter to skip file where a header has been detected
+     * Skip the formatting of files which already contain a detected header
      *
      * @parameter expression="${license.skipExistingHeaders}" default-value="false"
      */
@@ -317,8 +317,8 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
             props.putAll(this.properties);
         }
         // then we override by java system properties (command-line -D...)
-        for (Map.Entry<Object, Object> entry : System.getProperties().entrySet()) {
-            props.put(entry.getKey().toString(), entry.getValue().toString());
+        for (String key : System.getProperties().stringPropertyNames()) {
+            props.put(key, System.getProperty(key));
         }
         return props;
     }

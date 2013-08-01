@@ -105,281 +105,152 @@ The table below shows all the available options you can use in the configure sec
 
 All plugin configuration options are described in the [Detailed Maven documentation](#detailed-maven-documentation) but here are some details.
 
-__useDefaultExcludes__
-
-The default exclusion list can be 
-
-|| *_useDefaultExcludes_* || optional || true || -Dlicense.useDefaultExcludes=false || Specify if you want to use default exclusions besides the files you have excluded. Default exclusion removes CVS and SVN folders, IDE descriptors and so on. The default value of these exclusions is shown below this table ||
-
-|| *_mapping_* || optional || empty || || This section is very useful when you want to customize the supported extensions. Is your project is using file extensions not supported by default by this plugin, you can add a mapping to attach the extension to an existing type of comment. The tag name is the new extension name to support, and the value is the name of the comment type to use. The list of the comment type names is listed on the page  [http://code.google.com/p/license-maven-plugin/ here] and below the table ||
-
-|| *_useDefaultMapping_* || optional || true || -Dlicense.useDefaultMapping=false || Specify if you want to use or not the default extension mapping for supported file extensions. If you do not use it, you will have to add mappings manual for each extension you want to use. See more details below ||
-
-|| *_properties_* || optional || empty || || You can set here some properties that you want to use when reading the header file. You can use in your header file some properties like ${year}, ${owner} or whatever you want for the name. They will be replaced when the header file is read by those you specified in the command line, in the POM and in system environment. ||
-|| *_encoding_* || optional || ${file.encoding} || -Dlicense.encoding=encoding || Specify the encoding of your files. Default to current system encoding ||
-|| *_headerDefinitions_* || optional || empty ||  || Enables to redefine the header detection patterns and the header templates ||
-|| *_dryRun_* || optional || false || -Dlicense.dryRun=true || If dryRun is enabled, calls to license:format and license:remove will not overwrite the existing file but instead write the result to a new file with the same name but ending with `.licensed` ||
-|| *_keywords_* || optional || copyright || || Specify the list of keywords to use to detect a header. A header must include all keywords to be valid. By default, the word 'copyright' is used. Detection is done case insensitive. ||
-|| *_skip_* || optional || false || -Dlicense.skip=true || Skip the plugin execution if true ||
-|| *_skipExistingHeaders_* || optional || false || -Dlicense.skipExistingHeaders=true || Skip the formatting of the files which already contains a detected header ||
-|| *_validHeaders_* || optional || ||  || Specifies additional header files to use when checking for the presence of a valid header in your sources. When using format goal, this property will be used to detect all valid headers that don't need formatting. When using remove goal, this property will be used to detect all valid headers that also must be removed. ||
-|| *_strictCheck_* || optional || false || -Dlicense.strictCheck=true || Since version 1.8.0, license-maven-plugin supports strict checking of licenses. This will be the default behavior for all future majors releases. Set to true if you need a strict check against the headers. By default, the existence of a header is verified by taking the top portion of a file and checking if it contains the headers text, not considering special characters (spaces, tabs, ...). We highly recommend to set this option to true. It is by default set to false for backward compatibility. ||
-|| *_concurrencyFactor_* || optional || 1.5 || -Dlicense.concurrencyFactor=2 || Maven license plugin uses concurrency to check license headers. This factor is used to control the number of threads used to check. The rule is: `<nThreads> = <number of cores> *  concurrencyFactor` ||
+ - `useDefaultExcludes`: The default exclusion list can be found [here](https://github.com/mycila/license-maven-plugin/blob/master/src/main/java/com/mycila/maven/plugin/license/Default.java)
 
 ## Supported comment types ##
 
 The plugin has been designed so that it is very easy to add new supports for new sorts of comment. The plugin currently support these types of comment:
 
-  * `JAVADOC_STYLE` (Java-like comments)
+ - `JAVADOC_STYLE` (Java-like comments): *.java, *.groovy, *.css, *.cs, *.as, *.aj, *.c, *.h, *.cpp
 
     /**
      * My comment
      */
 
-  * *XML_STYLE* (XML-like comments)
+ - `XML_STYLE` (XML-like comments): *.pom, *.xml, *.xhtml, *.mxml, *.dtd, *.xsd, *.jspx, *.fml, *.xsl, *.html, *.htm, *.kml, *.gsp, *.tld
 
-{{{
-<!--
-    My comment
--->
-}}}
+	<!--
+	    My comment
+	-->
 
-  * *DOUBLETILDE_STYLE* (APT-like comments)
+ - `DOUBLETILDE_STYLE` (APT-like comments): *.apt
 
-{{{
-~~ My comment
-}}}
+	~~ My comment
 
-  * *SCRIPT_STYLE* (Property file or shell comments)
+ - `SCRIPT_STYLE` (Property file or shell comments): *.properties, *.sh, *.py, *.rb, *.pl, *.pm
 
-{{{
-# My comment
-}}}
+	# My comment
 
-  * *HAML_STYLE*
+ - `HAML_STYLE`: *.haml, *.scaml
 
-{{{
--# My comment
-}}}
+	-# My comment
 
-  * *BATCH* (Windows batch comments)
+ - `BATCH` (Windows batch comments): *.bat, *.cmd
 
-{{{
-@REM My comment
-}}}
+	@REM My comment
 
-  * *TEXT* (Text like comments)
+ - `TEXT` (Text like comments): *.txt
 
-{{{
-====
-    My comment
-====
-}}}
+	====
+	    My comment
+	====
 
 (4 spaces, then the lines of the header)
 
-  * *DOUBLEDASHES_STYLE* (Sql like comments)
+ - `DOUBLEDASHES_STYLE` (Sql like comments): *.sql, *.adb, *.ads, *.e
 
-{{{
---
--- test comment
---
-}}}
+	--
+	-- test comment
+	--
 
-  * *DYNASCRIPT_STYLE* (JSP like comments)
+ - `DYNASCRIPT_STYLE` (JSP like comments): *.jsp
 
-{{{
-<%--
-    comment
---%>
-}}}
+	<%--
+	    comment
+	--%>
 
-  * *FTL* (FreeMarker like comments)
+ - `FTL` (FreeMarker like comments): *.ftl
 
-{{{
-<#--
-    comment
--->
-}}}
+	<#--
+	    comment
+	-->
 
-  * *FTL_ALT* (FreeMarker Alternative Syntax comments)
+ - `FTL_ALT` (FreeMarker Alternative Syntax comments)
 
-{{{
-[#ftl ...]
-[#--
-    comment
---]
-}}}
+	[#ftl ...]
+	[#--
+	    comment
+	--]
 
-  * *SHARPSTAR_STYLE* (Velocity templates comments)
+ - `SHARPSTAR_STYLE` (Velocity templates comments): *.vm
 
-{{{
-#*
-    comment
-*##
-}}}
+	#*
+	    comment
+	*##
 
-  * *SEMICOLON_STYLE* (Assembler like comments)
+ - `SEMICOLON_STYLE` (Assembler like comments): *.asm
 
-{{{
-;
-; comment
-;
-}}}
+	;
+	; comment
+	;
 
-  * *BRACESSTAR_STYLE* (Delphi like comments)
+ - `BRACESSTAR_STYLE` (Delphi like comments): *.pas
 
-{{{
-{*
- * comment
- *}
-}}}
+	{*
+	 * comment
+	 *}
 
-  * *APOSTROPHE_STYLE* (VisualBasic like comments)
+ - `APOSTROPHE_STYLE` (VisualBasic like comments): *.bas
 
-{{{
-'
-' comment
-'
-}}}
+	'
+	' comment
+	'
 
-  * *EXCLAMATION_STYLE* (Fortran like comments)
+ - `EXCLAMATION_STYLE` (Fortran like comments): *.f
 
-{{{
-!
-! comment
-!
-}}}
+	!
+	! comment
+	!
 
-  * *SLASHSTAR_STYLE* (JavaScript like comments)
+ - `SLASHSTAR_STYLE` (JavaScript like comments): *.js
 
-{{{
-/*
- * comment
- */
-}}}
+	/*
+	 * comment
+	 */
 
-  * *DYNASCRIPT3_STYLE* (Coldfusion like comments)
+ - `DYNASCRIPT3_STYLE` (Coldfusion like comments): *.cfc, *.cfm
 
-{{{
-<!---
-    comment
---->
-}}}
+	<!---
+	    comment
+	--->
 
-  * *PERCENT3_STYLE* (Erlang like comments)
+ - `PERCENT3_STYLE` (Erlang like comments): *.erl, *.hrl
 
-{{{
-%%%
-%%% comment
-%%%
-}}}
+	%%%
+	%%% comment
+	%%%
 
-  * *EXCLAMATION3_STYLE* (Lisp like comments)
+ - `EXCLAMATION3_STYLE` (Lisp like comments): *.el
 
-{{{
-!!!
-!!! comment
-!!!
-}}}
+	!!!
+	!!! comment
+	!!!
 
-  * *LUA* (Lua like comments)
+ - `LUA` (Lua like comments): *.lua
 
-{{{
---[[
-comment
-]]
-}}}
+	--[[
+	comment
+	]]
 
-  * *ASP* (Asp like comments)
+ - `ASP` (Asp like comments): *.asp
 
-{{{
-<%
-' comment
-%>
-}}}
+	<%
+	' comment
+	%>
 
-  * *PHP* (PHP comments)
+ - `PHP` (PHP comments): *.php
 
-{{{
-/*
- * comment
- */
-}}}
+	/*
+	 * comment
+	 */
+
 (inserted after the <?php> tag)
 
+ - `DOUBLESLASH_STYLE` (often used comments style)
 
-
-
-  * *DOUBLESLASH_STYLE* (often used comments style)
-
-{{{
-//
-// comment
-//
-}}}
-
-= Supported file extensions =
-
-From the different supported comment types, we can add any mapping we want. By default, the plugin includes the mappings below between the extension of the file and the comment type above:
-
-|| *File extension* || *Comment type* ||
-|| java || JAVADOC_STYLE||
-|| groovy || JAVADOC_STYLE||
-|| js || SLASHSTAR_STYLE||
-|| css || JAVADOC_STYLE||
-|| cs || JAVADOC_STYLE||
-|| as || JAVADOC_STYLE||
-|| aj || JAVADOC_STYLE||
-|| c || JAVADOC_STYLE||
-|| h || JAVADOC_STYLE||
-|| cpp || JAVADOC_STYLE||
-|| pom || XML_STYLE||
-|| xml || XML_STYLE||
-|| xhtml || XML_STYLE||
-|| mxml || XML_STYLE||
-|| dtd || XML_STYLE||
-|| xsd || XML_STYLE||
-|| jspx || XML_STYLE||
-|| fml || XML_STYLE||
-|| xsl || XML_STYLE||
-|| html || XML_STYLE||
-|| htm || XML_STYLE||
-|| apt || DOUBLETILDE_STYLE||
-|| properties || SCRIPT_STYLE||
-|| sh || SCRIPT_STYLE||
-|| py || SCRIPT_STYLE||
-|| rb || SCRIPT_STYLE||
-|| pl || SCRIPT_STYLE||
-|| pm || SCRIPT_STYLE||
-|| txt || TEXT||
-|| bat || BATCH||
-|| cmd || BATCH||
-|| sql || DOUBLEDASHES_STYLE||
-|| adb || DOUBLEDASHES_STYLE||
-|| ads || DOUBLEDASHES_STYLE||
-|| e || DOUBLEDASHES_STYLE||
-|| jsp || DYNASCRIPT_STYLE||
-|| asp || ASP||
-|| php || PHP||
-|| vm || SHARPSTAR_STYLE||
-|| ftl || FTL||
-|| asm || SEMICOLON_STYLE||
-|| cfc || DYNASCRIPT3_STYLE||
-|| cfm || DYNASCRIPT3_STYLE||
-|| pas || BRACESSTAR_STYLE||
-|| erl || PERCENT3_STYLE||
-|| hrl || PERCENT3_STYLE||
-|| f || EXCLAMATION_STYLE||
-|| el || EXCLAMATION3_STYLE||
-|| lua || LUA||
-|| bas || APOSTROPHE_STYLE||
-|| kml || XML_STYLE||
-|| gsp || XML_STYLE||
-|| haml || HAML_STYLE||
-|| scaml || HAML_STYLE||
-|| tld || XML_STYLE||
-
+	//
+	// comment
+	//
 
 *The plugin enables you to add any other mapping you want.* I.e., if you are developing a Tapestry web application, you may need to add license header in .jwc files and .application files. since these files are xml files, you only need to add in your project pom the following mapping for the license-maven-plugin:
 
