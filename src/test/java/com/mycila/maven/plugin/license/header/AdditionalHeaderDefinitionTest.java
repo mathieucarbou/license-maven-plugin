@@ -53,7 +53,7 @@ public final class AdditionalHeaderDefinitionTest {
 
         Map<String, String> props = new HashMap<String, String>();
         props.put("year", "2008");
-        Header header = new Header(getClass().getResource("/test-header1.txt"), props, null);
+        Header header = new Header(getClass().getResource("/test-header1.txt"), "UTF-8", props, null);
 
         //FileUtils.write(new File("src/test/resources/test-header3.txt"), header.buildForDefinition(loader.getDefinitions().get("xquery")));
 
@@ -80,7 +80,7 @@ public final class AdditionalHeaderDefinitionTest {
 
         Map<String, String> props = new HashMap<String, String>();
         props.put("year", "2008");
-        Header header = new Header(getClass().getResource("/check/header.txt"), props, null);
+        Header header = new Header(getClass().getResource("/check/header.txt"), "UTF-8", props, null);
 
         System.out.println(header.buildForDefinition(loader.getDefinitions().get("text"), false));
     }
@@ -101,7 +101,7 @@ public final class AdditionalHeaderDefinitionTest {
 
         Map<String, String> props = new HashMap<String, String>();
         props.put("year", "2008");
-        Header header = new Header(getClass().getResource("/test-header1.txt"), props, null);
+        Header header = new Header(getClass().getResource("/test-header1.txt"), "UTF-8", props, null);
 
         //FileUtils.write(new File("src/test/resources/test-header4.txt"), header.buildForDefinition(loader.getDefinitions().get("csregion"), false), System.getProperty("file.encoding"));
 

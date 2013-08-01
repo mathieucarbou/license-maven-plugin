@@ -33,7 +33,7 @@ public final class DefaultHeaderDefinitionTest {
     public void test_styles() throws Exception {
         Map<String, String> props = new HashMap<String, String>();
         props.put("year", "2008");
-        Header header = new Header(getClass().getResource("/test-header1.txt"), props, null);
+        Header header = new Header(getClass().getResource("/test-header1.txt"), "UTF-8", props, null);
         for (HeaderDefinition definition : HeaderType.defaultDefinitions().values()) {
             final String content = FileUtils.read(new File(format("src/test/resources/styles/%s.txt", definition.getType())), System.getProperty("file.encoding"));
             assertEquals("Bad header for type: " + definition.getType(), content, header.buildForDefinition(definition, !content.contains("\n")));

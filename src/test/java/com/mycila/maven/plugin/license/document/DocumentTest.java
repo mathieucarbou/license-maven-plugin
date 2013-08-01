@@ -25,9 +25,7 @@ import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
@@ -40,7 +38,7 @@ public final class DocumentTest {
     public static void setup() throws MalformedURLException {
         Map<String, String> props = new HashMap<String, String>();
         props.put("year", "2008");
-        header = new Header(new File("src/test/resources/test-header1.txt").toURI().toURL(), props, null);
+        header = new Header(new File("src/test/resources/test-header1.txt").toURI().toURL(), "UTF-8", props, null);
     }
 
     @Test

@@ -30,8 +30,10 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
+import org.xml.sax.InputSource;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -240,13 +242,13 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
             }
             finder.setPluginClassPath(getClass().getClassLoader());
 
-            final Header h = new Header(finder.findResource(this.header), mergeProperties(), headerSections);
+            final Header h = new Header(finder.findResource(this.header), encoding, mergeProperties(), headerSections);
             debug("Header %s:\n%s", h.getLocation(), h);
 
             if (this.validHeaders == null) this.validHeaders = new String[0];
             final List<Header> validHeaders = new ArrayList<Header>(this.validHeaders.length);
             for (String validHeader : this.validHeaders)
-                validHeaders.add(new Header(finder.findResource(validHeader), mergeProperties(), headerSections));
+                validHeaders.add(new Header(finder.findResource(validHeader), encoding, mergeProperties(), headerSections));
 
             final DocumentFactory documentFactory = new DocumentFactory(basedir, buildMapping(), buildHeaderDefinitions(), encoding, keywords);
 
@@ -376,10 +378,16 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
         final Map<String, HeaderDefinition> headers = new HashMap<String, HeaderDefinition>(HeaderType.defaultDefinitions());
         // and then override them with those provided in properties file
         for (String resource : headerDefinitions) {
-            final AdditionalHeaderDefinition fileDefinitions = new AdditionalHeaderDefinition(XMLDoc.from(finder.findResource(resource), true));
-            final Map<String, HeaderDefinition> map = fileDefinitions.getDefinitions();
-            debug("%d header definitions loaded from '%s'", map.size(), resource);
-            headers.putAll(map);
+            try {
+                InputSource source = new InputSource(finder.findResource(resource).openStream());
+                source.setEncoding(encoding);
+                final AdditionalHeaderDefinition fileDefinitions = new AdditionalHeaderDefinition(XMLDoc.from(source, true));
+                final Map<String, HeaderDefinition> map = fileDefinitions.getDefinitions();
+                debug("%d header definitions loaded from '%s'", map.size(), resource);
+                headers.putAll(map);
+            } catch (IOException ex) {
+                throw new MojoFailureException("Error reading header definition: " + resource, ex);
+            }
         }
         // force inclusion of unknow item to manage unknown files
         headers.put(HeaderType.UNKNOWN.getDefinition().getType(), HeaderType.UNKNOWN.getDefinition());

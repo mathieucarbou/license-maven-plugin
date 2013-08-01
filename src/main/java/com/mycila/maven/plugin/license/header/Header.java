@@ -19,12 +19,7 @@ import com.mycila.maven.plugin.license.HeaderSection;
 import com.mycila.maven.plugin.license.util.StringUtils;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.*;
 
 import static com.mycila.maven.plugin.license.util.FileUtils.read;
 import static com.mycila.maven.plugin.license.util.FileUtils.remove;
@@ -54,7 +49,7 @@ public final class Header {
      * @throws IllegalArgumentException If the header file location is null or if an error occurred while reading the
      *                                  file content.
      */
-    public Header(URL location, Map<String, String> properties, HeaderSection[] sections) {
+    public Header(URL location, String encoding, Map<String, String> properties, HeaderSection[] sections) {
         if (location == null) {
             throw new IllegalArgumentException("Cannot read license template header file with a null location");
         }
@@ -64,7 +59,7 @@ public final class Header {
         this.location = location;
         this.sections = sections;
         try {
-            this.headerContent = read(location, properties);
+            this.headerContent = read(location, encoding, properties);
             lines = headerContent.replace("\r", "").split("\n");
             headerContentOneLine = remove(headerContent, " ", "\t", "\r", "\n");
         }

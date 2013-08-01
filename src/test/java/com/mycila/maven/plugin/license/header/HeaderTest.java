@@ -25,9 +25,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
@@ -37,7 +35,7 @@ public final class HeaderTest {
     public void test() throws Exception {
         Map<String, String> props = new HashMap<String, String>();
         props.put("year", "2008");
-        Header header = new Header(getClass().getResource("/test-header1.txt"), props, null);
+        Header header = new Header(getClass().getResource("/test-header1.txt"), "UTF-8", props, null);
         assertEquals(header.getLineCount(), 13);
         assertTrue(header.asOneLineString().contains("2008"));
         assertEquals(header.getLocation(), getClass().getResource("/test-header1.txt"));
@@ -60,7 +58,7 @@ public final class HeaderTest {
         HeaderSection[] sections = { section };
         
         Map<String, String> props = Collections.emptyMap();
-        Header header = new Header(getClass().getResource("/test-header5.txt"), props, sections);
+        Header header = new Header(getClass().getResource("/test-header5.txt"), "UTF-8", props, sections);
         
         HeaderDefinition headerDefinition = HeaderType.JAVADOC_STYLE.getDefinition();
 
@@ -123,7 +121,7 @@ public final class HeaderTest {
         HeaderSection[] sections = { sectionA, sectionB };
         
         Map<String, String> props = Collections.emptyMap();
-        Header header = new Header(getClass().getResource("/test-header6.txt"), props, sections);
+        Header header = new Header(getClass().getResource("/test-header6.txt"), "UTF-8", props, sections);
         
         HeaderDefinition headerDefinition = HeaderType.JAVADOC_STYLE.getDefinition();
 
@@ -179,7 +177,7 @@ public final class HeaderTest {
         HeaderSection[] sections = { section };
         
         Map<String, String> props = Collections.emptyMap();
-        Header header = new Header(getClass().getResource("/test-header5.txt"), props, sections);
+        Header header = new Header(getClass().getResource("/test-header5.txt"), "UTF-8", props, sections);
         
         HeaderDefinition headerDefinition = HeaderType.JAVADOC_STYLE.getDefinition();
 
