@@ -85,21 +85,21 @@ __Plugin declaration__
         </dependencies>
     </plugin>
 
-# Documentation #
+## Documentation ##
 
-## Detailed Maven documentation ##
+### Detailed Maven documentation ###
 
 The detailed Maven Plugin Documentation generated for each build is available here:
 
  - [2.0.rc1](http://mycila.github.io/license-maven-plugin/reports/2.0.rc1/index.html)
 
-## Goals ##
+### Goals ###
 
   * `license:check`: verify if some files miss license header
   * `license:format`: add the license header when missing. If a header is existing, it is updated to the new one.
   * `license:remove`: remove existing license header
 
-## Configuration ##
+### Configuration ###
 
 The table below shows all the available options you can use in the configure section of the plugin. A lot of are also available from the command-line. To use them, simply launch your maven command with a property like `-Dproperty=value` (i.e. `mvn license:check -Dlicense.header=src/etc/header.txt`)
 
