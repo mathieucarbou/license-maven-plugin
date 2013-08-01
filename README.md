@@ -113,144 +113,192 @@ The plugin has been designed so that it is very easy to add new supports for new
 
  - `JAVADOC_STYLE` (Java-like comments): *.java, *.groovy, *.css, *.cs, *.as, *.aj, *.c, *.h, *.cpp
 
+```
     /**
      * My comment
      */
+```
 
  - `XML_STYLE` (XML-like comments): *.pom, *.xml, *.xhtml, *.mxml, *.dtd, *.xsd, *.jspx, *.fml, *.xsl, *.html, *.htm, *.kml, *.gsp, *.tld
 
+```
 	<!--
 	    My comment
 	-->
+```
 
  - `DOUBLETILDE_STYLE` (APT-like comments): *.apt
 
+```
 	~~ My comment
+```
 
  - `SCRIPT_STYLE` (Property file or shell comments): *.properties, *.sh, *.py, *.rb, *.pl, *.pm
 
+```
 	# My comment
+```
 
  - `HAML_STYLE`: *.haml, *.scaml
 
+```
 	-# My comment
+```
 
  - `BATCH` (Windows batch comments): *.bat, *.cmd
 
+```
 	@REM My comment
+```
 
  - `TEXT` (Text like comments): *.txt
 
+```
 	====
 	    My comment
 	====
+```
 
 (4 spaces, then the lines of the header)
 
  - `DOUBLEDASHES_STYLE` (Sql like comments): *.sql, *.adb, *.ads, *.e
 
+```
 	--
 	-- test comment
 	--
+```
 
  - `DYNASCRIPT_STYLE` (JSP like comments): *.jsp
 
+```
 	<%--
 	    comment
 	--%>
+```
 
  - `FTL` (FreeMarker like comments): *.ftl
 
+```
 	<#--
 	    comment
 	-->
+```
 
  - `FTL_ALT` (FreeMarker Alternative Syntax comments)
 
+```
 	[#ftl ...]
 	[#--
 	    comment
 	--]
+```
 
  - `SHARPSTAR_STYLE` (Velocity templates comments): *.vm
 
+```
 	#*
 	    comment
 	*##
+```
 
  - `SEMICOLON_STYLE` (Assembler like comments): *.asm
 
+```
 	;
 	; comment
 	;
+```
 
  - `BRACESSTAR_STYLE` (Delphi like comments): *.pas
 
+```
 	{*
 	 * comment
 	 *}
+```
 
  - `APOSTROPHE_STYLE` (VisualBasic like comments): *.bas
 
+```
 	'
 	' comment
 	'
+```
 
  - `EXCLAMATION_STYLE` (Fortran like comments): *.f
 
+```
 	!
 	! comment
 	!
+```
 
  - `SLASHSTAR_STYLE` (JavaScript like comments): *.js
 
+```
 	/*
 	 * comment
 	 */
+```
 
  - `DYNASCRIPT3_STYLE` (Coldfusion like comments): *.cfc, *.cfm
 
+```
 	<!---
 	    comment
 	--->
+```
 
  - `PERCENT3_STYLE` (Erlang like comments): *.erl, *.hrl
 
+```
 	%%%
 	%%% comment
 	%%%
+```
 
  - `EXCLAMATION3_STYLE` (Lisp like comments): *.el
 
+```
 	!!!
 	!!! comment
 	!!!
+```
 
  - `LUA` (Lua like comments): *.lua
 
+```
 	--[[
 	comment
 	]]
+```
 
  - `ASP` (Asp like comments): *.asp
 
+```
 	<%
 	' comment
 	%>
+```
 
  - `PHP` (PHP comments): *.php
 
+```
 	/*
 	 * comment
 	 */
+```
 
 (inserted after the <?php> tag)
 
  - `DOUBLESLASH_STYLE` (often used comments style)
 
+```
 	//
 	// comment
 	//
+```
 
 *The plugin enables you to add any other mapping you want.* I.e., if you are developing a Tapestry web application, you may need to add license header in .jwc files and .application files. since these files are xml files, you only need to add in your project pom the following mapping for the license-maven-plugin:
 
