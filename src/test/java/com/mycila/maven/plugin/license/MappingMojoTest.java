@@ -32,6 +32,7 @@ import static org.junit.Assert.fail;
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
 public final class MappingMojoTest {
+
     @Test
     public void test_mapping() throws Exception {
         LicenseCheckMojo check = new LicenseCheckMojo();
@@ -65,6 +66,41 @@ public final class MappingMojoTest {
             assertTrue(logger.getContent().contains("header style: javadoc_style"));
             assertFalse(logger.getContent().contains("header style: text"));
             assertEquals("Some files do not have the expected license header", e.getMessage());
+        }
+    }
+
+    @Test
+    public void test_mapping_composed_extension() throws Exception {
+        LicenseCheckMojo check = new LicenseCheckMojo();
+        MockedLog logger = new MockedLog();
+        check.setLog(new DefaultLog(logger));
+        //check.setLog(new SystemStreamLog());
+        check.basedir = new File("src/test/resources/check");
+        check.header = "header.txt";
+        check.project = new MavenProjectStub();
+        check.includes = new String[]{"test.apt.vm"};
+        check.properties = new HashMap<String, String>() {{
+            put("year", "2008");
+        }};
+
+        try {
+            check.execute();
+            fail();
+        } catch (MojoExecutionException e) {
+            e.printStackTrace(System.out);
+            assertTrue(logger.getContent().contains("test.apt.vm [header style: sharpstar_style]"));
+            assertEquals("Some files do not have the expected license header", e.getMessage());
+        }
+
+        logger.clear();
+        check.mapping = new HashMap<String, String>() {{
+            put("apt.vm", "DOUBLETILDE_STYLE");
+        }};
+
+        try {
+            check.execute();
+        } catch (MojoExecutionException e) {
+            fail();
         }
     }
 }

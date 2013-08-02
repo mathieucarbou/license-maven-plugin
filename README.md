@@ -186,7 +186,7 @@ The plugin has been designed so that it is very easy to add new supports for new
 ```
 	#*
 	    comment
-	*##
+	*#
 ```
 
  - `SEMICOLON_STYLE` (Assembler like comments): *.asm

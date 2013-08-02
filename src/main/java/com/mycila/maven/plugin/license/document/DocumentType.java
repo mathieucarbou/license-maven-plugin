@@ -18,7 +18,7 @@ package com.mycila.maven.plugin.license.document;
 import com.mycila.maven.plugin.license.header.HeaderType;
 
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -89,7 +89,7 @@ public enum DocumentType {
 
     ////////////////////////////////////
 
-    private static final Map<String, String> MAPPING = new HashMap<String, String>(values().length);
+    private static final Map<String, String> MAPPING = new LinkedHashMap<>(values().length);
 
     static {
         for (DocumentType type : values()) {

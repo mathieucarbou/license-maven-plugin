@@ -36,9 +36,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.*;
+import java.util.concurrent.CompletionService;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorCompletionService;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static com.mycila.maven.plugin.license.document.DocumentType.defaultMapping;
 import static java.lang.String.format;
@@ -364,12 +369,19 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
     }
 
     private Map<String, String> buildMapping() {
-        Map<String, String> extensionMapping = useDefaultMapping ? new HashMap<String, String>(defaultMapping()) : new HashMap<String, String>();
+        Map<String, String> extensionMapping = new LinkedHashMap<String, String>();
+        // force inclusion of unknow item to manage unknown files
+        extensionMapping.put(DocumentType.UNKNOWN.getExtension(), DocumentType.UNKNOWN.getDefaultHeaderTypeName());
         for (Map.Entry<String, String> entry : mapping.entrySet()) {
             extensionMapping.put(entry.getKey().toLowerCase(), entry.getValue().toLowerCase());
         }
-        // force inclusion of unknow item to manage unknown files
-        extensionMapping.put(DocumentType.UNKNOWN.getExtension(), DocumentType.UNKNOWN.getDefaultHeaderTypeName());
+        if (useDefaultMapping) {
+            for (Map.Entry<String, String> entry : defaultMapping().entrySet()) {
+                if (!extensionMapping.containsKey(entry.getKey())) {
+                    extensionMapping.put(entry.getKey(), entry.getValue());
+                }
+            }
+        }
         return extensionMapping;
     }
 
