@@ -40,6 +40,13 @@
         <mycila.github.name>license-maven-plugin</mycila.github.name>
     </properties>
 
+    <scm>
+        <connection>scm:git:https://github.com/mycila/${mycila.github.name}.git</connection>
+        <developerConnection>scm:git:git@github.com:mycila/${mycila.github.name}.git</developerConnection>
+        <url>http://github.com/mycila/${mycila.github.name}</url>
+        <tag>HEAD</tag>
+    </scm>
+
     <build>
         <plugins>
             <plugin>
