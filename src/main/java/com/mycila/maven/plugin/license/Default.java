@@ -78,7 +78,7 @@ public final class Default {
         // git
         "**/.git",
         "**/.git/**",
-        "**/.gitignore/**",
+        "**/.gitignore",
 
         // BitKeeper
         "**/BitKeeper",
@@ -164,6 +164,9 @@ public final class Default {
         "**/*.odt",
         "**/*.ods",
         "**/*.pdf",
+
+        // Travis
+        "**/.travis.yml",
 
         // flash
         "**/*.swf",
