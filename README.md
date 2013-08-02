@@ -79,6 +79,7 @@ __Plugin declaration__
 The detailed Maven Plugin Documentation generated for each build is available here:
 
  - [2.0](http://mycila.github.io/license-maven-plugin/reports/2.0/index.html)
+ - [2.1](http://mycila.github.io/license-maven-plugin/reports/2.1/index.html)
 
 ### Goals ###
 
