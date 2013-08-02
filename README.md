@@ -78,7 +78,7 @@ __Plugin declaration__
 
 The detailed Maven Plugin Documentation generated for each build is available here:
 
- - [2.0.rc1](http://mycila.github.io/license-maven-plugin/reports/2.0.rc1/index.html)
+ - [2.0](http://mycila.github.io/license-maven-plugin/reports/2.0/index.html)
 
 ### Goals ###
 
@@ -294,7 +294,12 @@ The plugin enables you to add any other mapping you want.* I.e., if you are deve
     <mapping>
         <jwc>XML_STYLE</jwc>
         <application>XML_STYLE</application>
+        <apt.vm>DOUBLETILDE_STYLE</apt.vm>
+        <vm>SHARPSTAR_STYLE</vm>
+        <apt>DOUBLETILDE_STYLE</apt>  
     </mapping>
+
+You can use composed-extensions like *.apt.vm and redefine them, but you will have to nake sure that the mapping of `apt.vm` is _before_ the mapping of the `vm` extension. The order in the mapping section is important: extensions seen first take precedence.
 
 ### Changing header style definitions ###
 
