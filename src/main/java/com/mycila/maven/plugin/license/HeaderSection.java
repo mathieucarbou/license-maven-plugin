@@ -15,28 +15,21 @@
  */
 package com.mycila.maven.plugin.license;
 
+import org.apache.maven.plugins.annotations.Parameter;
+
 public class HeaderSection {
 
-    /**
-     * @parameter
-     */
-    private String key;
+    @Parameter
+    String key;
 
-    /**
-     * @parameter
-     */
-    private String defaultValue;
+    @Parameter
+    String defaultValue;
 
-    /**
-     * @parameter
-     */
-    private String ensureMatch;
+    @Parameter
+    String ensureMatch;
 
-    /**
-     * 
-     * @parameter
-     */
-    private boolean multiLineMatch = false;
+    @Parameter
+    boolean multiLineMatch = false;
 
     public String getKey() {
         return key;

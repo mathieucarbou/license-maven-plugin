@@ -29,6 +29,8 @@ import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Component;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.xml.sax.InputSource;
 
@@ -57,17 +59,14 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
 
     /**
      * The base directory, in which to search for project files.
-     *
-     * @parameter expression="${license.basedir}" default-value="${basedir}"
-     * @required
      */
+    @Parameter(property = "license.basedir", defaultValue = "${basedir}", required = true)
     protected File basedir;
 
     /**
      * Location of the header. It can be a relative path, absolute path, classpath resource, any URL. The plugin first check if the name specified is a relative file, then an absolute file, then in the claspath. If not found, it tries to construct a URL from the location
-     *
-     * @parameter expression="${license.header}"
      */
+    @Parameter(property = "license.header")
     protected String header;
 
     /**
@@ -76,80 +75,69 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
      * When using format goal, this property will be used to detect all valid headers that don't need formatting.
      * <br>
      * When using remove goal, this property will be used to detect all valid headers that also must be removed.
-     *
-     * @parameter
      */
+    @Parameter
     protected String[] validHeaders = new String[0];
 
     /**
      * Allows the use of external header definitions files. These files are properties like files.
-     *
-     * @parameter
      */
+    @Parameter
     protected String[] headerDefinitions = new String[0];
 
     /**
      * HeadSections define special regions of a header that allow for dynamic substitution and validation
-     *
-     * @parameter
      */
+    @Parameter
     protected HeaderSection[] headerSections = new HeaderSection[0];
 
     /**
      * You can set here some properties that you want to use when reading the header file. You can use in your header file some properties like ${year}, ${owner} or whatever you want for the name. They will be replaced when the header file is read by those you specified in the command line, in the POM and in system environment.
-     *
-     * @parameter
      */
+    @Parameter
     protected Map<String, String> properties = new HashMap<>();
 
     /**
      * Specifies files, which are included in the check. By default, all files are included.
-     *
-     * @parameter
      */
+    @Parameter
     protected String[] includes = new String[0];
 
     /**
      * Specifies files, which are excluded in the check. By default, only the files matching the default exclude patterns are excluded.
-     *
-     * @parameter
      */
+    @Parameter
     protected String[] excludes = new String[0];
 
     /**
      * Specify the list of keywords to use to detect a header. A header must include all keywords to be valid.
      * By default, the word 'copyright' is used. Detection is done case insensitive.
-     *
-     * @parameter
      */
+    @Parameter
     protected String[] keywords = new String[]{"copyright"};
 
     /**
      * Specify if you want to use default exclusions besides the files you have excluded. Default exclusions exclude CVS and SVN folders, IDE descriptors and so on.
-     *
-     * @parameter expression="${license.useDefaultExcludes}" default-value="true"
      */
+    @Parameter(property = "license.useDefaultExcludes", defaultValue = "true")
     protected boolean useDefaultExcludes = true;
 
     /**
      * You can set this flag to true if you want to check the headers for all modules of your project. Only used for multi-modules projects, to check for example the header licenses from the parent module for all sub modules
-     *
-     * @parameter expression="${license.aggregate}" default-value="false"
      */
+    @Parameter(property = "license.aggregate", defaultValue = "false")
     protected boolean aggregate = false;
 
     /**
      * Set mapping between document mapping and a supported type to use. This section is very useful when you want to customize the supported extensions. Is your project is using file extensions not supported by default by this plugin, you can add a mapping to attach the extension to an existing type of comment. The tag name is the new extension name to support, and the value is the name of the comment type to use.
-     *
-     * @parameter
      */
+    @Parameter
     protected Map<String, String> mapping = new HashMap<String, String>();
 
     /**
      * Whether to use the default mapping between file extensions and comment types, or only the one your provide
-     *
-     * @parameter expression="${license.useDefaultMapping}" default-value="true"
      */
+    @Parameter(property = "license.useDefaultMapping", defaultValue = "true")
     protected boolean useDefaultMapping = true;
 
     /**
@@ -159,23 +147,20 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
      * {@code <nThreads> = <number of cores> *  concurrencyFactor}
      * <br>
      * The default is 1.5.
-     *
-     * @parameter expression="${license.concurrencyFactor}" default-value="1.5"
      */
+    @Parameter(property = "license.concurrencyFactor", defaultValue = "1.5")
     protected float concurrencyFactor = 1.5f;
 
     /**
      * Whether to skip the plugin execution
-     *
-     * @parameter expression="${license.skip}" default-value="false"
      */
+    @Parameter(property = "license.skip", defaultValue = "false")
     protected boolean skip = false;
 
     /**
      * If you do not want to see the list of file having a missing header, you can add the quiet flag that will shorten the output
-     *
-     * @parameter expression="${license.quiet}" default-value="false"
      */
+    @Parameter(property = "license.quiet", defaultValue = "false")
     protected boolean quiet = false;
 
     /**
@@ -185,44 +170,35 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
      * <br>
      * We highly recommend to set this option to true. It is by default set to false for
      * backward compatibility
-     *
-     * @parameter expression="${license.strictCheck}" default-value="false"
      */
+    @Parameter(property = "license.strictCheck", defaultValue = "true")
     protected boolean strictCheck = true;
 
     /**
      * Specify the encoding of your files. Default to the project source encoding property (project.build.sourceEncoding)
-     *
-     * @parameter expression="${license.encoding}" default-value="${project.build.sourceEncoding}"
      */
+    @Parameter(property = "license.encoding", defaultValue = "${project.build.sourceEncoding}")
     protected String encoding = "UTF-8";
 
     /**
      * You can set this flag to false if you do not want the build to fail when some headers are missing.
-     *
-     * @parameter expression="${license.failIfMissing}" default-value="true"
      */
+    @Parameter(property = "license.failIfMissing", defaultValue = "true")
     protected boolean failIfMissing = true;
 
     /**
      * If dryRun is enabled, calls to license:format and license:remove will not overwrite the existing file but instead write the result to a new file with the same name but ending with `.licensed`
-     *
-     * @parameter expression="${license.dryRun}" default-value="false"
      */
+    @Parameter(property = "license.dryRun", defaultValue = "false")
     protected boolean dryRun = false;
 
     /**
      * Skip the formatting of files which already contain a detected header
-     *
-     * @parameter expression="${license.skipExistingHeaders}" default-value="false"
      */
+    @Parameter(property = "license.skipExistingHeaders", defaultValue = "false")
     protected boolean skipExistingHeaders = false;
 
-    /**
-     * @parameter default-value="${project}"
-     * @required
-     * @readonly
-     */
+    @Component
     protected MavenProject project = new MavenProject();
 
     private ResourceFinder finder;

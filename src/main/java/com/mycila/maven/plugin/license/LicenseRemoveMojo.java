@@ -19,6 +19,7 @@ import com.mycila.maven.plugin.license.document.Document;
 import com.mycila.maven.plugin.license.header.Header;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Mojo;
 
 import java.io.File;
 
@@ -26,9 +27,8 @@ import java.io.File;
  * Remove the specified header from source files
  *
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
- * @goal remove
- * @threadSafe
  */
+@Mojo(name = "remove", threadSafe = true)
 public final class LicenseRemoveMojo extends AbstractLicenseMojo {
 
     public void execute() throws MojoExecutionException, MojoFailureException {
