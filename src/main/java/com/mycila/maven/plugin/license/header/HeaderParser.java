@@ -157,8 +157,9 @@ public final class HeaderParser {
                 int pos = fileContent.getPosition();
                 // check if the line is the end line
                 while (line != null
-                        && !headerDefinition.isLastHeaderLine(line)
-                        && (headerDefinition.allowBlankLines() || !"".equals(line.trim())))
+                    && !headerDefinition.isLastHeaderLine(line)
+                    && (headerDefinition.allowBlankLines() || !"".equals(line.trim()))
+                    && line.startsWith(before))
                     line = fileContent.nextLine();
                 if (line == null)
                     fileContent.resetTo(pos);

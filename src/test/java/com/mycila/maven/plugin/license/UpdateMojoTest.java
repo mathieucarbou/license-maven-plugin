@@ -58,7 +58,9 @@ public final class UpdateMojoTest {
         LicenseFormatMojo updater = new LicenseFormatMojo();
         updater.basedir = tmp;
         updater.header = "src/test/resources/update/header.txt";
-        updater.mapping = new HashMap<String, String>() {{put("properties", "SCRIPT_STYLE");}};
+        updater.mapping = new HashMap<String, String>() {{
+            put("properties", "SCRIPT_STYLE");
+        }};
         updater.project = new MavenProjectStub();
         updater.execute();
 
@@ -81,30 +83,32 @@ public final class UpdateMojoTest {
         LicenseFormatMojo updater = new LicenseFormatMojo();
         updater.basedir = tmp;
         updater.header = "src/test/resources/update/header.txt";
-        updater.mapping = new HashMap<String, String>() {{put("properties", "SCRIPT_STYLE");}};
+        updater.mapping = new HashMap<String, String>() {{
+            put("properties", "SCRIPT_STYLE");
+        }};
         updater.project = new MavenProjectStub();
         updater.execute();
 
         assertEquals(FileUtils.read(new File(tmp, "test1.php"), System.getProperty("file.encoding")), "\r\n" +
-                "\r\n" +
-                "<?php\r\n" +
-                "/*\r\n" +
-                " * My @Copyright license 2\r\n" +
-                " */\r\n" +
-                "\r\n" +
-                "class Conference extends Service {}\r\n" +
-                "\r\n" +
-                "?>\r\n");
+            "\r\n" +
+            "<?php\r\n" +
+            "/*\r\n" +
+            " * My @Copyright license 2\r\n" +
+            " */\r\n" +
+            "\r\n" +
+            "class Conference extends Service {}\r\n" +
+            "\r\n" +
+            "?>\r\n");
         assertEquals(FileUtils.read(new File(tmp, "test2.php"), System.getProperty("file.encoding")), "\r\n" +
-                "\r\n" +
-                "<?php\r\n" +
-                "/*\r\n" +
-                " * My @Copyright license 2\r\n" +
-                " */\r\n" +
-                "\r\n" +
-                "class Conference extends Service {}\r\n" +
-                "\r\n" +
-                "?>\r\n");
+            "\r\n" +
+            "<?php\r\n" +
+            "/*\r\n" +
+            " * My @Copyright license 2\r\n" +
+            " */\r\n" +
+            "\r\n" +
+            "class Conference extends Service {}\r\n" +
+            "\r\n" +
+            "?>\r\n");
     }
 
     @Test
@@ -121,17 +125,56 @@ public final class UpdateMojoTest {
         updater.execute();
 
         assertEquals(FileUtils.read(new File(tmp, "issue44-3.rb"), System.getProperty("file.encoding")), "#\n" +
-                "# My @Copyright license 2\n" +
-                "#\n" +
-                "\n" +
-                "# code comment\n" +
-                "ruby code here\n");
+            "# My @Copyright license 2\n" +
+            "#\n" +
+            "\n" +
+            "# code comment\n" +
+            "ruby code here\n");
 
         assertEquals(FileUtils.read(new File(tmp, "test.asp"), System.getProperty("file.encoding")), "<%\n" +
-                "    My @Copyright license 2\n" +
-                "%>" +
+            "    My @Copyright license 2\n" +
+            "%>" +
+            "\n" +
+            "asp code");
+    }
+
+    @Test
+    public void test_issue_14() throws Exception {
+        File tmp = new File("target/test/update/issue14");
+        tmp.mkdirs();
+        FileUtils.copyFileToFolder(new File("src/test/resources/update/issue14/test.properties"), tmp);
+
+        LicenseFormatMojo updater = new LicenseFormatMojo();
+        updater.basedir = tmp;
+        updater.header = "src/test/resources/update/issue14/header.txt";
+        updater.project = new MavenProjectStub();
+        updater.execute();
+
+        assertEquals(
+            "#\n" +
+                "# Copyright (C) 2013 Salzburg Research.\n" +
+                "#\n" +
+                "# Licensed under the Apache License, Version 2.0 (the \"License\");\n" +
+                "# you may not use this file except in compliance with the License.\n" +
+                "# You may obtain a copy of the License at\n" +
+                "#\n" +
+                "#         http://www.apache.org/licenses/LICENSE-2.0\n" +
+                "#\n" +
+                "# Unless required by applicable law or agreed to in writing, software\n" +
+                "# distributed under the License is distributed on an \"AS IS\" BASIS,\n" +
+                "# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n" +
+                "# See the License for the specific language governing permissions and\n" +
+                "# limitations under the License.\n" +
+                "#\n" +
                 "\n" +
-                "asp code");
+                "meta.tables            = SHOW TABLES;\n" +
+                "meta.version           = SELECT mvalue FROM metadata WHERE mkey = 'version';\n" +
+                "\n" +
+                "# get sequence numbers\n" +
+                "seq.nodes              = SELECT nextval('seq_nodes')\n" +
+                "seq.triples            = SELECT nextval('seq_triples')\n" +
+                "seq.namespaces         = SELECT nextval('seq_namespaces')\n",
+            FileUtils.read(new File(tmp, "test.properties"), System.getProperty("file.encoding")));
     }
 
 }
