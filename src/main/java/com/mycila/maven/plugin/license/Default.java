@@ -79,6 +79,7 @@ public final class Default {
         "**/.git",
         "**/.git/**",
         "**/.gitignore",
+        "**/.gitmodules",
 
         // BitKeeper
         "**/BitKeeper",
