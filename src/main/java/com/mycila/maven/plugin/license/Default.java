@@ -170,6 +170,9 @@ public final class Default {
 
         // flash
         "**/*.swf",
+
+        // json files
+        "**/*.json"
     };
 
 }
