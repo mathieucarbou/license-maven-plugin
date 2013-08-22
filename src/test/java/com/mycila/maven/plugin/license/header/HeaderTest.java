@@ -20,7 +20,6 @@ import com.mycila.maven.plugin.license.util.FileUtils;
 import org.junit.Test;
 
 import java.io.File;
-import java.net.MalformedURLException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
