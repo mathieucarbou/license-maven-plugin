@@ -242,6 +242,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
             try {
                 for (final String file : listSelectedFiles()) {
                     completionService.submit(new Runnable() {
+                        @Override
                         public void run() {
                             Document document = documentFactory.createDocuments(file);
                             debug("Selected file: %s [header style: %s]", document.getFile(), document.getHeaderDefinition());
