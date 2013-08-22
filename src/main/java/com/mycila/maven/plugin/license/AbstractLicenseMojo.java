@@ -323,7 +323,6 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
         return selection.getSelectedFiles();
     }
 
-    @SuppressWarnings({"unchecked"})
     private String[] buildExcludes() {
         List<String> ex = new ArrayList<String>();
         ex.addAll(asList(this.excludes));
