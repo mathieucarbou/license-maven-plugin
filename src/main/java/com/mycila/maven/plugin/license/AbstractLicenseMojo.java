@@ -314,7 +314,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
         return props;
     }
 
-    protected final String[] listSelectedFiles() throws MojoFailureException {
+    protected final String[] listSelectedFiles() {
         Selection selection = new Selection(basedir, includes, buildExcludes(), useDefaultExcludes);
         debug("From: %s", basedir);
         debug("Including: %s", deepToString(selection.getIncluded()));

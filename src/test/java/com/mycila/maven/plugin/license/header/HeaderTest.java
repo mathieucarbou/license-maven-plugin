@@ -48,7 +48,7 @@ public final class HeaderTest {
     }
     
     @Test
-    public void testHeaderSections() throws MalformedURLException {
+    public void testHeaderSections() {
         
         HeaderSection section = new HeaderSection();
         section.setKey("COPYRIGHT_SECTION");
@@ -107,7 +107,7 @@ public final class HeaderTest {
     }
     
     @Test
-    public void testHeaderSectionsWithAmbiguousSeparation() throws MalformedURLException {
+    public void testHeaderSectionsWithAmbiguousSeparation() {
         
         HeaderSection sectionA = new HeaderSection();
         sectionA.setKey("COPYRIGHT_SECTION");
@@ -166,7 +166,7 @@ public final class HeaderTest {
     }
     
     @Test
-    public void testHeaderSectionsWithMultiLineMatch() throws MalformedURLException {
+    public void testHeaderSectionsWithMultiLineMatch() {
         
         HeaderSection section = new HeaderSection();
         section.setKey("COPYRIGHT_SECTION");
