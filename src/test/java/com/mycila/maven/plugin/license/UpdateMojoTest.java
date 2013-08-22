@@ -52,7 +52,6 @@ public final class UpdateMojoTest {
         tmp.mkdirs();
         FileUtils.copyFileToFolder(new File("src/test/resources/update/issue50/test1.properties"), tmp);
         FileUtils.copyFileToFolder(new File("src/test/resources/update/issue50/test2.properties"), tmp);
-        FileUtils.copyFileToFolder(new File("src/test/resources/update/issue50/test3.properties"), tmp);
         FileUtils.copyFileToFolder(new File("src/test/resources/update/issue50/test4.properties"), tmp);
 
         LicenseFormatMojo updater = new LicenseFormatMojo();
@@ -66,7 +65,6 @@ public final class UpdateMojoTest {
 
         String test1 = FileUtils.read(new File(tmp, "test1.properties"), System.getProperty("file.encoding"));
         String test2 = FileUtils.read(new File(tmp, "test2.properties"), System.getProperty("file.encoding"));
-        String test3 = FileUtils.read(new File(tmp, "test3.properties"), System.getProperty("file.encoding"));
         String test4 = FileUtils.read(new File(tmp, "test4.properties"), System.getProperty("file.encoding"));
 
         assertEquals(test1, test2);
