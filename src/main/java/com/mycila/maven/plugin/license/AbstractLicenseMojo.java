@@ -199,7 +199,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
     protected boolean skipExistingHeaders = false;
 
     @Component
-    protected MavenProject project = new MavenProject();
+    protected MavenProject project;
 
     private ResourceFinder finder;
 
@@ -295,6 +295,14 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
     protected final Map<String, String> mergeProperties() {
         // first put systen environment
         Map<String, String> props = new HashMap<String, String>(System.getenv());
+        // then add ${project.XYZ} properties
+        props.put("project.groupId", project.getGroupId());
+        props.put("project.artifactId", project.getArtifactId());
+        props.put("project.version", project.getVersion());
+        props.put("project.name", project.getName());
+        props.put("project.description", project.getDescription());
+        props.put("project.inceptionYear", project.getInceptionYear());
+        props.put("project.url", project.getUrl());
         // we override by properties in the POM
         if (this.properties != null) {
             props.putAll(this.properties);
