@@ -41,8 +41,8 @@ public final class LicenseFormatMojo extends AbstractLicenseMojo {
                     if (skipExistingHeaders) {
                         debug("Keeping license header in: %s", document.getFile());
                         return;
-                    } else
-                        document.removeHeader();
+                    }
+                    document.removeHeader();
                 }
                 info("Updating license header in: %s", document.getFile());
                 document.updateHeader(header);

@@ -54,9 +54,8 @@ public final class LicenseCheckMojo extends AbstractLicenseMojo {
         if (!missingHeaders.isEmpty()) {
             if (failIfMissing) {
                 throw new MojoExecutionException("Some files do not have the expected license header");
-            } else {
-                getLog().warn("Some files do not have the expected license header");
             }
+            getLog().warn("Some files do not have the expected license header");
         }
     }
 
