@@ -6,6 +6,7 @@
 		- [Detailed Maven documentation](#detailed-maven-documentation)
 		- [Goals](#goals)
 		- [Configuration](#configuration)
+		- [Properties](#properties-and-placeholders)
 		- [Supported comment types](#supported-comment-types)
 		- [Changing header style definitions](#changing-header-style-definitions)
 
@@ -80,6 +81,7 @@ The detailed Maven Plugin Documentation generated for each build is available he
 
  - [2.0](http://mycila.github.io/license-maven-plugin/reports/2.0/index.html)
  - [2.2](http://mycila.github.io/license-maven-plugin/reports/2.2/index.html)
+ - [2.3](http://mycila.github.io/license-maven-plugin/reports/2.3/index.html)
 
 ### Goals ###
 
@@ -94,6 +96,21 @@ The table below shows all the available options you can use in the configure sec
 All plugin configuration options are described in the [Detailed Maven documentation](#detailed-maven-documentation) but here are some details.
 
  - `useDefaultExcludes`: The default exclusion list can be found [here](https://github.com/mycila/license-maven-plugin/blob/master/src/main/java/com/mycila/maven/plugin/license/Default.java)
+
+### Properties and placeholders ###
+
+Properties which can be used as placeholder comes from:
+ - Environnment variables
+ - POM properties
+  - `project.groupId`
+  - `project.artifactId`
+  - `project.version`
+  - `project.name`
+  - `project.description`
+  - `project.inceptionYear`
+  - `project.url`
+ - Plugin configuration properties (from `<properties>` tag)
+ - System properties
 
 ### Supported comment types ###
 
