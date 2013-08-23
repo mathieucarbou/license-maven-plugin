@@ -37,6 +37,7 @@
     <url>http://mycila.github.io/${mycila.github.name}</url>
 
     <properties>
+        <jdk.version>1.7</jdk.version>
         <mycila.github.name>license-maven-plugin</mycila.github.name>
     </properties>
 
@@ -63,6 +64,15 @@
                     <excludes>
                         <exclude>src/test/**</exclude>
                     </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
                 </configuration>
             </plugin>
         </plugins>
