@@ -46,6 +46,7 @@
 <li><a href="#detailed-maven-documentation">Detailed Maven documentation</a></li>
 <li><a href="#goals">Goals</a></li>
 <li><a href="#configuration">Configuration</a></li>
+<li><a href="#properties-and-placeholders">Properties</a></li>
 <li><a href="#supported-comment-types">Supported comment types</a></li>
 <li><a href="#changing-header-style-definitions">Changing header style definitions</a></li>
 </ul>
@@ -139,6 +140,7 @@
 <ul>
 <li><a href="http://mycila.github.io/license-maven-plugin/reports/2.0/index.html">2.0</a></li>
 <li><a href="http://mycila.github.io/license-maven-plugin/reports/2.2/index.html">2.2</a></li>
+<li><a href="http://mycila.github.io/license-maven-plugin/reports/2.3/index.html">2.3</a></li>
 </ul><h3>
 <a name="goals" class="anchor" href="#goals"><span class="octicon octicon-link"></span></a>Goals</h3>
 
@@ -160,6 +162,27 @@
 <li>
 <code>useDefaultExcludes</code>: The default exclusion list can be found <a href="https://github.com/mycila/license-maven-plugin/blob/master/src/main/java/com/mycila/maven/plugin/license/Default.java">here</a>
 </li>
+</ul><h3>
+<a name="properties-and-placeholders" class="anchor" href="#properties-and-placeholders"><span class="octicon octicon-link"></span></a>Properties and placeholders</h3>
+
+<p>Properties which can be used as placeholder comes from:</p>
+
+<ul>
+<li>Environnment variables</li>
+<li>POM properties
+
+<ul>
+<li><code>project.groupId</code></li>
+<li><code>project.artifactId</code></li>
+<li><code>project.version</code></li>
+<li><code>project.name</code></li>
+<li><code>project.description</code></li>
+<li><code>project.inceptionYear</code></li>
+<li><code>project.url</code></li>
+</ul>
+</li>
+<li>Plugin configuration properties (from <code>&lt;properties&gt;</code> tag)</li>
+<li>System properties</li>
 </ul><h3>
 <a name="supported-comment-types" class="anchor" href="#supported-comment-types"><span class="octicon octicon-link"></span></a>Supported comment types</h3>
 
