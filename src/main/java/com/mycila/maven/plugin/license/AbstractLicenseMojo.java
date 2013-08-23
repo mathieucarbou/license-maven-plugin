@@ -95,7 +95,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
      * You can set here some properties that you want to use when reading the header file. You can use in your header file some properties like ${year}, ${owner} or whatever you want for the name. They will be replaced when the header file is read by those you specified in the command line, in the POM and in system environment.
      */
     @Parameter
-    protected Map<String, String> properties = new HashMap<>();
+    protected Map<String, String> properties = new HashMap<String, String>();
 
     /**
      * Specifies files, which are included in the check. By default, all files are included.
