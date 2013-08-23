@@ -411,4 +411,4 @@ And it should generate headers like:
     #endregion
 
 
-[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/1cff289591701ebe8f738c19916b60bd "githalytics.com")](http://githalytics.com/mycila/license-maven-plugin)
+[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/b5d8e8bcbdb8f56a7ef502a2cfa20c29 "githalytics.com")](http://githalytics.com/mycila/license-maven-plugin)
