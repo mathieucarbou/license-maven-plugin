@@ -242,6 +242,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
             try {
                 for (final String file : listSelectedFiles()) {
                     completionService.submit(new Runnable() {
+                        @Override
                         public void run() {
                             Document document = documentFactory.createDocuments(file);
                             debug("Selected file: %s [header style: %s]", document.getFile(), document.getHeaderDefinition());
@@ -314,7 +315,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
         return props;
     }
 
-    protected final String[] listSelectedFiles() throws MojoFailureException {
+    protected final String[] listSelectedFiles() {
         Selection selection = new Selection(basedir, includes, buildExcludes(), useDefaultExcludes);
         debug("From: %s", basedir);
         debug("Including: %s", deepToString(selection.getIncluded()));
@@ -322,7 +323,6 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
         return selection.getSelectedFiles();
     }
 
-    @SuppressWarnings({"unchecked"})
     private String[] buildExcludes() {
         List<String> ex = new ArrayList<String>();
         ex.addAll(asList(this.excludes));

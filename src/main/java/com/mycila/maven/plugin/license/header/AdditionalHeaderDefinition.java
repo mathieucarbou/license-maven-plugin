@@ -75,6 +75,7 @@ public final class AdditionalHeaderDefinition {
             throw new IllegalArgumentException("The header definition XML document cannot be null");
         }
         doc.gotoRoot().forEachChild(new CallBack() {
+            @Override
             public void execute(XMLTag doc) {
                 final String type = doc.getCurrentTagName().toLowerCase();
                 HeaderDefinition definition = definitions.get(type);
@@ -105,6 +106,7 @@ public final class AdditionalHeaderDefinition {
             this.definition = definition;
         }
 
+        @Override
         public void execute(XMLTag xmlDocument) {
             String value = xmlDocument.getText();
             if ("".equals(value)) // value can't be null

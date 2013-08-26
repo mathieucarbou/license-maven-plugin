@@ -31,18 +31,20 @@ import java.io.File;
 @Mojo(name = "format", threadSafe = true)
 public final class LicenseFormatMojo extends AbstractLicenseMojo {
 
+    @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         getLog().info("Updating license headers...");
 
         execute(new Callback() {
+            @Override
             public void onHeaderNotFound(Document document, Header header) {
                 document.parseHeader();
                 if (document.headerDetected()) {
                     if (skipExistingHeaders) {
                         debug("Keeping license header in: %s", document.getFile());
                         return;
-                    } else
-                        document.removeHeader();
+                    }
+                    document.removeHeader();
                 }
                 info("Updating license header in: %s", document.getFile());
                 document.updateHeader(header);
@@ -56,6 +58,7 @@ public final class LicenseFormatMojo extends AbstractLicenseMojo {
                 }
             }
 
+            @Override
             public void onExistingHeader(Document document, Header header) {
                 debug("Header OK in: %s", document.getFile());
             }

@@ -40,10 +40,10 @@ public final class DocumentFactory {
     }
 
     public Document createDocuments(String file) {
-        return getWrapper(file, encoding);
+        return getWrapper(file);
     }
 
-    private Document getWrapper(String file, String encoding) {
+    private Document getWrapper(String file) {
         /*String headerType = mapping.get(extension(file).toLowerCase());
         if (headerType == null) {
             headerType = mapping.get("");

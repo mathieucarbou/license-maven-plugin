@@ -34,7 +34,7 @@ public final class AggregateMojoTest {
     public void test_modules_ignored() throws Exception {
         MavenProjectStub project = new MavenProjectStub() {
             @Override
-            public List getModules() {
+            public List<String> getModules() {
                 return Arrays.<String>asList("module1", "module2", "module3");
             }
         };
@@ -50,7 +50,7 @@ public final class AggregateMojoTest {
     public void test_modules_scanned() throws Exception {
         MavenProjectStub project = new MavenProjectStub() {
             @Override
-            public List getModules() {
+            public List<String> getModules() {
                 return Arrays.<String>asList("module1", "module2", "module3");
             }
         };

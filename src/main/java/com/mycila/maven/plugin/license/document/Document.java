@@ -71,14 +71,13 @@ public final class Document {
             catch (IOException e) {
                 throw new IllegalStateException("Cannot read file " + getFile() + ". Cause: " + e.getMessage(), e);
             }
-        } else {
-            try {
-                String fileHeader = readFirstLines(file, header.getLineCount() + 10, encoding).replaceAll(" *\r?\n", "\n");
-                return header.isMatchForText(fileHeader,headerDefinition,true);
-            }
-            catch (IOException e) {
-                throw new IllegalStateException("Cannot read file " + getFile() + ". Cause: " + e.getMessage(), e);
-            }
+        }
+        try {
+            String fileHeader = readFirstLines(file, header.getLineCount() + 10, encoding).replaceAll(" *\r?\n", "\n");
+            return header.isMatchForText(fileHeader,headerDefinition,true);
+        }
+        catch (IOException e) {
+            throw new IllegalStateException("Cannot read file " + getFile() + ". Cause: " + e.getMessage(), e);
         }
     }
 
