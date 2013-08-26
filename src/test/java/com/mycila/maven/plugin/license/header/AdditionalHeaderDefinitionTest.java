@@ -58,8 +58,8 @@ public final class AdditionalHeaderDefinitionTest {
         //FileUtils.write(new File("src/test/resources/test-header3.txt"), header.buildForDefinition(loader.getDefinitions().get("xquery")));
 
         final String content = FileUtils.read(new File("src/test/resources/test-header3.txt"), System.getProperty("file.encoding"));
-        assertEquals(header.buildForDefinition(loader.getDefinitions().get("xquery"), content.indexOf("\n") == -1),
-                content);
+        assertEquals(header.buildForDefinition(loader.getDefinitions().get("xquery"), content.indexOf("\n") == -1,
+                "test-header3.txt"), content);
     }
 
     @Test
@@ -82,7 +82,7 @@ public final class AdditionalHeaderDefinitionTest {
         props.put("year", "2008");
         Header header = new Header(getClass().getResource("/check/header.txt"), "UTF-8", props, null);
 
-        System.out.println(header.buildForDefinition(loader.getDefinitions().get("text"), false));
+        System.out.println(header.buildForDefinition(loader.getDefinitions().get("text"), false, "header.txt"));
     }
 
     @Test
@@ -106,7 +106,7 @@ public final class AdditionalHeaderDefinitionTest {
         //FileUtils.write(new File("src/test/resources/test-header4.txt"), header.buildForDefinition(loader.getDefinitions().get("csregion"), false), System.getProperty("file.encoding"));
 
         final String content = FileUtils.read(new File("src/test/resources/test-header4.txt"), System.getProperty("file.encoding"));
-        assertEquals(header.buildForDefinition(loader.getDefinitions().get("csregion"), content.indexOf("\n") == -1),
-                content);
+        assertEquals(header.buildForDefinition(loader.getDefinitions().get("csregion"), content.indexOf("\n") == -1,
+                "test-header4.txt"), content);
     }
 }

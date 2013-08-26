@@ -74,7 +74,7 @@ public final class Document {
         }
         try {
             String fileHeader = readFirstLines(file, header.getLineCount() + 10, encoding).replaceAll(" *\r?\n", "\n");
-            return header.isMatchForText(fileHeader,headerDefinition,true);
+            return header.isMatchForText(fileHeader,headerDefinition, true, file.getName());
         }
         catch (IOException e) {
             throw new IllegalStateException("Cannot read file " + getFile() + ". Cause: " + e.getMessage(), e);
@@ -82,7 +82,8 @@ public final class Document {
     }
 
     public void updateHeader(Header header) {
-        String headerStr = header.applyDefinitionAndSections(parser.getHeaderDefinition(), parser.getFileContent().isUnix());
+        String headerStr = header.applyDefinitionAndSections(parser.getHeaderDefinition(),
+                parser.getFileContent().isUnix(), file.getName());
         parser.getFileContent().insert(parser.getBeginPosition(), headerStr);
     }
 

@@ -93,7 +93,7 @@ public final class Header {
         return unix ? "\n" : "\r\n";
     }
 
-    public String buildForDefinition(HeaderDefinition type, boolean unix) {
+    public String buildForDefinition(HeaderDefinition type, boolean unix, String filename) {
         StringBuilder newHeader = new StringBuilder();
         if (notEmpty(type.getFirstLine())) {
             newHeader.append(type.getFirstLine().replace("EOL", eol(unix)));
@@ -108,7 +108,7 @@ public final class Header {
             newHeader.append(type.getEndLine().replace("EOL", eol(unix)));
             newHeader.append(eol(unix));
         }
-        return newHeader.toString();
+        return newHeader.toString().replace("${file_name}", filename);
     }
 
     @Override
@@ -134,9 +134,9 @@ public final class Header {
      *            if true, unix line-endings will be used
      * @return true if the header is matched
      */
-    public boolean isMatchForText(String potentialFileHeader, HeaderDefinition headerDefinition, boolean unix) {
+    public boolean isMatchForText(String potentialFileHeader, HeaderDefinition headerDefinition, boolean unix, String filename) {
 
-        String expected = buildForDefinition(headerDefinition, unix);
+        String expected = buildForDefinition(headerDefinition, unix, filename);
 
         SortedMap<Integer, HeaderSection> sectionsByIndex = computeSectionsByIndex(expected);
 
@@ -148,9 +148,9 @@ public final class Header {
         return recursivelyFindMatch(potentialFileHeader, headerDefinition, textBetweenSections, sectionsInOrder, 0, 0);
     }
     
-    public String applyDefinitionAndSections(HeaderDefinition headerDefinition, boolean unix) {
+    public String applyDefinitionAndSections(HeaderDefinition headerDefinition, boolean unix, String filename) {
         
-        String expected = buildForDefinition(headerDefinition, unix);
+        String expected = buildForDefinition(headerDefinition, unix, filename);
 
         SortedMap<Integer, HeaderSection> sectionsByIndex = computeSectionsByIndex(expected);
 
