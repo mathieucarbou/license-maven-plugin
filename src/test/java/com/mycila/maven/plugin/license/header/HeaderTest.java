@@ -43,7 +43,8 @@ public final class HeaderTest {
 
         final File file = new File("src/test/resources/test-header2.txt");
         final String content = FileUtils.read(file, System.getProperty("file.encoding"));
-        assertEquals(content, header.buildForDefinition(HeaderType.ASP.getDefinition(), content.indexOf("\n") == -1));
+        assertEquals(content, header.buildForDefinition(HeaderType.ASP.getDefinition(), content.indexOf("\n") == -1,
+                "test-header2.txt"));
     }
     
     @Test
@@ -67,7 +68,7 @@ public final class HeaderTest {
         h1.append(" *\n");
         h1.append(" * My License\n");
         h1.append(" */\n");
-        assertTrue(header.isMatchForText(h1.toString(), headerDefinition, true));
+        assertTrue(header.isMatchForText(h1.toString(), headerDefinition, true, "test-header5.txt"));
         
         /**
          * This potential header should fail because the date is invalid
@@ -78,7 +79,7 @@ public final class HeaderTest {
         h2.append(" *\n");
         h2.append(" * My License\n");
         h2.append(" */\n");
-        assertFalse(header.isMatchForText(h2.toString(), headerDefinition, true));
+        assertFalse(header.isMatchForText(h2.toString(), headerDefinition, true, "test-header5.txt"));
         
         /**
          * This potential header should match, even with multiple lines
@@ -90,7 +91,7 @@ public final class HeaderTest {
         h3.append(" *\n");
         h3.append(" * My License\n");
         h3.append(" */\n");
-        assertTrue(header.isMatchForText(h3.toString(), headerDefinition, true));
+        assertTrue(header.isMatchForText(h3.toString(), headerDefinition, true, "test-header5.txt"));
         
         /**
          * Assert that the header, rendered with default values, looks correct
@@ -101,7 +102,7 @@ public final class HeaderTest {
         h4.append(" *\n");
         h4.append(" * My License\n");
         h4.append(" */\n");
-        String headerText = header.applyDefinitionAndSections(headerDefinition, true);
+        String headerText = header.applyDefinitionAndSections(headerDefinition, true, "test-header5.txt");
         assertEquals(headerText,h4.toString());
     }
     
@@ -138,7 +139,7 @@ public final class HeaderTest {
         h1.append(" *\n");
         h1.append(" * My License\n");
         h1.append(" */\n");
-        assertTrue(header.isMatchForText(h1.toString(), headerDefinition, true));
+        assertTrue(header.isMatchForText(h1.toString(), headerDefinition, true, "test-header5.txt"));
         
         /**
          * This potential header should fail because there is no space in there to match
@@ -149,7 +150,7 @@ public final class HeaderTest {
         h2.append(" *\n");
         h2.append(" * My License\n");
         h2.append(" */\n");
-        assertFalse(header.isMatchForText(h2.toString(), headerDefinition, true));
+        assertFalse(header.isMatchForText(h2.toString(), headerDefinition, true, "test-header5.txt"));
         
         /**
          * Assert that the header, rendered with default values, looks correct
@@ -160,7 +161,7 @@ public final class HeaderTest {
         h3.append(" *\n");
         h3.append(" * My License\n");
         h3.append(" */\n");
-        String headerText = header.applyDefinitionAndSections(headerDefinition, true);
+        String headerText = header.applyDefinitionAndSections(headerDefinition, true, "test-header5.txt");
         assertEquals(headerText,h3.toString());
     }
     
@@ -187,7 +188,7 @@ public final class HeaderTest {
         h1.append(" *\n");
         h1.append(" * My License\n");
         h1.append(" */\n");
-        assertTrue(header.isMatchForText(h1.toString(), headerDefinition, true));
+        assertTrue(header.isMatchForText(h1.toString(), headerDefinition, true, "test-header5.txt"));
         
         /**
          * This potential header should fail because "Name" => "NamE"
@@ -199,7 +200,7 @@ public final class HeaderTest {
         h2.append(" *\n");
         h2.append(" * My License\n");
         h2.append(" */\n");
-        assertFalse(header.isMatchForText(h2.toString(), headerDefinition, true));
+        assertFalse(header.isMatchForText(h2.toString(), headerDefinition, true, "test-header5.txt"));
         
         /**
          * Assert that the header, rendered with default values, looks correct
@@ -211,7 +212,7 @@ public final class HeaderTest {
         h3.append(" *\n");
         h3.append(" * My License\n");
         h3.append(" */\n");
-        String headerText = header.applyDefinitionAndSections(headerDefinition, true);
+        String headerText = header.applyDefinitionAndSections(headerDefinition, true, "test-header5.txt");
         assertEquals(headerText,h3.toString());
     }
 }
