@@ -44,13 +44,6 @@ public final class DocumentFactory {
     }
 
     private Document getWrapper(String file) {
-        /*String headerType = mapping.get(extension(file).toLowerCase());
-        if (headerType == null) {
-            headerType = mapping.get("");
-        } else {
-            headerType = headerType.toLowerCase();
-        }
-        return new Document(new File(basedir, file), definitions.get(headerType), encoding, keywords);*/
         String headerType = mapping.get("");
         for (Map.Entry<String, String> entry : mapping.entrySet()) {
             if (file.toLowerCase().endsWith("." + entry.getKey().toLowerCase())) {
