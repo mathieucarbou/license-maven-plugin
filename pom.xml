@@ -62,6 +62,7 @@
                 <configuration>
                     <excludes>
                         <exclude>src/test/**</exclude>
+                        <exclude>src/main/resources/**</exclude>
                     </excludes>
                 </configuration>
             </plugin>
