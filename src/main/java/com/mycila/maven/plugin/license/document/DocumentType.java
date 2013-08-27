@@ -30,6 +30,8 @@ public enum DocumentType {
 
     JAVA("java", HeaderType.JAVADOC_STYLE),
     GROOVY("groovy", HeaderType.JAVADOC_STYLE),
+    CLOJURE("clj", HeaderType.SEMICOLON_STYLE),
+    CLOJURESCRIPT("cljs", HeaderType.SEMICOLON_STYLE),
     JAVASCRIPT("js", HeaderType.SLASHSTAR_STYLE),
     CSS("css", HeaderType.JAVADOC_STYLE),
     CSHARP("cs", HeaderType.JAVADOC_STYLE),
