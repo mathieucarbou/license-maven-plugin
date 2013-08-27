@@ -45,7 +45,7 @@ __Plugin declaration__
         <artifactId>license-maven-plugin</artifactId>
         <version>X.Y.ga</version>
         <configuration>
-            <header>com/mycila/licenses/APACHE-2</header>
+            <header>APACHE-2</header>
             <properties>
                 <owner>Mycila</owner>
                 <year>${project.inceptionYear}</year>
@@ -64,13 +64,6 @@ __Plugin declaration__
                 </goals>
             </execution>
         </executions>
-        <dependencies>
-            <dependency>
-                <groupId>com.mycila</groupId>
-                <artifactId>licenses</artifactId>
-                <version>1</version>
-            </dependency>
-        </dependencies>
     </plugin>
 
 ## Documentation ##
