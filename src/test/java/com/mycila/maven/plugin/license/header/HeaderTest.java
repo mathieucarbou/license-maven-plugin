@@ -20,9 +20,6 @@ import com.mycila.maven.plugin.license.util.FileUtils;
 import org.junit.Test;
 
 import java.io.File;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -32,11 +29,9 @@ import static org.junit.Assert.*;
 public final class HeaderTest {
     @Test
     public void test() throws Exception {
-        Map<String, String> props = new HashMap<String, String>();
-        props.put("year", "2008");
-        Header header = new Header(getClass().getResource("/test-header1.txt"), "UTF-8", props, null);
+        Header header = new Header(getClass().getResource("/test-header1.txt"), "UTF-8", null);
         assertEquals(header.getLineCount(), 13);
-        assertTrue(header.asOneLineString().contains("2008"));
+        assertTrue(header.asOneLineString().contains("${year}"));
         assertEquals(header.getLocation(), getClass().getResource("/test-header1.txt"));
 
         //FileUtils.write(new File("src/test/resources/test-header2.txt"), header.buildForDefinition(HeaderType.ASP.getDefinition(), false));
@@ -55,9 +50,8 @@ public final class HeaderTest {
         section.setDefaultValue("Copyright (C) 2011 http://code.google.com/p/maven-license-plugin/");
         
         HeaderSection[] sections = { section };
-        
-        Map<String, String> props = Collections.emptyMap();
-        Header header = new Header(getClass().getResource("/test-header5.txt"), "UTF-8", props, sections);
+
+        Header header = new Header(getClass().getResource("/test-header5.txt"), "UTF-8", sections);
         
         HeaderDefinition headerDefinition = HeaderType.JAVADOC_STYLE.getDefinition();
 
@@ -118,9 +112,8 @@ public final class HeaderTest {
         sectionB.setDefaultValue("SomeGuy");
         
         HeaderSection[] sections = { sectionA, sectionB };
-        
-        Map<String, String> props = Collections.emptyMap();
-        Header header = new Header(getClass().getResource("/test-header6.txt"), "UTF-8", props, sections);
+
+        Header header = new Header(getClass().getResource("/test-header6.txt"), "UTF-8", sections);
         
         HeaderDefinition headerDefinition = HeaderType.JAVADOC_STYLE.getDefinition();
 
@@ -174,9 +167,8 @@ public final class HeaderTest {
         section.setDefaultValue("Copyright (C) 2011\nName: http://code.google.com/p/maven-license-plugin/");
         
         HeaderSection[] sections = { section };
-        
-        Map<String, String> props = Collections.emptyMap();
-        Header header = new Header(getClass().getResource("/test-header5.txt"), "UTF-8", props, sections);
+
+        Header header = new Header(getClass().getResource("/test-header5.txt"), "UTF-8", sections);
         
         HeaderDefinition headerDefinition = HeaderType.JAVADOC_STYLE.getDefinition();
 

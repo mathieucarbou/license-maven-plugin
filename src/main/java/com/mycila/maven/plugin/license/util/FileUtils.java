@@ -52,6 +52,15 @@ public final class FileUtils {
         }
     }
 
+    public static String read(URL location, String encoding) throws IOException {
+        Reader reader = new BufferedReader(new InputStreamReader(location.openStream(), encoding));
+        try {
+            return IOUtil.toString(reader);
+        } finally {
+            reader.close();
+        }
+    }
+
     public static String read(File file, String encoding) throws IOException {
         FileChannel in = new FileInputStream(file).getChannel();
         try {
@@ -91,8 +100,7 @@ public final class FileUtils {
         FileChannel outChannel = new FileOutputStream(dest).getChannel();
         try {
             inChannel.transferTo(0, inChannel.size(), outChannel);
-        }
-        finally {
+        } finally {
             if (inChannel != null) inChannel.close();
             if (outChannel != null) outChannel.close();
         }

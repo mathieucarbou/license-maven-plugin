@@ -1,1 +1,1 @@
-My @Copyright license 2
+My @Copyright license 2 with ${my-custom-property} and ${year} and ${file.name}

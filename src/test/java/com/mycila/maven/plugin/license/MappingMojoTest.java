@@ -17,16 +17,14 @@ package com.mycila.maven.plugin.license;
 
 import org.apache.maven.monitor.logging.DefaultLog;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.logging.SystemStreamLog;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
 import org.junit.Test;
 
 import java.io.File;
 import java.util.HashMap;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
@@ -92,15 +90,11 @@ public final class MappingMojoTest {
             assertEquals("Some files do not have the expected license header", e.getMessage());
         }
 
-        logger.clear();
+        check.setLog(new SystemStreamLog());
         check.mapping = new HashMap<String, String>() {{
             put("apt.vm", "DOUBLETILDE_STYLE");
         }};
 
-        try {
-            check.execute();
-        } catch (MojoExecutionException e) {
-            fail();
-        }
+        check.execute();
     }
 }

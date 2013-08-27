@@ -21,6 +21,7 @@ import com.mycila.maven.plugin.license.header.HeaderParser;
 import com.mycila.maven.plugin.license.header.HeaderType;
 import com.mycila.maven.plugin.license.util.FileContent;
 import com.mycila.maven.plugin.license.util.FileUtils;
+import org.springframework.util.PropertyPlaceholderHelper;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,13 +37,17 @@ public final class Document {
     private final HeaderDefinition headerDefinition;
     private final String encoding;
     private final String[] keywords;
+    private final DocumentPropertiesLoader documentPropertiesLoader;
+    private final PropertyPlaceholderHelper placeholderHelper = new PropertyPlaceholderHelper("${", "}", ":", true);
     private HeaderParser parser;
 
-    public Document(File file, HeaderDefinition headerDefinition, String encoding, String[] keywords) {
+
+    public Document(File file, HeaderDefinition headerDefinition, String encoding, String[] keywords, DocumentPropertiesLoader documentPropertiesLoader) {
         this.keywords = keywords.clone();
         this.file = file;
         this.headerDefinition = headerDefinition;
         this.encoding = encoding;
+        this.documentPropertiesLoader = documentPropertiesLoader;
     }
 
     public HeaderDefinition getHeaderDefinition() {
@@ -66,24 +71,26 @@ public final class Document {
             try {
                 String fileHeader = readFirstLines(file, header.getLineCount() + 10, encoding);
                 String fileHeaderOneLine = remove(fileHeader, headerDefinition.getFirstLine().trim(), headerDefinition.getEndLine().trim(), headerDefinition.getBeforeEachLine().trim(), "\n", "\r", "\t", " ");
-                return fileHeaderOneLine.contains(remove(header.asOneLineString(), headerDefinition.getFirstLine().trim(), headerDefinition.getEndLine().trim(), headerDefinition.getBeforeEachLine().trim()));
-            }
-            catch (IOException e) {
+                String headerOnOnelIne = mergeProperties(header.asOneLineString());
+                return fileHeaderOneLine.contains(remove(headerOnOnelIne, headerDefinition.getFirstLine().trim(), headerDefinition.getEndLine().trim(), headerDefinition.getBeforeEachLine().trim()));
+            } catch (IOException e) {
                 throw new IllegalStateException("Cannot read file " + getFile() + ". Cause: " + e.getMessage(), e);
             }
         }
         try {
-            String fileHeader = readFirstLines(file, header.getLineCount() + 10, encoding).replaceAll(" *\r?\n", "\n");
-            return header.isMatchForText(fileHeader,headerDefinition,true);
-        }
-        catch (IOException e) {
+            return header.isMatchForText(this, headerDefinition, true, encoding);
+        } catch (IOException e) {
             throw new IllegalStateException("Cannot read file " + getFile() + ". Cause: " + e.getMessage(), e);
         }
     }
 
     public void updateHeader(Header header) {
         String headerStr = header.applyDefinitionAndSections(parser.getHeaderDefinition(), parser.getFileContent().isUnix());
-        parser.getFileContent().insert(parser.getBeginPosition(), headerStr);
+        parser.getFileContent().insert(parser.getBeginPosition(), mergeProperties(headerStr));
+    }
+
+    public String mergeProperties(String str) {
+        return placeholderHelper.replacePlaceholders(str, documentPropertiesLoader.load(this));
     }
 
     public void save() {
@@ -113,8 +120,7 @@ public final class Document {
     public boolean is(Header header) {
         try {
             return header.getLocation().sameFile(this.file.toURI().toURL());
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new IllegalStateException("Error comparing document " + this.file + " with file " + file + ". Cause: " + e.getMessage(), e);
         }
     }

@@ -21,8 +21,6 @@ import com.mycila.xmltool.XMLTag;
 import org.junit.Test;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -51,9 +49,7 @@ public final class AdditionalHeaderDefinitionTest {
         assertEquals(loader.getDefinitions().get("xquery").getType(), "xquery");
         assertNull(loader.getDefinitions().get("xquery").getSkipLinePattern());
 
-        Map<String, String> props = new HashMap<String, String>();
-        props.put("year", "2008");
-        Header header = new Header(getClass().getResource("/test-header1.txt"), "UTF-8", props, null);
+        Header header = new Header(getClass().getResource("/test-header1.txt"), "UTF-8", null);
 
         //FileUtils.write(new File("src/test/resources/test-header3.txt"), header.buildForDefinition(loader.getDefinitions().get("xquery")));
 
@@ -78,9 +74,7 @@ public final class AdditionalHeaderDefinitionTest {
 
         AdditionalHeaderDefinition loader = new AdditionalHeaderDefinition(def);
 
-        Map<String, String> props = new HashMap<String, String>();
-        props.put("year", "2008");
-        Header header = new Header(getClass().getResource("/check/header.txt"), "UTF-8", props, null);
+        Header header = new Header(getClass().getResource("/check/header.txt"), "UTF-8", null);
 
         System.out.println(header.buildForDefinition(loader.getDefinitions().get("text"), false));
     }
@@ -99,9 +93,7 @@ public final class AdditionalHeaderDefinitionTest {
 
         AdditionalHeaderDefinition loader = new AdditionalHeaderDefinition(def);
 
-        Map<String, String> props = new HashMap<String, String>();
-        props.put("year", "2008");
-        Header header = new Header(getClass().getResource("/test-header1.txt"), "UTF-8", props, null);
+        Header header = new Header(getClass().getResource("/test-header1.txt"), "UTF-8", null);
 
         //FileUtils.write(new File("src/test/resources/test-header4.txt"), header.buildForDefinition(loader.getDefinitions().get("csregion"), false), System.getProperty("file.encoding"));
 

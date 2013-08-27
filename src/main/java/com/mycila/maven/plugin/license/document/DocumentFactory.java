@@ -30,13 +30,15 @@ public final class DocumentFactory {
     private final File basedir;
     private final String encoding;
     private final String[] keywords;
+    private final DocumentPropertiesLoader documentPropertiesLoader;
 
-    public DocumentFactory(File basedir, Map<String, String> mapping, Map<String, HeaderDefinition> definitions, String encoding, String[] keywords) {
+    public DocumentFactory(File basedir, Map<String, String> mapping, Map<String, HeaderDefinition> definitions, String encoding, String[] keywords, DocumentPropertiesLoader documentPropertiesLoader) {
         this.mapping = mapping;
         this.definitions = definitions;
         this.basedir = basedir;
         this.encoding = encoding;
         this.keywords = keywords.clone();
+        this.documentPropertiesLoader = documentPropertiesLoader;
     }
 
     public Document createDocuments(String file) {
@@ -51,7 +53,7 @@ public final class DocumentFactory {
                 break;
             }
         }
-        return new Document(new File(basedir, file), definitions.get(headerType), encoding, keywords);
+        return new Document(new File(basedir, file), definitions.get(headerType), encoding, keywords, documentPropertiesLoader);
     }
 
 }

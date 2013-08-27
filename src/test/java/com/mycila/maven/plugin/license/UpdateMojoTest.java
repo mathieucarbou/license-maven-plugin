@@ -15,6 +15,7 @@
  */
 package com.mycila.maven.plugin.license;
 
+import com.google.common.collect.ImmutableMap;
 import com.mycila.maven.plugin.license.util.FileUtils;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
 import org.junit.Test;
@@ -40,10 +41,11 @@ public final class UpdateMojoTest {
         updater.basedir = tmp;
         updater.header = "src/test/resources/update/header.txt";
         updater.project = new MavenProjectStub();
+        updater.properties = ImmutableMap.of("year", "2008");
         updater.execute();
 
-        assertEquals(FileUtils.read(new File(tmp, "doc1.txt"), System.getProperty("file.encoding")), "====\r\n    My @Copyright license 2\r\n====\r\n\r\nsome data\r\n");
-        assertEquals(FileUtils.read(new File(tmp, "doc2.txt"), System.getProperty("file.encoding")), "====\r\n    My @Copyright license 2\r\n====\r\n\r\nsome data\r\n");
+        assertEquals(FileUtils.read(new File(tmp, "doc1.txt"), System.getProperty("file.encoding")), "====\r\n    My @Copyright license 2 with my-custom-value and 2008 and doc1.txt\r\n====\r\n\r\nsome data\r\n");
+        assertEquals(FileUtils.read(new File(tmp, "doc2.txt"), System.getProperty("file.encoding")), "====\r\n    My @Copyright license 2 with my-custom-value and 2008 and doc2.txt\r\n====\r\n\r\nsome data\r\n");
     }
 
     @Test
@@ -57,6 +59,7 @@ public final class UpdateMojoTest {
         LicenseFormatMojo updater = new LicenseFormatMojo();
         updater.basedir = tmp;
         updater.header = "src/test/resources/update/header.txt";
+        updater.properties = ImmutableMap.of("year", "2008");
         updater.mapping = new HashMap<String, String>() {{
             put("properties", "SCRIPT_STYLE");
         }};
@@ -67,8 +70,8 @@ public final class UpdateMojoTest {
         String test2 = FileUtils.read(new File(tmp, "test2.properties"), System.getProperty("file.encoding"));
         String test3 = FileUtils.read(new File(tmp, "test3.properties"), System.getProperty("file.encoding"));
 
-        assertEquals(test1, test2);
-        assertEquals(test1, test3);
+        assertEquals(test1, test2.replace("test2.properties", "test1.properties"));
+        assertEquals(test1, test3.replace("test3.properties", "test1.properties"));
     }
 
     @Test
@@ -81,6 +84,7 @@ public final class UpdateMojoTest {
         LicenseFormatMojo updater = new LicenseFormatMojo();
         updater.basedir = tmp;
         updater.header = "src/test/resources/update/header.txt";
+        updater.properties = ImmutableMap.of("year", "2008");
         updater.mapping = new HashMap<String, String>() {{
             put("properties", "SCRIPT_STYLE");
         }};
@@ -91,7 +95,7 @@ public final class UpdateMojoTest {
             "\r\n" +
             "<?php\r\n" +
             "/*\r\n" +
-            " * My @Copyright license 2\r\n" +
+            " * My @Copyright license 2 with my-custom-value and 2008 and test1.php\r\n" +
             " */\r\n" +
             "\r\n" +
             "class Conference extends Service {}\r\n" +
@@ -101,7 +105,7 @@ public final class UpdateMojoTest {
             "\r\n" +
             "<?php\r\n" +
             "/*\r\n" +
-            " * My @Copyright license 2\r\n" +
+            " * My @Copyright license 2 with my-custom-value and 2008 and test2.php\r\n" +
             " */\r\n" +
             "\r\n" +
             "class Conference extends Service {}\r\n" +
@@ -119,18 +123,19 @@ public final class UpdateMojoTest {
         LicenseFormatMojo updater = new LicenseFormatMojo();
         updater.basedir = tmp;
         updater.header = "src/test/resources/update/header.txt";
+        updater.properties = ImmutableMap.of("year", "2008");
         updater.project = new MavenProjectStub();
         updater.execute();
 
         assertEquals(FileUtils.read(new File(tmp, "issue44-3.rb"), System.getProperty("file.encoding")), "#\n" +
-            "# My @Copyright license 2\n" +
+            "# My @Copyright license 2 with my-custom-value and 2008 and issue44-3.rb\n" +
             "#\n" +
             "\n" +
             "# code comment\n" +
             "ruby code here\n");
 
         assertEquals(FileUtils.read(new File(tmp, "test.asp"), System.getProperty("file.encoding")), "<%\n" +
-            "    My @Copyright license 2\n" +
+            "    My @Copyright license 2 with my-custom-value and 2008 and test.asp\n" +
             "%>" +
             "\n" +
             "asp code");
