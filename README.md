@@ -100,17 +100,31 @@ All plugin configuration options are described in the [Detailed Maven documentat
 ### Properties and placeholders ###
 
 Properties which can be used as placeholder comes from:
+
  - Environnment variables
  - POM properties
-  - `project.groupId`
-  - `project.artifactId`
-  - `project.version`
-  - `project.name`
-  - `project.description`
-  - `project.inceptionYear`
-  - `project.url`
+   - `project.groupId`
+   - `project.artifactId`
+   - `project.version`
+   - `project.name`
+   - `project.description`
+   - `project.inceptionYear`
+   - `project.url`
+ - Per-Document properties
+   - `file.name`
  - Plugin configuration properties (from `<properties>` tag)
  - System properties
+
+Properties are built per-document. You can provide a dependency JAR file to the plugin which contains an implementation of `com.mycila.maven.plugin.license.PropertiesProvider`:
+
+```
+public interface PropertiesProvider {
+    Map<String, String> getAdditionalProperties(AbstractLicenseMojo mojo, Properties currentProperties, Document document);
+}
+```
+
+You have access to the Mojo, the current built properties and the document being checked or formatted. The plugin uses the JDK ServiceLoader mechanism to find all `PropertiesProvider` implementations on the plugin classpath and execute them. Thus, just add the implementation class name in the file `META-INF/services/com.mycila.maven.plugin.license.PropertiesProvider` in your JAR file.
+
 
 ### Supported comment types ###
 
