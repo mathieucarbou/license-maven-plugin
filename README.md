@@ -158,6 +158,16 @@ The plugin has been designed so that it is very easy to add new supports for new
 	-->
 ```
 
+ - `XML_PER_LINE` (alternate XML-like comments)
+
+```
+	<!-- My first comment  -->
+	<!-- My second comment -->
+```
+
+(automatically right-adjusts the closing comment)
+
+
  - `DOUBLETILDE_STYLE` (APT-like comments): *.apt
 
 ```
@@ -355,11 +365,13 @@ In license-maven-plugin, each header style is defined by patterns to detect it a
             <firstLine>/**</firstLine>
             <beforeEachLine> * </beforeEachLine>
             <endLine> */</endLine>
+            <afterEachLine></afterEachLine>
             <!--skipLine></skipLine-->
             <firstLineDetectionPattern>(\s|\t)*/\*.*$</firstLineDetectionPattern>
             <lastLineDetectionPattern>.*\*/(\s|\t)*$</lastLineDetectionPattern>
             <allowBlankLines>false</allowBlankLines>
             <isMultiline>true</isMultiline>
+            <padLines>false</padLines>
         </javadoc_style>
     </additionalHeaders>
 
@@ -371,11 +383,13 @@ And for XML:
             <firstLine><![CDATA[<!--\n]]></firstLine>
             <beforeEachLine>    </beforeEachLine>
             <endLine><![CDATA[-->]]></endLine>
+            <afterEachLine></afterEachLine>
             <skipLine><![CDATA[^<\?xml.*>$]]></skipLine>
             <firstLineDetectionPattern><![CDATA[(\s|\t)*<!--.*$]]></firstLineDetectionPattern>
             <lastLineDetectionPattern><![CDATA[.*-->(\s|\t)*$]]></lastLineDetectionPattern>
             <allowBlankLines>false</allowBlankLines>
             <isMultiline>true</isMultiline>
+            <padLines>false</padLines>
         </javadoc_style>
     </additionalHeaders>
 

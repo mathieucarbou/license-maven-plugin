@@ -26,15 +26,18 @@ import java.util.regex.Pattern;
  */
 public final class HeaderDefinition {
     private final String type;
-    private String firstLine;
-    private String beforeEachLine;
-    private String endLine;
+    private String firstLine = "";
+    private String beforeEachLine = "";
+    private String endLine = "";
+    private String afterEachLine = "";
     private Boolean allowBlankLines;
 
     private Pattern skipLinePattern;
     private Pattern firstLineDetectionPattern;
     private Pattern lastLineDetectionPattern;
     private Boolean isMultiline;
+
+    private boolean padLines = false;
 
     /**
      * Constructs a new <code>HeaderDefinition</code> object with every header definition properties.
@@ -44,22 +47,31 @@ public final class HeaderDefinition {
      * @param beforeEachLine            The string to output before the content of each line of this header (except
      *                                  firstLine and endLine).
      * @param endLine                   The string to output before the content of the last line of this header.
+     * @param afterEachLine             The string to output after the content of each line of this header (except
+     *                                  firstLine and endLine).
      * @param skipLinePattern           The pattern of lines to skip before being allowed to output this header or null
      *                                  if it can be outputted from the line of the file.
      * @param firstLineDetectionPattern The pattern to detect the first line of a previous header.
      * @param lastLineDetectionPattern  The pattern to detect the last line of a previous header.
      * @throws IllegalArgumentException If the type name is null.
      */
-    public HeaderDefinition(String type, String firstLine, String beforeEachLine, String endLine, String skipLinePattern, String firstLineDetectionPattern, String lastLineDetectionPattern, boolean allowBlankLines, boolean isMultiline) {
+    public HeaderDefinition(String type,
+                            String firstLine, String beforeEachLine,
+                            String endLine, String afterEachLine,
+                            String skipLinePattern,
+                            String firstLineDetectionPattern, String lastLineDetectionPattern,
+                            boolean allowBlankLines, boolean isMultiline, boolean padLines) {
         this(type);
         this.firstLine = firstLine;
         this.beforeEachLine = beforeEachLine;
         this.endLine = endLine;
+        this.afterEachLine = afterEachLine;
         this.skipLinePattern = compile(skipLinePattern);
         this.firstLineDetectionPattern = compile(firstLineDetectionPattern);
         this.lastLineDetectionPattern = compile(lastLineDetectionPattern);
         this.allowBlankLines = allowBlankLines;
         this.isMultiline = isMultiline;
+        this.padLines = padLines;
         if (!"unknown".equals(type)) validate();
     }
 
@@ -95,12 +107,20 @@ public final class HeaderDefinition {
         return endLine;
     }
 
+    public String getAfterEachLine() {
+        return afterEachLine;
+    }
+
     public String getType() {
         return type;
     }
 
     public boolean allowBlankLines() {
         return allowBlankLines;
+    }
+
+    public boolean isPadLines() {
+        return padLines;
     }
 
     /**
@@ -161,8 +181,12 @@ public final class HeaderDefinition {
             beforeEachLine = value;
         else if ("endLine".equalsIgnoreCase(property))
             endLine = value;
+        else if ("afterEachLine".equalsIgnoreCase(property))
+            afterEachLine = value;
         else if ("skipLine".equalsIgnoreCase(property))
             skipLinePattern = compile(value);
+        else if ("padLines".equalsIgnoreCase(property))
+            padLines = Boolean.parseBoolean(value);
         else if ("firstLineDetectionPattern".equalsIgnoreCase(property))
             firstLineDetectionPattern = compile(value);
         else if ("lastLineDetectionPattern".equalsIgnoreCase(property))
@@ -180,6 +204,7 @@ public final class HeaderDefinition {
         check("firstLine", this.firstLine);
         check("beforeEachLine", this.beforeEachLine);
         check("endLine", this.endLine);
+        check("afterEachLine", this.afterEachLine);
         check("firstLineDetectionPattern", this.firstLineDetectionPattern);
         check("lastLineDetectionPattern", this.lastLineDetectionPattern);
         check("isMultiline", this.isMultiline);
@@ -194,7 +219,7 @@ public final class HeaderDefinition {
     }
 
     private void check(String name, String value) {
-        if (isEmpty(value)) {
+        if (value == null) {
             throw new IllegalStateException(String.format("The property '%s' is missing for header definition '%s'", name, type));
         }
     }

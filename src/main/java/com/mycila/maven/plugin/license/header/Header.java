@@ -37,6 +37,7 @@ public final class Header {
     private final String headerContentOneLine;
     private String[] lines;
     private final HeaderSection[] sections;
+    private final int maxLength;
 
     /**
      * Constructs a <code>Header</code> object pointing to a license template file. In case of the template contains
@@ -60,6 +61,15 @@ public final class Header {
         } catch (Exception e) {
             throw new IllegalArgumentException("Cannot read header document " + location + ". Cause: " + e.getMessage(), e);
         }
+
+        int maxLength = 0;
+        for (String line : lines) {
+            if (line.length() > maxLength) {
+                maxLength = line.length();
+            }
+        }
+
+        this.maxLength = maxLength;
     }
 
     public String asString() {
@@ -72,6 +82,10 @@ public final class Header {
 
     public int getLineCount() {
         return lines.length;
+    }
+
+    public int getMaxLineLength() {
+        return maxLength;
     }
 
     /**
@@ -89,18 +103,35 @@ public final class Header {
 
     public String buildForDefinition(HeaderDefinition type, boolean unix) {
         StringBuilder newHeader = new StringBuilder();
+        String unixEndOfLine = eol(unix);
         if (notEmpty(type.getFirstLine())) {
-            newHeader.append(type.getFirstLine().replace("EOL", eol(unix)));
-            newHeader.append(eol(unix));
+            String firstLine = type.getFirstLine().replace("EOL", unixEndOfLine);
+            newHeader.append(firstLine);
+            if (!firstLine.equals(unixEndOfLine)) {
+                newHeader.append(unixEndOfLine);
+            }
         }
         for (String line : getLines()) {
-            final String str = type.getBeforeEachLine().replace("EOL", eol(unix)) + line;
+            final String before = type.getBeforeEachLine().replace("EOL", unixEndOfLine);
+            final String after = type.getAfterEachLine().replace("EOL", unixEndOfLine);
+            final String str;
+
+            if (type.isPadLines()) {
+                str = before + StringUtils.padRight(line, maxLength) + after;
+            }
+            else {
+                str = before + line + after;
+            }
+
             newHeader.append(StringUtils.rtrim(str));
-            newHeader.append(eol(unix));
+            newHeader.append(unixEndOfLine);
         }
         if (notEmpty(type.getEndLine())) {
-            newHeader.append(type.getEndLine().replace("EOL", eol(unix)));
-            newHeader.append(eol(unix));
+            String endLine = type.getEndLine().replace("EOL", unixEndOfLine);
+            newHeader.append(endLine);
+            if (!endLine.equals(unixEndOfLine)) {
+                newHeader.append(unixEndOfLine);
+            }
         }
         return newHeader.toString();
     }
@@ -173,10 +204,17 @@ public final class Header {
                     for (int j = 0; j < tokens.length; j++) {
                         if (j > 0) {
                             b.append(eol(unix));
-                            if (notEmpty(headerDefinition.getBeforeEachLine()))
+                            if (notEmpty(headerDefinition.getBeforeEachLine())) {
                                 b.append(headerDefinition.getBeforeEachLine());
+                            }
+                            b.append(tokens[j]);
+                            if (notEmpty(headerDefinition.getAfterEachLine())) {
+                                b.append(headerDefinition.getAfterEachLine());
+                            }
                         }
-                        b.append(tokens[j]);
+                        else {
+                            b.append(tokens[j]);
+                        }
                     }
                 }
             }
