@@ -26,7 +26,7 @@ public final class HeaderTypeTest {
     @Test
     public void test() throws Exception {
         assertEquals(HeaderType.ASP.getDefinition().getType(), "asp");
-        assertEquals(HeaderType.defaultDefinitions().size(), 25);
+        assertEquals(HeaderType.defaultDefinitions().size(), HeaderType.values().length);
         System.out.println(HeaderType.defaultDefinitions().keySet());
     }
 }

@@ -29,36 +29,37 @@ import java.util.Map;
 public enum HeaderType {
     ////////// COMMENT TYPES //////////
 
-    //              FirstLine           Before              EndLine             SkipLine                    FirstLineDetection              LastLineDetection       allowBlankLines isMultiline
+    //              FirstLine           Before              EndLine             After             SkipLine                    FirstLineDetection              LastLineDetection       allowBlankLines isMultiline
     //generic
-    JAVADOC_STYLE("/**", " * ", " */", null, "(\\s|\\t)*/\\*.*$", ".*\\*/(\\s|\\t)*$", false, true),
-    SCRIPT_STYLE("#", "# ", "#EOL", "^#!.*$", "#.*$", "#.*$", false, false),
-    HAML_STYLE("-#", "-# ", "-#EOL", "^-#!.*$", "-#.*$", "-#.*$", false, false),
-    XML_STYLE("<!--EOL", "    ", "EOL-->", "^<\\?xml.*>$", "(\\s|\\t)*<!--.*$", ".*-->(\\s|\\t)*$", true, true),
-    SEMICOLON_STYLE(";", "; ", ";EOL", null, ";.*$", ";.*$", false, false),
-    APOSTROPHE_STYLE("'", "' ", "'EOL", null, "'.*$", "'.*$", false, false),
-    EXCLAMATION_STYLE("!", "! ", "!EOL", null, "!.*$", "!.*$", false, false),
-    DOUBLEDASHES_STYLE("--", "-- ", "--EOL", null, "--.*$", "--.*$", false, false),
-    SLASHSTAR_STYLE("/*", " * ", " */", null, "(\\s|\\t)*/\\*.*$", ".*\\*/(\\s|\\t)*$", false, true),
-    BRACESSTAR_STYLE("\\{*", " * ", " *\\}", null, "(\\s|\\t)*\\{\\*.*$", ".*\\*\\}(\\s|\\t)*$", false, true),
-    SHARPSTAR_STYLE("#*", " * ", " *#", null, "(\\s|\\t)*#\\*.*$", ".*\\*#(\\s|\\t)*$", false, true),
-    DOUBLETILDE_STYLE("~~", "~~ ", "~~EOL", null, "~~.*$", "~~.*$", false, false),
-    DYNASCRIPT_STYLE("<%--EOL", "    ", "EOL--%>", null, "(\\s|\\t)*<%--.*$", ".*--%>(\\s|\\t)*$", true, true),
-    DYNASCRIPT3_STYLE("<!---EOL", "    ", "EOL--->", null, "(\\s|\\t)*<!---.*$", ".*--->(\\s|\\t)*$", true, true),
-    PERCENT3_STYLE("%%%", "%%% ", "%%%EOL", null, "%%%.*$", "%%%.*$", false, false),
-    EXCLAMATION3_STYLE("!!!", "!!! ", "!!!EOL", null, "!!!.*$", "!!!.*$", false, false),
+    JAVADOC_STYLE("/**", " * ", " */", "", null, "(\\s|\\t)*/\\*.*$", ".*\\*/(\\s|\\t)*$", false, true, false),
+    SCRIPT_STYLE("#", "# ", "#EOL", "", "^#!.*$", "#.*$", "#.*$", false, false, false),
+    HAML_STYLE("-#", "-# ", "-#EOL", "", "^-#!.*$", "-#.*$", "-#.*$", false, false, false),
+    XML_STYLE("<!--EOL", "    ", "EOL-->", "", "^<\\?xml.*>$", "(\\s|\\t)*<!--.*$", ".*-->(\\s|\\t)*$", true, true, false),
+    XML_PER_LINE("EOL", "<!-- ", "EOL", " -->", "^<\\?xml.*>$", "(\\s|\\t)*<!--.*$", ".*-->(\\s|\\t)*$", true, false, true),
+    SEMICOLON_STYLE(";", "; ", ";EOL", "", null, ";.*$", ";.*$", false, false, false),
+    APOSTROPHE_STYLE("'", "' ", "'EOL", "", null, "'.*$", "'.*$", false, false, false),
+    EXCLAMATION_STYLE("!", "! ", "!EOL", "", null, "!.*$", "!.*$", false, false, false),
+    DOUBLEDASHES_STYLE("--", "-- ", "--EOL", "", null, "--.*$", "--.*$", false, false, false),
+    SLASHSTAR_STYLE("/*", " * ", " */", "", null, "(\\s|\\t)*/\\*.*$", ".*\\*/(\\s|\\t)*$", false, true, false),
+    BRACESSTAR_STYLE("\\{*", " * ", " *\\}", "", null, "(\\s|\\t)*\\{\\*.*$", ".*\\*\\}(\\s|\\t)*$", false, true, false),
+    SHARPSTAR_STYLE("#*", " * ", " *#", "", null, "(\\s|\\t)*#\\*.*$", ".*\\*#(\\s|\\t)*$", false, true, false),
+    DOUBLETILDE_STYLE("~~", "~~ ", "~~EOL", "", null, "~~.*$", "~~.*$", false, false, false),
+    DYNASCRIPT_STYLE("<%--EOL", "    ", "EOL--%>", "", null, "(\\s|\\t)*<%--.*$", ".*--%>(\\s|\\t)*$", true, true, false),
+    DYNASCRIPT3_STYLE("<!---EOL", "    ", "EOL--->", "", null, "(\\s|\\t)*<!---.*$", ".*--->(\\s|\\t)*$", true, true, false),
+    PERCENT3_STYLE("%%%", "%%% ", "%%%EOL", "", null, "%%%.*$", "%%%.*$", false, false, false),
+    EXCLAMATION3_STYLE("!!!", "!!! ", "!!!EOL", "", null, "!!!.*$", "!!!.*$", false, false, false),
 
-    DOUBLESLASH_STYLE("//", "// ", "//EOL", null, "//.*$", "//.*$", false, false),
+    DOUBLESLASH_STYLE("//", "// ", "//EOL", "", null, "//.*$", "//.*$", false, false, false),
     // non generic
-    PHP("/*", " * ", " */", "^<\\?php.*$", "(\\s|\\t)*/\\*.*$", ".*\\*/(\\s|\\t)*$", false, true),
-    ASP("<%", "    ", "%>", null, "(\\s|\\t)*<%[^@].*$", ".*%>(\\s|\\t)*$", true, true),
-    LUA("--[[EOL", "    ", "EOL]]", null, "--\\[\\[$", "\\]\\]$", true, true),
-    FTL("<#--EOL", "    ", "EOL-->", null, "(\\s|\\t)*<#--.*$", ".*-->(\\s|\\t)*$", true, true),
-    FTL_ALT("[#--EOL", "    ", "EOL--]", "\\[#ftl(\\s.*)?\\]", "(\\s|\\t)*\\[#--.*$", ".*--\\](\\s|\\t)*$", true, true),
-    TEXT("====", "    ", "====EOL", null, "====.*$", "====.*$", true, true),
-    BATCH("@REM", "@REM ", "@REMEOL", null, "@REM.*$", "@REM.*$", false, false),
+    PHP("/*", " * ", " */", "", "^<\\?php.*$", "(\\s|\\t)*/\\*.*$", ".*\\*/(\\s|\\t)*$", false, true, false),
+    ASP("<%", "    ", "%>", "", null, "(\\s|\\t)*<%[^@].*$", ".*%>(\\s|\\t)*$", true, true, false),
+    LUA("--[[EOL", "    ", "EOL]]", "", null, "--\\[\\[$", "\\]\\]$", true, true, false),
+    FTL("<#--EOL", "    ", "EOL-->", "", null, "(\\s|\\t)*<#--.*$", ".*-->(\\s|\\t)*$", true, true, false),
+    FTL_ALT("[#--EOL", "    ", "EOL--]", "", "\\[#ftl(\\s.*)?\\]", "(\\s|\\t)*\\[#--.*$", ".*--\\](\\s|\\t)*$", true, true, false),
+    TEXT("====", "    ", "====EOL", "", null, "====.*$", "====.*$", true, true, false),
+    BATCH("@REM", "@REM ", "@REMEOL", "", null, "@REM.*$", "@REM.*$", false, false, false),
     // unknown
-    UNKNOWN("", "", "", null, null, null, false, false);
+    UNKNOWN("", "", "", "", null, null, null, false, false, false);
 
     ////////////////////////////////////
 
@@ -78,8 +79,11 @@ public enum HeaderType {
 
     private final HeaderDefinition definition;
 
-    private HeaderType(String firstLine, String beforeEachLine, String endLine, String skipLinePattern, String firstLineDetectionPattern, String endLineDetectionPattern, boolean allowBlankLines, boolean isMultiline) {
-        definition = new HeaderDefinition(this.name().toLowerCase(), firstLine, beforeEachLine, endLine, skipLinePattern, firstLineDetectionPattern, endLineDetectionPattern, allowBlankLines, isMultiline);
+    private HeaderType(String firstLine, String beforeEachLine,
+                       String endLine, String afterEachLine,
+                       String skipLinePattern, String firstLineDetectionPattern, String endLineDetectionPattern,
+                       boolean allowBlankLines, boolean isMultiline, boolean padLines) {
+        definition = new HeaderDefinition(this.name().toLowerCase(), firstLine, beforeEachLine, endLine, afterEachLine, skipLinePattern, firstLineDetectionPattern, endLineDetectionPattern, allowBlankLines, isMultiline, padLines);
     }
 
     /**

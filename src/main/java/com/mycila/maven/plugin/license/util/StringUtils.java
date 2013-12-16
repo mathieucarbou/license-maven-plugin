@@ -34,4 +34,16 @@ public final class StringUtils {
         return s.substring(0, i + 1);
     }
 
+    public static String padRight(String s, int len) {
+        if (s == null || s.length() >= len) {
+            return s;
+        }
+
+        StringBuilder sb = new StringBuilder(len);
+        sb.append(s);
+        for (int i = s.length(); i < len; i++) {
+          sb.append(' ');
+        }
+        return sb.toString();
+    }
 }
