@@ -98,7 +98,7 @@
         <dependency>
             <groupId>com.mycila</groupId>
             <artifactId>mycila-xmltool</artifactId>
-            <version>4.0.ga</version>
+            <version>4.2.ga</version>
         </dependency>
 
         <dependency>
