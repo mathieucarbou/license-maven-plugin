@@ -104,7 +104,6 @@
         &lt;header&gt;com/mycila/maven/plugin/license/templates/APACHE-2.txt&lt;/header&gt;
         &lt;properties&gt;
             &lt;owner&gt;Mycila&lt;/owner&gt;
-            &lt;year&gt;${project.inceptionYear}&lt;/year&gt;
             &lt;email&gt;mathieu.carbou@gmail.com&lt;/email&gt;
         &lt;/properties&gt;
         &lt;excludes&gt;
@@ -229,6 +228,15 @@
         My comment
     --&gt;
 </code></pre>
+
+<ul>
+<li>
+<code>XML_PER_LINE</code> (alternate XML-like comments)</li>
+</ul><pre><code>    &lt;!-- My first comment  --&gt;
+    &lt;!-- My second comment --&gt;
+</code></pre>
+
+<p>(automatically right-adjusts the closing comment)</p>
 
 <ul>
 <li>
@@ -429,11 +437,13 @@
         &lt;firstLine&gt;/**&lt;/firstLine&gt;
         &lt;beforeEachLine&gt; * &lt;/beforeEachLine&gt;
         &lt;endLine&gt; */&lt;/endLine&gt;
+        &lt;afterEachLine&gt;&lt;/afterEachLine&gt;
         &lt;!--skipLine&gt;&lt;/skipLine--&gt;
         &lt;firstLineDetectionPattern&gt;(\s|\t)*/\*.*$&lt;/firstLineDetectionPattern&gt;
         &lt;lastLineDetectionPattern&gt;.*\*/(\s|\t)*$&lt;/lastLineDetectionPattern&gt;
         &lt;allowBlankLines&gt;false&lt;/allowBlankLines&gt;
         &lt;isMultiline&gt;true&lt;/isMultiline&gt;
+        &lt;padLines&gt;false&lt;/padLines&gt;
     &lt;/javadoc_style&gt;
 &lt;/additionalHeaders&gt;
 </code></pre>
@@ -446,11 +456,13 @@
         &lt;firstLine&gt;&lt;![CDATA[&lt;!--\n]]&gt;&lt;/firstLine&gt;
         &lt;beforeEachLine&gt;    &lt;/beforeEachLine&gt;
         &lt;endLine&gt;&lt;![CDATA[--&gt;]]&gt;&lt;/endLine&gt;
+        &lt;afterEachLine&gt;&lt;/afterEachLine&gt;
         &lt;skipLine&gt;&lt;![CDATA[^&lt;\?xml.*&gt;$]]&gt;&lt;/skipLine&gt;
         &lt;firstLineDetectionPattern&gt;&lt;![CDATA[(\s|\t)*&lt;!--.*$]]&gt;&lt;/firstLineDetectionPattern&gt;
         &lt;lastLineDetectionPattern&gt;&lt;![CDATA[.*--&gt;(\s|\t)*$]]&gt;&lt;/lastLineDetectionPattern&gt;
         &lt;allowBlankLines&gt;false&lt;/allowBlankLines&gt;
         &lt;isMultiline&gt;true&lt;/isMultiline&gt;
+        &lt;padLines&gt;false&lt;/padLines&gt;
     &lt;/javadoc_style&gt;
 &lt;/additionalHeaders&gt;
 </code></pre>
