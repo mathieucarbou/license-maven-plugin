@@ -49,7 +49,6 @@ __Plugin declaration__
             <header>com/mycila/maven/plugin/license/templates/APACHE-2.txt</header>
             <properties>
                 <owner>Mycila</owner>
-                <year>${project.inceptionYear}</year>
                 <email>mathieu.carbou@gmail.com</email>
             </properties>
             <excludes>
