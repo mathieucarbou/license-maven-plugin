@@ -17,6 +17,7 @@ package com.mycila.maven.plugin.license;
 
 import com.google.common.collect.ImmutableMap;
 import com.mycila.maven.plugin.license.util.FileUtils;
+import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
 import org.junit.Test;
 
@@ -24,6 +25,7 @@ import java.io.File;
 import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
@@ -46,6 +48,46 @@ public final class UpdateMojoTest {
 
         assertEquals(FileUtils.read(new File(tmp, "doc1.txt"), System.getProperty("file.encoding")), "====\r\n    My @Copyright license 2 with my-custom-value and 2008 and doc1.txt\r\n====\r\n\r\nsome data\r\n");
         assertEquals(FileUtils.read(new File(tmp, "doc2.txt"), System.getProperty("file.encoding")), "====\r\n    My @Copyright license 2 with my-custom-value and 2008 and doc2.txt\r\n====\r\n\r\nsome data\r\n");
+    }
+
+    @Test
+    public void test_skipExistingHeaders() throws Exception {
+        File tmp = new File("target/test/update");
+        tmp.mkdirs();
+        FileUtils.copyFileToFolder(new File("src/test/resources/update/doc1.txt"), tmp);
+        FileUtils.copyFileToFolder(new File("src/test/resources/update/doc2.txt"), tmp);
+
+        // only update those files without a copyright header
+        LicenseFormatMojo updater = new LicenseFormatMojo();
+        updater.basedir = tmp;
+        updater.header = "src/test/resources/update/header.txt";
+        updater.project = new MavenProjectStub();
+        updater.properties = ImmutableMap.of("year", "2008");
+        updater.skipExistingHeaders = true;
+        updater.execute();
+
+        assertEquals(FileUtils.read(new File(tmp, "doc1.txt"), System.getProperty("file.encoding")), "====\r\n    My @Copyright license 2 with my-custom-value and 2008 and doc1.txt\r\n====\r\n\r\nsome data\r\n");
+        assertEquals(FileUtils.read(new File(tmp, "doc2.txt"), System.getProperty("file.encoding")), "====\r\n    Copyright license\r\n====\r\n\r\nsome data\r\n");
+
+        // expect unchanged header to fail check against new header
+        LicenseCheckMojo check = new LicenseCheckMojo();
+        check.basedir = tmp;
+        check.header = "src/test/resources/update/header.txt";
+        check.project = new MavenProjectStub();
+        check.properties = ImmutableMap.of("year", "2008");
+        check.skipExistingHeaders = false;
+
+        try {
+            check.execute();
+            fail();
+        } catch (MojoExecutionException e) {
+            assertEquals("Some files do not have the expected license header", e.getMessage());
+            assertEquals(1, check.missingHeaders.size());
+        }
+
+        // check again ignoring unchanged headers, should not fail
+        check.skipExistingHeaders = true;
+        check.execute();
     }
 
     @Test
