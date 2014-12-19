@@ -20,6 +20,8 @@ import com.mycila.maven.plugin.license.header.HeaderDefinition;
 import java.io.File;
 import java.util.Map;
 
+import org.codehaus.plexus.util.FileUtils;
+
 /**
  * <b>Date:</b> 14-Feb-2008<br>
  * <b>Author:</b> Mathieu Carbou (mathieu.carbou@gmail.com)
@@ -47,8 +49,10 @@ public final class DocumentFactory {
 
     private Document getWrapper(String file) {
         String headerType = mapping.get("");
+        String lowerFileName = FileUtils.filename(file).toLowerCase();
         for (Map.Entry<String, String> entry : mapping.entrySet()) {
-            if (file.toLowerCase().endsWith("." + entry.getKey().toLowerCase())) {
+            String lowerKey = entry.getKey().toLowerCase();
+            if (lowerFileName.endsWith("." + lowerKey) || lowerFileName.equals(lowerKey)) {
                 headerType = entry.getValue().toLowerCase();
                 break;
             }
