@@ -52,7 +52,7 @@ public final class UpdateMojoTest {
 
     @Test
     public void test_skipExistingHeaders() throws Exception {
-        File tmp = new File("target/test/update");
+        File tmp = new File("target/test/test_skipExistingHeaders");
         tmp.mkdirs();
         FileUtils.copyFileToFolder(new File("src/test/resources/update/doc1.txt"), tmp);
         FileUtils.copyFileToFolder(new File("src/test/resources/update/doc2.txt"), tmp);
