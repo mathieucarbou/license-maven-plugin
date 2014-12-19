@@ -26,20 +26,20 @@
  :  modules (such as the XPath F&O, MarkLogic CTS, and MarkLogic
  :  XDMP modules) as well as generating xqDoc XML for user supplied
  :  XQuery.
- :  <p/>
+ :
  :  This is the version 1.0 interface for the xqDoc Web Service and
  :  maps to the version 1.0 WSDL for the xqDoc Web Service.
- :  <br/>
- :  <p/>
+ :
+ :
  :  Sample Invocations:
- :  <p/>
+ :
  :  Get the xqDoc XML for the May 2003 XPath F&O library module
  :  <p>
  :  <pre>
  :  import module "ml-xqdoc-ws-lib" at "/ml-xqdoc-ws-lib.xqy"
- :  <br/>
+ :
  :  declare namespace xqws="ml-xqdoc-ws-lib"
- :  <br/>
+ :
  :  xqws:get-xqdoc-module-xml((), $xqws:XPATHFO-MAY2003-URI,()) 
  :  </pre> 
  :  </p>
@@ -48,17 +48,17 @@
  :  <p>
  :  <pre>
  :  import module "ml-xqdoc-ws-lib" at "/ml-xqdoc-ws-lib.xqy"
- :  <br/>
+ :
  :  declare namespace xqws="ml-xqdoc-ws-lib"
- :  <br/>
+ :
  :  xqws:get-xqdoc-xquery-xml((),(),(),(),(),
- :  <br/>
+ :
  :                          xdmp:document-get("ml-xqdoc-ws-lib.xqy", 
- :  <br/>
+ :
  :                                            &amp;lt;options xmlns="xdmp:document-get"&amp;gt;
- :  <br/>
+ :
  :                                            &amp;lt;format&amp;gt;text&amp;lt;/format&amp;gt;
- :  <br/>
+ :
  :                                            &amp;lt;/options&amp;gt;) )
  :  </pre>
  :  </p>
@@ -72,27 +72,27 @@
  :  <p>
  :  <pre>
  :  import module "ml-xqdoc-ws-lib" at "/ml-xqdoc-ws-lib.xqy"
- :  <br/>
+ :
  :  declare namespace xqws="ml-xqdoc-ws-lib"
- :  <br/>
+ :
  :  xqws:get-xqdoc-xquery-xml((),(),(),
- :  <br/>
+ :
  :                          $xqws:XPATHFO-MAY2003-URI,
- :  <br/>
+ :
  :                          (xqws:build-prefix-ns-map($xqws:ML-XDMP-PREFIX,
- :  <br/>
+ :
  :                                                    $xqws:ML-XDMP-URI),
- :  <br/>
+ :
  :                           xqws:build-prefix-ns-map($xqws:ML-CTS-PREFIX,
- :  <br/>
+ :
  :                                                    $xqws:ML-CTS-URI)),
- :  <br/>
+ :
  :                          xdmp:document-get("ml-xqdoc-ws-lib.xqy", 
- :  <br/>
+ :
  :                                            &amp;lt;options xmlns="xdmp:document-get"&amp;gt;
- :  <br/>
+ :
  :                                            &amp;lt;format&amp;gt;text&amp;lt;/format&amp;gt;
- :  <br/>
+ :
  :                                            &amp;lt;/options&amp;gt;))
  :  </pre>
  :  </p>

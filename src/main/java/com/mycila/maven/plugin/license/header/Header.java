@@ -282,14 +282,14 @@ public final class Header {
      * header text, we extract out the remaining header text occurring
      * in-between those header sections and return an ordered list of the
      * segments.
-     * <p/>
+     *
      * As an example, if out text looked like:
-     * <p/>
+     *
      * "My name is NAME_SECTION and I work for COMPANY_SECTION most days."
-     * <p/>
+     *
      * where "NAME_SECTION" and "COMPANY_SECTION" are matched sections, the
      * resulting list should look like:
-     * <p/>
+     *
      * ["My name is ", " and I work for ", " most days."]
      *
      * @param expectedHeaderText the expected header text
@@ -325,16 +325,16 @@ public final class Header {
      * Given a potential file header and our expected segmented header text,
      * this method recursively searches through the expected segments, looking
      * for possible matches.
-     * <p/>
+     *
      * We recursively search through the potential header for each of the
      * expected text section, advancing our current text segment index and our
      * index into the potential header text. Each step of the recursion
      * considers all possible matches for a text segment, such that the
      * recursion tree will eventually consider ALL valid matches. This can be
      * useful when the user specifies a header like:
-     * <p/>
+     *
      * "Copyright YEAR NAME - License"
-     * <p/>
+     *
      * where "YEAR" and "NAME" are sections, meaning that we have to match a " "
      * in-between, which can potentially match in multiple places if the actual
      * values in the potential header contain spaces.

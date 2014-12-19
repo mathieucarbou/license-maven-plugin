@@ -22,7 +22,7 @@ import java.util.Properties;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
- * @date 2013-08-27
+ * 2013-08-27
  */
 public interface PropertiesProvider {
     Map<String, String> getAdditionalProperties(AbstractLicenseMojo mojo, Properties currentProperties, Document document);

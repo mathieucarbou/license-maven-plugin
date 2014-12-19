@@ -49,11 +49,11 @@ public final class ResourceFinder {
     }
 
     /**
-     * Find a resource by searching:<br/>
-     * 1. In the filesystem, relative to basedir<br/>
-     * 2. In the filesystem, as an absolute path (or relative to current execution directory)<br/>
-     * 3. In project classpath<br/>
-     * 4. In plugin classpath<br/>
+     * Find a resource by searching:
+     * 1. In the filesystem, relative to basedir
+     * 2. In the filesystem, as an absolute path (or relative to current execution directory)
+     * 3. In project classpath
+     * 4. In plugin classpath
      * 5. As a URL
      *
      * @param resource The resource to get

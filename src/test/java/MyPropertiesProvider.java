@@ -8,7 +8,7 @@ import java.util.Properties;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
- * @date 2013-08-27
+ * 2013-08-27
  */
 public final class MyPropertiesProvider implements PropertiesProvider {
     @Override

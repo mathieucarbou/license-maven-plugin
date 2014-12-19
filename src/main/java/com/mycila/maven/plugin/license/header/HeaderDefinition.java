@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 /**
  * The <code>HeaderDefinition</code> class defines what is needed to output a header text into the of the given file
  * type and what is needed to match the first line as well as the last line of a previous header of the given file
- * type.<br/> Optionally you can define the lines you want to skip before outputting the header.
+ * type. Optionally you can define the lines you want to skip before outputting the header.
  *
  * @author Cedric Pronzato
  */
@@ -160,7 +160,7 @@ public final class HeaderDefinition {
 
     /**
      * Sets header definition properties using its property name and its string value.<br> If you want to set a property
-     * to null you must not call this function.<br/> This function is mainly used while parsing properties from the XML
+     * to null you must not call this function. This function is mainly used while parsing properties from the XML
      * configuration file.
      *
      * @param property The property name.

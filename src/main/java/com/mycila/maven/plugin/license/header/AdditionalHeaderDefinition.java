@@ -24,9 +24,9 @@ import java.util.Map;
 /**
  * The class <code>AdditionalHeaderDefinition</code> is used to collect header definitions declared in an "external" XML
  * document configuration.
- * <p/>
- * The XML document must respect the following XML schema: <code>
- * <pre> &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+ *
+ * The XML document must respect the following XML schema: <pre>
+ * &lt;?xml version="1.0" encoding="UTF-8"?&gt;
  * &lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
  *          xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
  *   &lt;xs:element name="additionalHeaders" type="additionalHeadersType"/&gt;
@@ -57,7 +57,6 @@ import java.util.Map;
  *   &lt;/xs:complexType&gt;
  *  &lt;/xs:schema&gt;
  * </pre>
- * </code>
  *
  * @author Cedric Pronzato
  */
@@ -65,7 +64,7 @@ public final class AdditionalHeaderDefinition {
     private final Map<String, HeaderDefinition> definitions = new HashMap<String, HeaderDefinition>();
 
     /**
-     * Construct an <code>AdditionalHeaderDefinition<code> object using the given XML document as header definitions
+     * Construct an <code>AdditionalHeaderDefinition</code> object using the given XML document as header definitions
      * input.
      *
      * @param doc The XML definition to read.

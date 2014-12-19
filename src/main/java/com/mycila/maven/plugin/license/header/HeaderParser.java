@@ -20,8 +20,8 @@ import com.mycila.maven.plugin.license.util.StringUtils;
 
 /**
  * The <code>HeaderParser</code> class is used to get header information about the current header defined in the given
- * file.<br/> The achieve this it will use the <code>HeaderDefinition</code> associated to the type of the given file.
- * <p/>
+ * file. The achieve this it will use the <code>HeaderDefinition</code> associated to the type of the given file.
+ *
  * Important: is considered a license header a header which contains the word <em>copyright</em> (case insensitive)
  * within a section of the file which match the given <code>HeaderDefinition</code> associated to this
  * <code>HeaderParser</code>.
