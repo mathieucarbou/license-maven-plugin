@@ -1,3 +1,13 @@
+The following documentation is not up to date. 
+
+Please help if you want to contribute!
+
+__Lastest releases__ (note that it may take up to 1-2 days to be in Maven Central repository):
+
+* [2.8](http://repo1.maven.org/maven2/com/mycila/license-maven-plugin/2.8) (2015-01-23) - see [issues and pull requests](https://github.com/mycila/license-maven-plugin/issues?q=milestone%3A2.8)
+
+---------------
+
 **Table of Contents**
 
 - [Maven License Plugin](#maven-license-plugin)
