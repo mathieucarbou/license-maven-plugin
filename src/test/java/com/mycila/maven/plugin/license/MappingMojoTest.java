@@ -105,23 +105,23 @@ public final class MappingMojoTest {
         MockedLog logger = new MockedLog();
         check.setLog(new DefaultLog(logger));
         //check.setLog(new SystemStreamLog());
-        check.basedir = new File("src/test/resources/check");
+        check.basedir = new File("src/test/resources/extensionless");
         check.header = "header.txt";
         check.project = new MavenProjectStub();
-        check.includes = new String[]{"Dockerfile"};
+        check.includes = new String[]{"extensionless-file"};
         check.properties = new HashMap<String, String>() {{
             put("year", "2008");
         }};
 
         /* Run with no mapping first */
         check.execute();
-        assertTrue(logger.getContent().contains("Dockerfile [header style: unknown]"));
+        assertTrue(logger.getContent().contains("extensionless-file [header style: unknown]"));
 
         /* Add the mapping and expect the missing header */
         MockedLog mappedLogger = new MockedLog();
         check.setLog(new DefaultLog(mappedLogger));
         check.mapping = new HashMap<String, String>() {{
-            put("Dockerfile", "SCRIPT_STYLE");
+            put("extensionless-file", "SCRIPT_STYLE");
         }};
 
         try {
@@ -129,7 +129,7 @@ public final class MappingMojoTest {
             fail();
         } catch (MojoExecutionException e) {
             e.printStackTrace(System.out);
-            assertTrue(mappedLogger.getContent().contains("Dockerfile [header style: script_style]"));
+            assertTrue(mappedLogger.getContent().contains("extensionless-file [header style: script_style]"));
             assertEquals("Some files do not have the expected license header", e.getMessage());
         }
 
