@@ -66,7 +66,7 @@ final class MockedLog extends AbstractLogger {
 
     private void log(String message, Throwable throwable) {
         logEntries++;
-        pw.print(message);
+        pw.println(message);
         if(throwable != null) {
             throwable.printStackTrace(pw);
         }

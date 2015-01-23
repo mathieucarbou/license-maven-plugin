@@ -17,7 +17,6 @@ package com.mycila.maven.plugin.license;
 
 import com.mycila.maven.plugin.license.document.Document;
 import com.mycila.maven.plugin.license.header.Header;
-
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
@@ -42,12 +41,12 @@ public final class LicenseFormatMojo extends AbstractLicenseMojo {
                 document.parseHeader();
                 if (document.headerDetected()) {
                     if (skipExistingHeaders) {
-                        debug("Keeping license header in: %s", document.getFile());
+                        debug("Keeping license header in: %s", document.getFilePath());
                         return;
                     }
                     document.removeHeader();
                 }
-                info("Updating license header in: %s", document.getFile());
+                info("Updating license header in: %s", document.getFilePath());
                 document.updateHeader(header);
                 if (!dryRun) {
                     document.save();
@@ -61,7 +60,7 @@ public final class LicenseFormatMojo extends AbstractLicenseMojo {
 
             @Override
             public void onExistingHeader(Document document, Header header) {
-                debug("Header OK in: %s", document.getFile());
+                debug("Header OK in: %s", document.getFilePath());
             }
         };
 

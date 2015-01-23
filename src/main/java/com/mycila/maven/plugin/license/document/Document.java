@@ -58,6 +58,10 @@ public final class Document {
         return file;
     }
 
+    public String getFilePath() {
+        return getFile().getPath().replace('\\', '/');
+    }
+
     public String getEncoding() {
         return encoding;
     }
@@ -74,13 +78,13 @@ public final class Document {
                 String headerOnOnelIne = mergeProperties(header.asOneLineString());
                 return fileHeaderOneLine.contains(remove(headerOnOnelIne, headerDefinition.getFirstLine().trim(), headerDefinition.getEndLine().trim(), headerDefinition.getBeforeEachLine().trim()));
             } catch (IOException e) {
-                throw new IllegalStateException("Cannot read file " + getFile() + ". Cause: " + e.getMessage(), e);
+                throw new IllegalStateException("Cannot read file " + getFilePath() + ". Cause: " + e.getMessage(), e);
             }
         }
         try {
             return header.isMatchForText(this, headerDefinition, true, encoding);
         } catch (IOException e) {
-            throw new IllegalStateException("Cannot read file " + getFile() + ". Cause: " + e.getMessage(), e);
+            throw new IllegalStateException("Cannot read file " + getFilePath() + ". Cause: " + e.getMessage(), e);
         }
     }
 
@@ -102,7 +106,7 @@ public final class Document {
             try {
                 FileUtils.write(dest, parser.getFileContent().getContent(), encoding);
             } catch (IOException e) {
-                throw new IllegalStateException("Cannot write new header in file " + getFile() + ". Cause: " + e.getMessage(), e);
+                throw new IllegalStateException("Cannot write new header in file " + getFilePath() + ". Cause: " + e.getMessage(), e);
             }
         }
     }
@@ -137,6 +141,6 @@ public final class Document {
 
     @Override
     public String toString() {
-        return "Document " + getFile();
+        return "Document " + getFilePath();
     }
 }

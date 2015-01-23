@@ -47,17 +47,17 @@ public final class LicenseCheckMojo extends AbstractLicenseMojo {
                 if (skipExistingHeaders) {
                     document.parseHeader();
                     if (document.headerDetected()) {
-                        debug("Existing header in: %s", document.getFile());
+                        debug("Existing header in: %s", document.getFilePath());
                         return;
                     }
                 }
-                warn("Missing header in: %s", document.getFile());
+                warn("Missing header in: %s", document.getFilePath());
                 missingHeaders.add(document.getFile());
             }
 
             @Override
             public void onExistingHeader(Document document, Header header) {
-                debug("Header OK in: %s", document.getFile());
+                debug("Header OK in: %s", document.getFilePath());
             }
         };
 

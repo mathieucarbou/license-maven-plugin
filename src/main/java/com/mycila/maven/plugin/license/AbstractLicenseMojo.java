@@ -26,7 +26,6 @@ import com.mycila.maven.plugin.license.header.HeaderType;
 import com.mycila.maven.plugin.license.util.Selection;
 import com.mycila.maven.plugin.license.util.resource.ResourceFinder;
 import com.mycila.xmltool.XMLDoc;
-
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -216,7 +215,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
 
         @Override
         public void onUnknownFile(Document document, Header header) {
-            warn("Unknown file extension: %s", document.getFile());
+            warn("Unknown file extension: %s", document.getFilePath());
             unknownFiles.add(document.getFile());
         }
 
@@ -303,11 +302,11 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
                         @Override
                         public void run() {
                             Document document = documentFactory.createDocuments(file);
-                            debug("Selected file: %s [header style: %s]", document.getFile(), document.getHeaderDefinition());
+                            debug("Selected file: %s [header style: %s]", document.getFilePath(), document.getHeaderDefinition());
                             if (document.isNotSupported()) {
                                 callback.onUnknownFile(document, h);
                             } else if (document.is(h)) {
-                                debug("Skipping header file: %s", document.getFile());
+                                debug("Skipping header file: %s", document.getFilePath());
                             } else if (document.hasHeader(h, strictCheck)) {
                                 callback.onExistingHeader(document, h);
                             } else {
