@@ -41,7 +41,7 @@ public final class LicenseCheckMojo extends AbstractLicenseMojo {
         getLog().info("Checking licenses...");
         missingHeaders.clear();
 
-        execute(new Callback() {
+        AbstractCallback callback = new AbstractCallback() {
             @Override
             public void onHeaderNotFound(Document document, Header header) {
                 if (skipExistingHeaders) {
@@ -59,7 +59,9 @@ public final class LicenseCheckMojo extends AbstractLicenseMojo {
             public void onExistingHeader(Document document, Header header) {
                 debug("Header OK in: %s", document.getFile());
             }
-        });
+        };
+
+        execute(callback);
 
         if (!missingHeaders.isEmpty()) {
             if (failIfMissing) {
@@ -67,6 +69,8 @@ public final class LicenseCheckMojo extends AbstractLicenseMojo {
             }
             getLog().warn("Some files do not have the expected license header");
         }
+
+        callback.checkUnknown();
     }
 
 }

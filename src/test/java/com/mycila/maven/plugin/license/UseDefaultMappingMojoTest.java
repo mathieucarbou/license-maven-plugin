@@ -61,7 +61,7 @@ public final class UseDefaultMappingMojoTest {
             fail();
         } catch (MojoExecutionException e) {
             assertTrue(logger.getContent().contains("header style: text"));
-            assertTrue(logger.getContent().contains("Dockerfile [header style: unknown]"));
+            assertTrue(logger.getContent().contains("Header OK in: src/test/resources/check/Dockerfile"));
             assertEquals("Some files do not have the expected license header", e.getMessage());
         }
     }

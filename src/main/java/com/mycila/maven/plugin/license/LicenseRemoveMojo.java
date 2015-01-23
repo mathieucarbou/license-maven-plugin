@@ -35,7 +35,8 @@ public final class LicenseRemoveMojo extends AbstractLicenseMojo {
     public void execute() throws MojoExecutionException, MojoFailureException {
         getLog().info("Removing license headers...");
 
-        execute(new Callback() {
+        AbstractCallback callback = new AbstractCallback() {
+
             @Override
             public void onHeaderNotFound(Document document, Header header) {
                 debug("Header was not found in: %s (But keep trying to find another header to remove)", document.getFile());
@@ -47,7 +48,12 @@ public final class LicenseRemoveMojo extends AbstractLicenseMojo {
                 info("Removing license header from: %s", document.getFile());
                 remove(document);
             }
-        });
+
+        };
+
+        execute(callback);
+
+        callback.checkUnknown();
     }
 
     private void remove(Document document) {
