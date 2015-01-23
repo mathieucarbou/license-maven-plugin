@@ -134,4 +134,32 @@ public final class MappingMojoTest {
         }
 
     }
+
+
+    @Test
+    public void test_mapping_unknown_file() throws Exception {
+        LicenseCheckMojo check = new LicenseCheckMojo();
+        MockedLog logger = new MockedLog();
+        check.setLog(new DefaultLog(logger));
+        //check.setLog(new SystemStreamLog());
+        check.basedir = new File("src/test/resources/unknown");
+        check.header = "header.txt";
+        check.project = new MavenProjectStub();
+        check.includes = new String[]{"file.unknown"};
+        check.properties = new HashMap<String, String>() {{
+            put("year", "2008");
+        }};
+        check.failIfUnknown = true;
+
+        /* Run with no mapping first */
+        try {
+            check.execute();
+            fail();
+        } catch (MojoExecutionException e) {
+            String expected = "Unable to find a comment style definition for some "
+                    + "files. You may want to add a custom mapping for the relevant file extensions.";
+            assertEquals(expected, e.getMessage());
+        }
+
+    }
 }

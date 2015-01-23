@@ -26,6 +26,7 @@ import com.mycila.maven.plugin.license.header.HeaderType;
 import com.mycila.maven.plugin.license.util.Selection;
 import com.mycila.maven.plugin.license.util.resource.ResourceFinder;
 import com.mycila.xmltool.XMLDoc;
+
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -180,6 +181,18 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
     public boolean failIfMissing = true;
 
     /**
+     * You can leave this flag on {@code false} if you do not want the build to fail for files that do not have
+     * an implicit or explicit comment style definition. Setting this explicitly to {@code true} is
+     * a safe way to make sure that the effective file type mappings cover all files included from your project.
+     * <p>
+     * Default is {@code false} for backwards compatibility reasons.
+     *
+     * @since 2.8
+     */
+    @Parameter(property = "license.failIfUnknown", defaultValue = "false")
+    public boolean failIfUnknown = false;
+
+    /**
      * If dryRun is enabled, calls to license:format and license:remove will not overwrite the existing file but instead write the result to a new file with the same name but ending with `.licensed`
      */
     @Parameter(property = "license.dryRun", defaultValue = "false")
@@ -195,6 +208,30 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
     public MavenProject project;
 
     private ResourceFinder finder;
+
+    protected abstract class AbstractCallback implements Callback {
+
+        /** Related to {@link #failIfUnknown}. */
+        private final Collection<File> unknownFiles = new ConcurrentLinkedQueue<File>();
+
+        @Override
+        public void onUnknownFile(Document document, Header header) {
+            warn("Unknown file extension: %s", document.getFile());
+            unknownFiles.add(document.getFile());
+        }
+
+        public void checkUnknown() throws MojoExecutionException {
+            if (!unknownFiles.isEmpty()) {
+                String msg = "Unable to find a comment style definition for some "
+                        + "files. You may want to add a custom mapping for the relevant file extensions.";
+                if (failIfUnknown) {
+                    throw new MojoExecutionException(msg);
+                }
+                getLog().warn(msg);
+            }
+        }
+
+    }
 
     @SuppressWarnings({"unchecked"})
     public final void execute(final Callback callback) throws MojoExecutionException, MojoFailureException {
@@ -268,7 +305,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
                             Document document = documentFactory.createDocuments(file);
                             debug("Selected file: %s [header style: %s]", document.getFile(), document.getHeaderDefinition());
                             if (document.isNotSupported()) {
-                                warn("Unknown file extension: %s", document.getFile());
+                                callback.onUnknownFile(document, h);
                             } else if (document.is(h)) {
                                 debug("Skipping header file: %s", document.getFile());
                             } else if (document.hasHeader(h, strictCheck)) {

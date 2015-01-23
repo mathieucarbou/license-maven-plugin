@@ -26,4 +26,7 @@ public interface Callback {
     void onHeaderNotFound(Document document, Header header);
 
     void onExistingHeader(Document document, Header header);
+
+    void onUnknownFile(Document document, Header header);
+
 }
