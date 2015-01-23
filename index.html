@@ -4,9 +4,9 @@
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -31,7 +31,21 @@
         <hr>
 
         <section id="main_content">
-          <p><strong>Table of Contents</strong></p>
+          <p>The following documentation is not up to date. </p>
+
+<p>Please help if you want to contribute!</p>
+
+<p><strong>Lastest releases</strong> (note that it may take up to 1-2 days to be in Maven Central repository):</p>
+
+<ul>
+<li>
+<a href="http://repo1.maven.org/maven2/com/mycila/license-maven-plugin/2.8">2.8</a> (2015-01-23) - see <a href="https://github.com/mycila/license-maven-plugin/issues?q=milestone%3A2.8">issues and pull requests</a>
+</li>
+</ul>
+
+<hr>
+
+<p><strong>Table of Contents</strong></p>
 
 <ul>
 <li>
@@ -54,8 +68,10 @@
 </li>
 </ul>
 </li>
-</ul><h1>
-<a name="maven-license-plugin" class="anchor" href="#maven-license-plugin"><span class="octicon octicon-link"></span></a>Maven License Plugin</h1>
+</ul>
+
+<h1>
+<a id="maven-license-plugin" class="anchor" href="#maven-license-plugin" aria-hidden="true"><span class="octicon octicon-link"></span></a>Maven License Plugin</h1>
 
 <p>Basically, when you are developing a project either in open source or in a company, you often need to add at the top of your source files a license to protect your work. I didn't find any maven plugin on Internet to help you maintain these license headers. By maintaining, i mean checking if the header is here or not, generating a report and of course having the possibility to update / reformat missing license headers.</p>
 
@@ -74,7 +90,9 @@
 <code>custom mappings</code>: enables easy support of new file extensions</li>
 <li>
 <code>variable replacement</code>: You can add some variable in your header, such as ${year}, ${owner} and they will be replaced by the corresponding values taken from the pom or system properties.</li>
-</ul><p><strong>Project:</strong></p>
+</ul>
+
+<p><strong>Project:</strong></p>
 
 <ul>
 <li>
@@ -83,8 +101,10 @@
 <li>
 <strong>Issues:</strong> <a href="https://github.com/mycila/license-maven-plugin/issues">https://github.com/mycila/license-maven-plugin/issues</a>
 </li>
-</ul><h2>
-<a name="maven-repository" class="anchor" href="#maven-repository"><span class="octicon octicon-link"></span></a>Maven Repository</h2>
+</ul>
+
+<h2>
+<a id="maven-repository" class="anchor" href="#maven-repository" aria-hidden="true"><span class="octicon octicon-link"></span></a>Maven Repository</h2>
 
 <p><strong>Releases</strong> </p>
 
@@ -123,10 +143,10 @@
 </code></pre>
 
 <h2>
-<a name="documentation" class="anchor" href="#documentation"><span class="octicon octicon-link"></span></a>Documentation</h2>
+<a id="documentation" class="anchor" href="#documentation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Documentation</h2>
 
 <h3>
-<a name="detailed-maven-documentation" class="anchor" href="#detailed-maven-documentation"><span class="octicon octicon-link"></span></a>Detailed Maven documentation</h3>
+<a id="detailed-maven-documentation" class="anchor" href="#detailed-maven-documentation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Detailed Maven documentation</h3>
 
 <p>The detailed Maven Plugin Documentation generated for each build is available here:</p>
 
@@ -134,10 +154,12 @@
 <li><a href="http://mycila.github.io/license-maven-plugin/reports/2.0/index.html">2.0</a></li>
 <li><a href="http://mycila.github.io/license-maven-plugin/reports/2.2/index.html">2.2</a></li>
 <li><a href="http://mycila.github.io/license-maven-plugin/reports/2.3/index.html">2.3</a></li>
-</ul><p><strong>WARNING</strong>: there is good chances the latest version is greater than latest documentation, if nothing has changed concerning the plugin configurations.</p>
+</ul>
+
+<p><strong>WARNING</strong>: there is good chances the latest version is greater than latest documentation, if nothing has changed concerning the plugin configurations.</p>
 
 <h3>
-<a name="goals" class="anchor" href="#goals"><span class="octicon octicon-link"></span></a>Goals</h3>
+<a id="goals" class="anchor" href="#goals" aria-hidden="true"><span class="octicon octicon-link"></span></a>Goals</h3>
 
 <ul>
 <li>
@@ -146,8 +168,10 @@
 <code>license:format</code>: add the license header when missing. If a header is existing, it is updated to the new one.</li>
 <li>
 <code>license:remove</code>: remove existing license header</li>
-</ul><h3>
-<a name="configuration" class="anchor" href="#configuration"><span class="octicon octicon-link"></span></a>Configuration</h3>
+</ul>
+
+<h3>
+<a id="configuration" class="anchor" href="#configuration" aria-hidden="true"><span class="octicon octicon-link"></span></a>Configuration</h3>
 
 <p>The table below shows all the available options you can use in the configure section of the plugin. A lot of are also available from the command-line. To use them, simply launch your maven command with a property like <code>-Dproperty=value</code> (i.e. <code>mvn license:check -Dlicense.header=src/etc/header.txt</code>)</p>
 
@@ -157,8 +181,10 @@
 <li>
 <code>useDefaultExcludes</code>: The default exclusion list can be found <a href="https://github.com/mycila/license-maven-plugin/blob/master/src/main/java/com/mycila/maven/plugin/license/Default.java">here</a>
 </li>
-</ul><h3>
-<a name="license-templates" class="anchor" href="#license-templates"><span class="octicon octicon-link"></span></a>License templates</h3>
+</ul>
+
+<h3>
+<a id="license-templates" class="anchor" href="#license-templates" aria-hidden="true"><span class="octicon octicon-link"></span></a>License templates</h3>
 
 <p>Maven license plugin comes with the following license templates:</p>
 
@@ -170,10 +196,12 @@
 <li>MIT</li>
 <li>MPL 2</li>
 <li>WTFPL</li>
-</ul><p>You can find those license templates with preconfigured placeholders <a href="https://github.com/mycila/license-maven-plugin/tree/master/src/main/resources/com/mycila/maven/plugin/license/templates">here</a></p>
+</ul>
+
+<p>You can find those license templates with preconfigured placeholders <a href="https://github.com/mycila/license-maven-plugin/tree/master/src/main/resources/com/mycila/maven/plugin/license/templates">here</a></p>
 
 <h3>
-<a name="properties-and-placeholders" class="anchor" href="#properties-and-placeholders"><span class="octicon octicon-link"></span></a>Properties and placeholders</h3>
+<a id="properties-and-placeholders" class="anchor" href="#properties-and-placeholders" aria-hidden="true"><span class="octicon octicon-link"></span></a>Properties and placeholders</h3>
 
 <p>Properties which can be used as placeholder comes from:</p>
 
@@ -199,7 +227,9 @@
 </li>
 <li>Plugin configuration properties (from <code>&lt;properties&gt;</code> tag)</li>
 <li>System properties</li>
-</ul><p>Properties are built per-document. You can provide a dependency JAR file to the plugin which contains an implementation of <code>com.mycila.maven.plugin.license.PropertiesProvider</code>:</p>
+</ul>
+
+<p>Properties are built per-document. You can provide a dependency JAR file to the plugin which contains an implementation of <code>com.mycila.maven.plugin.license.PropertiesProvider</code>:</p>
 
 <pre><code>public interface PropertiesProvider {
     Map&lt;String, String&gt; getAdditionalProperties(AbstractLicenseMojo mojo, Properties currentProperties, Document document);
@@ -209,14 +239,16 @@
 <p>You have access to the Mojo, the current built properties and the document being checked or formatted. The plugin uses the JDK ServiceLoader mechanism to find all <code>PropertiesProvider</code> implementations on the plugin classpath and execute them. Thus, just add the implementation class name in the file <code>META-INF/services/com.mycila.maven.plugin.license.PropertiesProvider</code> in your JAR file.</p>
 
 <h3>
-<a name="supported-comment-types" class="anchor" href="#supported-comment-types"><span class="octicon octicon-link"></span></a>Supported comment types</h3>
+<a id="supported-comment-types" class="anchor" href="#supported-comment-types" aria-hidden="true"><span class="octicon octicon-link"></span></a>Supported comment types</h3>
 
 <p>The plugin has been designed so that it is very easy to add new supports for new sorts of comment. The plugin currently support these types of comment:</p>
 
 <ul>
 <li>
 <code>JAVADOC_STYLE</code> (Java-like comments): *.java, *.groovy, *.css, *.cs, *.as, *.aj, *.c, *.h, *.cpp</li>
-</ul><pre><code>    /**
+</ul>
+
+<pre><code>    /**
      * My comment
      */
 </code></pre>
@@ -224,7 +256,9 @@
 <ul>
 <li>
 <code>XML_STYLE</code> (XML-like comments): *.pom, *.xml, *.xhtml, *.mxml, *.dtd, *.xsd, *.jspx, *.fml, *.xsl, *.html, *.htm, *.kml, *.gsp, *.tld</li>
-</ul><pre><code>    &lt;!--
+</ul>
+
+<pre><code>    &lt;!--
         My comment
     --&gt;
 </code></pre>
@@ -232,7 +266,9 @@
 <ul>
 <li>
 <code>XML_PER_LINE</code> (alternate XML-like comments)</li>
-</ul><pre><code>    &lt;!-- My first comment  --&gt;
+</ul>
+
+<pre><code>    &lt;!-- My first comment  --&gt;
     &lt;!-- My second comment --&gt;
 </code></pre>
 
@@ -241,31 +277,41 @@
 <ul>
 <li>
 <code>DOUBLETILDE_STYLE</code> (APT-like comments): *.apt</li>
-</ul><pre><code>    ~~ My comment
+</ul>
+
+<pre><code>    ~~ My comment
 </code></pre>
 
 <ul>
 <li>
 <code>SCRIPT_STYLE</code> (Property file or shell comments): *.properties, *.sh, *.py, *.rb, *.pl, *.pm</li>
-</ul><pre><code>    # My comment
+</ul>
+
+<pre><code>    # My comment
 </code></pre>
 
 <ul>
 <li>
 <code>HAML_STYLE</code>: *.haml, *.scaml</li>
-</ul><pre><code>    -# My comment
+</ul>
+
+<pre><code>    -# My comment
 </code></pre>
 
 <ul>
 <li>
 <code>BATCH</code> (Windows batch comments): *.bat, *.cmd</li>
-</ul><pre><code>    @REM My comment
+</ul>
+
+<pre><code>    @REM My comment
 </code></pre>
 
 <ul>
 <li>
 <code>TEXT</code> (Text like comments): *.txt</li>
-</ul><pre><code>    ====
+</ul>
+
+<pre><code>    ====
         My comment
     ====
 </code></pre>
@@ -275,7 +321,9 @@
 <ul>
 <li>
 <code>DOUBLEDASHES_STYLE</code> (Sql like comments): *.sql, *.adb, *.ads, *.e</li>
-</ul><pre><code>    --
+</ul>
+
+<pre><code>    --
     -- test comment
     --
 </code></pre>
@@ -283,7 +331,9 @@
 <ul>
 <li>
 <code>DYNASCRIPT_STYLE</code> (JSP like comments): *.jsp</li>
-</ul><pre><code>    &lt;%--
+</ul>
+
+<pre><code>    &lt;%--
         comment
     --%&gt;
 </code></pre>
@@ -291,7 +341,9 @@
 <ul>
 <li>
 <code>FTL</code> (FreeMarker like comments): *.ftl</li>
-</ul><pre><code>    &lt;#--
+</ul>
+
+<pre><code>    &lt;#--
         comment
     --&gt;
 </code></pre>
@@ -299,7 +351,9 @@
 <ul>
 <li>
 <code>FTL_ALT</code> (FreeMarker Alternative Syntax comments)</li>
-</ul><pre><code>    [#ftl ...]
+</ul>
+
+<pre><code>    [#ftl ...]
     [#--
         comment
     --]
@@ -308,7 +362,9 @@
 <ul>
 <li>
 <code>SHARPSTAR_STYLE</code> (Velocity templates comments): *.vm</li>
-</ul><pre><code>    #*
+</ul>
+
+<pre><code>    #*
         comment
     *#
 </code></pre>
@@ -316,7 +372,9 @@
 <ul>
 <li>
 <code>SEMICOLON_STYLE</code> (Assembler like comments): *.asm</li>
-</ul><pre><code>    ;
+</ul>
+
+<pre><code>    ;
     ; comment
     ;
 </code></pre>
@@ -324,7 +382,9 @@
 <ul>
 <li>
 <code>BRACESSTAR_STYLE</code> (Delphi like comments): *.pas</li>
-</ul><pre><code>    {*
+</ul>
+
+<pre><code>    {*
      * comment
      *}
 </code></pre>
@@ -332,7 +392,9 @@
 <ul>
 <li>
 <code>APOSTROPHE_STYLE</code> (VisualBasic like comments): *.bas</li>
-</ul><pre><code>    '
+</ul>
+
+<pre><code>    '
     ' comment
     '
 </code></pre>
@@ -340,7 +402,9 @@
 <ul>
 <li>
 <code>EXCLAMATION_STYLE</code> (Fortran like comments): *.f</li>
-</ul><pre><code>    !
+</ul>
+
+<pre><code>    !
     ! comment
     !
 </code></pre>
@@ -348,7 +412,9 @@
 <ul>
 <li>
 <code>SLASHSTAR_STYLE</code> (JavaScript like comments): *.js</li>
-</ul><pre><code>    /*
+</ul>
+
+<pre><code>    /*
      * comment
      */
 </code></pre>
@@ -356,7 +422,9 @@
 <ul>
 <li>
 <code>DYNASCRIPT3_STYLE</code> (Coldfusion like comments): *.cfc, *.cfm</li>
-</ul><pre><code>    &lt;!---
+</ul>
+
+<pre><code>    &lt;!---
         comment
     ---&gt;
 </code></pre>
@@ -364,7 +432,9 @@
 <ul>
 <li>
 <code>PERCENT3_STYLE</code> (Erlang like comments): *.erl, *.hrl</li>
-</ul><pre><code>    %%%
+</ul>
+
+<pre><code>    %%%
     %%% comment
     %%%
 </code></pre>
@@ -372,7 +442,9 @@
 <ul>
 <li>
 <code>EXCLAMATION3_STYLE</code> (Lisp like comments): *.el</li>
-</ul><pre><code>    !!!
+</ul>
+
+<pre><code>    !!!
     !!! comment
     !!!
 </code></pre>
@@ -380,7 +452,9 @@
 <ul>
 <li>
 <code>LUA</code> (Lua like comments): *.lua</li>
-</ul><pre><code>    --[[
+</ul>
+
+<pre><code>    --[[
     comment
     ]]
 </code></pre>
@@ -388,7 +462,9 @@
 <ul>
 <li>
 <code>ASP</code> (Asp like comments): *.asp</li>
-</ul><pre><code>    &lt;%
+</ul>
+
+<pre><code>    &lt;%
     ' comment
     %&gt;
 </code></pre>
@@ -396,7 +472,9 @@
 <ul>
 <li>
 <code>PHP</code> (PHP comments): *.php</li>
-</ul><pre><code>    /*
+</ul>
+
+<pre><code>    /*
      * comment
      */
 </code></pre>
@@ -406,7 +484,9 @@
 <ul>
 <li>
 <code>DOUBLESLASH_STYLE</code> (often used comments style)</li>
-</ul><pre><code>    //
+</ul>
+
+<pre><code>    //
     // comment
     //
 </code></pre>
@@ -427,7 +507,7 @@
 <p>You can use composed-extensions like *.apt.vm and redefine them, but you will have to nake sure that the mapping of <code>apt.vm</code> is <em>before</em> the mapping of the <code>vm</code> extension. The order in the mapping section is important: extensions seen first take precedence.</p>
 
 <h3>
-<a name="changing-header-style-definitions" class="anchor" href="#changing-header-style-definitions"><span class="octicon octicon-link"></span></a>Changing header style definitions</h3>
+<a id="changing-header-style-definitions" class="anchor" href="#changing-header-style-definitions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Changing header style definitions</h3>
 
 <p>In license-maven-plugin, each header style is defined by patterns to detect it and also strings to insert it correctly in files. If we take for example the Javadoc style header definition. It is defined as follow:</p>
 
@@ -494,7 +574,9 @@
 <code>allowBlankLines</code> allows you to define if this header style supports blank lines in it or not. In example, in XML headers, you could have blank lines after the &lt;!-- and before --&gt; because XML delimiters delimit a multiline block. When you work with script style comments like in Ruby, Porperties files, the # character delimit a comment for only one line. So when you create the header, for it to be uniform, you place # on each line. So allowBlankLines will be false.</li>
 <li>
 <code>isMultiline</code> specifies if your header has tokens to delimit a multiline comment of if the tokens are a one-line comment. I.E.: XML style comments are multiline whereas script style comment where each line starts with # are not multiline</li>
-</ul><p>You now have to add this new header definition file to the plugin configuration. It is done as the following in your pom:</p>
+</ul>
+
+<p>You now have to add this new header definition file to the plugin configuration. It is done as the following in your pom:</p>
 
 <pre><code>&lt;headerDefinitions&gt;
    &lt;headerDefinition&gt;yourdefinition.xml&lt;/headerDefinition&gt;
