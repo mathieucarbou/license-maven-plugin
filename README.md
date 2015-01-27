@@ -38,6 +38,7 @@ __Project:__
 
  - __Build Status:__ [![Build Status](https://travis-ci.org/mycila/license-maven-plugin.png?branch=master)](https://travis-ci.org/mycila/license-maven-plugin)
  - __Issues:__ https://github.com/mycila/license-maven-plugin/issues
+ - __License:__ [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0)
 
 ## Maven Repository ##
 
