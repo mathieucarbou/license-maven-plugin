@@ -42,6 +42,7 @@
 
     <modules>
         <module>license-maven-plugin</module>
+        <module>license-maven-plugin-git</module>
     </modules>
 
     <scm>
