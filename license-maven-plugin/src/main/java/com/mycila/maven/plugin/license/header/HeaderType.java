@@ -50,6 +50,7 @@ public enum HeaderType {
     EXCLAMATION3_STYLE("!!!", "!!! ", "!!!EOL", "", null, "!!!.*$", "!!!.*$", false, false, false),
 
     DOUBLESLASH_STYLE("//", "// ", "//EOL", "", null, "//.*$", "//.*$", false, false, false),
+    TRIPLESLASH_STYLE("///", "/// ", "///EOL", "", null, "///.*$", "///.*$", false, false, false),
     // non generic
     PHP("/*", " * ", " */", "", "^<\\?php.*$", "(\\s|\\t)*/\\*.*$", ".*\\*/(\\s|\\t)*$", false, true, false),
     ASP("<%", "    ", "%>", "", null, "(\\s|\\t)*<%[^@].*$", ".*%>(\\s|\\t)*$", true, true, false),
