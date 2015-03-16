@@ -92,6 +92,7 @@ public enum DocumentType {
     TS("ts", HeaderType.TRIPLESLASH_STYLE),
     YAML("yaml", HeaderType.SCRIPT_STYLE),
     YML("yml", HeaderType.SCRIPT_STYLE),
+    MUSTACHE("mustache", HeaderType.MUSTACHE_STYLE),
     UNKNOWN("", HeaderType.UNKNOWN);
 
     ////////////////////////////////////
