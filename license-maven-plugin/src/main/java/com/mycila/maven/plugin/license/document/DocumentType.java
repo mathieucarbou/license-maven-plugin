@@ -89,9 +89,10 @@ public enum DocumentType {
     TLD("tld", HeaderType.XML_STYLE),
     TAGX("tagx", HeaderType.XML_STYLE),
     DOCKERFILE("Dockerfile", HeaderType.SCRIPT_STYLE),
-    TS("ts", HeaderType.SLASHSTAR_STYLE),
+    TS("ts", HeaderType.TRIPLESLASH_STYLE),
     YAML("yaml", HeaderType.SCRIPT_STYLE),
     YML("yml", HeaderType.SCRIPT_STYLE),
+    MUSTACHE("mustache", HeaderType.MUSTACHE_STYLE),
     UNKNOWN("", HeaderType.UNKNOWN);
 
     ////////////////////////////////////
