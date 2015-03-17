@@ -360,6 +360,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
         props.put("project.name", project.getName());
         props.put("project.description", project.getDescription());
         props.put("project.inceptionYear", project.getInceptionYear());
+        props.put("project.organization.name", project.getOrganization().getName());
         props.put("project.url", project.getUrl());
         // then add per document properties
         props.put("file.name", document.getFile().getName());
