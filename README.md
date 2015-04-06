@@ -112,7 +112,6 @@ Maven license plugin comes with the following license templates:
  - AGPL 3
  - APACHE 2
  - BSD 2, 3, 4
- - EPL 1
  - LGPL 3
  - MIT
  - MPL 2
@@ -133,7 +132,6 @@ Properties which can be used as placeholder comes from:
    - `project.name`
    - `project.description`
    - `project.inceptionYear`
-   - `project.organization.name`
    - `project.url`
  - Per-Document properties
    - `file.name`
