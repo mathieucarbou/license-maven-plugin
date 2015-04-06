@@ -102,7 +102,7 @@ The table below shows all the available options you can use in the configure sec
 
 All plugin configuration options are described in the [Detailed Maven documentation](#detailed-maven-documentation) but here are some details.
 
- - `useDefaultExcludes`: The default exclusion list can be found [here](https://github.com/mycila/license-maven-plugin/blob/master/src/main/java/com/mycila/maven/plugin/license/Default.java)
+ - `useDefaultExcludes`: The default exclusion list can be found [here](https://github.com/mycila/license-maven-plugin/blob/master/license-maven-plugin/src/main/java/com/mycila/maven/plugin/license/Default.java)
 
 
 ### License templates ###
@@ -118,7 +118,7 @@ Maven license plugin comes with the following license templates:
  - WTFPL
  - UNLICENSE
 
-You can find those license templates with preconfigured placeholders [here](https://github.com/mycila/license-maven-plugin/tree/master/src/main/resources/com/mycila/maven/plugin/license/templates)
+You can find those license templates with preconfigured placeholders [here](https://github.com/mycila/license-maven-plugin/tree/master/license-maven-plugin/src/main/resources/com/mycila/maven/plugin/license/templates)
 
 ### Properties and placeholders ###
 
