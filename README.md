@@ -116,6 +116,7 @@ Maven license plugin comes with the following license templates:
  - MIT
  - MPL 2
  - WTFPL
+ - UNLICENSE
 
 You can find those license templates with preconfigured placeholders [here](https://github.com/mycila/license-maven-plugin/tree/master/src/main/resources/com/mycila/maven/plugin/license/templates)
 
