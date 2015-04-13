@@ -116,6 +116,9 @@ public final class Default {
         "**/*.ipr",
         "**/*.iws",
         ".idea/**",
+        
+        // Netbeans
+        "**/nb-configuration.xml",
 
         // descriptors
         "**/MANIFEST.MF",

@@ -41,4 +41,30 @@ public final class UseDefaultExcludesMojoTest {
             assertEquals("Some files do not have the expected license header", e.getMessage());
         }
     }
+    
+    @Test
+    public void check_defaultExcludes_exclude_Netbeans_Configuration() throws Exception {
+        LicenseCheckMojo check = new LicenseCheckMojo();
+        check.basedir = new File("src/test/resources/excludes/issue-68");
+        check.header = "header.txt";
+        check.project = new MavenProjectStub();
+        check.useDefaultExcludes = true;
+        check.strictCheck = true;
+        check.execute();
+    }
+    
+    @Test
+    public void check_withoutDefaultExcludes_Netbeans_Configuration_Is_Reported() {
+        try {
+            LicenseCheckMojo check = new LicenseCheckMojo();
+            check.basedir = new File("src/test/resources/excludes/issue-68");
+            check.header = "header.txt";
+            check.project = new MavenProjectStub();
+            check.useDefaultExcludes = false;
+            check.strictCheck = true;
+            check.execute();
+        } catch (Exception e) {
+            assertEquals("Some files do not have the expected license header", e.getMessage());
+        }
+    }
 }
