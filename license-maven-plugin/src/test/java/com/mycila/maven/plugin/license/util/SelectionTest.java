@@ -47,7 +47,7 @@ public final class SelectionTest {
     @Test
     public void test_limit_inclusion_and_check_default_excludes() {
         Selection selection = new Selection(new File("."), new String[]{"toto"}, new String[0], true);
-        assertEquals(selection.getExcluded().length, 89); // default exludes from Scanner and Selection + toto
+        assertEquals(selection.getExcluded().length, Default.EXCLUDES.length); // default exludes from Scanner and Selection + toto
         assertEquals(selection.getIncluded().length, 1);
         assertEquals(selection.getSelectedFiles().length, 0);
         assertTrue(Arrays.asList(selection.getExcluded()).containsAll(Arrays.asList(Default.EXCLUDES)));
