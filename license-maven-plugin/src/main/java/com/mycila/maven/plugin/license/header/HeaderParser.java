@@ -111,13 +111,31 @@ public final class HeaderParser {
     private int findBeginPosition() {
         int beginPos = 0;
         line = fileContent.nextLine();
-        if (headerDefinition.getSkipLinePattern() == null)
+        if (headerDefinition.getSkipLinePattern() == null) {
             return beginPos;
-        while (line != null && !headerDefinition.isSkipLine(line))
+        }
+
+        // the format expect to find lines to be skipped
+        while (line != null && !headerDefinition.isSkipLine(line)) {
+            beginPos = fileContent.getPosition();
             line = fileContent.nextLine();
-        if (line == null) fileContent.reset();
-        beginPos = line == null ? 0 : fileContent.getPosition();
-        line = fileContent.nextLine();
+        }
+        
+        // at least we have found the line to skip or we are the end of the file
+        // this time we are going to skip next lines if they match the skip pattern
+        while (line != null && headerDefinition.isSkipLine(line)) {
+            beginPos = fileContent.getPosition();
+            line = fileContent.nextLine();
+        }
+        
+        if (line == null) {
+            // After skipping everything we are at the end of the file
+            // Header has to be at the file beginning
+            beginPos = 0;
+            fileContent.reset();
+            line = fileContent.nextLine();
+        }
+        
         return beginPos;
     }
 

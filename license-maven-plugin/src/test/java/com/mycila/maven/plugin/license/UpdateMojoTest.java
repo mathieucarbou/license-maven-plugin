@@ -16,16 +16,22 @@
 package com.mycila.maven.plugin.license;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.io.Files;
 import com.mycila.maven.plugin.license.util.FileUtils;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
 import org.junit.Test;
 
 import java.io.File;
+import java.nio.charset.Charset;
 import java.util.HashMap;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
+
+import static org.hamcrest.CoreMatchers.*;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
@@ -195,9 +201,7 @@ public final class UpdateMojoTest {
         updater.header = "src/test/resources/update/issue14/header.txt";
         updater.project = new MavenProjectStub();
         updater.execute();
-
-        assertEquals(
-            "#" + LS + "" +
+        final String expectedString = "#" + LS + "" +
                 "# Copyright (C) 2013 Salzburg Research." + LS + "" +
                 "#" + LS + "" +
                 "# Licensed under the Apache License, Version 2.0 (the \"License\");" + LS + "" +
@@ -219,8 +223,32 @@ public final class UpdateMojoTest {
                 "# get sequence numbers" + LS + "" +
                 "seq.nodes              = SELECT nextval('seq_nodes')" + LS + "" +
                 "seq.triples            = SELECT nextval('seq_triples')" + LS + "" +
-                "seq.namespaces         = SELECT nextval('seq_namespaces')" + LS + "",
-            FileUtils.read(new File(tmp, "test.properties"), System.getProperty("file.encoding")));
-    }
+                "seq.namespaces         = SELECT nextval('seq_namespaces')" + LS + "";
+        final String readModifiedContent = FileUtils.read(new File(tmp, "test.properties"), System.getProperty("file.encoding"));
 
+        assertEquals(expectedString, readModifiedContent);
+    }
+    
+    @Test
+    public void test_issue71_canSkipSeveralLines() throws Exception {
+        File tmp = new File("target/test/update/issue71");
+        tmp.mkdirs();
+        FileUtils.copyFileToFolder(new File("src/test/resources/issues/issue-71/issue-71.txt.extended"), tmp);
+
+        LicenseFormatMojo updater = new LicenseFormatMojo();
+        updater.basedir = tmp;
+        updater.header = "src/test/resources/issues/issue-71/issue-71-header.txt";
+        updater.project = new MavenProjectStub();
+        updater.mapping = new HashMap<String, String>() {{
+            put("txt.extended", "EXTENDED_STYLE");
+        }};
+        updater.headerDefinitions = new String[]{"/issues/issue-71/issue-71-additionalHeaderDefinitions.xml"};
+        updater.execute();
+        
+        
+        // Check that all the skipable header has been correctly skipped
+        List<String> linesOfModifiedFile = Files.readLines(new File(tmp, "issue-71.txt.extended"), Charset.defaultCharset());
+        assertThat(linesOfModifiedFile.get(0 /* line 1 */), is("|||"));
+        assertThat(linesOfModifiedFile.get(8) /* line 9 */, is("|||"));
+    }
 }

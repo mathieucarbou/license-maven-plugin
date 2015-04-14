@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<additionalHeaders>
+    <extended_style>
+        <firstLine>#</firstLine>
+        <beforeEachLine># </beforeEachLine>
+        <endLine>#EOL</endLine>
+        <skipLine>\|\|\|.*</skipLine>
+        <firstLineDetectionPattern>#.*</firstLineDetectionPattern>
+        <lastLineDetectionPattern>#.*</lastLineDetectionPattern>
+        <allowBlankLines>true</allowBlankLines>
+        <isMultiline>false</isMultiline>
+        <padLines>false</padLines>
+    </extended_style>
+</additionalHeaders>
