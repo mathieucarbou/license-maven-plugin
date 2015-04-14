@@ -31,7 +31,8 @@ import static org.junit.Assert.fail;
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
 public final class UpdateMojoTest {
-
+    public static final String LS = System.getProperty("line.separator");
+    
     @Test
     public void test_update() throws Exception {
         File tmp = new File("target/test/update");
@@ -108,7 +109,7 @@ public final class UpdateMojoTest {
         updater.project = new MavenProjectStub();
         updater.execute();
 
-        String test1 = FileUtils.read(new File(tmp, "test1.properties"), System.getProperty("file.encoding"));
+        String test1 = FileUtils.read(new File(tmp, "test1.properties"), System.getProperty("file.encoding")).replaceAll("\\n", LS);
         String test2 = FileUtils.read(new File(tmp, "test2.properties"), System.getProperty("file.encoding"));
         String test3 = FileUtils.read(new File(tmp, "test3.properties"), System.getProperty("file.encoding"));
 
@@ -169,12 +170,12 @@ public final class UpdateMojoTest {
         updater.project = new MavenProjectStub();
         updater.execute();
 
-        assertEquals(FileUtils.read(new File(tmp, "issue44-3.rb"), System.getProperty("file.encoding")), "#\n" +
-            "# My @Copyright license 2 with my-custom-value and 2008 and issue44-3.rb\n" +
-            "#\n" +
-            "\n" +
-            "# code comment\n" +
-            "ruby code here\n");
+        assertEquals(FileUtils.read(new File(tmp, "issue44-3.rb"), System.getProperty("file.encoding")), "#" + LS + "" +
+            "# My @Copyright license 2 with my-custom-value and 2008 and issue44-3.rb" + LS + "" +
+            "#" + LS + "" +
+            "" + LS + "" +
+            "# code comment" + LS + "" +
+            "ruby code here" + LS + "");
 
         assertEquals(FileUtils.read(new File(tmp, "test.asp"), System.getProperty("file.encoding")), "<%\n" +
             "    My @Copyright license 2 with my-custom-value and 2008 and test.asp\n" +
@@ -196,29 +197,29 @@ public final class UpdateMojoTest {
         updater.execute();
 
         assertEquals(
-            "#\n" +
-                "# Copyright (C) 2013 Salzburg Research.\n" +
-                "#\n" +
-                "# Licensed under the Apache License, Version 2.0 (the \"License\");\n" +
-                "# you may not use this file except in compliance with the License.\n" +
-                "# You may obtain a copy of the License at\n" +
-                "#\n" +
-                "#         http://www.apache.org/licenses/LICENSE-2.0\n" +
-                "#\n" +
-                "# Unless required by applicable law or agreed to in writing, software\n" +
-                "# distributed under the License is distributed on an \"AS IS\" BASIS,\n" +
-                "# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n" +
-                "# See the License for the specific language governing permissions and\n" +
-                "# limitations under the License.\n" +
-                "#\n" +
-                "\n" +
-                "meta.tables            = SHOW TABLES;\n" +
-                "meta.version           = SELECT mvalue FROM metadata WHERE mkey = 'version';\n" +
-                "\n" +
-                "# get sequence numbers\n" +
-                "seq.nodes              = SELECT nextval('seq_nodes')\n" +
-                "seq.triples            = SELECT nextval('seq_triples')\n" +
-                "seq.namespaces         = SELECT nextval('seq_namespaces')\n",
+            "#" + LS + "" +
+                "# Copyright (C) 2013 Salzburg Research." + LS + "" +
+                "#" + LS + "" +
+                "# Licensed under the Apache License, Version 2.0 (the \"License\");" + LS + "" +
+                "# you may not use this file except in compliance with the License." + LS + "" +
+                "# You may obtain a copy of the License at" + LS + "" +
+                "#" + LS + "" +
+                "#         http://www.apache.org/licenses/LICENSE-2.0" + LS + "" +
+                "#" + LS + "" +
+                "# Unless required by applicable law or agreed to in writing, software" + LS + "" +
+                "# distributed under the License is distributed on an \"AS IS\" BASIS," + LS + "" +
+                "# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied." + LS + "" +
+                "# See the License for the specific language governing permissions and" + LS + "" +
+                "# limitations under the License." + LS + "" +
+                "#" + LS + "" +
+                "" + LS + "" +
+                "meta.tables            = SHOW TABLES;" + LS + "" +
+                "meta.version           = SELECT mvalue FROM metadata WHERE mkey = 'version';" + LS + "" +
+                "" + LS + "" +
+                "# get sequence numbers" + LS + "" +
+                "seq.nodes              = SELECT nextval('seq_nodes')" + LS + "" +
+                "seq.triples            = SELECT nextval('seq_triples')" + LS + "" +
+                "seq.namespaces         = SELECT nextval('seq_namespaces')" + LS + "",
             FileUtils.read(new File(tmp, "test.properties"), System.getProperty("file.encoding")));
     }
 

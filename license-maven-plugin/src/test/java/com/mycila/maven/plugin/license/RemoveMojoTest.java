@@ -27,6 +27,7 @@ import static org.junit.Assert.assertEquals;
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
 public final class RemoveMojoTest {
+    public static final String LS = System.getProperty("line.separator");
 
     @Test
     public void test_remove() throws Exception {
@@ -79,9 +80,9 @@ public final class RemoveMojoTest {
         remove.project = new MavenProjectStub();
         remove.execute();
 
-        assertEquals(FileUtils.read(new File(tmp, "issue44.rb"), System.getProperty("file.encoding")), "ruby code here\nand other data\n");
-        assertEquals(FileUtils.read(new File(tmp, "issue44-2.rb"), System.getProperty("file.encoding")), "# code comment\nruby code here\nand other data\n");
-        assertEquals(FileUtils.read(new File(tmp, "issue44-3.rb"), System.getProperty("file.encoding")), "# code comment\nruby code here\nand other data\n");
+        assertEquals(FileUtils.read(new File(tmp, "issue44.rb"), System.getProperty("file.encoding")), "ruby code here" + LS + "and other data" + LS + "");
+        assertEquals(FileUtils.read(new File(tmp, "issue44-2.rb"), System.getProperty("file.encoding")), "# code comment" + LS + "ruby code here" + LS + "and other data" + LS + "");
+        assertEquals(FileUtils.read(new File(tmp, "issue44-3.rb"), System.getProperty("file.encoding")), "# code comment" + LS + "ruby code here" + LS + "and other data" + LS + "");
     }
 
     @Test
@@ -96,9 +97,9 @@ public final class RemoveMojoTest {
         remove.project = new MavenProjectStub();
         remove.execute();
 
-        assertEquals(FileUtils.read(new File(tmp, "test.xml"), System.getProperty("file.encoding")), "<assembly>\n" +
-                "    <id>project</id>\n" +
-                "</assembly>\n");
+        assertEquals(FileUtils.read(new File(tmp, "test.xml"), System.getProperty("file.encoding")), "<assembly>" + LS + "" +
+                "    <id>project</id>" + LS + "" +
+                "</assembly>" + LS + "");
     }
 
     @Test
@@ -113,10 +114,10 @@ public final class RemoveMojoTest {
         remove.project = new MavenProjectStub();
         remove.execute();
 
-        assertEquals(FileUtils.read(new File(tmp, "test.js"), System.getProperty("file.encoding")), "/**\n" +
-                " * jrunscript JavaScript built-in functions and objects.\n" +
-                " */\n" +
-                "\n" +
+        assertEquals(FileUtils.read(new File(tmp, "test.js"), System.getProperty("file.encoding")), "/**" + LS + "" +
+                " * jrunscript JavaScript built-in functions and objects." + LS + "" +
+                " */" + LS + "" +
+                "" + LS + "" +
                 "function a(){}");
     }
 
