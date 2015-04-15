@@ -1,45 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-us">
   <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <meta charset="UTF-8">
     <title>License Maven Plugin by mycila</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
   </head>
-
   <body>
-    <div id="container">
-      <div class="inner">
+    <section class="page-header">
+      <h1 class="project-name">License Maven Plugin</h1>
+      <h2 class="project-tagline">Manage license headers in your source files</h2>
+      <a href="https://github.com/mycila/license-maven-plugin" class="btn">View on GitHub</a>
+      <a href="https://github.com/mycila/license-maven-plugin/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/mycila/license-maven-plugin/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
 
-        <header>
-          <h1>License Maven Plugin</h1>
-          <h2>Manage license headers in your source files</h2>
-        </header>
-
-        <section id="downloads" class="clearfix">
-          <a href="https://github.com/mycila/license-maven-plugin/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
-          <a href="https://github.com/mycila/license-maven-plugin/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
-          <a href="https://github.com/mycila/license-maven-plugin" id="view-on-github" class="button"><span>View on GitHub</span></a>
-        </section>
-
-        <hr>
-
-        <section id="main_content">
-          <p>The following documentation is not up to date. </p>
+    <section class="main-content">
+      <p>The following documentation is not up to date. </p>
 
 <p>Please help if you want to contribute!</p>
+
+<p><strong>Upcoming release</strong></p>
+
+<ul>
+<li>2.11 (no ETA) - see <a href="https://github.com/mycila/license-maven-plugin/issues?utf8=%E2%9C%93&amp;q=milestone%3A2.11">issues and pull requests</a><br>
+</li>
+</ul>
 
 <p><strong>Lastest releases</strong> (note that it may take up to 1-2 days to be in Maven Central repository):</p>
 
 <ul>
 <li>
-<a href="http://repo1.maven.org/maven2/com/mycila/license-maven-plugin/2.8">2.8</a> (2015-01-23) - see <a href="https://github.com/mycila/license-maven-plugin/issues?q=milestone%3A2.8">issues and pull requests</a>
+<a href="http://repo1.maven.org/maven2/com/mycila/license-maven-plugin/2.10">2.10</a> (2015-03-16) - see <a href="https://github.com/mycila/license-maven-plugin/issues?q=milestone%3A2.8">issues and pull requests</a>
 </li>
 </ul>
 
@@ -101,6 +96,24 @@
 <li>
 <strong>Issues:</strong> <a href="https://github.com/mycila/license-maven-plugin/issues">https://github.com/mycila/license-maven-plugin/issues</a>
 </li>
+<li>
+<strong>License:</strong> <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License 2.0</a>
+</li>
+</ul>
+
+<p><strong>Contributors</strong></p>
+
+<ul>
+<li><a href="https://github.com/mathieucarbou">@mathieucarbou</a></li>
+<li><a href="https://github.com/sebhoss">@sebhoss</a></li>
+<li><a href="https://github.com/ppalaga">@ppalaga</a></li>
+<li><a href="https://github.com/McFoggy">@McFoggy</a></li>
+<li><a href="https://github.com/eincs">@eincs</a></li>
+<li><a href="https://github.com/mcculls">@mcculls</a></li>
+<li><a href="https://github.com/stain">@stain</a></li>
+<li><a href="https://github.com/adamretter">@adamretter</a></li>
+<li><a href="https://github.com/vromero">@vromero</a></li>
+<li><a href="https://github.com/hgschmie">@hgschmie</a></li>
 </ul>
 
 <h2>
@@ -179,7 +192,7 @@
 
 <ul>
 <li>
-<code>useDefaultExcludes</code>: The default exclusion list can be found <a href="https://github.com/mycila/license-maven-plugin/blob/master/src/main/java/com/mycila/maven/plugin/license/Default.java">here</a>
+<code>useDefaultExcludes</code>: The default exclusion list can be found <a href="https://github.com/mycila/license-maven-plugin/blob/master/license-maven-plugin/src/main/java/com/mycila/maven/plugin/license/Default.java">here</a>
 </li>
 </ul>
 
@@ -196,9 +209,10 @@
 <li>MIT</li>
 <li>MPL 2</li>
 <li>WTFPL</li>
+<li>UNLICENSE</li>
 </ul>
 
-<p>You can find those license templates with preconfigured placeholders <a href="https://github.com/mycila/license-maven-plugin/tree/master/src/main/resources/com/mycila/maven/plugin/license/templates">here</a></p>
+<p>You can find those license templates with preconfigured placeholders <a href="https://github.com/mycila/license-maven-plugin/tree/master/license-maven-plugin/src/main/resources/com/mycila/maven/plugin/license/templates">here</a></p>
 
 <h3>
 <a id="properties-and-placeholders" class="anchor" href="#properties-and-placeholders" aria-hidden="true"><span class="octicon octicon-link"></span></a>Properties and placeholders</h3>
@@ -612,14 +626,16 @@
 </code></pre>
 
 <p><a href="http://githalytics.com/mycila/license-maven-plugin"><img src="https://cruel-carlota.pagodabox.com/b5d8e8bcbdb8f56a7ef502a2cfa20c29" alt="githalytics.com alpha" title="githalytics.com"></a></p>
-        </section>
 
-        <footer>
-          License Maven Plugin is maintained by <a href="https://github.com/mycila">mycila</a><br>
-          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
-        </footer>
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/mycila/license-maven-plugin">License Maven Plugin</a> is maintained by <a href="https://github.com/mycila">mycila</a>.</span>
 
-                  <script type="text/javascript">
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+            <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
             document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
           </script>
@@ -630,7 +646,6 @@
             } catch(err) {}
           </script>
 
-      </div>
-    </div>
   </body>
 </html>
+
