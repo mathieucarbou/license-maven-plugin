@@ -33,7 +33,9 @@ public final class LicenseRemoveMojo extends AbstractLicenseMojo {
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
-        getLog().info("Removing license headers...");
+        if(!skip) {
+            getLog().info("Removing license headers...");
+        }
 
         AbstractCallback callback = new AbstractCallback() {
 

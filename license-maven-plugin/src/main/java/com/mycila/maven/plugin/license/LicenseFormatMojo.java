@@ -33,7 +33,9 @@ public final class LicenseFormatMojo extends AbstractLicenseMojo {
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
-        getLog().info("Updating license headers...");
+        if(!skip) {
+            getLog().info("Updating license headers...");
+        }
 
         AbstractCallback callback = new AbstractCallback() {
             @Override

@@ -38,7 +38,9 @@ public final class LicenseCheckMojo extends AbstractLicenseMojo {
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
-        getLog().info("Checking licenses...");
+        if(!skip) {
+            getLog().info("Checking licenses...");
+        }
         missingHeaders.clear();
 
         AbstractCallback callback = new AbstractCallback() {
@@ -70,7 +72,9 @@ public final class LicenseCheckMojo extends AbstractLicenseMojo {
             getLog().warn("Some files do not have the expected license header");
         }
 
-        callback.checkUnknown();
+        if(!skip) {
+            callback.checkUnknown();
+        }
     }
 
 }
