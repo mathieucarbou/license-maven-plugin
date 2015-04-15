@@ -27,7 +27,7 @@ import static org.junit.Assert.assertEquals;
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
 public final class RemoveMojoTest {
-    public static final String LS = System.getProperty("line.separator");
+    public static final String LS = "\n";
 
     @Test
     public void test_remove() throws Exception {

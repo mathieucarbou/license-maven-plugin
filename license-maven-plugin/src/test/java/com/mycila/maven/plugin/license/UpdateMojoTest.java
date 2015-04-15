@@ -26,20 +26,15 @@ import java.io.File;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.List;
-import org.junit.Assert;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
-import static org.hamcrest.CoreMatchers.*;
-
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.*;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
 public final class UpdateMojoTest {
-    public static final String LS = System.getProperty("line.separator");
+    public static final String LS = "\n";
     
     @Test
     public void test_update() throws Exception {
