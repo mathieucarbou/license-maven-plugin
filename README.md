@@ -8,12 +8,20 @@ __Upcoming release__
 
 __Lastest releases__ (note that it may take up to 1-2 days to be in Maven Central repository):
 
-* [2.10](http://repo1.maven.org/maven2/com/mycila/license-maven-plugin/2.8) (2015-01-23) - see [issues and pull requests](https://github.com/mycila/license-maven-plugin/issues?q=milestone%3A2.8)
+* [2.10](http://repo1.maven.org/maven2/com/mycila/license-maven-plugin/2.10) (2015-03-16) - see [issues and pull requests](https://github.com/mycila/license-maven-plugin/issues?q=milestone%3A2.8)
 
 __Contributors__
 
-
-* @mathieucarbou
+* [@mathieucarbou](https://github.com/mathieucarbou)
+* [@sebhoss](https://github.com/sebhoss)
+* [@ppalaga](https://github.com/ppalaga)
+* [@McFoggy](https://github.com/McFoggy)
+* [@eincs](https://github.com/eincs)
+* [@mcculls](https://github.com/mcculls)
+* [@stain](https://github.com/stain)
+* [@adamretter](https://github.com/adamretter)
+* [@vromero](https://github.com/vromero)
+* [@hgschmie](https://github.com/hgschmie)
 
 ---------------
 
