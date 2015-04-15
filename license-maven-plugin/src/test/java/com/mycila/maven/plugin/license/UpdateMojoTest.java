@@ -16,16 +16,22 @@
 package com.mycila.maven.plugin.license;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.io.Files;
 import com.mycila.maven.plugin.license.util.FileUtils;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
 import org.junit.Test;
 
 import java.io.File;
+import java.nio.charset.Charset;
 import java.util.HashMap;
+import java.util.List;
+import org.junit.Assert;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
+import static org.hamcrest.CoreMatchers.*;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
@@ -223,4 +229,22 @@ public final class UpdateMojoTest {
             FileUtils.read(new File(tmp, "test.properties"), System.getProperty("file.encoding")));
     }
 
+    @Test
+    public void test_UpdateWorksHasExpectedOnAOneLineCommentFile_relatesTo_issue30() throws Exception {
+        File tmp = new File("target/test/update/issue30");
+        tmp.mkdirs();
+        FileUtils.copyFileToFolder(new File("src/test/resources/update/issue30/one-line-comment.ftl"), tmp);
+
+        LicenseFormatMojo updater = new LicenseFormatMojo();
+        updater.basedir = tmp;
+        updater.header = "src/test/resources/single-line-header.txt";
+        updater.project = new MavenProjectStub();
+        updater.execute();
+        
+        List<String> linesOfOriginFile = Files.readLines(new File("src/test/resources/update/issue30/one-line-comment.ftl"), Charset.defaultCharset());
+        List<String> linesOfUpdatedFile = Files.readLines(new File(tmp, "one-line-comment.ftl"), Charset.defaultCharset());
+        
+        // check that the original line is kept as the latest one even when introducing a license header
+        assertThat(linesOfOriginFile.get(0), is(linesOfUpdatedFile.get(linesOfUpdatedFile.size() - 1)));
+    }
 }
