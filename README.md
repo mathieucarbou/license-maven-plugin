@@ -10,19 +10,6 @@ __Lastest releases__ (note that it may take up to 1-2 days to be in Maven Centra
 
 * [2.10](http://repo1.maven.org/maven2/com/mycila/license-maven-plugin/2.10) (2015-03-16) - see [issues and pull requests](https://github.com/mycila/license-maven-plugin/issues?q=milestone%3A2.8)
 
-__Contributors__
-
-* [@mathieucarbou](https://github.com/mathieucarbou)
-* [@sebhoss](https://github.com/sebhoss)
-* [@ppalaga](https://github.com/ppalaga)
-* [@McFoggy](https://github.com/McFoggy)
-* [@eincs](https://github.com/eincs)
-* [@mcculls](https://github.com/mcculls)
-* [@stain](https://github.com/stain)
-* [@adamretter](https://github.com/adamretter)
-* [@vromero](https://github.com/vromero)
-* [@hgschmie](https://github.com/hgschmie)
-
 ---------------
 
 **Table of Contents**
@@ -56,6 +43,19 @@ __Project:__
  - __Build Status:__ [![Build Status](https://travis-ci.org/mycila/license-maven-plugin.png?branch=master)](https://travis-ci.org/mycila/license-maven-plugin)
  - __Issues:__ https://github.com/mycila/license-maven-plugin/issues
  - __License:__ [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0)
+
+__Contributors__
+
+* [@mathieucarbou](https://github.com/mathieucarbou)
+* [@sebhoss](https://github.com/sebhoss)
+* [@ppalaga](https://github.com/ppalaga)
+* [@McFoggy](https://github.com/McFoggy)
+* [@eincs](https://github.com/eincs)
+* [@mcculls](https://github.com/mcculls)
+* [@stain](https://github.com/stain)
+* [@adamretter](https://github.com/adamretter)
+* [@vromero](https://github.com/vromero)
+* [@hgschmie](https://github.com/hgschmie)
 
 ## Maven Repository ##
 
