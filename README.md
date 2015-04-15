@@ -2,9 +2,18 @@ The following documentation is not up to date.
 
 Please help if you want to contribute!
 
+__Upcoming release__
+
+* 2.11 (no ETA) - see [issues and pull requests](https://github.com/mycila/license-maven-plugin/issues?utf8=%E2%9C%93&q=milestone%3A2.11)  
+
 __Lastest releases__ (note that it may take up to 1-2 days to be in Maven Central repository):
 
-* [2.8](http://repo1.maven.org/maven2/com/mycila/license-maven-plugin/2.8) (2015-01-23) - see [issues and pull requests](https://github.com/mycila/license-maven-plugin/issues?q=milestone%3A2.8)
+* [2.10](http://repo1.maven.org/maven2/com/mycila/license-maven-plugin/2.8) (2015-01-23) - see [issues and pull requests](https://github.com/mycila/license-maven-plugin/issues?q=milestone%3A2.8)
+
+__Contributors__
+
+
+* @mathieucarbou
 
 ---------------
 
