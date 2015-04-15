@@ -25,7 +25,9 @@ import java.io.File;
 import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
+import static org.hamcrest.CoreMatchers.*;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
@@ -221,6 +223,31 @@ public final class UpdateMojoTest {
                 "seq.triples            = SELECT nextval('seq_triples')" + LS + "" +
                 "seq.namespaces         = SELECT nextval('seq_namespaces')" + LS + "",
             FileUtils.read(new File(tmp, "test.properties"), System.getProperty("file.encoding")));
+    }
+    
+    @Test
+    public void test_issue37_RunningUpdaterTwiceMustNotChangeTheFile() throws Exception {
+        File tmp = new File("target/test/update/issue37");
+        tmp.mkdirs();
+        FileUtils.copyFileToFolder(new File("src/test/resources/update/issue37/xwiki.xml"), tmp);
+        
+        LicenseFormatMojo execution1 = new LicenseFormatMojo();
+        execution1.basedir = tmp;
+        execution1.header = "src/test/resources/update/issue37/xwiki-license.txt";
+        execution1.project = new MavenProjectStub();
+        execution1.execute();
+        
+        String execution1FileContent = FileUtils.read(new File(tmp, "xwiki.xml"), System.getProperty("file.encoding"));
+        
+        LicenseFormatMojo execution2 = new LicenseFormatMojo();
+        execution2.basedir = tmp;
+        execution2.header = "src/test/resources/update/issue37/xwiki-license.txt";
+        execution2.project = new MavenProjectStub();
+        execution2.execute();
+        
+        String execution2FileContent = FileUtils.read(new File(tmp, "xwiki.xml"), System.getProperty("file.encoding"));
+        
+        assertThat(execution1FileContent, is(execution2FileContent));
     }
 
 }
