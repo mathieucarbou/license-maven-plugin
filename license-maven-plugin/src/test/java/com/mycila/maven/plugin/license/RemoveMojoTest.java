@@ -121,4 +121,19 @@ public final class RemoveMojoTest {
                 "function a(){}");
     }
 
+    @Test
+    public void test_issue30_RemoveSucceedsOnAOneLineCommentFile() throws Exception {
+        File tmp = new File("target/test/remove/issue30");
+        tmp.mkdirs();
+        FileUtils.copyFileToFolder(new File("src/test/resources/remove/issue-30/one-line-comment.java"), tmp);
+        FileUtils.copyFileToFolder(new File("src/test/resources/remove/issue-30/one-line-comment.ftl"), tmp);
+
+        LicenseRemoveMojo remove = new LicenseRemoveMojo();
+        remove.basedir = tmp;
+        remove.header = "src/test/resources/remove/header.txt";
+        remove.project = new MavenProjectStub();
+        remove.execute();
+        
+        // NPE was thrown in issue-30, let junit check that no Exception is thrown
+   }
 }

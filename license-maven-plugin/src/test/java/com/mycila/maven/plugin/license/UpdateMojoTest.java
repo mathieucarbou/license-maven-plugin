@@ -26,10 +26,12 @@ import java.io.File;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.List;
+import org.junit.Assert;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
+import static org.hamcrest.CoreMatchers.*;
 
 import static org.hamcrest.CoreMatchers.*;
 
@@ -244,11 +246,30 @@ public final class UpdateMojoTest {
         }};
         updater.headerDefinitions = new String[]{"/issues/issue-71/issue-71-additionalHeaderDefinitions.xml"};
         updater.execute();
-        
-        
+
+
         // Check that all the skipable header has been correctly skipped
         List<String> linesOfModifiedFile = Files.readLines(new File(tmp, "issue-71.txt.extended"), Charset.defaultCharset());
         assertThat(linesOfModifiedFile.get(0 /* line 1 */), is("|||"));
         assertThat(linesOfModifiedFile.get(8) /* line 9 */, is("|||"));
+    }
+
+    @Test
+    public void test_UpdateWorksHasExpectedOnAOneLineCommentFile_relatesTo_issue30() throws Exception {
+            File tmp = new File("target/test/update/issue30");
+            tmp.mkdirs();
+            FileUtils.copyFileToFolder(new File("src/test/resources/update/issue30/one-line-comment.ftl"), tmp);
+    
+            LicenseFormatMojo updater = new LicenseFormatMojo();
+            updater.basedir = tmp;
+            updater.header = "src/test/resources/single-line-header.txt";
+            updater.project = new MavenProjectStub();
+            updater.execute();
+            
+            List<String> linesOfOriginFile = Files.readLines(new File("src/test/resources/update/issue30/one-line-comment.ftl"), Charset.defaultCharset());
+            List<String> linesOfUpdatedFile = Files.readLines(new File(tmp, "one-line-comment.ftl"), Charset.defaultCharset());
+            
+            // check that the original line is kept as the latest one even when introducing a license header
+            assertThat(linesOfOriginFile.get(0), is(linesOfUpdatedFile.get(linesOfUpdatedFile.size() - 1)));
     }
 }

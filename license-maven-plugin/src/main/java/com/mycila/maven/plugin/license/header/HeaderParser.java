@@ -147,9 +147,19 @@ public final class HeaderParser {
         boolean gotHeader = false;
         if (headerDefinition.isFirstHeaderLine(line)) {
             // skip blank lines before header text
-            if (headerDefinition.allowBlankLines())
+            if (headerDefinition.allowBlankLines()) {
                 do line = fileContent.nextLine();
                 while (line != null && "".equals(line.trim()));
+            }
+            
+            // first header detected line & potential blank lines have been detected
+            // following lines should be header lines
+            if (line == null) {
+                // we detected previously a one line comment block that matches the header detection
+                // it is not an header it is a comment
+                return false;
+            }
+            
             StringBuilder inPlaceHeader = new StringBuilder();
             String before = StringUtils.rtrim(headerDefinition.getBeforeEachLine());
             if ("".equals(before) && !headerDefinition.isMultiLine())
