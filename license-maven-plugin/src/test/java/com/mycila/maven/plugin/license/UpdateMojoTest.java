@@ -234,6 +234,7 @@ public final class UpdateMojoTest {
         LicenseFormatMojo execution1 = new LicenseFormatMojo();
         execution1.basedir = tmp;
         execution1.header = "src/test/resources/update/issue37/xwiki-license.txt";
+        execution1.headerDefinitions = new String[]{"/update/issue37/license-xml-definition.xml"};
         execution1.project = new MavenProjectStub();
         execution1.execute();
         
@@ -242,6 +243,7 @@ public final class UpdateMojoTest {
         LicenseFormatMojo execution2 = new LicenseFormatMojo();
         execution2.basedir = tmp;
         execution2.header = "src/test/resources/update/issue37/xwiki-license.txt";
+        execution2.headerDefinitions = new String[]{"/update/issue37/license-xml-definition.xml"};
         execution2.project = new MavenProjectStub();
         execution2.execute();
         
