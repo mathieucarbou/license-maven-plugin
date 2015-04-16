@@ -43,6 +43,7 @@
     <modules>
         <module>license-maven-plugin</module>
         <module>license-maven-plugin-git</module>
+        <module>license-maven-plugin-svn</module>
     </modules>
 
     <scm>
@@ -71,7 +72,16 @@
                 <artifactId>maven-project</artifactId>
                 <version>3.0-alpha-2</version>
             </dependency>
-
+            <dependency> 
+                <groupId>org.apache.maven</groupId> 
+                <artifactId>maven-settings</artifactId> 
+                <version>3.0.4</version> 
+            </dependency>
+            <dependency> 
+                <groupId>org.apache.maven</groupId> 
+                <artifactId>maven-settings-builder</artifactId> 
+                <version>3.0.4</version> 
+            </dependency> 
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-core</artifactId>
