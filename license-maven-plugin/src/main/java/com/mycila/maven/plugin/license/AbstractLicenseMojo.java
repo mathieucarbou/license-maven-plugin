@@ -44,9 +44,16 @@ import static com.mycila.maven.plugin.license.document.DocumentType.defaultMappi
 import static java.lang.String.format;
 import static java.util.Arrays.asList;
 import static java.util.Arrays.deepToString;
+import org.apache.maven.settings.Server;
+import org.apache.maven.settings.Settings;
+import org.apache.maven.settings.crypto.DefaultSettingsDecryptionRequest;
+import org.apache.maven.settings.crypto.SettingsDecrypter;
+import org.apache.maven.settings.crypto.SettingsDecryptionRequest;
+import org.apache.maven.settings.crypto.SettingsDecryptionResult;
 
 /**
- * <b>Date:</b> 18-Feb-2008<br> <b>Author:</b> Mathieu Carbou (mathieu.carbou@gmail.com)
+ * <b>Date:</b> 18-Feb-2008<br> <b>Author:</b> Mathieu Carbou
+ * (mathieu.carbou@gmail.com)
  */
 public abstract class AbstractLicenseMojo extends AbstractMojo {
 
@@ -57,87 +64,113 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
     public File basedir;
 
     /**
-     * Location of the header. It can be a relative path, absolute path, classpath resource, any URL. The plugin first check if the name specified is a relative file, then an absolute file, then in the claspath. If not found, it tries to construct a URL from the location
+     * Location of the header. It can be a relative path, absolute path,
+     * classpath resource, any URL. The plugin first check if the name specified
+     * is a relative file, then an absolute file, then in the claspath. If not
+     * found, it tries to construct a URL from the location
      */
     @Parameter(property = "license.header")
     public String header;
 
     /**
-     * Specifies additional header files to use when checking for the presence of a valid header in your sources.
+     * Specifies additional header files to use when checking for the presence
+     * of a valid header in your sources.
      * <br>
-     * When using format goal, this property will be used to detect all valid headers that don't need formatting.
+     * When using format goal, this property will be used to detect all valid
+     * headers that don't need formatting.
      * <br>
-     * When using remove goal, this property will be used to detect all valid headers that also must be removed.
+     * When using remove goal, this property will be used to detect all valid
+     * headers that also must be removed.
      */
     @Parameter
     public String[] validHeaders = new String[0];
 
     /**
-     * Allows the use of external header definitions files. These files are properties like files.
+     * Allows the use of external header definitions files. These files are
+     * properties like files.
      */
     @Parameter
     public String[] headerDefinitions = new String[0];
 
     /**
-     * HeadSections define special regions of a header that allow for dynamic substitution and validation
+     * HeadSections define special regions of a header that allow for dynamic
+     * substitution and validation
      */
     @Parameter
     public HeaderSection[] headerSections = new HeaderSection[0];
 
     /**
-     * You can set here some properties that you want to use when reading the header file. You can use in your header file some properties like ${year}, ${owner} or whatever you want for the name. They will be replaced when the header file is read by those you specified in the command line, in the POM and in system environment.
+     * You can set here some properties that you want to use when reading the
+     * header file. You can use in your header file some properties like
+     * ${year}, ${owner} or whatever you want for the name. They will be
+     * replaced when the header file is read by those you specified in the
+     * command line, in the POM and in system environment.
      */
     @Parameter
     public Map<String, String> properties = new HashMap<String, String>();
 
     /**
-     * Specifies files, which are included in the check. By default, all files are included.
+     * Specifies files, which are included in the check. By default, all files
+     * are included.
      */
     @Parameter
     public String[] includes = new String[0];
 
     /**
-     * Specifies files, which are excluded in the check. By default, only the files matching the default exclude patterns are excluded.
+     * Specifies files, which are excluded in the check. By default, only the
+     * files matching the default exclude patterns are excluded.
      */
     @Parameter
     public String[] excludes = new String[0];
 
     /**
-     * Specify the list of keywords to use to detect a header. A header must include all keywords to be valid.
-     * By default, the word 'copyright' is used. Detection is done case insensitive.
+     * Specify the list of keywords to use to detect a header. A header must
+     * include all keywords to be valid. By default, the word 'copyright' is
+     * used. Detection is done case insensitive.
      */
     @Parameter
     public String[] keywords = new String[]{"copyright"};
 
     /**
-     * Specify if you want to use default exclusions besides the files you have excluded. Default exclusions exclude CVS and SVN folders, IDE descriptors and so on.
+     * Specify if you want to use default exclusions besides the files you have
+     * excluded. Default exclusions exclude CVS and SVN folders, IDE descriptors
+     * and so on.
      */
     @Parameter(property = "license.useDefaultExcludes", defaultValue = "true")
     public boolean useDefaultExcludes = true;
 
     /**
-     * You can set this flag to true if you want to check the headers for all modules of your project. Only used for multi-modules projects, to check for example the header licenses from the parent module for all sub modules
+     * You can set this flag to true if you want to check the headers for all
+     * modules of your project. Only used for multi-modules projects, to check
+     * for example the header licenses from the parent module for all sub
+     * modules
      */
     @Parameter(property = "license.aggregate", defaultValue = "false")
     public boolean aggregate = false;
 
     /**
-     * Set mapping between document mapping and a supported type to use. This section is very useful when you want to customize the supported extensions. Is your project is using file extensions not supported by default by this plugin, you can add a mapping to attach the extension to an existing type of comment. The tag name is the new extension name to support, and the value is the name of the comment type to use.
+     * Set mapping between document mapping and a supported type to use. This
+     * section is very useful when you want to customize the supported
+     * extensions. Is your project is using file extensions not supported by
+     * default by this plugin, you can add a mapping to attach the extension to
+     * an existing type of comment. The tag name is the new extension name to
+     * support, and the value is the name of the comment type to use.
      */
     @Parameter
     public Map<String, String> mapping = new HashMap<String, String>();
 
     /**
-     * Whether to use the default mapping between file extensions and comment types, or only the one your provide
+     * Whether to use the default mapping between file extensions and comment
+     * types, or only the one your provide
      */
     @Parameter(property = "license.useDefaultMapping", defaultValue = "true")
     public boolean useDefaultMapping = true;
 
     /**
-     * Maven license plugin uses concurrency to check license headers. This factor is used to control the number
-     * of threads used to check. The rule is:
-     * <br>
-     * {@code <nThreads> = <number of cores> *  concurrencyFactor}
+     * Maven license plugin uses concurrency to check license headers. This
+     * factor is used to control the number of threads used to check. The rule
+     * is:
+     * <br> {@code <nThreads> = <number of cores> *  concurrencyFactor}
      * <br>
      * The default is 1.5.
      */
@@ -151,38 +184,44 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
     public boolean skip = false;
 
     /**
-     * If you do not want to see the list of file having a missing header, you can add the quiet flag that will shorten the output
+     * If you do not want to see the list of file having a missing header, you
+     * can add the quiet flag that will shorten the output
      */
     @Parameter(property = "license.quiet", defaultValue = "false")
     public boolean quiet = false;
 
     /**
-     * Set to true if you need a strict check against the headers. By default, the existence of
-     * a header is verified by taking the top portion of a file and checking if it contains the
-     * headers text, not considering special characters (spaces, tabs, ...)
+     * Set to true if you need a strict check against the headers. By default,
+     * the existence of a header is verified by taking the top portion of a file
+     * and checking if it contains the headers text, not considering special
+     * characters (spaces, tabs, ...)
      * <br>
-     * We highly recommend to set this option to true. It is by default set to false for
-     * backward compatibility
+     * We highly recommend to set this option to true. It is by default set to
+     * false for backward compatibility
      */
     @Parameter(property = "license.strictCheck", defaultValue = "true")
     public boolean strictCheck = true;
 
     /**
-     * Specify the encoding of your files. Default to the project source encoding property (project.build.sourceEncoding)
+     * Specify the encoding of your files. Default to the project source
+     * encoding property (project.build.sourceEncoding)
      */
     @Parameter(property = "license.encoding", defaultValue = "${project.build.sourceEncoding}")
     public String encoding = "UTF-8";
 
     /**
-     * You can set this flag to false if you do not want the build to fail when some headers are missing.
+     * You can set this flag to false if you do not want the build to fail when
+     * some headers are missing.
      */
     @Parameter(property = "license.failIfMissing", defaultValue = "true")
     public boolean failIfMissing = true;
 
     /**
-     * You can leave this flag on {@code false} if you do not want the build to fail for files that do not have
-     * an implicit or explicit comment style definition. Setting this explicitly to {@code true} is
-     * a safe way to make sure that the effective file type mappings cover all files included from your project.
+     * You can leave this flag on {@code false} if you do not want the build to
+     * fail for files that do not have an implicit or explicit comment style
+     * definition. Setting this explicitly to {@code true} is a safe way to make
+     * sure that the effective file type mappings cover all files included from
+     * your project.
      * <p>
      * Default is {@code false} for backwards compatibility reasons.
      *
@@ -192,7 +231,9 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
     public boolean failIfUnknown = false;
 
     /**
-     * If dryRun is enabled, calls to license:format and license:remove will not overwrite the existing file but instead write the result to a new file with the same name but ending with `.licensed`
+     * If dryRun is enabled, calls to license:format and license:remove will not
+     * overwrite the existing file but instead write the result to a new file
+     * with the same name but ending with `.licensed`
      */
     @Parameter(property = "license.dryRun", defaultValue = "false")
     public boolean dryRun = false;
@@ -202,23 +243,36 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
      */
     @Parameter(property = "license.skipExistingHeaders", defaultValue = "false")
     public boolean skipExistingHeaders = false;
-
+    
     @Component
     public MavenProject project;
 
+    /**
+     * Maven settings.
+     */
+    @Component
+    private Settings settings;
+    /**
+     * The decrypter for passwords.
+     */
+    @Component
+    private SettingsDecrypter settingsDecrypter;
+    
     private ResourceFinder finder;
-
+    
     protected abstract class AbstractCallback implements Callback {
 
-        /** Related to {@link #failIfUnknown}. */
+        /**
+         * Related to {@link #failIfUnknown}.
+         */
         private final Collection<File> unknownFiles = new ConcurrentLinkedQueue<File>();
-
+        
         @Override
         public void onUnknownFile(Document document, Header header) {
             warn("Unknown file extension: %s", document.getFilePath());
             unknownFiles.add(document.getFile());
         }
-
+        
         public void checkUnknown() throws MojoExecutionException {
             if (!unknownFiles.isEmpty()) {
                 String msg = "Unable to find a comment style definition for some "
@@ -229,9 +283,9 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
                 getLog().warn(msg);
             }
         }
-
+        
     }
-
+    
     @SuppressWarnings({"unchecked"})
     public final void execute(final Callback callback) throws MojoExecutionException, MojoFailureException {
         if (!skip) {
@@ -243,7 +297,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
                 warn("Property 'strictCheck' is not enabled. Please consider adding <strictCheck>true</strictCheck> in your pom.xml file.");
                 warn("See http://mycila.github.io/license-maven-plugin for more information.");
             }
-
+            
             finder = new ResourceFinder(basedir);
             try {
                 finder.setCompileClassPath(project.getCompileClasspathElements());
@@ -251,15 +305,18 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
                 throw new MojoExecutionException(e.getMessage(), e);
             }
             finder.setPluginClassPath(getClass().getClassLoader());
-
+            
             final Header h = new Header(finder.findResource(this.header), encoding, headerSections);
             debug("Header %s:\n%s", h.getLocation(), h);
-
-            if (this.validHeaders == null) this.validHeaders = new String[0];
+            
+            if (this.validHeaders == null) {
+                this.validHeaders = new String[0];
+            }
             final List<Header> validHeaders = new ArrayList<Header>(this.validHeaders.length);
-            for (String validHeader : this.validHeaders)
+            for (String validHeader : this.validHeaders) {
                 validHeaders.add(new Header(finder.findResource(validHeader), encoding, headerSections));
-
+            }
+            
             final List<PropertiesProvider> propertiesProviders = new LinkedList<PropertiesProvider>();
             for (PropertiesProvider provider : ServiceLoader.load(PropertiesProvider.class, Thread.currentThread().getContextClassLoader())) {
                 propertiesProviders.add(provider);
@@ -268,6 +325,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
                 @Override
                 public Properties load(Document document) {
                     Properties props = new Properties();
+                    
                     for (Map.Entry<String, String> entry : mergeProperties(document).entrySet()) {
                         if (entry.getValue() != null) {
                             props.setProperty(entry.getKey(), entry.getValue());
@@ -276,26 +334,34 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
                         }
                     }
                     for (PropertiesProvider provider : propertiesProviders) {
-                        for (Map.Entry<String, String> entry : provider.getAdditionalProperties(AbstractLicenseMojo.this, props, document).entrySet()) {
-                            if (entry.getValue() != null) {
-                                props.setProperty(entry.getKey(), entry.getValue());
-                            } else {
-                                props.remove(entry.getKey());
+                        try {
+                            final Map<String, String> providerProperties = provider.getAdditionalProperties(AbstractLicenseMojo.this, props, document);
+                            if (getLog().isDebugEnabled()) {
+                                getLog().debug("provider: " + provider.getClass() + " brought new properties\n" + providerProperties);
                             }
+                            for (Map.Entry<String, String> entry : providerProperties.entrySet()) {
+                                if (entry.getValue() != null) {
+                                    props.setProperty(entry.getKey(), entry.getValue());
+                                } else {
+                                    props.remove(entry.getKey());
+                                }
+                            }
+                        } catch (Exception e) {
+                            getLog().warn("failure occured while calling " + provider.getClass(), e);
                         }
                     }
                     return props;
                 }
             };
-
+            
             final DocumentFactory documentFactory = new DocumentFactory(basedir, buildMapping(), buildHeaderDefinitions(), encoding, keywords, propertiesLoader);
-
+            
             int nThreads = (int) (Runtime.getRuntime().availableProcessors() * concurrencyFactor);
             ExecutorService executorService = Executors.newFixedThreadPool(nThreads);
             CompletionService completionService = new ExecutorCompletionService(executorService);
             int count = 0;
             debug("Number of execution threads: %s", nThreads);
-
+            
             try {
                 for (final String file : listSelectedFiles()) {
                     completionService.submit(new Runnable() {
@@ -317,14 +383,15 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
                                         break;
                                     }
                                 }
-                                if (!headerFound)
+                                if (!headerFound) {
                                     callback.onHeaderNotFound(document, h);
+                                }
                             }
                         }
                     }, null);
                     count++;
                 }
-
+                
                 while (count-- > 0) {
                     try {
                         completionService.take().get();
@@ -332,24 +399,28 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
                         Thread.currentThread().interrupt();
                     } catch (ExecutionException e) {
                         Throwable cause = e.getCause();
-                        if (cause instanceof Error)
+                        if (cause instanceof Error) {
                             throw (Error) cause;
-                        if (cause instanceof MojoExecutionException)
+                        }
+                        if (cause instanceof MojoExecutionException) {
                             throw (MojoExecutionException) cause;
-                        if (cause instanceof MojoFailureException)
+                        }
+                        if (cause instanceof MojoFailureException) {
                             throw (MojoFailureException) cause;
-                        if (cause instanceof RuntimeException)
+                        }
+                        if (cause instanceof RuntimeException) {
                             throw (RuntimeException) cause;
+                        }
                         throw new RuntimeException(cause.getMessage(), cause);
                     }
                 }
-
+                
             } finally {
                 executorService.shutdownNow();
             }
         }
     }
-
+    
     private Map<String, String> mergeProperties(Document document) {
         // first put systen environment
         Map<String, String> props = new LinkedHashMap<String, String>(System.getenv());
@@ -373,7 +444,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
         }
         return props;
     }
-
+    
     private String[] listSelectedFiles() {
         Selection selection = new Selection(basedir, includes, buildExcludes(), useDefaultExcludes);
         debug("From: %s", basedir);
@@ -381,7 +452,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
         debug("Excluding: %s", deepToString(selection.getExcluded()));
         return selection.getSelectedFiles();
     }
-
+    
     private String[] buildExcludes() {
         List<String> ex = new ArrayList<String>();
         ex.addAll(asList(this.excludes));
@@ -392,25 +463,25 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
         }
         return ex.toArray(new String[ex.size()]);
     }
-
+    
     public final void info(String format, Object... params) {
         if (!quiet) {
             getLog().info(format(format, params));
         }
     }
-
+    
     public final void debug(String format, Object... params) {
         if (!quiet) {
             getLog().debug(format(format, params));
         }
     }
-
+    
     public final void warn(String format, Object... params) {
         if (!quiet) {
             getLog().warn(format(format, params));
         }
     }
-
+    
     private Map<String, String> buildMapping() {
         Map<String, String> extensionMapping = new LinkedHashMap<String, String>();
         // force inclusion of unknow item to manage unknown files
@@ -427,7 +498,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
         }
         return extensionMapping;
     }
-
+    
     private Map<String, HeaderDefinition> buildHeaderDefinitions() throws MojoFailureException {
         // like mappings, first get default definitions
         final Map<String, HeaderDefinition> headers = new HashMap<String, HeaderDefinition>(HeaderType.defaultDefinitions());
@@ -449,4 +520,43 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
         return headers;
     }
 
+    /**
+     * Returns the list of servers with decrypted passwords.
+     *
+     * @return list of servers with decrypted passwords.
+     */
+    List<Server> getDecryptedServers() {
+        final SettingsDecryptionRequest settingsDecryptionRequest = new DefaultSettingsDecryptionRequest();
+        settingsDecryptionRequest.setServers(settings.getServers());
+        final SettingsDecryptionResult decrypt = settingsDecrypter.decrypt(settingsDecryptionRequest);
+        return decrypt.getServers();
+    }
+
+    /**
+     * Retrieves the credentials for the given server or null if none could be
+     * found
+     *
+     * @param serverID
+     * @return
+     */
+    public Credentials findCredentials(String serverID) {
+        List<Server> decryptedServers = getDecryptedServers();
+        
+        for (Server ds : decryptedServers) {
+            if (ds.getId().equals(serverID)) {
+                getLog().debug("credentials have been found for server: " + serverID + ", login:" + ds.getUsername() + ", password:" + starEncrypt(ds.getPassword()));
+                return new Credentials(ds.getUsername(), ds.getPassword());
+            }
+        }
+        
+        getLog().debug("no credentials found for server: " + serverID);
+        return null;
+    }
+    
+    static String starEncrypt(String str) {
+        if (str == null) {
+            return null;
+        }
+        return str.replaceAll(".", "*");
+    }
 }
