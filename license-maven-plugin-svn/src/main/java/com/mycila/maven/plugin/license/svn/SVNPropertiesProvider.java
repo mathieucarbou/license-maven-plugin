@@ -24,19 +24,19 @@ import com.mycila.maven.plugin.license.AbstractLicenseMojo;
 import com.mycila.maven.plugin.license.Credentials;
 import com.mycila.maven.plugin.license.PropertiesProvider;
 import com.mycila.maven.plugin.license.document.Document;
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
 import org.tmatesoft.svn.core.ISVNLogEntryHandler;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNLogEntry;
 import org.tmatesoft.svn.core.internal.wc.DefaultSVNOptions;
 import org.tmatesoft.svn.core.wc.SVNClientManager;
 import org.tmatesoft.svn.core.wc.SVNRevision;
+
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * An implementation of {@link PropertiesProvider} that uses SVN to retrieve
@@ -65,11 +65,8 @@ public class SVNPropertiesProvider implements PropertiesProvider {
 
     /**
      * Provides information on the given document. The information is put in the
-     * returned map using:
-     * <ul>
-     * <li>{@value #SVN_COPYRIGHT_LAST_YEAR_KEY</li>: the year of the latest
+     * returned map using: SVN_COPYRIGHT_LAST_YEAR_KEY the year of the latest
      * change detected for the given document file.
-     * </ul>
      *
      * @param mojo the current license maven plugin
      * @param currentProperties the default properties (without any plugin contributions)
