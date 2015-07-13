@@ -196,8 +196,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
      * and checking if it contains the headers text, not considering special
      * characters (spaces, tabs, ...)
      * <br>
-     * We highly recommend to set this option to true. It is by default set to
-     * false for backward compatibility
+     * We highly recommend to keep this option set to {@code true}.
      */
     @Parameter(property = "license.strictCheck", defaultValue = "true")
     public boolean strictCheck = true;
