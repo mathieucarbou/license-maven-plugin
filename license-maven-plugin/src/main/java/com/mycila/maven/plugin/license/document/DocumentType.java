@@ -47,6 +47,7 @@ public enum DocumentType {
     DOXIA_APT("apt", HeaderType.DOUBLETILDE_STYLE),
     DOXIA_FAQ("fml", HeaderType.XML_STYLE),
     DTD("dtd", HeaderType.XML_STYLE),
+    EDITORCONFIG(".editorconfig", HeaderType.SCRIPT_STYLE),
     EIFFEL("e", HeaderType.DOUBLEDASHES_STYLE),
     ERLANG("erl", HeaderType.PERCENT3_STYLE),
     ERLANG_HEADER("hrl", HeaderType.PERCENT3_STYLE),
