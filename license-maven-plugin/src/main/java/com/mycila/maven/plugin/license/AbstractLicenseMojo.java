@@ -67,7 +67,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
      * Location of the header. It can be a relative path, absolute path,
      * classpath resource, any URL. The plugin first check if the name specified
      * is a relative file, then an absolute file, then in the claspath. If not
-     * found, it tries to construct a URL from the location
+     * found, it tries to construct a URL from the location.
      */
     @Parameter(property = "license.header")
     public String header;
@@ -94,7 +94,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
 
     /**
      * HeadSections define special regions of a header that allow for dynamic
-     * substitution and validation
+     * substitution and validation.
      */
     @Parameter
     public HeaderSection[] headerSections = new HeaderSection[0];
@@ -143,7 +143,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
      * You can set this flag to true if you want to check the headers for all
      * modules of your project. Only used for multi-modules projects, to check
      * for example the header licenses from the parent module for all sub
-     * modules
+     * modules.
      */
     @Parameter(property = "license.aggregate", defaultValue = "false")
     public boolean aggregate = false;
@@ -151,7 +151,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
     /**
      * Set mapping between document mapping and a supported type to use. This
      * section is very useful when you want to customize the supported
-     * extensions. Is your project is using file extensions not supported by
+     * extensions. If your project is using file extensions not supported by
      * default by this plugin, you can add a mapping to attach the extension to
      * an existing type of comment. The tag name is the new extension name to
      * support, and the value is the name of the comment type to use.
@@ -161,7 +161,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
 
     /**
      * Whether to use the default mapping between file extensions and comment
-     * types, or only the one your provide
+     * types, or only the one your provide.
      */
     @Parameter(property = "license.useDefaultMapping", defaultValue = "true")
     public boolean useDefaultMapping = true;
@@ -194,7 +194,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
      * Set to true if you need a strict check against the headers. By default,
      * the existence of a header is verified by taking the top portion of a file
      * and checking if it contains the headers text, not considering special
-     * characters (spaces, tabs, ...)
+     * characters (spaces, tabs, ...).
      * <br>
      * We highly recommend to keep this option set to {@code true}.
      */
@@ -203,7 +203,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
 
     /**
      * Specify the encoding of your files. Default to the project source
-     * encoding property (project.build.sourceEncoding)
+     * encoding property (project.build.sourceEncoding).
      */
     @Parameter(property = "license.encoding", defaultValue = "${project.build.sourceEncoding}")
     public String encoding = "UTF-8";
@@ -232,13 +232,13 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
     /**
      * If dryRun is enabled, calls to license:format and license:remove will not
      * overwrite the existing file but instead write the result to a new file
-     * with the same name but ending with `.licensed`
+     * with the same name but ending with `.licensed`.
      */
     @Parameter(property = "license.dryRun", defaultValue = "false")
     public boolean dryRun = false;
 
     /**
-     * Skip the formatting of files which already contain a detected header
+     * Skip the formatting of files which already contain a detected header.
      */
     @Parameter(property = "license.skipExistingHeaders", defaultValue = "false")
     public boolean skipExistingHeaders = false;
