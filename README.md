@@ -425,7 +425,7 @@ With the `headerDefinitions` option, you can redefine existing header styles and
 
 __Full Example__
 
-This page will show you how you can define extended header definitions to feet your needs. The next example will define headers in a _region_ area allowed in C# source files:
+This page will show you how you can define extended header definitions to fit your needs. The next example will define headers in a _region_ area allowed in C# source files:
 
     <?xml version="1.0" encoding="ISO-8859-1"?>
     <additionalHeaders>
