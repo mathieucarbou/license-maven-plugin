@@ -1,1 +1,1 @@
-just a one line header file
+just a one line header file for copyright
