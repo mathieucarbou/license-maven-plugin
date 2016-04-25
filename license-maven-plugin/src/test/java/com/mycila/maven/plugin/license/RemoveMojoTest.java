@@ -149,7 +149,7 @@ public final class RemoveMojoTest {
         FileUtils.copyFileToFolder(new File("src/test/resources/remove/issue-41/ASimpleClass.java"), tmp);
         final File destFile = new File (tmp, "ASimpleClass.java");
 
-        List<String> initialLines = Files.readLines(destFile, Charset.defaultCharset());
+        List<String> initialLines = Files.readLines(destFile, Charset.forName("UTF-8"));
         assertThat(initialLines.size(), is(2));
 
         // Let's apply the licene
@@ -169,7 +169,7 @@ public final class RemoveMojoTest {
         remove.concurrencyFactor = 0.25f;
         remove.execute();
         
-        List<String> linesAfterRemove = Files.readLines(destFile, Charset.defaultCharset());
+        List<String> linesAfterRemove = Files.readLines(destFile, Charset.forName("UTF-8"));
         assertThat(linesAfterRemove.size(), is(2));
     }
 }
