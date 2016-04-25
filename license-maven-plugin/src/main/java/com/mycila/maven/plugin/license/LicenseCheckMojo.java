@@ -36,7 +36,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public final class LicenseCheckMojo extends AbstractLicenseMojo {
 
     @Parameter(property = "license.error.message", defaultValue = "Some files do not have the expected license header")
-    public String errorMessage;
+    public String errorMessage = "Some files do not have the expected license header";
 
     public final Collection<File> missingHeaders = new ConcurrentLinkedQueue<File>();
 
