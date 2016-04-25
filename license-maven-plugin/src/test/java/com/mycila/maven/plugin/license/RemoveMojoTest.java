@@ -15,13 +15,18 @@
  */
 package com.mycila.maven.plugin.license;
 
+import com.google.common.io.Files;
 import com.mycila.maven.plugin.license.util.FileUtils;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
 import org.junit.Test;
 
 import java.io.File;
+import java.nio.charset.Charset;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
@@ -136,4 +141,35 @@ public final class RemoveMojoTest {
         
         // NPE was thrown in issue-30, let junit check that no Exception is thrown
    }
+    
+    @Test
+    public void test_issue41_cannotRemoveEmptyHeader() throws Exception {
+        File tmp = new File("target/test/remove/issue41");
+        tmp.mkdirs();
+        FileUtils.copyFileToFolder(new File("src/test/resources/remove/issue-41/ASimpleClass.java"), tmp);
+        final File destFile = new File (tmp, "ASimpleClass.java");
+
+        List<String> initialLines = Files.readLines(destFile, Charset.defaultCharset());
+        assertThat(initialLines.size(), is(2));
+
+        // Let's apply the licene
+        LicenseFormatMojo format = new LicenseFormatMojo();
+        format.basedir = tmp;
+        format.header = "com/mycila/maven/plugin/license/templates/GPL-3.txt";
+        format.project = new MavenProjectStub();
+        format.concurrencyFactor = 0.25f;
+        format.execute();
+        
+        // Let's try to remove it
+        LicenseRemoveMojo remove = new LicenseRemoveMojo();
+        remove.basedir = tmp;
+        remove.header = "com/mycila/maven/plugin/license/templates/GPL-3.txt";
+        remove.project = new MavenProjectStub();
+//        remove.keywords = new String[]{"GNU"};
+        remove.concurrencyFactor = 0.25f;
+        remove.execute();
+        
+        List<String> linesAfterRemove = Files.readLines(destFile, Charset.defaultCharset());
+        assertThat(linesAfterRemove.size(), is(2));
+    }
 }
