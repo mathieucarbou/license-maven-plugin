@@ -176,7 +176,19 @@ public final class Default {
         "**/*.swf",
 
         // json files
-        "**/*.json"
+        "**/*.json",
+
+        // fonts
+        "**/*.svg",
+        "**/*.eot",
+        "**/*.ttf",
+        "**/*.woff",
+
+        // office documents
+        "**/*.xlsx",
+        "**/*.docx",
+        "**/*.ppt",
+        "**/*.pptx",
     };
 
 }
