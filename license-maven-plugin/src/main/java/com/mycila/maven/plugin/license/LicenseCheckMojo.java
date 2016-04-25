@@ -21,6 +21,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 
 import java.io.File;
 import java.util.Collection;
@@ -33,6 +34,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 @Mojo(name = "check", defaultPhase = LifecyclePhase.VERIFY, threadSafe = true)
 public final class LicenseCheckMojo extends AbstractLicenseMojo {
+
+    @Parameter(property = "license.error.message", defaultValue = "Some files do not have the expected license header")
+    public String errorMessage;
 
     public final Collection<File> missingHeaders = new ConcurrentLinkedQueue<File>();
 
@@ -67,9 +71,9 @@ public final class LicenseCheckMojo extends AbstractLicenseMojo {
 
         if (!missingHeaders.isEmpty()) {
             if (failIfMissing) {
-                throw new MojoExecutionException("Some files do not have the expected license header");
+                throw new MojoExecutionException(errorMessage);
             }
-            getLog().warn("Some files do not have the expected license header");
+            getLog().warn(errorMessage);
         }
 
         if(!skip) {
