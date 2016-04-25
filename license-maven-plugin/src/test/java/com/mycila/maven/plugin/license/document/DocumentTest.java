@@ -44,7 +44,7 @@ public final class DocumentTest {
     @BeforeClass
     public static void setup() throws MalformedURLException {
 
-        header = new Header(new File("src/test/resources/test-header1.txt").toURI().toURL(), "UTF-8", null);
+        header = new Header(new File("src/test/resources/test-header1.txt").toURI().toURL(), "UTF-8", null, null);
     }
 
     @Test

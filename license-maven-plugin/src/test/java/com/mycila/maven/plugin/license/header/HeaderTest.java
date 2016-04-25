@@ -29,7 +29,7 @@ import static org.junit.Assert.*;
 public final class HeaderTest {
     @Test
     public void test() throws Exception {
-        Header header = new Header(getClass().getResource("/test-header1.txt"), "UTF-8", null);
+        Header header = new Header(getClass().getResource("/test-header1.txt"), "UTF-8", null, null);
         assertEquals(header.getLineCount(), 13);
         assertTrue(header.asOneLineString().contains("${year}"));
         assertEquals(header.getLocation(), getClass().getResource("/test-header1.txt"));
@@ -51,7 +51,7 @@ public final class HeaderTest {
         
         HeaderSection[] sections = { section };
 
-        Header header = new Header(getClass().getResource("/test-header5.txt"), "UTF-8", sections);
+        Header header = new Header(getClass().getResource("/test-header5.txt"), "UTF-8", sections, null);
         
         HeaderDefinition headerDefinition = HeaderType.JAVADOC_STYLE.getDefinition();
 
@@ -113,7 +113,7 @@ public final class HeaderTest {
         
         HeaderSection[] sections = { sectionA, sectionB };
 
-        Header header = new Header(getClass().getResource("/test-header6.txt"), "UTF-8", sections);
+        Header header = new Header(getClass().getResource("/test-header6.txt"), "UTF-8", sections, null);
         
         HeaderDefinition headerDefinition = HeaderType.JAVADOC_STYLE.getDefinition();
 
@@ -168,7 +168,7 @@ public final class HeaderTest {
         
         HeaderSection[] sections = { section };
 
-        Header header = new Header(getClass().getResource("/test-header5.txt"), "UTF-8", sections);
+        Header header = new Header(getClass().getResource("/test-header5.txt"), "UTF-8", sections, null);
         
         HeaderDefinition headerDefinition = HeaderType.JAVADOC_STYLE.getDefinition();
 

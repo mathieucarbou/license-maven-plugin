@@ -21,9 +21,15 @@ import com.mycila.maven.plugin.license.util.StringUtils;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
-import static com.mycila.maven.plugin.license.util.FileUtils.*;
+import static com.mycila.maven.plugin.license.util.FileUtils.read;
+import static com.mycila.maven.plugin.license.util.FileUtils.readFirstLines;
+import static com.mycila.maven.plugin.license.util.FileUtils.remove;
 
 /**
  * The <code>Header</code> class wraps the license template file, the one which have to be outputted inside the other
@@ -38,6 +44,7 @@ public final class Header {
     private String[] lines;
     private final HeaderSection[] sections;
     private final int maxLength;
+    private final boolean inline;
 
     /**
      * Constructs a <code>Header</code> object pointing to a license template file. In case of the template contains
@@ -48,14 +55,15 @@ public final class Header {
      * @throws IllegalArgumentException If the header file location is null or if an error occurred while reading the
      *                                  file content.
      */
-    public Header(URL location, String encoding, HeaderSection[] sections) {
-        if (location == null) {
+    public Header(URL location, String encoding, HeaderSection[] sections, String headerText) {
+        if (location == null && headerText == null) {
             throw new IllegalArgumentException("Cannot read license template header file with a null location");
         }
         this.location = location;
+        this.inline = location == null;
         this.sections = sections;
         try {
-            this.headerContent = read(location, encoding);
+          this.headerContent = location == null ? headerText : read(location, encoding);
             lines = headerContent.replace("\r", "").split("\n");
             headerContentOneLine = remove(headerContent, " ", "\t", "\r", "\n");
         } catch (Exception e) {
@@ -97,7 +105,11 @@ public final class Header {
         return location;
     }
 
-    public String eol(boolean unix) {
+  public boolean isInline() {
+    return inline;
+  }
+
+  public String eol(boolean unix) {
         return unix ? "\n" : "\r\n";
     }
 

@@ -33,23 +33,36 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
-import org.xml.sax.InputSource;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.*;
-import java.util.concurrent.*;
-
-import static com.mycila.maven.plugin.license.document.DocumentType.defaultMapping;
-import static java.lang.String.format;
-import static java.util.Arrays.asList;
-import static java.util.Arrays.deepToString;
 import org.apache.maven.settings.Server;
 import org.apache.maven.settings.Settings;
 import org.apache.maven.settings.crypto.DefaultSettingsDecryptionRequest;
 import org.apache.maven.settings.crypto.SettingsDecrypter;
 import org.apache.maven.settings.crypto.SettingsDecryptionRequest;
 import org.apache.maven.settings.crypto.SettingsDecryptionResult;
+import org.xml.sax.InputSource;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.ServiceLoader;
+import java.util.concurrent.CompletionService;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorCompletionService;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import static com.mycila.maven.plugin.license.document.DocumentType.defaultMapping;
+import static java.lang.String.format;
+import static java.util.Arrays.asList;
+import static java.util.Arrays.deepToString;
 
 /**
  * <b>Date:</b> 18-Feb-2008<br> <b>Author:</b> Mathieu Carbou
@@ -66,11 +79,17 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
     /**
      * Location of the header. It can be a relative path, absolute path,
      * classpath resource, any URL. The plugin first check if the name specified
-     * is a relative file, then an absolute file, then in the claspath. If not
+     * is a relative file, then an absolute file, then in the classpath. If not
      * found, it tries to construct a URL from the location.
      */
     @Parameter(property = "license.header")
     public String header;
+
+    /**
+     * Header, as text, directly in pom file
+     */
+    @Parameter(property = "license.inlineHeader")
+    public String inlineHeader;
 
     /**
      * Specifies additional header files to use when checking for the presence
@@ -305,15 +324,15 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
             }
             finder.setPluginClassPath(getClass().getClassLoader());
             
-            final Header h = new Header(finder.findResource(this.header), encoding, headerSections);
-            debug("Header %s:\n%s", h.getLocation(), h);
+            final Header h = new Header(finder.findResource(this.header), encoding, headerSections, inlineHeader);
+            debug("Header %s:\n%s", h.isInline() ? "inline" : h.getLocation(), h);
             
             if (this.validHeaders == null) {
                 this.validHeaders = new String[0];
             }
             final List<Header> validHeaders = new ArrayList<Header>(this.validHeaders.length);
             for (String validHeader : this.validHeaders) {
-                validHeaders.add(new Header(finder.findResource(validHeader), encoding, headerSections));
+                validHeaders.add(new Header(finder.findResource(validHeader), encoding, headerSections, inlineHeader));
             }
             
             final List<PropertiesProvider> propertiesProviders = new LinkedList<PropertiesProvider>();
