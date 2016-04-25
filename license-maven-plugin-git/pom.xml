@@ -20,7 +20,8 @@
   <parent>
     <groupId>com.mycila</groupId>
     <artifactId>license-maven-plugin-parent</artifactId>
-    <version>2.11</version>
+    <version>3.0.rc1-SNAPSHOT</version>
+    <relativePath>..</relativePath>
   </parent>
   <artifactId>license-maven-plugin-git</artifactId>
   <packaging>jar</packaging>
