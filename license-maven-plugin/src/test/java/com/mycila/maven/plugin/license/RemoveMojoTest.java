@@ -157,7 +157,6 @@ public final class RemoveMojoTest {
         format.basedir = tmp;
         format.header = "com/mycila/maven/plugin/license/templates/GPL-3.txt";
         format.project = new MavenProjectStub();
-        format.concurrencyFactor = 0.25f;
         format.execute();
         
         // Let's try to remove it
@@ -166,7 +165,6 @@ public final class RemoveMojoTest {
         remove.header = "com/mycila/maven/plugin/license/templates/GPL-3.txt";
         remove.project = new MavenProjectStub();
 //        remove.keywords = new String[]{"GNU"};
-        remove.concurrencyFactor = 0.25f;
         remove.execute();
         
         List<String> linesAfterRemove = Files.readLines(destFile, Charset.forName("UTF-8"));
