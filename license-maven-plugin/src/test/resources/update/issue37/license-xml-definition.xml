@@ -1,0 +1,12 @@
+<additionalHeaders>
+  <xml_style>
+    <firstLine><![CDATA[<!--]]></firstLine>
+    <beforeEachLine> * </beforeEachLine>
+    <endLine><![CDATA[-->]]></endLine>
+    <skipLine><![CDATA[^<\?xml.*>$]]></skipLine>
+    <firstLineDetectionPattern><![CDATA[(\s|\t)*<!--.*$]]></firstLineDetectionPattern>
+    <lastLineDetectionPattern><![CDATA[.*-->(\s|\t)*$]]></lastLineDetectionPattern>
+    <allowBlankLines>false</allowBlankLines>
+    <isMultiline>true</isMultiline>
+  </xml_style>
+</additionalHeaders>

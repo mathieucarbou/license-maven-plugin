@@ -28,8 +28,9 @@ import java.util.HashMap;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
@@ -247,6 +248,31 @@ public final class UpdateMojoTest {
         List<String> linesOfModifiedFile = Files.readLines(new File(tmp, "issue-71.txt.extended"), Charset.defaultCharset());
         assertThat(linesOfModifiedFile.get(0 /* line 1 */), is("|||"));
         assertThat(linesOfModifiedFile.get(8) /* line 9 */, is("|||"));
+    }
+    
+    @Test
+    public void test_issue37_RunningUpdaterTwiceMustNotChangeTheFile() throws Exception {
+        File tmp = new File("target/test/update/issue37");
+        tmp.mkdirs();
+        FileUtils.copyFileToFolder(new File("src/test/resources/update/issue37/xwiki.xml"), tmp);
+        
+        LicenseFormatMojo execution1 = new LicenseFormatMojo();
+        execution1.basedir = tmp;
+        execution1.header = "src/test/resources/update/issue37/xwiki-license.txt";
+        execution1.project = new MavenProjectStub();
+        execution1.execute();
+        
+        String execution1FileContent = FileUtils.read(new File(tmp, "xwiki.xml"), System.getProperty("file.encoding"));
+        
+        LicenseFormatMojo execution2 = new LicenseFormatMojo();
+        execution2.basedir = tmp;
+        execution2.header = "src/test/resources/update/issue37/xwiki-license.txt";
+        execution2.project = new MavenProjectStub();
+        execution2.execute();
+        
+        String execution2FileContent = FileUtils.read(new File(tmp, "xwiki.xml"), System.getProperty("file.encoding"));
+        
+        assertThat(execution1FileContent, is(execution2FileContent));
     }
 
     @Test
