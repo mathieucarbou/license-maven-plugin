@@ -100,6 +100,7 @@ public final class Default {
         "**/test-output/**",
         "**/release.properties",
         "**/dependency-reduced-pom.xml",
+        "**/release-pom.xml",
         "**/pom.xml.releaseBackup",
 
         // code coverage tools
