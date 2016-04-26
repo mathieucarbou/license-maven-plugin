@@ -5,7 +5,7 @@
     <title>License Maven Plugin by mycila</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
   </head>
@@ -28,6 +28,9 @@
 <p><strong>Lastest releases</strong> (note that it may take up to 1-2 days to be in Maven Central repository):</p>
 
 <ul>
+<li>
+<a href="http://repo1.maven.org/maven2/com/mycila/license-maven-plugin/3.0.rc1">3.0.rc1</a> (2016-04-26) - see <a href="https://github.com/mycila/license-maven-plugin/issues?q=milestone%3A3.0.rc1">issues and pull requests</a>
+</li>
 <li>
 <a href="http://repo1.maven.org/maven2/com/mycila/license-maven-plugin/2.11">2.11</a> (2015-04-20) - see <a href="https://github.com/mycila/license-maven-plugin/issues?q=milestone%3A2.11">issues and pull requests</a>
 </li>
@@ -64,7 +67,7 @@
 </ul>
 
 <h1>
-<a id="maven-license-plugin" class="anchor" href="#maven-license-plugin" aria-hidden="true"><span class="octicon octicon-link"></span></a>Maven License Plugin</h1>
+<a id="maven-license-plugin" class="anchor" href="#maven-license-plugin" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Maven License Plugin</h1>
 
 <p>Basically, when you are developing a project either in open source or in a company, you often need to add at the top of your source files a license to protect your work. I didn't find any maven plugin on Internet to help you maintain these license headers. By maintaining, i mean checking if the header is here or not, generating a report and of course having the possibility to update / reformat missing license headers.</p>
 
@@ -115,7 +118,7 @@
 </ul>
 
 <h2>
-<a id="maven-repository" class="anchor" href="#maven-repository" aria-hidden="true"><span class="octicon octicon-link"></span></a>Maven Repository</h2>
+<a id="maven-repository" class="anchor" href="#maven-repository" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Maven Repository</h2>
 
 <p><strong>Releases</strong> </p>
 
@@ -154,23 +157,24 @@
 </code></pre>
 
 <h2>
-<a id="documentation" class="anchor" href="#documentation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Documentation</h2>
+<a id="documentation" class="anchor" href="#documentation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Documentation</h2>
 
 <h3>
-<a id="detailed-maven-documentation" class="anchor" href="#detailed-maven-documentation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Detailed Maven documentation</h3>
+<a id="detailed-maven-documentation" class="anchor" href="#detailed-maven-documentation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Detailed Maven documentation</h3>
 
 <p>The detailed Maven Plugin Documentation generated for each build is available here:</p>
 
 <ul>
-<li><a href="http://mycila.github.io/license-maven-plugin/reports/2.0/index.html">2.0</a></li>
-<li><a href="http://mycila.github.io/license-maven-plugin/reports/2.2/index.html">2.2</a></li>
-<li><a href="http://mycila.github.io/license-maven-plugin/reports/2.3/index.html">2.3</a></li>
+<li><a href="http://code.mycila.com/license-maven-plugin/reports/3.0.rc1/plugin-info.html">3.0.rc1</a></li>
+<li><a href="http://code.mycila.com/license-maven-plugin/reports/2.3/plugin-info.html">2.3</a></li>
+<li><a href="http://code.mycila.com/license-maven-plugin/reports/2.2/plugin-info.html">2.2</a></li>
+<li><a href="http://code.mycila.com/license-maven-plugin/reports/2.0/plugin-info.html">2.0</a></li>
 </ul>
 
 <p><strong>WARNING</strong>: there is good chances the latest version is greater than latest documentation, if nothing has changed concerning the plugin configurations.</p>
 
 <h3>
-<a id="goals" class="anchor" href="#goals" aria-hidden="true"><span class="octicon octicon-link"></span></a>Goals</h3>
+<a id="goals" class="anchor" href="#goals" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Goals</h3>
 
 <ul>
 <li>
@@ -182,7 +186,7 @@
 </ul>
 
 <h3>
-<a id="configuration" class="anchor" href="#configuration" aria-hidden="true"><span class="octicon octicon-link"></span></a>Configuration</h3>
+<a id="configuration" class="anchor" href="#configuration" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Configuration</h3>
 
 <p>The table below shows all the available options you can use in the configure section of the plugin. A lot of are also available from the command-line. To use them, simply launch your maven command with a property like <code>-Dproperty=value</code> (i.e. <code>mvn license:check -Dlicense.header=src/etc/header.txt</code>)</p>
 
@@ -195,7 +199,7 @@
 </ul>
 
 <h3>
-<a id="license-templates" class="anchor" href="#license-templates" aria-hidden="true"><span class="octicon octicon-link"></span></a>License templates</h3>
+<a id="license-templates" class="anchor" href="#license-templates" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License templates</h3>
 
 <p>Maven license plugin comes with the following license templates:</p>
 
@@ -213,7 +217,7 @@
 <p>You can find those license templates with preconfigured placeholders <a href="https://github.com/mycila/license-maven-plugin/tree/master/license-maven-plugin/src/main/resources/com/mycila/maven/plugin/license/templates">here</a></p>
 
 <h3>
-<a id="properties-and-placeholders" class="anchor" href="#properties-and-placeholders" aria-hidden="true"><span class="octicon octicon-link"></span></a>Properties and placeholders</h3>
+<a id="properties-and-placeholders" class="anchor" href="#properties-and-placeholders" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Properties and placeholders</h3>
 
 <p>Properties which can be used as placeholder comes from:</p>
 
@@ -251,7 +255,7 @@
 <p>You have access to the Mojo, the current built properties and the document being checked or formatted. The plugin uses the JDK ServiceLoader mechanism to find all <code>PropertiesProvider</code> implementations on the plugin classpath and execute them. Thus, just add the implementation class name in the file <code>META-INF/services/com.mycila.maven.plugin.license.PropertiesProvider</code> in your JAR file.</p>
 
 <h3>
-<a id="supported-comment-types" class="anchor" href="#supported-comment-types" aria-hidden="true"><span class="octicon octicon-link"></span></a>Supported comment types</h3>
+<a id="supported-comment-types" class="anchor" href="#supported-comment-types" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Supported comment types</h3>
 
 <p>The plugin has been designed so that it is very easy to add new supports for new sorts of comment. The plugin currently support these types of comment:</p>
 
@@ -519,7 +523,7 @@
 <p>You can use composed-extensions like *.apt.vm and redefine them, but you will have to nake sure that the mapping of <code>apt.vm</code> is <em>before</em> the mapping of the <code>vm</code> extension. The order in the mapping section is important: extensions seen first take precedence.</p>
 
 <h3>
-<a id="changing-header-style-definitions" class="anchor" href="#changing-header-style-definitions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Changing header style definitions</h3>
+<a id="changing-header-style-definitions" class="anchor" href="#changing-header-style-definitions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Changing header style definitions</h3>
 
 <p>In license-maven-plugin, each header style is defined by patterns to detect it and also strings to insert it correctly in files. If we take for example the Javadoc style header definition. It is defined as follow:</p>
 
@@ -563,7 +567,7 @@
 
 <p><strong>Full Example</strong></p>
 
-<p>This page will show you how you can define extended header definitions to feet your needs. The next example will define headers in a <em>region</em> area allowed in C# source files:</p>
+<p>This page will show you how you can define extended header definitions to fit your needs. The next example will define headers in a <em>region</em> area allowed in C# source files:</p>
 
 <pre><code>&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;
 &lt;additionalHeaders&gt;
@@ -646,4 +650,3 @@
 
   </body>
 </html>
-
