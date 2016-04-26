@@ -25,3 +25,4 @@ nb-configuration.xml
 
 # OSX
 .DS_Store
+release-pom.xml

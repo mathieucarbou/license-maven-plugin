@@ -130,6 +130,30 @@
                     <tag>${project.artifactId}-${project.version}</tag>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <header>com/mycila/licenses/APACHE-2</header>
+                    <properties>
+                        <owner>Mycila</owner>
+                        <year>${project.inceptionYear}</year>
+                        <email>mathieu.carbou@gmail.com</email>
+                    </properties>
+                    <excludes>
+                        <exclude>src/test/resources/**</exclude>
+                        <exclude>**/release-pom.xml</exclude>
+                    </excludes>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.mycila</groupId>
+                        <artifactId>licenses</artifactId>
+                        <version>1</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
         </plugins>
     </build>
 
