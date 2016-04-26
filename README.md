@@ -6,6 +6,7 @@ __Upcoming release__
 
 __Lastest releases__ (note that it may take up to 1-2 days to be in Maven Central repository):
 
+* [3.0.rc1](http://repo1.maven.org/maven2/com/mycila/license-maven-plugin/3.0.rc1) (2016-04-26) - see [issues and pull requests](https://github.com/mycila/license-maven-plugin/issues?q=milestone%3A3.0.rc1)
 * [2.11](http://repo1.maven.org/maven2/com/mycila/license-maven-plugin/2.11) (2015-04-20) - see [issues and pull requests](https://github.com/mycila/license-maven-plugin/issues?q=milestone%3A2.11)
 * [2.10](http://repo1.maven.org/maven2/com/mycila/license-maven-plugin/2.10) (2015-03-16) - see [issues and pull requests](https://github.com/mycila/license-maven-plugin/issues?q=milestone%3A2.8)
 
@@ -99,9 +100,10 @@ __Plugin declaration__
 
 The detailed Maven Plugin Documentation generated for each build is available here:
 
- - [2.0](http://mycila.github.io/license-maven-plugin/reports/2.0/index.html)
- - [2.2](http://mycila.github.io/license-maven-plugin/reports/2.2/index.html)
- - [2.3](http://mycila.github.io/license-maven-plugin/reports/2.3/index.html)
+ - [3.0.rc1](http://code.mycila.com/license-maven-plugin/reports/3.0.rc1/plugin-info.html)
+ - [2.3](http://code.mycila.com/license-maven-plugin/reports/2.3/plugin-info.html)
+ - [2.2](http://code.mycila.com/license-maven-plugin/reports/2.2/plugin-info.html)
+ - [2.0](http://code.mycila.com/license-maven-plugin/reports/2.0/plugin-info.html)
 
 __WARNING__: there is good chances the latest version is greater than latest documentation, if nothing has changed concerning the plugin configurations.
 
