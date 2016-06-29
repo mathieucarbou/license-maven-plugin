@@ -65,6 +65,7 @@ public enum DocumentType {
     JSP("jsp", HeaderType.DYNASCRIPT_STYLE),
     JSPX("jspx", HeaderType.XML_STYLE),
     KML("kml", HeaderType.XML_STYLE),
+    KOTLIN("kt", HeaderType.JAVADOC_STYLE),
     LISP("el", HeaderType.EXCLAMATION3_STYLE),
     LUA("lua", HeaderType.LUA),
     MUSTACHE("mustache", HeaderType.MUSTACHE_STYLE),
