@@ -176,7 +176,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
      * support, and the value is the name of the comment type to use.
      */
     @Parameter
-    public Map<String, String> mapping = new LinkedHashMap<String, String>();
+    public LinkedHashMap<String, String> mapping = new LinkedHashMap<String, String>();
 
     /**
      * Whether to use the default mapping between file extensions and comment
@@ -373,7 +373,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
             };
             
             final DocumentFactory documentFactory = new DocumentFactory(basedir, buildMapping(), buildHeaderDefinitions(), encoding, keywords, propertiesLoader);
-            
+
             int nThreads = (int) (Runtime.getRuntime().availableProcessors() * concurrencyFactor);
             ExecutorService executorService = Executors.newFixedThreadPool(nThreads);
             CompletionService completionService = new ExecutorCompletionService(executorService);

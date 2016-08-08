@@ -55,7 +55,7 @@ public final class MappingMojoTest {
         }
 
         logger.clear();
-        check.mapping = new HashMap<String, String>() {{
+        check.mapping = new LinkedHashMap<String, String>() {{
             put("txt", "javadoc_style");
         }};
 
@@ -93,7 +93,7 @@ public final class MappingMojoTest {
         }
 
         check.setLog(new SystemStreamLog());
-        check.mapping = new HashMap<String, String>() {{
+        check.mapping = new LinkedHashMap<String, String>() {{
             put("apt.vm", "DOUBLETILDE_STYLE");
         }};
 
@@ -106,7 +106,7 @@ public final class MappingMojoTest {
         MockedLog logger = new MockedLog();
         check.setLog(new DefaultLog(logger));
         //check.setLog(new SystemStreamLog());
-        check.basedir = new File("src/test/resources/check");
+        check.basedir = new File("src/test/resources/check/issue107");
         check.header = "header.txt";
         check.project = new MavenProjectStub();
         check.includes = new String[]{"test.xml.tmpl"};
@@ -114,24 +114,14 @@ public final class MappingMojoTest {
             put("year", "2008");
         }};
 
-        check.mapping = new TreeMap<String, String>() {{
+        check.setLog(new SystemStreamLog());
+        check.mapping = new LinkedHashMap<String, String>() {{
             put("jmx", "XML_STYLE");
             put("feature", "SCRIPT_STYLE");
             put("properties.tmpl", "SCRIPT_STYLE");
             put("xml.tmpl", "XML_STYLE");
             put("tmpl", "SCRIPT_STYLE");
         }};
-
-        try {
-            check.execute();
-            fail();
-        } catch (MojoExecutionException e) {
-            e.printStackTrace(System.out);
-            assertTrue(logger.getContent().contains("test.xml.tmpl [header style: script_style]"));
-            assertEquals("Some files do not have the expected license header", e.getMessage());
-        }
-
-        check.setLog(new SystemStreamLog());
 
         check.execute();
     }
@@ -157,7 +147,7 @@ public final class MappingMojoTest {
         /* Add the mapping and expect the missing header */
         MockedLog mappedLogger = new MockedLog();
         check.setLog(new DefaultLog(mappedLogger));
-        check.mapping = new HashMap<String, String>() {{
+        check.mapping = new LinkedHashMap<String, String>() {{
             put("extensionless-file", "SCRIPT_STYLE");
         }};
 
