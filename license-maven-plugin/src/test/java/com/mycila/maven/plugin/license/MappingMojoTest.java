@@ -23,6 +23,8 @@ import org.junit.Test;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.TreeMap;
 
 import static org.junit.Assert.*;
 
@@ -98,6 +100,41 @@ public final class MappingMojoTest {
         check.execute();
     }
 
+    @Test
+    public void test_mapping_composed_extension_ordered() throws Exception {
+        LicenseCheckMojo check = new LicenseCheckMojo();
+        MockedLog logger = new MockedLog();
+        check.setLog(new DefaultLog(logger));
+        //check.setLog(new SystemStreamLog());
+        check.basedir = new File("src/test/resources/check");
+        check.header = "header.txt";
+        check.project = new MavenProjectStub();
+        check.includes = new String[]{"test.xml.tmpl"};
+        check.properties = new HashMap<String, String>() {{
+            put("year", "2008");
+        }};
+
+        check.mapping = new TreeMap<String, String>() {{
+            put("jmx", "XML_STYLE");
+            put("feature", "SCRIPT_STYLE");
+            put("properties.tmpl", "SCRIPT_STYLE");
+            put("xml.tmpl", "XML_STYLE");
+            put("tmpl", "SCRIPT_STYLE");
+        }};
+
+        try {
+            check.execute();
+            fail();
+        } catch (MojoExecutionException e) {
+            e.printStackTrace(System.out);
+            assertTrue(logger.getContent().contains("test.xml.tmpl [header style: script_style]"));
+            assertEquals("Some files do not have the expected license header", e.getMessage());
+        }
+
+        check.setLog(new SystemStreamLog());
+
+        check.execute();
+    }
 
     @Test
     public void test_mapping_extension_less_file() throws Exception {

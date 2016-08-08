@@ -113,7 +113,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
 
     /**
      * HeadSections define special regions of a header that allow for dynamic
-     * substitution and validation.
+     * substitution and validation
      */
     @Parameter
     public HeaderSection[] headerSections = new HeaderSection[0];
@@ -176,7 +176,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
      * support, and the value is the name of the comment type to use.
      */
     @Parameter
-    public Map<String, String> mapping = new HashMap<String, String>();
+    public Map<String, String> mapping = new LinkedHashMap<String, String>();
 
     /**
      * Whether to use the default mapping between file extensions and comment
