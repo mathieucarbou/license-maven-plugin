@@ -24,7 +24,6 @@ import org.junit.Test;
 import java.io.File;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.TreeMap;
 
 import static org.junit.Assert.*;
 
