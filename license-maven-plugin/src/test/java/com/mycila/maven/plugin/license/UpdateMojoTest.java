@@ -25,6 +25,7 @@ import org.junit.Test;
 import java.io.File;
 import java.nio.charset.Charset;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -107,7 +108,7 @@ public final class UpdateMojoTest {
         updater.basedir = tmp;
         updater.header = "src/test/resources/update/header.txt";
         updater.properties = ImmutableMap.of("year", "2008");
-        updater.mapping = new HashMap<String, String>() {{
+        updater.mapping = new LinkedHashMap<String, String>() {{
             put("properties", "SCRIPT_STYLE");
         }};
         updater.project = new MavenProjectStub();
@@ -132,7 +133,7 @@ public final class UpdateMojoTest {
         updater.basedir = tmp;
         updater.header = "src/test/resources/update/header.txt";
         updater.properties = ImmutableMap.of("year", "2008");
-        updater.mapping = new HashMap<String, String>() {{
+        updater.mapping = new LinkedHashMap<String, String>() {{
             put("properties", "SCRIPT_STYLE");
         }};
         updater.project = new MavenProjectStub();
@@ -237,7 +238,7 @@ public final class UpdateMojoTest {
         updater.basedir = tmp;
         updater.header = "src/test/resources/issues/issue-71/issue-71-header.txt";
         updater.project = new MavenProjectStub();
-        updater.mapping = new HashMap<String, String>() {{
+        updater.mapping = new LinkedHashMap<String, String>() {{
             put("txt.extended", "EXTENDED_STYLE");
         }};
         updater.headerDefinitions = new String[]{"/issues/issue-71/issue-71-additionalHeaderDefinitions.xml"};

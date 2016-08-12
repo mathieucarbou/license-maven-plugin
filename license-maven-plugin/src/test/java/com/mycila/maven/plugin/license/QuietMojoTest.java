@@ -37,6 +37,7 @@ public final class QuietMojoTest {
         check.project = new MavenProjectStub();
         check.failIfMissing = false;
         check.strictCheck = true;
+        check.excludes = new String[]{"**/issue107/**"};
 
         MockedLog logger = new MockedLog();
         check.setLog(new DefaultLog(logger));
