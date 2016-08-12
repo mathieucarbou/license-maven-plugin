@@ -45,8 +45,8 @@ __Project:__
  - __License:__ [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0)
 
 [![](https://badge.waffle.io/mycila/license-maven-plugin.svg?label=ready&title=Ready)](http://waffle.io/mycila/license-maven-plugin)
-[![](https://badge.waffle.io/mycila/license-maven-plugin.svg?in%20progress&title=In%20Progress)](http://waffle.io/mycila/license-maven-plugin)
-[![](https://badge.waffle.io/mycila/license-maven-plugin.svg?label=under%20review&title=Under%20Review)](http://waffle.io/mycila/license-maven-plugin)
+[![](https://badge.waffle.io/mycila/license-maven-plugin.svg?in-progress&title=In%20Progress)](http://waffle.io/mycila/license-maven-plugin)
+[![](https://badge.waffle.io/mycila/license-maven-plugin.svg?label=under-review&title=Under%20Review)](http://waffle.io/mycila/license-maven-plugin)
 
 __Contributors__
 
