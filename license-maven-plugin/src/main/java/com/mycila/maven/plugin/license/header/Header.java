@@ -15,19 +15,17 @@
  */
 package com.mycila.maven.plugin.license.header;
 
-import com.mycila.maven.plugin.license.HeaderSection;
-import com.mycila.maven.plugin.license.document.Document;
-import com.mycila.maven.plugin.license.util.StringUtils;
-
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import static com.mycila.maven.plugin.license.util.FileUtils.read;
+import com.mycila.maven.plugin.license.HeaderSection;
+import com.mycila.maven.plugin.license.document.Document;
+import com.mycila.maven.plugin.license.util.StringUtils;
+
 import static com.mycila.maven.plugin.license.util.FileUtils.readFirstLines;
 import static com.mycila.maven.plugin.license.util.FileUtils.remove;
 
@@ -38,13 +36,12 @@ import static com.mycila.maven.plugin.license.util.FileUtils.remove;
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
 public final class Header {
-    private final URL location;
+    private final HeaderSource location;
     private final String headerContent;
     private final String headerContentOneLine;
     private String[] lines;
     private final HeaderSection[] sections;
     private final int maxLength;
-    private final boolean inline;
 
     /**
      * Constructs a <code>Header</code> object pointing to a license template file. In case of the template contains
@@ -55,15 +52,11 @@ public final class Header {
      * @throws IllegalArgumentException If the header file location is null or if an error occurred while reading the
      *                                  file content.
      */
-    public Header(URL location, String encoding, HeaderSection[] sections, String headerText) {
-        if (location == null && headerText == null) {
-            throw new IllegalArgumentException("Cannot read license template header file with a null location");
-        }
+    public Header(HeaderSource location, HeaderSection[] sections) {
         this.location = location;
-        this.inline = location == null;
         this.sections = sections;
         try {
-          this.headerContent = location == null ? headerText : read(location, encoding);
+            this.headerContent = location.getContent();
             lines = headerContent.replace("\r", "").split("\n");
             headerContentOneLine = remove(headerContent, " ", "\t", "\r", "\n");
         } catch (Exception e) {
@@ -101,15 +94,11 @@ public final class Header {
      *
      * @return The URL location.
      */
-    public URL getLocation() {
+    public HeaderSource getLocation() {
         return location;
     }
 
-  public boolean isInline() {
-    return inline;
-  }
-
-  public String eol(boolean unix) {
+    public String eol(boolean unix) {
         return unix ? "\n" : "\r\n";
     }
 

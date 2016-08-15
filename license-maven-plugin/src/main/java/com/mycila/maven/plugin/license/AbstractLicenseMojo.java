@@ -22,6 +22,7 @@ import com.mycila.maven.plugin.license.document.DocumentType;
 import com.mycila.maven.plugin.license.header.AdditionalHeaderDefinition;
 import com.mycila.maven.plugin.license.header.Header;
 import com.mycila.maven.plugin.license.header.HeaderDefinition;
+import com.mycila.maven.plugin.license.header.HeaderSource;
 import com.mycila.maven.plugin.license.header.HeaderType;
 import com.mycila.maven.plugin.license.util.Selection;
 import com.mycila.maven.plugin.license.util.resource.ResourceFinder;
@@ -43,6 +44,7 @@ import org.xml.sax.InputSource;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -307,7 +309,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
     @SuppressWarnings({"unchecked"})
     public final void execute(final Callback callback) throws MojoExecutionException, MojoFailureException {
         if (!skip) {
-            if (header == null) {
+            if (header == null && (this.inlineHeader == null || this.inlineHeader.isEmpty())) {
                 warn("No header file specified to check for license");
                 return;
             }
@@ -323,16 +325,18 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
                 throw new MojoExecutionException(e.getMessage(), e);
             }
             finder.setPluginClassPath(getClass().getClassLoader());
-            
-            final Header h = new Header(finder.findResource(this.header), encoding, headerSections, inlineHeader);
-            debug("Header %s:\n%s", h.isInline() ? "inline" : h.getLocation(), h);
-            
+
+            final HeaderSource headerSource = HeaderSource.of(this.inlineHeader, this.header, this.encoding, this.finder);
+            final Header h = new Header(headerSource, headerSections);
+            debug("Header: %s", h.getLocation());
+
             if (this.validHeaders == null) {
                 this.validHeaders = new String[0];
             }
             final List<Header> validHeaders = new ArrayList<Header>(this.validHeaders.length);
             for (String validHeader : this.validHeaders) {
-                validHeaders.add(new Header(finder.findResource(validHeader), encoding, headerSections, inlineHeader));
+                final HeaderSource validHeaderSource = HeaderSource.of(null, validHeader, this.encoding, this.finder);
+                validHeaders.add(new Header(validHeaderSource, headerSections));
             }
             
             final List<PropertiesProvider> propertiesProviders = new LinkedList<PropertiesProvider>();

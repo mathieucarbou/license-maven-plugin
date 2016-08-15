@@ -123,7 +123,7 @@ public final class Document {
 
     public boolean is(Header header) {
         try {
-            return !header.isInline() && header.getLocation().sameFile(this.file.toURI().toURL());
+            return header.getLocation().isFromUrl(this.file.toURI().toURL());
         } catch (Exception e) {
             throw new IllegalStateException("Error comparing document " + this.file + " with file " + file + ". Cause: " + e.getMessage(), e);
         }
