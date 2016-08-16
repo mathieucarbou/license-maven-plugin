@@ -324,6 +324,12 @@ The plugin has been designed so that it is very easy to add new supports for new
 	--->
 ```
 
+ - `PERCENT_STYLE` (Teχ like comments): *.cls, *.sty, *.tex
+
+```
+	% comment
+```
+
  - `PERCENT3_STYLE` (Erlang like comments): *.erl, *.hrl
 
 ```
