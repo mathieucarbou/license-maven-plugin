@@ -1,3 +1,4 @@
+
 /*-
  * Copyright (C) ${year} http://code.google.com/p/maven-license-plugin/
  *
