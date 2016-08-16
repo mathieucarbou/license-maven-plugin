@@ -405,6 +405,14 @@ The plugin enables you to add any other mapping you want.* I.e., if you are deve
 
 You can use composed-extensions like *.apt.vm and redefine them, but you will have to nake sure that the mapping of `apt.vm` is _before_ the mapping of the `vm` extension. The order in the mapping section is important: extensions seen first take precedence.
 
+__Java packages__
+
+Another use case for custom mappings is when writing Java code in packages; the licence header should come *after* the package declaration line in this case. Simply add this to the plugin configuration:
+
+    <mapping>
+        <java>JAVAPKG_STYLE</java>
+    </mapping>
+
 ### Changing header style definitions ###
 
 In license-maven-plugin, each header style is defined by patterns to detect it and also strings to insert it correctly in files. If we take for example the Javadoc style header definition. It is defined as follow:
