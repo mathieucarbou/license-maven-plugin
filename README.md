@@ -185,7 +185,7 @@ The plugin has been designed so that it is very easy to add new supports for new
      */
 ```
 
- - `JAVAPKG_STYLE` (like Javadoc, but only for files that are in a Java package, skips the first line): not assigned to a file extension by default
+ - `JAVAPKG_STYLE` (like Javadoc, but only for files that are in a Java package, skips the first line): not assigned to a file extension by default (see __Java packages__ below for how to enable it)
 
 ```
     package com.example;
