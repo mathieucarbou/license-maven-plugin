@@ -60,6 +60,7 @@ __Contributors__
 * [@adamretter](https://github.com/adamretter)
 * [@vromero](https://github.com/vromero)
 * [@hgschmie](https://github.com/hgschmie)
+* [@mirabilos](https://github.com/mirabilos)
 
 ## Maven Repository ##
 
