@@ -29,7 +29,7 @@ import java.util.Map;
 public enum HeaderType {
     ////////// COMMENT TYPES //////////
 
-    //              FirstLine           Before              EndLine             After             SkipLine                    FirstLineDetection              LastLineDetection       allowBlankLines isMultiline
+    //              firstLine   beforeEachLine   endLine   afterEachLine   skipLinePattern   firstLineDetectionPattern   endLineDetectionPattern   allowBlankLines   isMultiline   padLines
     //generic
     JAVADOC_STYLE("/**", " * ", " */", "", null, "(\\s|\\t)*/\\*.*$", ".*\\*/(\\s|\\t)*$", false, true, false),
     SCRIPT_STYLE("#", "# ", "#EOL", "", "^#!.*$", "#.*$", "#.*$", false, false, false),
@@ -46,6 +46,7 @@ public enum HeaderType {
     DOUBLETILDE_STYLE("~~", "~~ ", "~~EOL", "", null, "~~.*$", "~~.*$", false, false, false),
     DYNASCRIPT_STYLE("<%--EOL", "    ", "EOL--%>", "", null, "(\\s|\\t)*<%--.*$", ".*--%>(\\s|\\t)*$", true, true, false),
     DYNASCRIPT3_STYLE("<!---EOL", "    ", "EOL--->", "", null, "(\\s|\\t)*<!---.*$", ".*--->(\\s|\\t)*$", true, true, false),
+    PERCENT_STYLE("", "% ", "EOL", "", null, "^% .*$", "^% .*$", false, false, false),
     PERCENT3_STYLE("%%%", "%%% ", "%%%EOL", "", null, "%%%.*$", "%%%.*$", false, false, false),
     EXCLAMATION3_STYLE("!!!", "!!! ", "!!!EOL", "", null, "!!!.*$", "!!!.*$", false, false, false),
 
