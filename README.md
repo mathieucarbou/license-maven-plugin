@@ -187,6 +187,15 @@ The plugin has been designed so that it is very easy to add new supports for new
      */
 ```
 
+ - `JAVAPKG_STYLE` (like Javadoc, but only for files that are in a Java package, skips the first line): not assigned to a file extension by default
+
+```
+    package com.example;
+    /*-
+     * My comment
+     */
+```
+
  - `XML_STYLE` (XML-like comments): *.pom, *.xml, *.xhtml, *.mxml, *.dtd, *.xsd, *.jspx, *.fml, *.xsl, *.html, *.htm, *.kml, *.gsp, *.tld
 
 ```
