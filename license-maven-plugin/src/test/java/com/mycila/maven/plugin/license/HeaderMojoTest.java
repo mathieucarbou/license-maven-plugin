@@ -18,6 +18,8 @@ package com.mycila.maven.plugin.license;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
 import org.junit.Test;
 
+import com.mycila.maven.plugin.license.util.FileUtils;
+
 import java.io.File;
 
 /**
@@ -83,5 +85,18 @@ public final class HeaderMojoTest {
         check.strictCheck = true;
         check.execute();
     }
+
+    @Test
+    public void test_inlineHeader() throws Exception {
+        MavenProjectStub project = new MavenProjectStub();
+        LicenseCheckMojo check = new LicenseCheckMojo();
+        check.basedir = new File("src/test/resources/check");
+        check.inlineHeader = FileUtils.read(new File("src/test/resources/check/header.txt"), "utf-8");
+        check.project = project;
+        check.failIfMissing = false;
+        check.strictCheck = true;
+        check.execute();
+    }
+
 
 }

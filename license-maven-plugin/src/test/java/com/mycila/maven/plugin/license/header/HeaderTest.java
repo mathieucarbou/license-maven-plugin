@@ -16,10 +16,12 @@
 package com.mycila.maven.plugin.license.header;
 
 import com.mycila.maven.plugin.license.HeaderSection;
+import com.mycila.maven.plugin.license.header.HeaderSource.UrlHeaderSource;
 import com.mycila.maven.plugin.license.util.FileUtils;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.IOException;
 
 import static org.junit.Assert.*;
 
@@ -29,10 +31,10 @@ import static org.junit.Assert.*;
 public final class HeaderTest {
     @Test
     public void test() throws Exception {
-        Header header = new Header(getClass().getResource("/test-header1.txt"), "UTF-8", null, null);
+        Header header = new Header(new UrlHeaderSource(getClass().getResource("/test-header1.txt"), "UTF-8"), null);
         assertEquals(header.getLineCount(), 13);
         assertTrue(header.asOneLineString().contains("${year}"));
-        assertEquals(header.getLocation(), getClass().getResource("/test-header1.txt"));
+        assertTrue(header.getLocation().isFromUrl(getClass().getResource("/test-header1.txt")));
 
         //FileUtils.write(new File("src/test/resources/test-header2.txt"), header.buildForDefinition(HeaderType.ASP.getDefinition(), false));
 
@@ -42,7 +44,7 @@ public final class HeaderTest {
     }
     
     @Test
-    public void testHeaderSections() {
+    public void testHeaderSections() throws IOException {
         
         HeaderSection section = new HeaderSection();
         section.setKey("COPYRIGHT_SECTION");
@@ -51,8 +53,8 @@ public final class HeaderTest {
         
         HeaderSection[] sections = { section };
 
-        Header header = new Header(getClass().getResource("/test-header5.txt"), "UTF-8", sections, null);
-        
+        Header header = new Header(new UrlHeaderSource(getClass().getResource("/test-header5.txt"), "UTF-8"), sections);
+
         HeaderDefinition headerDefinition = HeaderType.JAVADOC_STYLE.getDefinition();
 
         StringBuilder h1 = new StringBuilder();
@@ -100,7 +102,7 @@ public final class HeaderTest {
     }
     
     @Test
-    public void testHeaderSectionsWithAmbiguousSeparation() {
+    public void testHeaderSectionsWithAmbiguousSeparation() throws IOException {
         
         HeaderSection sectionA = new HeaderSection();
         sectionA.setKey("COPYRIGHT_SECTION");
@@ -113,8 +115,8 @@ public final class HeaderTest {
         
         HeaderSection[] sections = { sectionA, sectionB };
 
-        Header header = new Header(getClass().getResource("/test-header6.txt"), "UTF-8", sections, null);
-        
+        Header header = new Header(new UrlHeaderSource(getClass().getResource("/test-header6.txt"), "UTF-8"), sections);
+
         HeaderDefinition headerDefinition = HeaderType.JAVADOC_STYLE.getDefinition();
 
         /**
@@ -158,7 +160,7 @@ public final class HeaderTest {
     }
     
     @Test
-    public void testHeaderSectionsWithMultiLineMatch() {
+    public void testHeaderSectionsWithMultiLineMatch() throws IOException {
         
         HeaderSection section = new HeaderSection();
         section.setKey("COPYRIGHT_SECTION");
@@ -168,8 +170,8 @@ public final class HeaderTest {
         
         HeaderSection[] sections = { section };
 
-        Header header = new Header(getClass().getResource("/test-header5.txt"), "UTF-8", sections, null);
-        
+        Header header = new Header(new UrlHeaderSource(getClass().getResource("/test-header5.txt"), "UTF-8"), sections);
+
         HeaderDefinition headerDefinition = HeaderType.JAVADOC_STYLE.getDefinition();
 
         StringBuilder h1 = new StringBuilder();

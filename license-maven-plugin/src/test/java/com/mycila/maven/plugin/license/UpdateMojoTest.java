@@ -57,6 +57,24 @@ public final class UpdateMojoTest {
     }
 
     @Test
+    public void test_update_inlineHeader() throws Exception {
+        File tmp = new File("target/test/update-inlineHeader");
+        tmp.mkdirs();
+        FileUtils.copyFileToFolder(new File("src/test/resources/update/doc1.txt"), tmp);
+        FileUtils.copyFileToFolder(new File("src/test/resources/update/doc2.txt"), tmp);
+
+        LicenseFormatMojo updater = new LicenseFormatMojo();
+        updater.basedir = tmp;
+        updater.inlineHeader = FileUtils.read(new File("src/test/resources/update/header.txt"), "utf-8");
+        updater.project = new MavenProjectStub();
+        updater.properties = ImmutableMap.of("year", "2008");
+        updater.execute();
+
+        assertEquals(FileUtils.read(new File(tmp, "doc1.txt"), System.getProperty("file.encoding")), "====\r\n    My @Copyright license 2 with my-custom-value and 2008 and doc1.txt\r\n====\r\n\r\nsome data\r\n");
+        assertEquals(FileUtils.read(new File(tmp, "doc2.txt"), System.getProperty("file.encoding")), "====\r\n    My @Copyright license 2 with my-custom-value and 2008 and doc2.txt\r\n====\r\n\r\nsome data\r\n");
+    }
+
+    @Test
     public void test_skipExistingHeaders() throws Exception {
         File tmp = new File("target/test/test_skipExistingHeaders");
         tmp.mkdirs();

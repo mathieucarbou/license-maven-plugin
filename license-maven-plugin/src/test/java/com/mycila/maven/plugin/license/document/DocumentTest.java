@@ -16,11 +16,13 @@
 package com.mycila.maven.plugin.license.document;
 
 import com.mycila.maven.plugin.license.header.Header;
+import com.mycila.maven.plugin.license.header.HeaderSource.UrlHeaderSource;
 import com.mycila.maven.plugin.license.util.FileUtils;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Properties;
 
@@ -42,9 +44,9 @@ public final class DocumentTest {
     };
 
     @BeforeClass
-    public static void setup() throws MalformedURLException {
+    public static void setup() throws IOException {
 
-        header = new Header(new File("src/test/resources/test-header1.txt").toURI().toURL(), "UTF-8", null, null);
+        header = new Header(new UrlHeaderSource(new File("src/test/resources/test-header1.txt").toURI().toURL(), "UTF-8"), null);
     }
 
     @Test
