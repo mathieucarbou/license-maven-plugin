@@ -106,6 +106,7 @@ __Plugin declaration__
 
 The detailed Maven Plugin Documentation generated for each build is available here:
 
+ - [3.0](http://code.mycila.com/license-maven-plugin/reports/3.0/plugin-info.html)
  - [3.0.rc1](http://code.mycila.com/license-maven-plugin/reports/3.0.rc1/plugin-info.html)
  - [2.3](http://code.mycila.com/license-maven-plugin/reports/2.3/plugin-info.html)
  - [2.2](http://code.mycila.com/license-maven-plugin/reports/2.2/plugin-info.html)
