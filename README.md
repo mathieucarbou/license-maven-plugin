@@ -492,6 +492,3 @@ And it should generate headers like:
      * limitations under the License.
      */
     #endregion
-
-
-[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/b5d8e8bcbdb8f56a7ef502a2cfa20c29 "githalytics.com")](http://githalytics.com/mycila/license-maven-plugin)
