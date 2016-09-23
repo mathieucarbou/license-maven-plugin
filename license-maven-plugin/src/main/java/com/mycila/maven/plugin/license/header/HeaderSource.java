@@ -91,7 +91,7 @@ public abstract class HeaderSource {
      */
     public static HeaderSource of(String inlineHeader, String headerPath, String encoding, ResourceFinder finder) {
         if (inlineHeader != null && !inlineHeader.isEmpty()) {
-            return new LiteralHeaderSource(inlineHeader);
+            return new LiteralHeaderSource(reformatInlineHeader(inlineHeader));
         } else if (headerPath == null) {
             throw new IllegalArgumentException("Either inlineHeader or header path need to be specified");
         } else {
@@ -103,6 +103,34 @@ public abstract class HeaderSource {
                         "Cannot read header document " + headerPath + ". Cause: " + e.getMessage(), e);
             }
         }
+    }
+
+  /**
+   * Remove indent from multi-line inline headers
+   */
+    private static String reformatInlineHeader(String inlineHeader) {
+      
+        // Do not reformat single-line headers
+        if(!inlineHeader.contains("\n")) {
+          return inlineHeader;
+        }
+      
+        // Choose CRLF or LF based on the input text
+        String newline;
+        if(inlineHeader.contains("\r")) {
+          newline = "\r\n";
+        } else {
+          newline = "\n";
+        }
+      
+        StringBuilder reformatted = new StringBuilder();
+        String[] lines = inlineHeader.split("\\r?\\n");
+
+        for (String line : lines) {
+            reformatted.append(line.trim()).append(newline);
+        }
+        
+        return reformatted.toString();
     }
 
     protected final String content;
