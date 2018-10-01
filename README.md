@@ -211,7 +211,7 @@ The plugin has been designed so that it is very easy to add new supports for new
 	~~ My comment
 ```
 
- - `SCRIPT_STYLE` (Property file or shell comments): *.properties, *.sh, *.py, *.rb, *.pl, *.pm
+ - `SCRIPT_STYLE` (Property file or shell comments): *.properties, *.sh, *.py, *.rb, *.pl, *.pm, *.yml, *.yaml
 
 ```
 	# My comment
