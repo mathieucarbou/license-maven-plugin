@@ -26,7 +26,7 @@ __Lastest releases__ (note that it may take up to 1-2 days to be in Maven Centra
 		- [Supported comment types](#supported-comment-types)
 		- [Changing header style definitions](#changing-header-style-definitions)
 
-# Maven License Plugin #
+# Maven License Plugin (the Official and Original one) #
 
 Basically, when you are developing a project either in open source or in a company, you often need to add at the top of your source files a license to protect your work. I didn't find any maven plugin on Internet to help you maintain these license headers. By maintaining, i mean checking if the header is here or not, generating a report and of course having the possibility to update / reformat missing license headers.
 
