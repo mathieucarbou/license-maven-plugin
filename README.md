@@ -26,7 +26,7 @@ __Lastest releases__ (note that it may take up to 1-2 days to be in Maven Centra
 		- [Supported comment types](#supported-comment-types)
 		- [Changing header style definitions](#changing-header-style-definitions)
 
-# Maven License Plugin #
+# Maven License Plugin (the Official and Original one) #
 
 Basically, when you are developing a project either in open source or in a company, you often need to add at the top of your source files a license to protect your work. I didn't find any maven plugin on Internet to help you maintain these license headers. By maintaining, i mean checking if the header is here or not, generating a report and of course having the possibility to update / reformat missing license headers.
 
@@ -187,6 +187,15 @@ The plugin has been designed so that it is very easy to add new supports for new
      */
 ```
 
+ - `JAVAPKG_STYLE` (like Javadoc, but only for files that are in a Java package, skips the first line): not assigned to a file extension by default (see __Java packages__ below for how to enable it)
+
+```
+    package com.example;
+    /*-
+     * My comment
+     */
+```
+
  - `XML_STYLE` (XML-like comments): *.pom, *.xml, *.xhtml, *.mxml, *.dtd, *.xsd, *.jspx, *.fml, *.xsl, *.html, *.htm, *.kml, *.gsp, *.tld
 
 ```
@@ -211,7 +220,7 @@ The plugin has been designed so that it is very easy to add new supports for new
 	~~ My comment
 ```
 
- - `SCRIPT_STYLE` (Property file or shell comments): *.properties, *.sh, *.py, *.rb, *.pl, *.pm
+ - `SCRIPT_STYLE` (Property file or shell comments): *.properties, *.sh, *.py, *.rb, *.pl, *.pm, *.yml, *.yaml
 
 ```
 	# My comment
@@ -397,6 +406,14 @@ The plugin enables you to add any other mapping you want.* I.e., if you are deve
     </mapping>
 
 You can use composed-extensions like *.apt.vm and redefine them, but you will have to nake sure that the mapping of `apt.vm` is _before_ the mapping of the `vm` extension. The order in the mapping section is important: extensions seen first take precedence.
+
+__Java packages__
+
+Another use case for custom mappings is when writing Java code in packages; the licence header should come *after* the package declaration line in this case. Simply add this to the plugin configuration:
+
+    <mapping>
+        <java>JAVAPKG_STYLE</java>
+    </mapping>
 
 ### Changing header style definitions ###
 
