@@ -6,7 +6,6 @@ install: /bin/true
 
 jdk:
   - openjdk7
-  - oraclejdk7
 
 branches:
   only:
