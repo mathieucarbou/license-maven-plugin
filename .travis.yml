@@ -11,7 +11,3 @@ jdk:
 branches:
   only:
     - master
-
-notifications:
-  email:
-    - mathieu.carbou@gmail.com
