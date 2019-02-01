@@ -115,15 +115,12 @@ public class GitLookup {
     int getYearOfLastChange(File file) throws NoHeadException, GitAPIException, IOException {
         String repoRelativePath = pathResolver.relativize(file);
 
-        Status status = new Git(repository).status().addPath(repoRelativePath).call();
-        if (!status.isClean()) {
-            /* Return the current year for modified and unstaged files */
-            return toYear(System.currentTimeMillis(), timeZone != null ? timeZone : DEFAULT_ZONE);
+        if (isFileModifiedOrUnstaged(repoRelativePath)) {
+            return getCurrentYear();
         }
 
-        RevWalk walk = getGitRevWalk(repoRelativePath, false);
-
         int commitYear = 0;
+        RevWalk walk = getGitRevWalk(repoRelativePath, false);
         for (RevCommit commit : walk) {
             int y = getYearFromCommit(commit);
             if (y > commitYear) {
@@ -147,15 +144,12 @@ public class GitLookup {
     int getYearOfCreation(File file) throws IOException, GitAPIException {
         String repoRelativePath = pathResolver.relativize(file);
 
-        Status status = new Git(repository).status().addPath(repoRelativePath).call();
-        if (!status.isClean()) {
-            /* Return the current year for modified and unstaged files */
-            return toYear(System.currentTimeMillis(), timeZone != null ? timeZone : DEFAULT_ZONE);
+        if (isFileModifiedOrUnstaged(repoRelativePath)) {
+            return getCurrentYear();
         }
 
-        RevWalk walk = getGitRevWalk(repoRelativePath, true);
-
         int commitYear = 0;
+        RevWalk walk = getGitRevWalk(repoRelativePath, true);
         Iterator<RevCommit> iterator = walk.iterator();
         if (iterator.hasNext()) {
             RevCommit commit = iterator.next();
@@ -163,6 +157,11 @@ public class GitLookup {
         }
         walk.dispose();
         return commitYear;
+    }
+
+    private boolean isFileModifiedOrUnstaged(String repoRelativePath) throws GitAPIException {
+        Status status = new Git(repository).status().addPath(repoRelativePath).call();
+        return status.isClean();
     }
 
     private RevWalk getGitRevWalk(String repoRelativePath, boolean oldestCommitsFirst) throws IOException {
@@ -182,6 +181,10 @@ public class GitLookup {
         }
 
         return walk;
+    }
+
+    private int getCurrentYear() {
+        return toYear(System.currentTimeMillis(), timeZone != null ? timeZone : DEFAULT_ZONE);
     }
 
     private int getYearFromCommit(RevCommit commit) {
