@@ -32,6 +32,7 @@ public enum HeaderType {
     //              firstLine   beforeEachLine   endLine   afterEachLine   skipLinePattern   firstLineDetectionPattern   endLineDetectionPattern   allowBlankLines   isMultiline   padLines
     //generic
     JAVADOC_STYLE("/**", " * ", " */", "", null, "(\\s|\\t)*/\\*.*$", ".*\\*/(\\s|\\t)*$", false, true, false),
+    JAVAPKG_STYLE("EOL/*-", " * ", " */", "", "^package [a-z]+(\\.[a-z][a-z0-9]*)*;$", "(EOL)*(\\s|\\t)*/\\*.*$", ".*\\*/(\\s|\\t)*$", false, true, false),
     SCRIPT_STYLE("#", "# ", "#EOL", "", "^#!.*$", "#.*$", "#.*$", false, false, false),
     HAML_STYLE("-#", "-# ", "-#EOL", "", "^-#!.*$", "-#.*$", "-#.*$", false, false, false),
     XML_STYLE("<!--EOL", "    ", "EOL-->", "", "^<\\?xml.*>$", "(\\s|\\t)*<!--.*$", ".*-->(\\s|\\t)*$", true, true, false),

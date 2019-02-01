@@ -187,6 +187,15 @@ The plugin has been designed so that it is very easy to add new supports for new
      */
 ```
 
+ - `JAVAPKG_STYLE` (like Javadoc, but only for files that are in a Java package, skips the first line): not assigned to a file extension by default (see __Java packages__ below for how to enable it)
+
+```
+    package com.example;
+    /*-
+     * My comment
+     */
+```
+
  - `XML_STYLE` (XML-like comments): *.pom, *.xml, *.xhtml, *.mxml, *.dtd, *.xsd, *.jspx, *.fml, *.xsl, *.html, *.htm, *.kml, *.gsp, *.tld
 
 ```
@@ -397,6 +406,14 @@ The plugin enables you to add any other mapping you want.* I.e., if you are deve
     </mapping>
 
 You can use composed-extensions like *.apt.vm and redefine them, but you will have to nake sure that the mapping of `apt.vm` is _before_ the mapping of the `vm` extension. The order in the mapping section is important: extensions seen first take precedence.
+
+__Java packages__
+
+Another use case for custom mappings is when writing Java code in packages; the licence header should come *after* the package declaration line in this case. Simply add this to the plugin configuration:
+
+    <mapping>
+        <java>JAVAPKG_STYLE</java>
+    </mapping>
 
 ### Changing header style definitions ###
 
