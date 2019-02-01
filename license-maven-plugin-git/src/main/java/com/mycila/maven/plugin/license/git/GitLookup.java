@@ -162,7 +162,7 @@ public class GitLookup {
 
     private boolean isFileModifiedOrUnstaged(String repoRelativePath) throws GitAPIException {
         Status status = new Git(repository).status().addPath(repoRelativePath).call();
-        return status.isClean();
+        return !status.isClean();
     }
 
     private RevWalk getGitRevWalk(String repoRelativePath, boolean oldestCommitsFirst) throws IOException {
