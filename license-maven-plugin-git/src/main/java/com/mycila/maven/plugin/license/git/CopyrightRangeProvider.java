@@ -15,10 +15,6 @@
  */
 package com.mycila.maven.plugin.license.git;
 
-import com.mycila.maven.plugin.license.AbstractLicenseMojo;
-import com.mycila.maven.plugin.license.PropertiesProvider;
-import com.mycila.maven.plugin.license.document.Document;
-import com.mycila.maven.plugin.license.git.GitLookup.DateSource;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
@@ -27,6 +23,11 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.TimeZone;
+
+import com.mycila.maven.plugin.license.AbstractLicenseMojo;
+import com.mycila.maven.plugin.license.PropertiesProvider;
+import com.mycila.maven.plugin.license.document.Document;
+import com.mycila.maven.plugin.license.git.GitLookup.DateSource;
 
 /**
  * An implementation of {@link PropertiesProvider} that adds {@value #COPYRIGHT_LAST_YEAR_KEY} and

@@ -15,18 +15,20 @@
  */
 package com.mycila.maven.plugin.license.git;
 
-import com.mycila.maven.plugin.license.document.Document;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+
+import com.mycila.maven.plugin.license.document.Document;
 
 /**
  * @author <a href="mailto:ppalaga@redhat.com">Peter Palaga</a>

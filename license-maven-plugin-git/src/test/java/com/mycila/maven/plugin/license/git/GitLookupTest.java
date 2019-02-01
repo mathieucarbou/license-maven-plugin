@@ -15,7 +15,8 @@
  */
 package com.mycila.maven.plugin.license.git;
 
-import com.mycila.maven.plugin.license.git.GitLookup.DateSource;
+import static org.junit.Assert.assertEquals;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -27,6 +28,7 @@ import java.util.Calendar;
 import java.util.TimeZone;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -34,7 +36,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-import static org.junit.Assert.assertEquals;
+import com.mycila.maven.plugin.license.git.GitLookup.DateSource;
 
 /**
  * @author <a href="mailto:ppalaga@redhat.com">Peter Palaga</a>
