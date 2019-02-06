@@ -20,8 +20,10 @@ import org.codehaus.plexus.util.DirectoryScanner;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import static java.util.Arrays.*;
 import static java.util.Arrays.asList;
 
 /**
@@ -38,8 +40,9 @@ public final class Selection {
 
     public Selection(File basedir, String[] included, String[] excluded, boolean useDefaultExcludes) {
         this.basedir = basedir;
-        this.included = buildInclusions(included);
-        this.excluded = buildExclusions(useDefaultExcludes, excluded);
+        String[] overrides = buildOverrideInclusions(useDefaultExcludes, included);
+        this.included = buildInclusions(included, overrides);
+        this.excluded = buildExclusions(useDefaultExcludes, excluded, overrides);
     }
 
     public String[] getSelectedFiles() {
@@ -69,17 +72,39 @@ public final class Selection {
         }
     }
 
-    private static String[] buildExclusions(boolean useDefaultExcludes, String... excludes) {
+    private static String[] buildExclusions(boolean useDefaultExcludes, String[] excludes, String[] overrides) {
         List<String> exclusions = new ArrayList<String>();
-        if (useDefaultExcludes)
+        if (useDefaultExcludes) {
             exclusions.addAll(asList(Default.EXCLUDES));
-        if (excludes != null && excludes.length > 0)
+        }
+        // Remove from the default exclusion list the patterns that have been explicitly included
+        for (String override : overrides) {
+            exclusions.remove(override);
+        }
+        if (excludes != null && excludes.length > 0) {
             exclusions.addAll(asList(excludes));
+        }
         return exclusions.toArray(new String[exclusions.size()]);
     }
 
-    private static String[] buildInclusions(String... includes) {
-        return includes != null && includes.length > 0 ? includes : Default.INCLUDE;
+    private static String[] buildInclusions(String[] includes, String[] overrides) {
+        // if we use the default exclusion list, we just remove
+        List<String> inclusions = new ArrayList<String>(asList(includes != null && includes.length > 0 ? includes : Default.INCLUDE));
+        inclusions.removeAll(asList(overrides));
+        if (inclusions.isEmpty()) {
+            inclusions.addAll(asList(Default.INCLUDE));
+        }
+        return inclusions.toArray(new String[inclusions.size()]);
+    }
+
+    private static String[] buildOverrideInclusions(boolean useDefaultExcludes, String[] includes) {
+        // return the list of patterns that we have explicitly included when using default exclude list
+        if (!useDefaultExcludes || includes == null || includes.length == 0) {
+            return new String[0];
+        }
+        List<String> overrides = new ArrayList<String>(asList(Default.EXCLUDES));
+        overrides.retainAll(asList(includes));
+        return overrides.toArray(new String[0]);
     }
 
 }

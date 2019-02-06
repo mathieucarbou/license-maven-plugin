@@ -18,6 +18,7 @@ package com.mycila.maven.plugin.license.util.resource;
 import org.apache.maven.plugin.MojoFailureException;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -62,7 +63,12 @@ public final class ResourceFinder {
      */
     public URL findResource(String resource) throws MojoFailureException {
         // first search relatively to the base directory
-        URL res = toURL(new File(basedir, resource));
+        URL res ;
+        try {
+            res = toURL(new File(basedir, resource).getCanonicalFile());
+        } catch (IOException e) {
+            throw new MojoFailureException("Resource " + resource + " not found in file system, classpath or URL: " + e.getMessage(), e);
+        }
         if (res != null) {
             return res;
         }
