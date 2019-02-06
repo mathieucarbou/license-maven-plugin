@@ -20,7 +20,6 @@ import static org.junit.Assert.assertEquals;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -31,14 +30,12 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.api.errors.NoHeadException;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-import com.mycila.maven.plugin.license.git.GitLookup;
 import com.mycila.maven.plugin.license.git.GitLookup.DateSource;
 
 /**
@@ -50,7 +47,7 @@ public class GitLookupTest {
     private static TemporaryFolder tempFolder;
 
     @BeforeClass
-    public static void beforeClass() throws FileNotFoundException, IOException {
+    public static void beforeClass() throws IOException {
         tempFolder = new TemporaryFolder();
         tempFolder.create();
 
@@ -61,7 +58,7 @@ public class GitLookupTest {
         unzip(url, unzipDestination);
     }
 
-    public static void unzip(URL url, File unzipDestination) throws FileNotFoundException, IOException {
+    static void unzip(URL url, File unzipDestination) throws IOException {
         ZipInputStream zipInputStream = null;
         try {
             zipInputStream = new ZipInputStream(new BufferedInputStream(url.openStream()));
@@ -102,35 +99,51 @@ public class GitLookupTest {
     }
 
     @Test
-    public void modified() throws NoHeadException, GitAPIException, IOException {
+    public void modified() throws GitAPIException, IOException {
         assertLastChange(newAuthorLookup(), "dir1/file1.txt", 2006);
         assertLastChange(newCommitterLookup(), "dir1/file1.txt", 2006);
+
+        assertCreation(newAuthorLookup(), "dir1/file1.txt", 2000);
+        assertCreation(newCommitterLookup(), "dir1/file1.txt", 2000);
     }
 
     @Test
-    public void justCreated() throws NoHeadException, GitAPIException, IOException {
+    public void justCreated() throws GitAPIException, IOException {
         assertLastChange(newAuthorLookup(), "dir2/file2.txt", 2007);
         assertLastChange(newCommitterLookup(), "dir2/file2.txt", 2007);
+
+        assertCreation(newAuthorLookup(), "dir2/file2.txt", 2007);
+        assertCreation(newCommitterLookup(), "dir2/file2.txt", 2007);
     }
 
     @Test
-    public void moved() throws NoHeadException, GitAPIException, IOException {
+    public void moved() throws GitAPIException, IOException {
         assertLastChange(newAuthorLookup(), "dir1/file3.txt", 2009);
         assertLastChange(newCommitterLookup(), "dir1/file3.txt", 2010);
+
+        // In this case the file moved and its creation data could not be tracked
+        assertCreation(newAuthorLookup(), "dir1/file3.txt", 2009);
+        assertCreation(newCommitterLookup(), "dir1/file3.txt", 2010);
     }
 
     @Test
-    public void newUnstaged() throws NoHeadException, GitAPIException, IOException {
+    public void newUnstaged() throws GitAPIException, IOException {
         int currentYear = getCurrentGmtYear();
         assertLastChange(newAuthorLookup(), "dir1/file5.txt", currentYear);
         assertLastChange(newCommitterLookup(), "dir1/file5.txt", currentYear);
+
+        assertCreation(newAuthorLookup(), "dir1/file5.txt", currentYear);
+        assertCreation(newCommitterLookup(), "dir1/file5.txt", currentYear);
     }
 
     @Test
-    public void newStaged() throws NoHeadException, GitAPIException, IOException {
+    public void newStaged() throws GitAPIException, IOException {
         int currentYear = getCurrentGmtYear();
         assertLastChange(newAuthorLookup(), "dir1/file6.txt", currentYear);
         assertLastChange(newCommitterLookup(), "dir1/file6.txt", currentYear);
+
+        assertCreation(newAuthorLookup(), "dir1/file6.txt", currentYear);
+        assertCreation(newCommitterLookup(), "dir1/file6.txt", currentYear);
     }
 
     /**
@@ -143,7 +156,7 @@ public class GitLookupTest {
     }
 
     @Test
-    public void reuseProvider() throws NoHeadException, GitAPIException, IOException {
+    public void reuseProvider() throws GitAPIException, IOException {
         GitLookup provider = newAuthorLookup();
         assertLastChange(provider, "dir1/file1.txt", 2006);
         assertLastChange(provider, "dir2/file2.txt", 2007);
@@ -151,7 +164,7 @@ public class GitLookupTest {
     }
 
     @Test
-    public void timezone() throws NoHeadException, GitAPIException, IOException {
+    public void timezone() throws GitAPIException, IOException {
         try {
             new GitLookup(gitRepoRoot, DateSource.AUTHOR, TimeZone.getTimeZone("GMT"), 10);
             Assert.fail("RuntimeException expected");
@@ -188,9 +201,16 @@ public class GitLookupTest {
         return new GitLookup(gitRepoRoot, DateSource.COMMITER, null, 10);
     }
 
-    private void assertLastChange(GitLookup provider, String relativePath, int expected) throws NoHeadException,
+    private void assertLastChange(GitLookup provider, String relativePath, int expected) throws
             GitAPIException, IOException {
         int actual = provider.getYearOfLastChange(new File(gitRepoRoot.getAbsolutePath() + File.separatorChar
+                + relativePath.replace('/', File.separatorChar)));
+        assertEquals(expected, actual);
+    }
+
+    private void assertCreation(GitLookup provider, String relativePath, int expected) throws
+            GitAPIException, IOException {
+        int actual = provider.getYearOfCreation(new File(gitRepoRoot.getAbsolutePath() + File.separatorChar
                 + relativePath.replace('/', File.separatorChar)));
         assertEquals(expected, actual);
     }
