@@ -48,4 +48,14 @@ public final class IncludesMojoTest {
         check.execute();
     }
 
+    @Test(expected = MojoExecutionException.class)
+    public void test_include_overrides_default_exclusion() throws Exception {
+        LicenseCheckMojo check = new LicenseCheckMojo();
+        check.basedir = new File("src/test/resources/issues/issue-71");
+        check.header = "../../check/header.txt";
+        check.project = new MavenProjectStub();
+        check.includes = new String[]{"**/.travis.yml"};
+        check.execute();
+    }
+
 }
