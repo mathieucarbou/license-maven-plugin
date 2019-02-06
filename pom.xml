@@ -145,6 +145,9 @@
                         <exclude>src/test/resources/**</exclude>
                         <exclude>**/release-pom.xml</exclude>
                     </excludes>
+                    <mapping>
+                        <java>SLASHSTAR_STYLE</java>
+                    </mapping>
                 </configuration>
                 <dependencies>
                     <dependency>
