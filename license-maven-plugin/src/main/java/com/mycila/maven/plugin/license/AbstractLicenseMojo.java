@@ -198,6 +198,18 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
     @Parameter(property = "license.concurrencyFactor", defaultValue = "1.5")
     public float concurrencyFactor = 1.5f;
 
+
+    /**
+     * Maven license plugin uses concurrency to check license headers. With this
+     * option the number of threads used to check can be specified. If given
+     * it take precedence over <code>concurrencyFactor</code>
+     *
+     * The default is 0 which implies that the default for <code>concurrencyFactor</code>
+     * is used.
+     */
+    @Parameter(property = "license.nThreads", defaultValue = "0")
+    public int nThreads;
+
     /**
      * Whether to skip the plugin execution
      */
@@ -263,7 +275,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
      */
     @Parameter(property = "license.skipExistingHeaders", defaultValue = "false")
     public boolean skipExistingHeaders = false;
-    
+
     @Component
     public MavenProject project;
 
@@ -277,22 +289,22 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
      */
     @Component
     private SettingsDecrypter settingsDecrypter;
-    
+
     private ResourceFinder finder;
-    
+
     protected abstract class AbstractCallback implements Callback {
 
         /**
          * Related to {@link #failIfUnknown}.
          */
         private final Collection<File> unknownFiles = new ConcurrentLinkedQueue<File>();
-        
+
         @Override
         public void onUnknownFile(Document document, Header header) {
             warn("Unknown file extension: %s", document.getFilePath());
             unknownFiles.add(document.getFile());
         }
-        
+
         public void checkUnknown() throws MojoExecutionException {
             if (!unknownFiles.isEmpty()) {
                 String msg = "Unable to find a comment style definition for some "
@@ -303,9 +315,9 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
                 getLog().warn(msg);
             }
         }
-        
+
     }
-    
+
     @SuppressWarnings({"unchecked"})
     public final void execute(final Callback callback) throws MojoExecutionException, MojoFailureException {
         if (!skip) {
@@ -317,7 +329,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
                 warn("Property 'strictCheck' is not enabled. Please consider adding <strictCheck>true</strictCheck> in your pom.xml file.");
                 warn("See http://mycila.github.io/license-maven-plugin for more information.");
             }
-            
+
             finder = new ResourceFinder(basedir);
             try {
                 finder.setCompileClassPath(project.getCompileClasspathElements());
@@ -338,7 +350,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
                 final HeaderSource validHeaderSource = HeaderSource.of(null, validHeader, this.encoding, this.finder);
                 validHeaders.add(new Header(validHeaderSource, headerSections));
             }
-            
+
             final List<PropertiesProvider> propertiesProviders = new LinkedList<PropertiesProvider>();
             for (PropertiesProvider provider : ServiceLoader.load(PropertiesProvider.class, Thread.currentThread().getContextClassLoader())) {
                 propertiesProviders.add(provider);
@@ -347,7 +359,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
                 @Override
                 public Properties load(Document document) {
                     Properties props = new Properties();
-                    
+
                     for (Map.Entry<String, String> entry : mergeProperties(document).entrySet()) {
                         if (entry.getValue() != null) {
                             props.setProperty(entry.getKey(), entry.getValue());
@@ -375,15 +387,15 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
                     return props;
                 }
             };
-            
+
             final DocumentFactory documentFactory = new DocumentFactory(basedir, buildMapping(), buildHeaderDefinitions(), encoding, keywords, propertiesLoader);
 
-            int nThreads = (int) (Runtime.getRuntime().availableProcessors() * concurrencyFactor);
+            int nThreads = getNumberOfExecutorThreads();
             ExecutorService executorService = Executors.newFixedThreadPool(nThreads);
             CompletionService completionService = new ExecutorCompletionService(executorService);
             int count = 0;
             debug("Number of execution threads: %s", nThreads);
-            
+
             try {
                 for (final String file : listSelectedFiles()) {
                     completionService.submit(new Runnable() {
@@ -413,7 +425,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
                     }, null);
                     count++;
                 }
-                
+
                 while (count-- > 0) {
                     try {
                         completionService.take().get();
@@ -436,13 +448,19 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
                         throw new RuntimeException(cause.getMessage(), cause);
                     }
                 }
-                
+
             } finally {
                 executorService.shutdownNow();
             }
         }
     }
-    
+
+    private int getNumberOfExecutorThreads() {
+        return nThreads > 0 ?
+            nThreads :
+            Math.max(1, (int) (Runtime.getRuntime().availableProcessors() * concurrencyFactor));
+    }
+
     private Map<String, String> mergeProperties(Document document) {
         // first put systen environment
         Map<String, String> props = new LinkedHashMap<String, String>(System.getenv());
@@ -466,7 +484,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
         }
         return props;
     }
-    
+
     private String[] listSelectedFiles() {
         Selection selection = new Selection(basedir, includes, buildExcludes(), useDefaultExcludes);
         debug("From: %s", basedir);
@@ -474,7 +492,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
         debug("Excluding: %s", deepToString(selection.getExcluded()));
         return selection.getSelectedFiles();
     }
-    
+
     private String[] buildExcludes() {
         List<String> ex = new ArrayList<String>();
         ex.addAll(asList(this.excludes));
@@ -485,25 +503,25 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
         }
         return ex.toArray(new String[ex.size()]);
     }
-    
+
     public final void info(String format, Object... params) {
         if (!quiet) {
             getLog().info(format(format, params));
         }
     }
-    
+
     public final void debug(String format, Object... params) {
         if (!quiet) {
             getLog().debug(format(format, params));
         }
     }
-    
+
     public final void warn(String format, Object... params) {
         if (!quiet) {
             getLog().warn(format(format, params));
         }
     }
-    
+
     private Map<String, String> buildMapping() {
         Map<String, String> extensionMapping = new LinkedHashMap<String, String>();
         // force inclusion of unknow item to manage unknown files
@@ -520,7 +538,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
         }
         return extensionMapping;
     }
-    
+
     private Map<String, HeaderDefinition> buildHeaderDefinitions() throws MojoFailureException {
         // like mappings, first get default definitions
         final Map<String, HeaderDefinition> headers = new HashMap<String, HeaderDefinition>(HeaderType.defaultDefinitions());
@@ -563,18 +581,18 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
      */
     public Credentials findCredentials(String serverID) {
         List<Server> decryptedServers = getDecryptedServers();
-        
+
         for (Server ds : decryptedServers) {
             if (ds.getId().equals(serverID)) {
                 getLog().debug("credentials have been found for server: " + serverID + ", login:" + ds.getUsername() + ", password:" + starEncrypt(ds.getPassword()));
                 return new Credentials(ds.getUsername(), ds.getPassword());
             }
         }
-        
+
         getLog().debug("no credentials found for server: " + serverID);
         return null;
     }
-    
+
     static String starEncrypt(String str) {
         if (str == null) {
             return null;
