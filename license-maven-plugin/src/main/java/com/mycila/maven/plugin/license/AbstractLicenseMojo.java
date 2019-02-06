@@ -88,7 +88,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
     public String header;
 
     /**
-     * Header, as text, directly in pom file
+     * Header, as text, directly in pom file. Using a CDATA section is strongly recommended.
      */
     @Parameter(property = "license.inlineHeader")
     public String inlineHeader;
