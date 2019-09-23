@@ -33,48 +33,27 @@ import com.mycila.maven.plugin.license.document.Document;
 /**
  * @author <a href="mailto:ppalaga@redhat.com">Peter Palaga</a>
  */
-public class CopyrightRangeProviderTest {
+public class CopyrightAuthorProviderTest {
 
     private static File gitRepoRoot;
     private static TemporaryFolder tempFolder;
 
     @Test
-    public void copyrightRange() {
-        CopyrightRangeProvider provider = new CopyrightRangeProvider();
+    public void copyrightAuthor() {
+        CopyrightAuthorProvider provider = new CopyrightAuthorProvider();
 
-        assertRange(provider, "dir1/file1.txt", "2000", "2006", "1999-2006", "Sat Jan 01 09:00:00 JST 2000");
-        assertRange(provider, "dir2/file2.txt", "2007", "2007", "1999-2007", "Sun Jul 15 16:00:00 JST 2007");
-        assertRange(provider, "dir1/file3.txt", "2009", "2009", "1999-2009", "Sat Feb 28 08:00:00 JST 2009");
-        assertRange(provider, "dir2/file4.txt", "1999", "1999", "1999", "Fri Jan 01 09:30:00 JST 1999");
-
-        /* The last change of file4.txt in git history is in 1999
-         * but the inception year is 2000
-         * and we do not want the range to go back (2000-1999)
-         * so in this case we expect just 2000 */
-        assertRange(provider, "dir2/file4.txt", "2000", "1999", "1999", "2000", "Fri Jan 01 09:30:00 JST 1999");
-
+        assertAuthor(provider, "dir1/file1.txt", "Peter Palaga", "ppalaga@redhat.com");
     }
 
-    private void assertRange(CopyrightRangeProvider provider, String path, 
-            String copyrightStart, String copyrightEnd, String copyrightRange, 
-            String copyrightStartDate) {
-        assertRange(provider, path, "1999", copyrightStart, copyrightEnd, copyrightRange, copyrightStartDate);
-    }
-
-    private void assertRange(CopyrightRangeProvider provider, String path, String inceptionYear,
-            String copyrightStart, String copyrightEnd, String copyrightRange, 
-            String copyrightStartDate) {
+    private void assertAuthor(CopyrightAuthorProvider provider, String path, String copyrightAuthorName, String copyrightAuthorEmail) {
         Properties props = new Properties();
-        props.put(CopyrightRangeProvider.INCEPTION_YEAR_KEY, inceptionYear);
 
         Document document = newDocument(path);
         Map<String, String> actual = provider.getAdditionalProperties(null, props, document);
 
         HashMap<String, String> expected = new HashMap<String, String>();
-        expected.put(CopyrightRangeProvider.COPYRIGHT_CREATION_YEAR_KEY, copyrightStart);
-        expected.put(CopyrightRangeProvider.COPYRIGHT_LAST_YEAR_KEY, copyrightEnd);
-        expected.put(CopyrightRangeProvider.COPYRIGHT_YEARS_KEY, copyrightRange);
-        expected.put(CopyrightRangeProvider.COPYRIGHT_CREATION_DATE_KEY, copyrightStartDate);
+        expected.put(CopyrightAuthorProvider.COPYRIGHT_CREATION_AUTHOR_NAME_KEY,  copyrightAuthorName);
+        expected.put(CopyrightAuthorProvider.COPYRIGHT_CREATION_AUTHOR_EMAIL_KEY, copyrightAuthorEmail);
         Assert.assertEquals("for file '" + path + "': ", expected, actual);
 
     }
