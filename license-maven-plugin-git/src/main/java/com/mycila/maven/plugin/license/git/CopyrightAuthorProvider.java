@@ -62,7 +62,7 @@ public class CopyrightAuthorProvider extends GitPropertiesProvider implements Pr
             Document document) {
 
         try {
-            Map<String, String> result = new HashMap<String, String>(8);
+            Map<String, String> result = new HashMap<String, String>(3);
             GitLookup gitLookup = getGitLookup(document.getFile(), properties);
 
             result.put(COPYRIGHT_CREATION_AUTHOR_NAME_KEY, gitLookup.getAuthorNameOfCreation(document.getFile()) );
