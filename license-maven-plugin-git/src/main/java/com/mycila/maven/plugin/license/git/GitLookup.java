@@ -144,8 +144,7 @@ public class GitLookup {
      */
     int getYearOfCreation(File file) throws IOException, GitAPIException {
         String repoRelativePath = pathResolver.relativize(file);
-        System.out.println("file: " + file.toString());
-        
+
         if (isFileModifiedOrUnstaged(repoRelativePath)) {
             return getCurrentYear();
         }
@@ -163,11 +162,8 @@ public class GitLookup {
     
     Date getDateOfCreation(File file) throws IOException, GitAPIException {
         String repoRelativePath = pathResolver.relativize(file);
-        System.out.println("file: " + file.toString());
         if (isFileModifiedOrUnstaged(repoRelativePath)) {
             Date date = new Date();
-            //System.out.println("in getDateOfCreation()");
-            //System.out.println("isFileModifiedOrUnstaged: " + date.toString() );
             return date;
         }
 
@@ -177,8 +173,6 @@ public class GitLookup {
         if (iterator.hasNext()) {
             RevCommit commit = iterator.next();
             commitDate = getDateFromCommit(commit);
-            //System.out.println("in getDateOfCreation()");
-            //System.out.println("commitYear: " + commitDate.toString() );
         }
         walk.dispose();
         return commitDate;
