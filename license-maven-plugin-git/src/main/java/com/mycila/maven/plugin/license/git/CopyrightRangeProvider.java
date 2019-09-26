@@ -38,7 +38,6 @@ public class CopyrightRangeProvider extends GitPropertiesProvider implements Pro
     public static final String COPYRIGHT_CREATION_YEAR_KEY = "license.git.copyrightCreationYear";
     public static final String COPYRIGHT_YEARS_KEY = "license.git.copyrightYears";
     public static final String INCEPTION_YEAR_KEY = "project.inceptionYear";
-    public static final String COPYRIGHT_CREATION_DATE_KEY="license.git.copyrightCreationDate";
     
 
     public CopyrightRangeProvider() {
