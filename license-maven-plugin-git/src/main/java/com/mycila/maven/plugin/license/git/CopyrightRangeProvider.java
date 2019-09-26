@@ -91,7 +91,6 @@ public class CopyrightRangeProvider extends GitPropertiesProvider implements Pro
 
             int copyrightStart = gitLookup.getYearOfCreation(document.getFile());                      
             result.put(COPYRIGHT_CREATION_YEAR_KEY, Integer.toString(copyrightStart));
-            result.put(COPYRIGHT_CREATION_DATE_KEY, gitLookup.getDateOfCreation(document.getFile()).toString() );
             return Collections.unmodifiableMap(result);
         } catch (Exception e) {
             throw new RuntimeException("Could not compute the year of the last git commit for file "

@@ -159,26 +159,7 @@ public class GitLookup {
         walk.dispose();
         return commitYear;
     }
-    
-    Date getDateOfCreation(File file) throws IOException, GitAPIException {
-        String repoRelativePath = pathResolver.relativize(file);
-        if (isFileModifiedOrUnstaged(repoRelativePath)) {
-            Date date = new Date();
-            return date;
-        }
-
-        Date commitDate = null;
-        RevWalk walk = getGitRevWalk(repoRelativePath, true);
-        Iterator<RevCommit> iterator = walk.iterator();
-        if (iterator.hasNext()) {
-            RevCommit commit = iterator.next();
-            commitDate = getDateFromCommit(commit);
-        }
-        walk.dispose();
-        return commitDate;
-    }
-    
-    
+      
     String getAuthorNameOfCreation(File file) throws IOException, GitAPIException {
         String repoRelativePath = pathResolver.relativize(file);
         String authorName = "";
@@ -250,23 +231,6 @@ public class GitLookup {
         Calendar result = Calendar.getInstance(timeZone);
         result.setTimeInMillis(epochMilliseconds);
         return result.get(Calendar.YEAR);
-    }
-    
-    private Date getDateFromCommit(RevCommit commit){
-        
-        Date date = new Date();
-        switch (dateSource) {
-            case COMMITER:
-                int epochSeconds = commit.getCommitTime();
-                date.setTime(epochSeconds * 1000L);
-                return date;
-            case AUTHOR:
-                PersonIdent id = commit.getAuthorIdent();
-                date = id.getWhen();
-                return date;
-            default:
-                throw new IllegalStateException("Unexpected " + DateSource.class.getName() + " " + dateSource);
-        }
     }
     
     private String getAuthorNameFromCommit(RevCommit commit){
