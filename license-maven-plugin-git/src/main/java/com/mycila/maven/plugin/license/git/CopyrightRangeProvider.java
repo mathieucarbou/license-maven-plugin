@@ -76,7 +76,7 @@ public class CopyrightRangeProvider extends GitPropertiesProvider implements Pro
                     + document.getFile().getAbsolutePath());
         }
         try {
-            Map<String, String> result = new HashMap<String, String>(6);
+            Map<String, String> result = new HashMap<String, String>(4);
             GitLookup gitLookup = getGitLookup(document.getFile(), properties);
             int copyrightEnd = gitLookup.getYearOfLastChange(document.getFile());
             result.put(COPYRIGHT_LAST_YEAR_KEY, Integer.toString(copyrightEnd));
