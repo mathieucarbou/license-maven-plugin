@@ -55,8 +55,7 @@ public class CopyrightRangeProviderTest {
 
     }
 
-    private void assertRange(CopyrightRangeProvider provider, String path, 
-            String copyrightStart, String copyrightEnd, String copyrightRange) {
+    private void assertRange(CopyrightRangeProvider provider, String path, String copyrightStart, String copyrightEnd, String copyrightRange) {
         assertRange(provider, path, "1999", copyrightStart, copyrightEnd, copyrightRange);
     }
 
