@@ -88,7 +88,7 @@ public class CopyrightRangeProvider extends GitPropertiesProvider implements Pro
             }
             result.put(COPYRIGHT_YEARS_KEY, copyrightYears);
 
-            int copyrightStart = gitLookup.getYearOfCreation(document.getFile());                      
+            int copyrightStart = gitLookup.getYearOfCreation(document.getFile());
             result.put(COPYRIGHT_CREATION_YEAR_KEY, Integer.toString(copyrightStart));
             return Collections.unmodifiableMap(result);
         } catch (Exception e) {

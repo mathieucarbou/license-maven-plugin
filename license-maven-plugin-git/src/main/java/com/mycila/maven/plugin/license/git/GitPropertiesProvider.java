@@ -23,7 +23,7 @@ import java.util.TimeZone;
 
 /**
  *
- * @author masakimu
+ * @author <a href="mailto:ppalaga@redhat.com">Peter Palaga</a>
  */
 public class GitPropertiesProvider {
     

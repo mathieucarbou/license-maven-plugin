@@ -25,11 +25,11 @@ import com.mycila.maven.plugin.license.PropertiesProvider;
 import com.mycila.maven.plugin.license.document.Document;
 
 /**
- * An implementation of {@link PropertiesProvider} that adds {@value #COPYRIGHT_LAST_YEAR_KEY} and
- * {@value #COPYRIGHT_YEARS_KEY} values - see
+ * An implementation of {@link PropertiesProvider} that adds {@value #COPYRIGHT_CREATION_AUTHOR_NAME_KEY} and
+ * {@value #COPYRIGHT_CREATION_AUTHOR_EMAIL_KEY} values - see
  * {@link #getAdditionalProperties(AbstractLicenseMojo, Properties, Document)}.
  *
- * @author <a href="mailto:ppalaga@redhat.com">Peter Palaga</a>
+ * @author masakimu</a>
  */
 public class CopyrightAuthorProvider extends GitPropertiesProvider implements PropertiesProvider {
 
@@ -42,8 +42,8 @@ public class CopyrightAuthorProvider extends GitPropertiesProvider implements Pr
     }
 
     /**
-     * Returns an unmodifiable map containing the three entries {@value #COPYRIGHT_LAST_YEAR_KEY}, {@value #COPYRIGHT_YEARS_KEY},
-     * and {@value #COPYRIGHT_CREATION_YEAR_KEY}, whose values are set based on inspecting git history.
+     * Returns an unmodifiable map containing the two entries {@value #COPYRIGHT_CREATION_AUTHOR_NAME_KEY} and {@value #COPYRIGHT_CREATION_AUTHOR_EMAIL_KEY},
+     * , whose values are set based on inspecting git history.
      *
      * <ul>
      * <li>{@value #COPYRIGHT_LAST_YEAR_KEY} key stores the year from the committer date of the last git commit that has
