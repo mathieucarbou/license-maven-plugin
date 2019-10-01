@@ -25,27 +25,25 @@ import com.mycila.maven.plugin.license.PropertiesProvider;
 import com.mycila.maven.plugin.license.document.Document;
 
 /**
- * An implementation of {@link PropertiesProvider} that adds {@value #COPYRIGHT_LAST_YEAR_KEY} and
- * {@value #COPYRIGHT_YEARS_KEY} values - see
+ * An implementation of {@link PropertiesProvider} that adds {@value #COPYRIGHT_CREATION_AUTHOR_NAME_KEY} and
+ * {@value #COPYRIGHT_CREATION_AUTHOR_EMAIL_KEY} values - see
  * {@link #getAdditionalProperties(AbstractLicenseMojo, Properties, Document)}.
  *
- * @author <a href="mailto:ppalaga@redhat.com">Peter Palaga</a>
+ * @author masakimu
  */
-public class CopyrightRangeProvider extends GitPropertiesProvider implements PropertiesProvider {
+public class CopyrightAuthorProvider extends GitPropertiesProvider implements PropertiesProvider {
 
-    public static final String COPYRIGHT_LAST_YEAR_KEY = "license.git.copyrightLastYear";
-    public static final String COPYRIGHT_CREATION_YEAR_KEY = "license.git.copyrightCreationYear";
-    public static final String COPYRIGHT_YEARS_KEY = "license.git.copyrightYears";
-    public static final String INCEPTION_YEAR_KEY = "project.inceptionYear";
+    public static final String COPYRIGHT_CREATION_AUTHOR_NAME_KEY= "license.git.CreationAuthorName";
+    public static final String COPYRIGHT_CREATION_AUTHOR_EMAIL_KEY="license.git.CreationAuthorEmail";
     
 
-    public CopyrightRangeProvider() {
+    public CopyrightAuthorProvider() {
         super();
     }
 
     /**
-     * Returns an unmodifiable map containing the three entries {@value #COPYRIGHT_LAST_YEAR_KEY}, {@value #COPYRIGHT_YEARS_KEY},
-     * and {@value #COPYRIGHT_CREATION_YEAR_KEY}, whose values are set based on inspecting git history.
+     * Returns an unmodifiable map containing the two entries {@value #COPYRIGHT_CREATION_AUTHOR_NAME_KEY} and {@value #COPYRIGHT_CREATION_AUTHOR_EMAIL_KEY},
+     * , whose values are set based on inspecting git history.
      *
      * <ul>
      * <li>{@value #COPYRIGHT_LAST_YEAR_KEY} key stores the year from the committer date of the last git commit that has
@@ -62,37 +60,20 @@ public class CopyrightRangeProvider extends GitPropertiesProvider implements Pro
      */
     public Map<String, String> getAdditionalProperties(AbstractLicenseMojo mojo, Properties properties,
             Document document) {
-        String inceptionYear = properties.getProperty(INCEPTION_YEAR_KEY);
-        if (inceptionYear == null) {
-            throw new RuntimeException("'"+ INCEPTION_YEAR_KEY +"' must have a value for file "
-                    + document.getFile().getAbsolutePath());
-        }
-        final int inceptionYearInt;
-        try {
-            inceptionYearInt = Integer.parseInt(inceptionYear);
-        } catch (NumberFormatException e1) {
-            throw new RuntimeException("'"+ INCEPTION_YEAR_KEY +"' must be an integer ; found = " + inceptionYear +" file: "
-                    + document.getFile().getAbsolutePath());
-        }
-        try {
-            Map<String, String> result = new HashMap<String, String>(4);
-            GitLookup gitLookup = getGitLookup(document.getFile(), properties);
-            int copyrightEnd = gitLookup.getYearOfLastChange(document.getFile());
-            result.put(COPYRIGHT_LAST_YEAR_KEY, Integer.toString(copyrightEnd));
-            final String copyrightYears;
-            if (inceptionYearInt >= copyrightEnd) {
-                copyrightYears = inceptionYear;
-            } else {
-                copyrightYears = inceptionYear + "-" + copyrightEnd;
-            }
-            result.put(COPYRIGHT_YEARS_KEY, copyrightYears);
 
-            int copyrightStart = gitLookup.getYearOfCreation(document.getFile());
-            result.put(COPYRIGHT_CREATION_YEAR_KEY, Integer.toString(copyrightStart));
+        try {
+            Map<String, String> result = new HashMap<String, String>(3);
+            GitLookup gitLookup = getGitLookup(document.getFile(), properties);
+
+            result.put(COPYRIGHT_CREATION_AUTHOR_NAME_KEY, gitLookup.getAuthorNameOfCreation(document.getFile()) );
+            result.put(COPYRIGHT_CREATION_AUTHOR_EMAIL_KEY, gitLookup.getAuthorEmailOfCreation(document.getFile()) );
             return Collections.unmodifiableMap(result);
         } catch (Exception e) {
             throw new RuntimeException("Could not compute the year of the last git commit for file "
                     + document.getFile().getAbsolutePath(), e);
         }
     }
+
+ 
+
 }
