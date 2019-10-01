@@ -46,16 +46,9 @@ public class CopyrightAuthorProvider extends GitPropertiesProvider implements Pr
      * , whose values are set based on inspecting git history.
      *
      * <ul>
-     * <li>{@value #COPYRIGHT_LAST_YEAR_KEY} key stores the year from the committer date of the last git commit that has
-     * modified the supplied {@code document}.
-     * <li>{@value #COPYRIGHT_YEARS_KEY} key stores the range from {@value #INCEPTION_YEAR_KEY} value to
-     * {@value #COPYRIGHT_LAST_YEAR_KEY} value. If both values a equal, only the {@value #INCEPTION_YEAR_KEY} value is
-     * returned; otherwise, the two values are combined using dash, so that the result is e.g. {@code "2000 - 2010"}.
-     * <li>{@value #COPYRIGHT_CREATION_YEAR_KEY} key stores the year from the committer date of the first git commit for
-     * the supplied {@code document}.
+     * <li>{@value #COPYRIGHT_CREATION_AUTHOR_NAME_KEY} key stores the author name of the first git commit.
+     * <li>{@value #COPYRIGHT_CREATION_AUTHOR_EMAIL_KEY} key stores the author's email address of the first git commit. 
      * </ul>
-     * The {@value #INCEPTION_YEAR_KEY} value is read from the supplied properties and it must available. Otherwise a
-     * {@link RuntimeException} is thrown.
      *
      */
     public Map<String, String> getAdditionalProperties(AbstractLicenseMojo mojo, Properties properties,
