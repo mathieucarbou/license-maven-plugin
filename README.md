@@ -183,14 +183,15 @@ Maven license plugin comes with the following license templates:
  - BSD 2, 3, 4
  - Business Source License 1.1
  - Commons Clause
- - LGPL 2.1-ONLY, 2.1, 3-ONLY, 3
+ - CPAL 1
  - GPL 2-ONLY, 2, 3-ONLY, 3
+ - LGPL 2.1-ONLY, 2.1, 3-ONLY, 3
  - MirOS
  - MIT
  - MPL 1, 2
  - Server Side Public License
- - WTFPL
  - UNLICENSE
+ - WTFPL
 
 You can find those license templates with preconfigured placeholders [here](https://github.com/mycila/license-maven-plugin/tree/master/license-maven-plugin/src/main/resources/com/mycila/maven/plugin/license/templates)
 
