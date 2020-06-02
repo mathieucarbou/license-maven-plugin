@@ -137,10 +137,11 @@ Maven license plugin comes with the following license templates:
  - AGPL 3
  - APACHE 2
  - BSD 2, 3, 4
- - LGPL 3
+ - LGPL 2.1-ONLY, 2.1, 3-ONLY, 3
+ - GPL 2-ONLY, 2, 3-ONLY, 3
  - MirOS
  - MIT
- - MPL 2
+ - MPL 1, 2
  - WTFPL
  - UNLICENSE
 
