@@ -134,14 +134,14 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
      * Specifies files, which are included in the check. By default, all files
      * are included.
      */
-    @Parameter
+    @Parameter(property = "license.includes")
     public String[] includes = new String[0];
 
     /**
      * Specifies files, which are excluded in the check. By default, only the
      * files matching the default exclude patterns are excluded.
      */
-    @Parameter
+    @Parameter(property = "license.excludes")
     public String[] excludes = new String[0];
 
     /**
