@@ -31,10 +31,10 @@ public final class AdditionalHeaderMojoTest {
     @Test
     public void test_additionalHeaderDefinitions() throws Exception {
         LicenseCheckMojo check = new LicenseCheckMojo();
-        check.basedir = new File("src/test/resources/check/def");
-        check.header = "src/test/resources/check/header.txt";
+        check.baseBasedir = new File("src/test/resources/check/def");
+        check.legacyConfigHeader = "src/test/resources/check/header.txt";
         check.project = new MavenProjectStub();
-        check.excludes = new String[]{"*.xml"};
+        check.legacyConfigExcludes = new String[]{"*.xml"};
         check.strictCheck = true;
 
         try {
@@ -44,7 +44,7 @@ public final class AdditionalHeaderMojoTest {
             assertEquals("Some files do not have the expected license header", e.getMessage());
         }
 
-        check.headerDefinitions = new String[]{"/check/def/additionalHeaderDefinitions.xml"};
+        check.baseHeaderDefinitions = new String[]{"/check/def/additionalHeaderDefinitions.xml"};
         check.execute();
     }
 }

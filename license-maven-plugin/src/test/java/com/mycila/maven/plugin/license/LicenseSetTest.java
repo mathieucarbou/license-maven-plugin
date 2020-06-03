@@ -15,35 +15,32 @@
  */
 package com.mycila.maven.plugin.license;
 
-import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
 import org.junit.Test;
 
 import java.io.File;
 
-/**
- * @author Mathieu Carbou (mathieu.carbou@gmail.com)
- */
-public final class FailIfMissingMojoTest {
-
-    @Test(expected = MojoExecutionException.class)
-    public void test_fail() throws Exception {
-        LicenseCheckMojo check = new LicenseCheckMojo();
-        check.baseBasedir = new File("src/test/resources/check");
-        check.legacyConfigHeader = "header.txt";
-        check.project = new MavenProjectStub();
-        check.strictCheck = true;
-        check.execute();
-    }
+public class LicenseSetTest {
 
     @Test
-    public void test_not_fail() throws Exception {
-        LicenseCheckMojo check = new LicenseCheckMojo();
-        check.baseBasedir = new File("src/test/resources/check");
-        check.legacyConfigHeader = "header.txt";
+    public void multipleLicenseSets() throws Exception {
+        final LicenseSet licenseSet1 = new LicenseSet();
+        licenseSet1.basedir = new File("src/test/resources/check/strict");
+        licenseSet1.header = "src/test/resources/test-header1-diff.txt";
+
+        final LicenseSet licenseSet2 = new LicenseSet();
+        licenseSet2.basedir = new File("src/test/resources/check/issue76");
+        licenseSet2.header = "src/test/resources/test-header1.txt";
+
+        final LicenseSet[] licenseSets = {
+                licenseSet1,
+                licenseSet2
+        };
+
+        final LicenseCheckMojo check = new LicenseCheckMojo();
+        check.licenseSets = licenseSets;
         check.project = new MavenProjectStub();
-        check.failIfMissing = false;
-        check.strictCheck = true;
+        check.strictCheck = false;
         check.execute();
     }
 

@@ -34,7 +34,7 @@ public final class DocumentFactory {
     private final String[] keywords;
     private final DocumentPropertiesLoader documentPropertiesLoader;
 
-    public DocumentFactory(File basedir, Map<String, String> mapping, Map<String, HeaderDefinition> definitions, String encoding, String[] keywords, DocumentPropertiesLoader documentPropertiesLoader) {
+    public DocumentFactory(final File basedir, final Map<String, String> mapping, final Map<String, HeaderDefinition> definitions, final String encoding, final String[] keywords, final DocumentPropertiesLoader documentPropertiesLoader) {
         this.mapping = mapping;
         this.definitions = definitions;
         this.basedir = basedir;
@@ -43,11 +43,11 @@ public final class DocumentFactory {
         this.documentPropertiesLoader = documentPropertiesLoader;
     }
 
-    public Document createDocuments(String file) {
+    public Document createDocuments(final String file) {
         return getWrapper(file);
     }
 
-    private Document getWrapper(String file) {
+    private Document getWrapper(final String file) {
         String headerType = mapping.get("");
         String lowerFileName = FileUtils.filename(file).toLowerCase();
         for (Map.Entry<String, String> entry : mapping.entrySet()) {

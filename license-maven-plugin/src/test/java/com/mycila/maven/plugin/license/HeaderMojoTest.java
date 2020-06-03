@@ -31,7 +31,7 @@ public final class HeaderMojoTest {
     public void test_create() throws Exception {
         MavenProjectStub project = new MavenProjectStub();
         LicenseCheckMojo check = new LicenseCheckMojo();
-        check.basedir = new File("src/main/resources/check");
+        check.baseBasedir = new File("src/main/resources/check");
         check.project = project;
         check.strictCheck = true;
         check.execute();
@@ -41,8 +41,8 @@ public final class HeaderMojoTest {
     public void test_load_header_from_relative_file() throws Exception {
         MavenProjectStub project = new MavenProjectStub();
         LicenseCheckMojo check = new LicenseCheckMojo();
-        check.basedir = new File("src/test/resources/check");
-        check.header = "header.txt";
+        check.baseBasedir = new File("src/test/resources/check");
+        check.legacyConfigHeader = "header.txt";
         check.project = project;
         check.failIfMissing = false;
         check.strictCheck = true;
@@ -53,8 +53,8 @@ public final class HeaderMojoTest {
     public void test_load_header_from_absolute_file() throws Exception {
         MavenProjectStub project = new MavenProjectStub();
         LicenseCheckMojo check = new LicenseCheckMojo();
-        check.basedir = new File("src/test/resources/check");
-        check.header = "src/test/resources/check/header.txt";
+        check.baseBasedir = new File("src/test/resources/check");
+        check.legacyConfigHeader = "src/test/resources/check/header.txt";
         check.project = project;
         check.failIfMissing = false;
         check.strictCheck = true;
@@ -66,8 +66,8 @@ public final class HeaderMojoTest {
         MavenProjectStub project = new MavenProjectStub();
         project.addCompileSourceRoot("src/test/resources/check/cp");
         LicenseCheckMojo check = new LicenseCheckMojo();
-        check.basedir = new File("src/test/resources/check");
-        check.header = "header-in-cp.txt";
+        check.baseBasedir = new File("src/test/resources/check");
+        check.legacyConfigHeader = "header-in-cp.txt";
         check.project = project;
         check.failIfMissing = false;
         check.strictCheck = true;
@@ -78,8 +78,8 @@ public final class HeaderMojoTest {
     public void test_load_header_from_plugin_classpath() throws Exception {
         MavenProjectStub project = new MavenProjectStub();
         LicenseCheckMojo check = new LicenseCheckMojo();
-        check.basedir = new File("src/test/resources/check");
-        check.header = "test-header1.txt";
+        check.baseBasedir = new File("src/test/resources/check");
+        check.legacyConfigHeader = "test-header1.txt";
         check.project = project;
         check.failIfMissing = false;
         check.strictCheck = true;
@@ -90,8 +90,8 @@ public final class HeaderMojoTest {
     public void test_inlineHeader() throws Exception {
         MavenProjectStub project = new MavenProjectStub();
         LicenseCheckMojo check = new LicenseCheckMojo();
-        check.basedir = new File("src/test/resources/check");
-        check.inlineHeader = FileUtils.read(new File("src/test/resources/check/header.txt"), "utf-8");
+        check.baseBasedir = new File("src/test/resources/check");
+        check.legacyConfigInlineHeader = FileUtils.read(new File("src/test/resources/check/header.txt"), "utf-8");
         check.project = project;
         check.failIfMissing = false;
         check.strictCheck = true;
@@ -102,10 +102,10 @@ public final class HeaderMojoTest {
     public void test_load_multi_headers_from_relative_file() throws Exception {
         final MavenProjectStub project = new MavenProjectStub();
         final LicenseCheckMojo check = new LicenseCheckMojo();
-        check.basedir = new File("src/test/resources/check");
+        check.baseBasedir = new File("src/test/resources/check");
         final Multi multi = new Multi();
         multi.setHeaders(new String[] {"header.txt", "header2.txt"});
-        check.multi = multi;
+        check.legacyConfigMulti = multi;
         check.project = project;
         check.failIfMissing = false;
         check.strictCheck = true;
@@ -116,10 +116,10 @@ public final class HeaderMojoTest {
     public void test_load_multi_headers_from_absolute_file() throws Exception {
         final MavenProjectStub project = new MavenProjectStub();
         final LicenseCheckMojo check = new LicenseCheckMojo();
-        check.basedir = new File("src/test/resources/check");
+        check.baseBasedir = new File("src/test/resources/check");
         final Multi multi = new Multi();
         multi.setHeaders(new String[] {"src/test/resources/check/header.txt", "src/test/resources/check/header2.txt"});
-        check.multi = multi;
+        check.legacyConfigMulti = multi;
         check.project = project;
         check.failIfMissing = false;
         check.strictCheck = true;
@@ -131,10 +131,10 @@ public final class HeaderMojoTest {
         final MavenProjectStub project = new MavenProjectStub();
         project.addCompileSourceRoot("src/test/resources/check/cp");
         final LicenseCheckMojo check = new LicenseCheckMojo();
-        check.basedir = new File("src/test/resources/check");
+        check.baseBasedir = new File("src/test/resources/check");
         final Multi multi = new Multi();
         multi.setHeaders(new String[] {"header-in-cp.txt", "header-in-cp.txt"});
-        check.multi = multi;
+        check.legacyConfigMulti = multi;
         check.project = project;
         check.failIfMissing = false;
         check.strictCheck = true;
@@ -145,10 +145,10 @@ public final class HeaderMojoTest {
     public void test_load_multi_headers_from_plugin_classpath() throws Exception {
         final MavenProjectStub project = new MavenProjectStub();
         final LicenseCheckMojo check = new LicenseCheckMojo();
-        check.basedir = new File("src/test/resources/check");
+        check.baseBasedir = new File("src/test/resources/check");
         final Multi multi = new Multi();
         multi.setHeaders(new String[] {"test-header1.txt", "test-header2.txt"});
-        check.multi = multi;
+        check.legacyConfigMulti = multi;
         check.project = project;
         check.failIfMissing = false;
         check.strictCheck = true;
@@ -159,13 +159,13 @@ public final class HeaderMojoTest {
     public void test_multi_inlineHeader() throws Exception {
         final MavenProjectStub project = new MavenProjectStub();
         final LicenseCheckMojo check = new LicenseCheckMojo();
-        check.basedir = new File("src/test/resources/check");
+        check.baseBasedir = new File("src/test/resources/check");
         final Multi multi = new Multi();
         multi.setInlineHeaders(new String[] {
                 FileUtils.read(new File("src/test/resources/check/header.txt"), "utf-8"),
                 FileUtils.read(new File("src/test/resources/check/header2.txt"), "utf-8")
         });
-        check.multi = multi;
+        check.legacyConfigMulti = multi;
         check.project = project;
         check.failIfMissing = false;
         check.strictCheck = true;

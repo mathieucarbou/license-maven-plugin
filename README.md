@@ -81,16 +81,20 @@ __Plugin declaration__
         <artifactId>license-maven-plugin</artifactId>
         <version>X.Y.ga</version>
         <configuration>
-            <header>com/mycila/maven/plugin/license/templates/APACHE-2.txt</header>
+            <licenseSets>
+                <licenseSet>
+                    <header>com/mycila/maven/plugin/license/templates/APACHE-2.txt</header>
+                    <excludes>
+                        <exclude>**/README</exclude>
+                        <exclude>src/test/resources/**</exclude>
+                        <exclude>src/main/resources/**</exclude>
+                    </excludes>
+                </licenseSet>
+            </licenseSets>
             <properties>
                 <owner>Mycila</owner>
                 <email>mathieu.carbou@gmail.com</email>
             </properties>
-            <excludes>
-                <exclude>**/README</exclude>
-                <exclude>src/test/resources/**</exclude>
-                <exclude>src/main/resources/**</exclude>
-            </excludes>
         </configuration>
         <executions>
             <execution>
@@ -118,21 +122,25 @@ options are concatenated together to produce a header template.
         <artifactId>license-maven-plugin</artifactId>
         <version>X.Y.ga</version>
         <configuration>
-            <multi>
-                <preamble><![CDATA[This product is dual-licensed under both the GPLv2 and Apache 2.0 License.]]></preamble>
-                <header>GPL-2.txt</header>
-                <separator>======================================================================</separator>
-                <header>com/mycila/maven/plugin/license/templates/APACHE-2.txt</header>
-            </multi>
+            <licenseSets>
+                <licenseSet>
+                    <multi>
+                        <preamble><![CDATA[This product is dual-licensed under both the GPLv2 and Apache 2.0 License.]]></preamble>
+                        <header>GPL-2.txt</header>
+                        <separator>======================================================================</separator>
+                        <header>com/mycila/maven/plugin/license/templates/APACHE-2.txt</header>
+                    </multi>
+                    <excludes>
+                        <exclude>**/README</exclude>
+                        <exclude>src/test/resources/**</exclude>
+                        <exclude>src/main/resources/**</exclude>
+                    </excludes>
+                </licenseSet>
+            </licenseSets>
             <properties>
                 <owner>Mycila</owner>
                 <email>mathieu.carbou@gmail.com</email>
             </properties>
-            <excludes>
-                <exclude>**/README</exclude>
-                <exclude>src/test/resources/**</exclude>
-                <exclude>src/main/resources/**</exclude>
-            </excludes>
         </configuration>
         <executions>
             <execution>
