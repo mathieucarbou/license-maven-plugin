@@ -81,6 +81,10 @@ public final class Default {
         "**/.gitignore",
         "**/.gitmodules",
 
+        // GitHub
+        "**/.github",
+        "**/.github/**",
+
         // BitKeeper
         "**/BitKeeper",
         "**/BitKeeper/**",
@@ -172,6 +176,17 @@ public final class Default {
 
         // Travis
         "**/.travis.yml",
+
+        // AppVeyor
+        "**/.appveyor.yml",
+        "**/appveyor.yml",
+
+        // CircleCI
+        "**/.circleci",
+        "**/.circleci/**",
+
+        // SourceHut
+        "**/.build.yml",
 
         // flash
         "**/*.swf",
