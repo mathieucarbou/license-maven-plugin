@@ -107,6 +107,18 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
     public String[] validHeaders = new String[0];
 
     /**
+     * Alternative to `header`, `inlineHeader`, or `validHeaders`
+     * for use when code is multi-licensed.
+     * Whilst you could create a concatenated header yourself,
+     * a cleaner approach may be to specify more than one header
+     * and have them concatenated together by the plugin. This
+     * allows you to maintain each distinct license header in
+     * its own file and combined them in different ways.
+     */
+    @Parameter
+    public Multi multi;
+
+    /**
      * Allows the use of external header definitions files. These files are
      * properties like files.
      */
@@ -321,7 +333,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
     @SuppressWarnings({"unchecked"})
     public final void execute(final Callback callback) throws MojoExecutionException, MojoFailureException {
         if (!skip) {
-            if (header == null && (this.inlineHeader == null || this.inlineHeader.isEmpty())) {
+            if (!hasHeader()) {
                 warn("No header file specified to check for license");
                 return;
             }
@@ -338,7 +350,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
             }
             finder.setPluginClassPath(getClass().getClassLoader());
 
-            final HeaderSource headerSource = HeaderSource.of(this.inlineHeader, this.header, this.encoding, this.finder);
+            final HeaderSource headerSource = HeaderSource.of(this.multi, this.inlineHeader, this.header, this.encoding, this.finder);
             final Header h = new Header(headerSource, headerSections);
             debug("Header: %s", h.getLocation());
 
@@ -347,7 +359,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
             }
             final List<Header> validHeaders = new ArrayList<Header>(this.validHeaders.length);
             for (String validHeader : this.validHeaders) {
-                final HeaderSource validHeaderSource = HeaderSource.of(null, validHeader, this.encoding, this.finder);
+                final HeaderSource validHeaderSource = HeaderSource.of(null, null, validHeader, this.encoding, this.finder);
                 validHeaders.add(new Header(validHeaderSource, headerSections));
             }
 
@@ -453,6 +465,14 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
                 executorService.shutdownNow();
             }
         }
+    }
+
+    private boolean hasHeader() {
+        return
+                (multi != null
+                        && ((multi.headers != null && multi.headers.length > 0)
+                        || (multi.inlineHeaders != null && multi.inlineHeaders.length > 0 && !multi.inlineHeaders[0].isEmpty()))
+                ) || (header != null || (inlineHeader != null && !this.inlineHeader.isEmpty()));
     }
 
     private int getNumberOfExecutorThreads() {

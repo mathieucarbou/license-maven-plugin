@@ -61,6 +61,19 @@ public final class FileUtils {
         }
     }
 
+    public static String[] read(final URL[] locations, final String encoding) throws IOException {
+        final String[] results = new String[locations.length];
+        for (int i = 0; i < locations.length; i++) {
+            final Reader reader = new BufferedReader(new InputStreamReader(locations[i].openStream(), encoding));
+            try {
+                results[i] = IOUtil.toString(reader);
+            } finally {
+                reader.close();
+            }
+        }
+        return results;
+    }
+
     public static String read(File file, String encoding) throws IOException {
         FileChannel in = new FileInputStream(file).getChannel();
         try {
