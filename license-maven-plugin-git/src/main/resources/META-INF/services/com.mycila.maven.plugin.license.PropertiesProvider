@@ -1,1 +1,2 @@
 com.mycila.maven.plugin.license.git.CopyrightRangeProvider
+com.mycila.maven.plugin.license.git.CopyrightAuthorProvider

@@ -15,19 +15,14 @@
  */
 package com.mycila.maven.plugin.license.git;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
-import java.util.TimeZone;
 
 import com.mycila.maven.plugin.license.AbstractLicenseMojo;
 import com.mycila.maven.plugin.license.PropertiesProvider;
 import com.mycila.maven.plugin.license.document.Document;
-import com.mycila.maven.plugin.license.git.GitLookup.DateSource;
 
 /**
  * An implementation of {@link PropertiesProvider} that adds {@value #COPYRIGHT_LAST_YEAR_KEY} and
@@ -36,17 +31,13 @@ import com.mycila.maven.plugin.license.git.GitLookup.DateSource;
  *
  * @author <a href="mailto:ppalaga@redhat.com">Peter Palaga</a>
  */
-public class CopyrightRangeProvider implements PropertiesProvider {
+public class CopyrightRangeProvider extends GitPropertiesProvider implements PropertiesProvider {
 
     public static final String COPYRIGHT_LAST_YEAR_KEY = "license.git.copyrightLastYear";
     public static final String COPYRIGHT_CREATION_YEAR_KEY = "license.git.copyrightCreationYear";
-    public static final String COPYRIGHT_LAST_YEAR_MAX_COMMITS_LOOKUP_KEY = "license.git.copyrightLastYearMaxCommitsLookup";
-    public static final String COPYRIGHT_LAST_YEAR_SOURCE_KEY = "license.git.copyrightLastYearSource";
-    public static final String COPYRIGHT_LAST_YEAR_TIME_ZONE_KEY = "license.git.copyrightLastYearTimeZone";
     public static final String COPYRIGHT_YEARS_KEY = "license.git.copyrightYears";
     public static final String INCEPTION_YEAR_KEY = "project.inceptionYear";
-
-    private volatile GitLookup gitLookup;
+    
 
     public CopyrightRangeProvider() {
         super();
@@ -84,7 +75,7 @@ public class CopyrightRangeProvider implements PropertiesProvider {
                     + document.getFile().getAbsolutePath());
         }
         try {
-            Map<String, String> result = new HashMap<String, String>(3);
+            Map<String, String> result = new HashMap<String, String>(4);
             GitLookup gitLookup = getGitLookup(document.getFile(), properties);
             int copyrightEnd = gitLookup.getYearOfLastChange(document.getFile());
             result.put(COPYRIGHT_LAST_YEAR_KEY, Integer.toString(copyrightEnd));
@@ -104,50 +95,4 @@ public class CopyrightRangeProvider implements PropertiesProvider {
                     + document.getFile().getAbsolutePath(), e);
         }
     }
-
-    /**
-     * Lazily initializes #gitLookup assuming that all subsequent calls to this method will be related to the same
-     * git repository.
-     *
-     * @param file
-     * @return
-     * @throws IOException
-     */
-    private GitLookup getGitLookup(File file, Properties props) throws IOException {
-        if (gitLookup == null) {
-            synchronized (this) {
-                if (gitLookup == null) {
-                    String dateSourceString = props.getProperty(COPYRIGHT_LAST_YEAR_SOURCE_KEY,
-                            DateSource.AUTHOR.name());
-                    DateSource dateSource = DateSource.valueOf(dateSourceString.toUpperCase(Locale.US));
-                    String checkCommitsCountString = props.getProperty(COPYRIGHT_LAST_YEAR_MAX_COMMITS_LOOKUP_KEY);
-                    int checkCommitsCount = GitLookup.DEFAULT_COMMITS_COUNT;
-                    if (checkCommitsCountString != null) {
-                        checkCommitsCountString = checkCommitsCountString.trim();
-                        checkCommitsCount = Integer.parseInt(checkCommitsCountString);
-                    }
-                    final TimeZone timeZone;
-                    String tzString = props.getProperty(COPYRIGHT_LAST_YEAR_TIME_ZONE_KEY);
-                    switch (dateSource) {
-                    case COMMITER:
-                        timeZone = tzString == null ? GitLookup.DEFAULT_ZONE : TimeZone.getTimeZone(tzString);
-                        break;
-                    case AUTHOR:
-                        if (tzString != null) {
-                            throw new RuntimeException(COPYRIGHT_LAST_YEAR_TIME_ZONE_KEY + " must not be set with "
-                                    + COPYRIGHT_LAST_YEAR_SOURCE_KEY + " = " + DateSource.AUTHOR.name()
-                                    + " because git author name already contrains time zone information.");
-                        }
-                        timeZone = null;
-                        break;
-                    default:
-                        throw new IllegalStateException("Unexpected " + DateSource.class.getName() + " " + dateSource);
-                    }
-                    gitLookup = new GitLookup(file, dateSource, timeZone, checkCommitsCount);
-                }
-            }
-        }
-        return gitLookup;
-    }
-
 }
