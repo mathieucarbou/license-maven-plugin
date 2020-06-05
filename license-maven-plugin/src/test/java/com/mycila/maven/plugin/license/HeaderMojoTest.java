@@ -98,5 +98,79 @@ public final class HeaderMojoTest {
         check.execute();
     }
 
+    @Test
+    public void test_load_multi_headers_from_relative_file() throws Exception {
+        final MavenProjectStub project = new MavenProjectStub();
+        final LicenseCheckMojo check = new LicenseCheckMojo();
+        check.basedir = new File("src/test/resources/check");
+        final Multi multi = new Multi();
+        multi.setHeaders(new String[] {"header.txt", "header2.txt"});
+        check.multi = multi;
+        check.project = project;
+        check.failIfMissing = false;
+        check.strictCheck = true;
+        check.execute();
+    }
+
+    @Test
+    public void test_load_multi_headers_from_absolute_file() throws Exception {
+        final MavenProjectStub project = new MavenProjectStub();
+        final LicenseCheckMojo check = new LicenseCheckMojo();
+        check.basedir = new File("src/test/resources/check");
+        final Multi multi = new Multi();
+        multi.setHeaders(new String[] {"src/test/resources/check/header.txt", "src/test/resources/check/header2.txt"});
+        check.multi = multi;
+        check.project = project;
+        check.failIfMissing = false;
+        check.strictCheck = true;
+        check.execute();
+    }
+
+    @Test
+    public void test_load_multi_headers_from_project_classpath() throws Exception {
+        final MavenProjectStub project = new MavenProjectStub();
+        project.addCompileSourceRoot("src/test/resources/check/cp");
+        final LicenseCheckMojo check = new LicenseCheckMojo();
+        check.basedir = new File("src/test/resources/check");
+        final Multi multi = new Multi();
+        multi.setHeaders(new String[] {"header-in-cp.txt", "header-in-cp.txt"});
+        check.multi = multi;
+        check.project = project;
+        check.failIfMissing = false;
+        check.strictCheck = true;
+        check.execute();
+    }
+
+    @Test
+    public void test_load_multi_headers_from_plugin_classpath() throws Exception {
+        final MavenProjectStub project = new MavenProjectStub();
+        final LicenseCheckMojo check = new LicenseCheckMojo();
+        check.basedir = new File("src/test/resources/check");
+        final Multi multi = new Multi();
+        multi.setHeaders(new String[] {"test-header1.txt", "test-header2.txt"});
+        check.multi = multi;
+        check.project = project;
+        check.failIfMissing = false;
+        check.strictCheck = true;
+        check.execute();
+    }
+
+    @Test
+    public void test_multi_inlineHeader() throws Exception {
+        final MavenProjectStub project = new MavenProjectStub();
+        final LicenseCheckMojo check = new LicenseCheckMojo();
+        check.basedir = new File("src/test/resources/check");
+        final Multi multi = new Multi();
+        multi.setInlineHeaders(new String[] {
+                FileUtils.read(new File("src/test/resources/check/header.txt"), "utf-8"),
+                FileUtils.read(new File("src/test/resources/check/header2.txt"), "utf-8")
+        });
+        check.multi = multi;
+        check.project = project;
+        check.failIfMissing = false;
+        check.strictCheck = true;
+        check.execute();
+    }
+
 
 }
