@@ -75,6 +75,7 @@ Available in OSS Repository:  https://oss.sonatype.org/content/repositories/snap
 
 __Plugin declaration__
 
+```xml
     <plugin>
         <groupId>com.mycila</groupId>
         <artifactId>license-maven-plugin</artifactId>
@@ -99,6 +100,49 @@ __Plugin declaration__
             </execution>
         </executions>
     </plugin>
+```
+
+__Plugin declaration ([Multi-Licensing](https://en.wikipedia.org/wiki/Multi-licensing))__
+
+If your source code makes use of multi-licensing, then instead of
+a `<header>` or `<inlineHeader>` element in the configuration
+you can use a `<multi>` element.
+
+The `<multi>` element allows you to specify an optional preamble,
+one or more header (or inlineHeader) and separators between them. These
+options are concatenated together to produce a header template.
+
+```xml
+    <plugin>
+        <groupId>com.mycila</groupId>
+        <artifactId>license-maven-plugin</artifactId>
+        <version>X.Y.ga</version>
+        <configuration>
+            <multi>
+                <preamble><![CDATA[This product is dual-licensed under both the GPLv2 and Apache 2.0 License.]]></preamble>
+                <header>GPL-2.txt</header>
+                <separator>======================================================================</separator>
+                <header>com/mycila/maven/plugin/license/templates/APACHE-2.txt</header>
+            </multi>
+            <properties>
+                <owner>Mycila</owner>
+                <email>mathieu.carbou@gmail.com</email>
+            </properties>
+            <excludes>
+                <exclude>**/README</exclude>
+                <exclude>src/test/resources/**</exclude>
+                <exclude>src/main/resources/**</exclude>
+            </excludes>
+        </configuration>
+        <executions>
+            <execution>
+                <goals>
+                    <goal>check</goal>
+                </goals>
+            </execution>
+        </executions>
+    </plugin>
+```
 
 ## Documentation ##
 
@@ -154,7 +198,7 @@ You can find those license templates with preconfigured placeholders [here](http
 
 Properties which can be used as placeholder comes from:
 
- - Environnment variables
+ - Environment variables
  - POM properties
    - `project.groupId`
    - `project.artifactId`
