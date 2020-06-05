@@ -1,0 +1,12 @@
+${project.name} - ${project.description}
+Copyright (c) ${project.inceptionYear} ${owner}
+
+Use of this software is governed by the Business Source License included
+in the LICENSE file and at www.mariadb.com/bsl11.
+
+Change Date: ${change-date}
+
+On the date above, in accordance with the Business Source License, use
+of this software will be governed by the ${change-license}.
+
+Additional Use Grant: ${additional-use-grant}
