@@ -56,6 +56,7 @@
                 <configuration>
                     <excludes>
                         <exclude>src/test/**</exclude>
+                        <exclude>src/it/**</exclude>
                         <exclude>src/main/resources/**</exclude>
                     </excludes>
                 </configuration>
@@ -68,6 +69,32 @@
                         <sourceFileExclude>**/*Mojo.java</sourceFileExclude>
                     </sourceFileExcludes>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-invoker-plugin</artifactId>
+                <configuration>
+                    <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
+                    <localRepositoryPath>${project.build.directory}/it-repo</localRepositoryPath>
+                    <preBuildHookScript>setup</preBuildHookScript>
+                    <postBuildHookScript>verify</postBuildHookScript>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>integration-tests</id>
+                        <goals>
+                            <goal>install</goal>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>junit</groupId>
+                        <artifactId>junit</artifactId>
+                        <version>${junit.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>
