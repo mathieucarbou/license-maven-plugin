@@ -30,11 +30,11 @@ public final class UseDefaultExcludesMojoTest {
     public void test_include_and_fail() throws Exception {
         try {
             LicenseCheckMojo check = new LicenseCheckMojo();
-            check.baseBasedir = new File("src/test/resources/check");
+            check.defaultBasedir = new File("src/test/resources/check");
             check.legacyConfigHeader = "header.txt";
             check.project = new MavenProjectStub();
             check.legacyConfigExcludes = new String[]{"doc1.txt"};
-            check.baseUseDefaultExcludes = false;
+            check.defaultUseDefaultExcludes = false;
             check.strictCheck = true;
             check.execute();
         } catch (Exception e) {
@@ -45,10 +45,10 @@ public final class UseDefaultExcludesMojoTest {
     @Test
     public void check_defaultExcludes_exclude_Netbeans_Configuration() throws Exception {
         LicenseCheckMojo check = new LicenseCheckMojo();
-        check.baseBasedir = new File("src/test/resources/excludes/issue-68");
+        check.defaultBasedir = new File("src/test/resources/excludes/issue-68");
         check.legacyConfigHeader = "header.txt";
         check.project = new MavenProjectStub();
-        check.baseUseDefaultExcludes = true;
+        check.defaultUseDefaultExcludes = true;
         check.strictCheck = true;
         check.execute();
     }
@@ -57,10 +57,10 @@ public final class UseDefaultExcludesMojoTest {
     public void check_withoutDefaultExcludes_Netbeans_Configuration_Is_Reported() {
         try {
             LicenseCheckMojo check = new LicenseCheckMojo();
-            check.baseBasedir = new File("src/test/resources/excludes/issue-68");
+            check.defaultBasedir = new File("src/test/resources/excludes/issue-68");
             check.legacyConfigHeader = "header.txt";
             check.project = new MavenProjectStub();
-            check.baseUseDefaultExcludes = false;
+            check.defaultUseDefaultExcludes = false;
             check.strictCheck = true;
             check.execute();
         } catch (Exception e) {

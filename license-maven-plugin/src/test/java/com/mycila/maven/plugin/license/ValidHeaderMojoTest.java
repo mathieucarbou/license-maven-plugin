@@ -37,7 +37,7 @@ public final class ValidHeaderMojoTest {
         format.execute();*/
 
         LicenseCheckMojo check = new LicenseCheckMojo();
-        check.baseBasedir = new File("src/test/resources/check/valid");
+        check.defaultBasedir = new File("src/test/resources/check/valid");
         check.legacyConfigHeader = "src/test/resources/test-header1.txt";
         check.project = new MavenProjectStub();
         check.strictCheck = true;

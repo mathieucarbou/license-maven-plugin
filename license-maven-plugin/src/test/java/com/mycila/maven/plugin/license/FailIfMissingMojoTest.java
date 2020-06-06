@@ -29,7 +29,7 @@ public final class FailIfMissingMojoTest {
     @Test(expected = MojoExecutionException.class)
     public void test_fail() throws Exception {
         LicenseCheckMojo check = new LicenseCheckMojo();
-        check.baseBasedir = new File("src/test/resources/check");
+        check.defaultBasedir = new File("src/test/resources/check");
         check.legacyConfigHeader = "header.txt";
         check.project = new MavenProjectStub();
         check.strictCheck = true;
@@ -39,7 +39,7 @@ public final class FailIfMissingMojoTest {
     @Test
     public void test_not_fail() throws Exception {
         LicenseCheckMojo check = new LicenseCheckMojo();
-        check.baseBasedir = new File("src/test/resources/check");
+        check.defaultBasedir = new File("src/test/resources/check");
         check.legacyConfigHeader = "header.txt";
         check.project = new MavenProjectStub();
         check.failIfMissing = false;

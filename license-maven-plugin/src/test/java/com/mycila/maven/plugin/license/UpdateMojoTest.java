@@ -45,10 +45,10 @@ public final class UpdateMojoTest {
         FileUtils.copyFileToFolder(new File("src/test/resources/update/doc2.txt"), tmp);
 
         LicenseFormatMojo updater = new LicenseFormatMojo();
-        updater.baseBasedir = tmp;
+        updater.defaultBasedir = tmp;
         updater.legacyConfigHeader = "src/test/resources/update/header.txt";
         updater.project = new MavenProjectStub();
-        updater.baseProperties = ImmutableMap.of("year", "2008");
+        updater.defaultProperties = ImmutableMap.of("year", "2008");
         updater.execute();
 
         assertEquals(FileUtils.read(new File(tmp, "doc1.txt"), System.getProperty("file.encoding")), "====\r\n    My @Copyright license 2 with my-custom-value and 2008 and doc1.txt\r\n====\r\n\r\nsome data\r\n");
@@ -63,10 +63,10 @@ public final class UpdateMojoTest {
         FileUtils.copyFileToFolder(new File("src/test/resources/update/doc2.txt"), tmp);
 
         LicenseFormatMojo updater = new LicenseFormatMojo();
-        updater.baseBasedir = tmp;
+        updater.defaultBasedir = tmp;
         updater.legacyConfigInlineHeader = FileUtils.read(new File("src/test/resources/update/header.txt"), "utf-8");
         updater.project = new MavenProjectStub();
-        updater.baseProperties = ImmutableMap.of("year", "2008");
+        updater.defaultProperties = ImmutableMap.of("year", "2008");
         updater.execute();
 
         assertEquals(FileUtils.read(new File(tmp, "doc1.txt"), System.getProperty("file.encoding")), "====\r\n    My @Copyright license 2 with my-custom-value and 2008 and doc1.txt\r\n====\r\n\r\nsome data\r\n");
@@ -82,10 +82,10 @@ public final class UpdateMojoTest {
 
         // only update those files without a copyright header
         LicenseFormatMojo updater = new LicenseFormatMojo();
-        updater.baseBasedir = tmp;
+        updater.defaultBasedir = tmp;
         updater.legacyConfigHeader = "src/test/resources/update/header.txt";
         updater.project = new MavenProjectStub();
-        updater.baseProperties = ImmutableMap.of("year", "2008");
+        updater.defaultProperties = ImmutableMap.of("year", "2008");
         updater.skipExistingHeaders = true;
         updater.execute();
 
@@ -94,10 +94,10 @@ public final class UpdateMojoTest {
 
         // expect unchanged header to fail check against new header
         LicenseCheckMojo check = new LicenseCheckMojo();
-        check.baseBasedir = tmp;
+        check.defaultBasedir = tmp;
         check.legacyConfigHeader = "src/test/resources/update/header.txt";
         check.project = new MavenProjectStub();
-        check.baseProperties = ImmutableMap.of("year", "2008");
+        check.defaultProperties = ImmutableMap.of("year", "2008");
         check.skipExistingHeaders = false;
 
         try {
@@ -122,9 +122,9 @@ public final class UpdateMojoTest {
         FileUtils.copyFileToFolder(new File("src/test/resources/update/issue50/test3.properties"), tmp);
 
         LicenseFormatMojo updater = new LicenseFormatMojo();
-        updater.baseBasedir = tmp;
+        updater.defaultBasedir = tmp;
         updater.legacyConfigHeader = "src/test/resources/update/header.txt";
-        updater.baseProperties = ImmutableMap.of("year", "2008");
+        updater.defaultProperties = ImmutableMap.of("year", "2008");
         updater.mapping = new LinkedHashMap<String, String>() {{
             put("properties", "SCRIPT_STYLE");
         }};
@@ -147,9 +147,9 @@ public final class UpdateMojoTest {
         FileUtils.copyFileToFolder(new File("src/test/resources/update/issue48/test2.php"), tmp);
 
         LicenseFormatMojo updater = new LicenseFormatMojo();
-        updater.baseBasedir = tmp;
+        updater.defaultBasedir = tmp;
         updater.legacyConfigHeader = "src/test/resources/update/header.txt";
-        updater.baseProperties = ImmutableMap.of("year", "2008");
+        updater.defaultProperties = ImmutableMap.of("year", "2008");
         updater.mapping = new LinkedHashMap<String, String>() {{
             put("properties", "SCRIPT_STYLE");
         }};
@@ -186,9 +186,9 @@ public final class UpdateMojoTest {
         FileUtils.copyFileToFolder(new File("src/test/resources/update/issue44/test.asp"), tmp);
 
         LicenseFormatMojo updater = new LicenseFormatMojo();
-        updater.baseBasedir = tmp;
+        updater.defaultBasedir = tmp;
         updater.legacyConfigHeader = "src/test/resources/update/header.txt";
-        updater.baseProperties = ImmutableMap.of("year", "2008");
+        updater.defaultProperties = ImmutableMap.of("year", "2008");
         updater.project = new MavenProjectStub();
         updater.execute();
 
@@ -213,7 +213,7 @@ public final class UpdateMojoTest {
         FileUtils.copyFileToFolder(new File("src/test/resources/update/issue14/test.properties"), tmp);
 
         LicenseFormatMojo updater = new LicenseFormatMojo();
-        updater.baseBasedir = tmp;
+        updater.defaultBasedir = tmp;
         updater.legacyConfigHeader = "src/test/resources/update/issue14/header.txt";
         updater.project = new MavenProjectStub();
         updater.execute();
@@ -252,13 +252,13 @@ public final class UpdateMojoTest {
         FileUtils.copyFileToFolder(new File("src/test/resources/issues/issue-71/issue-71.txt.extended"), tmp);
 
         LicenseFormatMojo updater = new LicenseFormatMojo();
-        updater.baseBasedir = tmp;
+        updater.defaultBasedir = tmp;
         updater.legacyConfigHeader = "src/test/resources/issues/issue-71/issue-71-header.txt";
         updater.project = new MavenProjectStub();
         updater.mapping = new LinkedHashMap<String, String>() {{
             put("txt.extended", "EXTENDED_STYLE");
         }};
-        updater.baseHeaderDefinitions = new String[]{"/issues/issue-71/issue-71-additionalHeaderDefinitions.xml"};
+        updater.defaultHeaderDefinitions = new String[]{"/issues/issue-71/issue-71-additionalHeaderDefinitions.xml"};
         updater.execute();
 
 
@@ -275,7 +275,7 @@ public final class UpdateMojoTest {
         FileUtils.copyFileToFolder(new File("src/test/resources/update/issue37/xwiki.xml"), tmp);
         
         LicenseFormatMojo execution1 = new LicenseFormatMojo();
-        execution1.baseBasedir = tmp;
+        execution1.defaultBasedir = tmp;
         execution1.legacyConfigHeader = "src/test/resources/update/issue37/xwiki-license.txt";
         execution1.project = new MavenProjectStub();
         execution1.execute();
@@ -283,7 +283,7 @@ public final class UpdateMojoTest {
         String execution1FileContent = FileUtils.read(new File(tmp, "xwiki.xml"), System.getProperty("file.encoding"));
         
         LicenseFormatMojo execution2 = new LicenseFormatMojo();
-        execution2.baseBasedir = tmp;
+        execution2.defaultBasedir = tmp;
         execution2.legacyConfigHeader = "src/test/resources/update/issue37/xwiki-license.txt";
         execution2.project = new MavenProjectStub();
         execution2.execute();
@@ -300,7 +300,7 @@ public final class UpdateMojoTest {
             FileUtils.copyFileToFolder(new File("src/test/resources/update/issue30/one-line-comment.ftl"), tmp);
     
             LicenseFormatMojo updater = new LicenseFormatMojo();
-            updater.baseBasedir = tmp;
+            updater.defaultBasedir = tmp;
             updater.legacyConfigHeader = "src/test/resources/single-line-header.txt";
             updater.project = new MavenProjectStub();
             updater.execute();

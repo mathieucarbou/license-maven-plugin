@@ -34,7 +34,7 @@ public final class UseDefaultMappingMojoTest {
     @Test
     public void test_not_useDefaultMapping() throws Exception {
         LicenseCheckMojo check = new LicenseCheckMojo();
-        check.baseBasedir = new File("src/test/resources/check");
+        check.defaultBasedir = new File("src/test/resources/check");
         check.legacyConfigHeader = "header.txt";
         check.project = new MavenProjectStub();
         check.useDefaultMapping = false;
@@ -49,7 +49,7 @@ public final class UseDefaultMappingMojoTest {
     @Test
     public void test_useDefaultMapping() throws Exception {
         LicenseCheckMojo check = new LicenseCheckMojo();
-        check.baseBasedir = new File("src/test/resources/check");
+        check.defaultBasedir = new File("src/test/resources/check");
         check.legacyConfigHeader = "header.txt";
         check.project = new MavenProjectStub();
         check.useDefaultMapping = true;

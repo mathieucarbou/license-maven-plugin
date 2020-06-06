@@ -42,7 +42,7 @@ public final class RemoveMojoTest {
         FileUtils.copyFileToFolder(new File("src/test/resources/remove/doc2.txt"), tmp);
         
         LicenseRemoveMojo remove = new LicenseRemoveMojo();
-        remove.baseBasedir = tmp;
+        remove.defaultBasedir = tmp;
         remove.legacyConfigHeader = "src/test/resources/remove/header.txt";
         remove.project = new MavenProjectStub();
         remove.execute();
@@ -59,7 +59,7 @@ public final class RemoveMojoTest {
         FileUtils.copyFileToFolder(new File("src/test/resources/doc/doc3.txt"), tmp);
 
         LicenseRemoveMojo remove = new LicenseRemoveMojo();
-        remove.baseBasedir = tmp;
+        remove.defaultBasedir = tmp;
         remove.legacyConfigHeader = "src/test/resources/remove/header.txt";
         remove.project = new MavenProjectStub();
         remove.execute();
@@ -80,7 +80,7 @@ public final class RemoveMojoTest {
         FileUtils.copyFileToFolder(new File("src/test/resources/remove/issue44-3.rb"), tmp);
 
         LicenseRemoveMojo remove = new LicenseRemoveMojo();
-        remove.baseBasedir = tmp;
+        remove.defaultBasedir = tmp;
         remove.legacyConfigHeader = "src/test/resources/remove/header.txt";
         remove.project = new MavenProjectStub();
         remove.execute();
@@ -97,7 +97,7 @@ public final class RemoveMojoTest {
         FileUtils.copyFileToFolder(new File("src/test/resources/remove/test.xml"), tmp);
         
         LicenseRemoveMojo remove = new LicenseRemoveMojo();
-        remove.baseBasedir = tmp;
+        remove.defaultBasedir = tmp;
         remove.legacyConfigHeader = "src/test/resources/remove/header.txt";
         remove.project = new MavenProjectStub();
         remove.execute();
@@ -114,7 +114,7 @@ public final class RemoveMojoTest {
         FileUtils.copyFileToFolder(new File("src/test/resources/remove/test.js"), tmp);
 
         LicenseRemoveMojo remove = new LicenseRemoveMojo();
-        remove.baseBasedir = tmp;
+        remove.defaultBasedir = tmp;
         remove.legacyConfigHeader = "src/test/resources/remove/header.txt";
         remove.project = new MavenProjectStub();
         remove.execute();
@@ -134,7 +134,7 @@ public final class RemoveMojoTest {
         FileUtils.copyFileToFolder(new File("src/test/resources/remove/issue-30/one-line-comment.ftl"), tmp);
 
         LicenseRemoveMojo remove = new LicenseRemoveMojo();
-        remove.baseBasedir = tmp;
+        remove.defaultBasedir = tmp;
         remove.legacyConfigHeader = "src/test/resources/remove/header.txt";
         remove.project = new MavenProjectStub();
         remove.execute();
@@ -154,14 +154,14 @@ public final class RemoveMojoTest {
 
         // Let's apply the licene
         LicenseFormatMojo format = new LicenseFormatMojo();
-        format.baseBasedir = tmp;
+        format.defaultBasedir = tmp;
         format.legacyConfigHeader = "com/mycila/maven/plugin/license/templates/GPL-3.txt";
         format.project = new MavenProjectStub();
         format.execute();
         
         // Let's try to remove it
         LicenseRemoveMojo remove = new LicenseRemoveMojo();
-        remove.baseBasedir = tmp;
+        remove.defaultBasedir = tmp;
         remove.legacyConfigHeader = "com/mycila/maven/plugin/license/templates/GPL-3.txt";
         remove.project = new MavenProjectStub();
 //        remove.keywords = new String[]{"GNU"};

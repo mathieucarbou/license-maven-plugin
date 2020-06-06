@@ -68,9 +68,13 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
 
     /**
      * The base directory, in which to search for project files.
+     *
+     * This is named `defaultBaseDirectory` as it will be used as the default
+     * value for the base directory. This default value can be overridden
+     * in each LicenseSet by setting {@link LicenseSet#basedir}.
      */
     @Parameter(property = "license.basedir", defaultValue = "${basedir}", alias = "basedir", required = true)
-    public File baseBasedir;
+    public File defaultBasedir;
 
     /**
      * Location of the header. It can be a relative path, absolute path,
@@ -127,9 +131,13 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
     /**
      * Allows the use of external header definitions files. These files are
      * properties like files.
+     *
+     * This is named `defaultHeaderDefinitions` as it will be used as the default
+     * value for the header definitions. This default value can be overridden
+     * in each LicenseSet by setting {@link LicenseSet#headerDefinitions}.
      */
     @Parameter(alias = "headerDefinitions")
-    public String[] baseHeaderDefinitions = new String[0];
+    public String[] defaultHeaderDefinitions = new String[0];
 
     /**
      * HeadSections define special regions of a header that allow for dynamic
@@ -147,9 +155,13 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
      * ${year}, ${owner} or whatever you want for the name. They will be
      * replaced when the header file is read by those you specified in the
      * command line, in the POM and in system environment.
+     *
+     * This is named `defaultProperties` as it will be used as the default
+     * value for the properties. This default value can be overridden
+     * in each LicenseSet by setting {@link LicenseSet#properties}.
      */
     @Parameter(alias = "properties")
-    public Map<String, String> baseProperties = new HashMap<String, String>();
+    public Map<String, String> defaultProperties = new HashMap<String, String>();
 
     /**
      * Specifies files, which are included in the check. By default, all files
@@ -186,9 +198,13 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
      * Specify if you want to use default exclusions besides the files you have
      * excluded. Default exclusions exclude CVS and SVN folders, IDE descriptors
      * and so on.
+     *
+     * This is named `defaultUseDefaultExcludes` as it will be used as the default
+     * value for whether to use default excludes. This default value can be overridden
+     * in each LicenseSet by setting {@link LicenseSet#useDefaultExcludes}.
      */
     @Parameter(property = "license.useDefaultExcludes", defaultValue = "true", alias = "useDefaultExcludes")
-    public boolean baseUseDefaultExcludes = true;
+    public boolean defaultUseDefaultExcludes = true;
 
     /**
      * You can set this flag to true if you want to check the headers for all
@@ -414,7 +430,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
     }
 
     private void executeForLicenseSet(final LicenseSet licenseSet, final Callback callback) throws MojoExecutionException, MojoFailureException {
-        final ResourceFinder finder = new ResourceFinder(firstNonNull(licenseSet.basedir, baseBasedir));
+        final ResourceFinder finder = new ResourceFinder(firstNonNull(licenseSet.basedir, defaultBasedir));
         try {
             finder.setCompileClassPath(project.getCompileClasspathElements());
         } catch (DependencyResolutionRequiredException e) {
@@ -472,7 +488,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
             }
         };
 
-        final DocumentFactory documentFactory = new DocumentFactory(firstNonNull(licenseSet.basedir, baseBasedir), buildMapping(), buildHeaderDefinitions(licenseSet, finder), encoding, licenseSet.keywords, propertiesLoader);
+        final DocumentFactory documentFactory = new DocumentFactory(firstNonNull(licenseSet.basedir, defaultBasedir), buildMapping(), buildHeaderDefinitions(licenseSet, finder), encoding, licenseSet.keywords, propertiesLoader);
 
         int nThreads = getNumberOfExecutorThreads();
         ExecutorService executorService = Executors.newFixedThreadPool(nThreads);
@@ -567,8 +583,8 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
         props.put("file.name", document.getFile().getName());
 
         // we override by properties in the POM
-        if (this.baseProperties != null) {
-            props.putAll(this.baseProperties);
+        if (this.defaultProperties != null) {
+            props.putAll(this.defaultProperties);
         }
 
         // we override by properties in the licenseSet
@@ -584,9 +600,9 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
     }
 
     private String[] listSelectedFiles(final LicenseSet licenseSet) {
-        final boolean useDefaultExcludes = (licenseSet.useDefaultExcludes != null ? licenseSet.useDefaultExcludes : baseUseDefaultExcludes);
-        final Selection selection = new Selection(firstNonNull(licenseSet.basedir, baseBasedir), licenseSet.includes, buildExcludes(licenseSet), useDefaultExcludes);
-        debug("From: %s", firstNonNull(licenseSet.basedir, baseBasedir));
+        final boolean useDefaultExcludes = (licenseSet.useDefaultExcludes != null ? licenseSet.useDefaultExcludes : defaultUseDefaultExcludes);
+        final Selection selection = new Selection(firstNonNull(licenseSet.basedir, defaultBasedir), licenseSet.includes, buildExcludes(licenseSet), useDefaultExcludes);
+        debug("From: %s", firstNonNull(licenseSet.basedir, defaultBasedir));
         debug("Including: %s", deepToString(selection.getIncluded()));
         debug("Excluding: %s", deepToString(selection.getExcluded()));
         return selection.getSelectedFiles();
@@ -643,7 +659,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
         final Map<String, HeaderDefinition> headers = new HashMap<String, HeaderDefinition>(HeaderType.defaultDefinitions());
 
         // and then override them with those provided in base config
-        for (final String headerDefiniton : baseHeaderDefinitions) {
+        for (final String headerDefiniton : defaultHeaderDefinitions) {
             headers.putAll(loadHeaderDefinition(headerDefiniton, finder));
         }
 
