@@ -183,14 +183,15 @@ Maven license plugin comes with the following license templates:
  - BSD 2, 3, 4
  - Business Source License 1.1
  - Commons Clause
- - LGPL 2.1-ONLY, 2.1, 3-ONLY, 3
+ - CPAL 1
  - GPL 2-ONLY, 2, 3-ONLY, 3
+ - LGPL 2.1-ONLY, 2.1, 3-ONLY, 3
  - MirOS
  - MIT
  - MPL 1, 2
  - Server Side Public License
- - WTFPL
  - UNLICENSE
+ - WTFPL
 
 You can find those license templates with preconfigured placeholders [here](https://github.com/mycila/license-maven-plugin/tree/master/license-maven-plugin/src/main/resources/com/mycila/maven/plugin/license/templates)
 
@@ -214,7 +215,7 @@ Properties which can be used as placeholder comes from:
 
 Properties are built per-document. You can provide a dependency JAR file to the plugin which contains an implementation of `com.mycila.maven.plugin.license.PropertiesProvider`:
 
-```
+```java
 public interface PropertiesProvider {
     Map<String, String> getAdditionalProperties(AbstractLicenseMojo mojo, Properties currentProperties, Document document);
 }
@@ -229,229 +230,231 @@ The plugin has been designed so that it is very easy to add new supports for new
 
  - `JAVADOC_STYLE` (Java-like comments): *.java, *.groovy, *.css, *.cs, *.as, *.aj, *.c, *.h, *.cpp
 
-```
+    ```java
     /**
      * My comment
      */
-```
+    ```
 
  - `JAVAPKG_STYLE` (like Javadoc, but only for files that are in a Java package, skips the first line): not assigned to a file extension by default (see __Java packages__ below for how to enable it)
 
-```
+    ```java
     package com.example;
     /*-
      * My comment
      */
-```
+    ```
 
  - `XML_STYLE` (XML-like comments): *.pom, *.xml, *.xhtml, *.mxml, *.dtd, *.xsd, *.jspx, *.fml, *.xsl, *.html, *.htm, *.kml, *.gsp, *.tld
 
-```
-	<!--
-	    My comment
-	-->
-```
+    ```xml
+    <!--
+      My comment
+    -->
+    ```
 
  - `XML_PER_LINE` (alternate XML-like comments)
 
-```
-	<!-- My first comment  -->
-	<!-- My second comment -->
-```
+    ```xml
+    <!-- My first comment  -->
+    <!-- My second comment -->
+    ```
 
 (automatically right-adjusts the closing comment)
 
 
  - `DOUBLETILDE_STYLE` (APT-like comments): *.apt
 
-```
-	~~ My comment
-```
+    ```
+    ~~ My comment
+    ```
 
  - `SCRIPT_STYLE` (Property file or shell comments): *.properties, *.sh, *.py, *.rb, *.pl, *.pm, *.yml, *.yaml
 
-```
-	# My comment
-```
+    ```bash
+    # My comment
+    ```
 
  - `HAML_STYLE`: *.haml, *.scaml
 
-```
-	-# My comment
-```
+    ```haml
+    -# My comment
+    ```
 
  - `BATCH` (Windows batch comments): *.bat, *.cmd
 
-```
-	@REM My comment
-```
+    ```batch
+    @REM My comment
+    ```
 
  - `TEXT` (Text like comments): *.txt
 
-```
-	====
-	    My comment
-	====
-```
+    ```
+    ====
+        My comment
+    ====
+    ```
 
 (4 spaces, then the lines of the header)
 
  - `DOUBLEDASHES_STYLE` (Sql like comments): *.sql, *.adb, *.ads, *.e
 
-```
-	--
-	-- test comment
-	--
-```
+    ```sql
+    --
+    -- test comment
+    --
+    ```
 
  - `DYNASCRIPT_STYLE` (JSP like comments): *.jsp
 
-```
-	<%--
-	    comment
-	--%>
-```
+    ```jsp
+    <%--
+        comment
+    --%>
+    ```
 
  - `FTL` (FreeMarker like comments): *.ftl
 
-```
-	<#--
-	    comment
-	-->
-```
+    ```
+    <#--
+        comment
+    -->
+    ```
 
  - `FTL_ALT` (FreeMarker Alternative Syntax comments)
 
-```
-	[#ftl ...]
-	[#--
-	    comment
-	--]
-```
+    ```
+    [#ftl ...]
+    [#--
+        comment
+    --]
+    ```
 
  - `SHARPSTAR_STYLE` (Velocity templates comments): *.vm
 
-```
-	#*
-	    comment
-	*#
-```
+    ```
+    #*
+        comment
+    *#
+    ```
 
  - `SEMICOLON_STYLE` (Assembler like comments): *.asm
 
-```
-	;
-	; comment
-	;
-```
+    ```
+    ;
+    ; comment
+    ;
+    ```
 
  - `BRACESSTAR_STYLE` (Delphi like comments): *.pas
 
-```
-	{*
-	 * comment
-	 *}
-```
+    ```pascal
+    {*
+     * comment
+     *}
+    ```
 
  - `APOSTROPHE_STYLE` (VisualBasic like comments): *.bas
 
-```
-	'
-	' comment
-	'
-```
+    ```basic
+    '
+    ' comment
+    '
+    ```
 
  - `EXCLAMATION_STYLE` (Fortran like comments): *.f
 
-```
-	!
-	! comment
-	!
-```
+    ```fortran
+    !
+    ! comment
+    !
+    ```
 
  - `SLASHSTAR_STYLE` (JavaScript like comments): *.js
 
-```
-	/*
-	 * comment
-	 */
-```
+    ```javascript
+    /*
+     * comment
+     */
+    ```
 
  - `DYNASCRIPT3_STYLE` (Coldfusion like comments): *.cfc, *.cfm
 
-```
-	<!---
-	    comment
-	--->
-```
+    ```
+    <!---
+        comment
+    --->
+    ```
 
  - `PERCENT_STYLE` (Teχ like comments): *.cls, *.sty, *.tex
 
-```
-	% comment
-```
+    ```tex
+    % comment
+    ```
 
  - `PERCENT3_STYLE` (Erlang like comments): *.erl, *.hrl
 
-```
-	%%%
-	%%% comment
-	%%%
-```
+    ```erlang
+    %%%
+    %%% comment
+    %%%
+    ```
 
  - `EXCLAMATION3_STYLE` (Lisp like comments): *.el
 
-```
-	!!!
-	!!! comment
-	!!!
-```
+    ```elisp
+    !!!
+    !!! comment
+    !!!
+    ```
 
  - `LUA` (Lua like comments): *.lua
 
-```
-	--[[
-	comment
-	]]
-```
+    ```lua
+    --[[
+    comment
+    ]]
+    ```
 
  - `ASP` (Asp like comments): *.asp
 
-```
-	<%
-	' comment
-	%>
-```
+    ```asp
+    <%
+    ' comment
+    %>
+    ```
 
  - `PHP` (PHP comments): *.php
 
-```
-	/*
-	 * comment
-	 */
-```
+    ```php
+    /*
+     * comment
+     */
+    ```
 
 (inserted after the <?php> tag)
 
  - `DOUBLESLASH_STYLE` (often used comments style)
 
-```
-	//
-	// comment
-	//
-```
+    ```php
+    //
+    // comment
+    //
+    ```
 
 __Custom mapping__
 
 The plugin enables you to add any other mapping you want.* I.e., if you are developing a Tapestry web application, you may need to add license header in .jwc files and .application files. since these files are xml files, you only need to add in your project pom the following mapping for the license-maven-plugin:
 
-    <mapping>
-        <jwc>XML_STYLE</jwc>
-        <application>XML_STYLE</application>
-        <apt.vm>DOUBLETILDE_STYLE</apt.vm>
-        <vm>SHARPSTAR_STYLE</vm>
-        <apt>DOUBLETILDE_STYLE</apt>  
-    </mapping>
+```xml
+<mapping>
+    <jwc>XML_STYLE</jwc>
+    <application>XML_STYLE</application>
+    <apt.vm>DOUBLETILDE_STYLE</apt.vm>
+    <vm>SHARPSTAR_STYLE</vm>
+    <apt>DOUBLETILDE_STYLE</apt>  
+</mapping>
+```
 
 You can use composed-extensions like *.apt.vm and redefine them, but you will have to nake sure that the mapping of `apt.vm` is _before_ the mapping of the `vm` extension. The order in the mapping section is important: extensions seen first take precedence.
 
@@ -459,47 +462,53 @@ __Java packages__
 
 Another use case for custom mappings is when writing Java code in packages; the licence header should come *after* the package declaration line in this case. Simply add this to the plugin configuration:
 
-    <mapping>
-        <java>JAVAPKG_STYLE</java>
-    </mapping>
+```xml
+<mapping>
+    <java>JAVAPKG_STYLE</java>
+</mapping>
+```
 
 ### Changing header style definitions ###
 
 In license-maven-plugin, each header style is defined by patterns to detect it and also strings to insert it correctly in files. If we take for example the Javadoc style header definition. It is defined as follow:
 
-    <?xml version="1.0" encoding="ISO-8859-1"?>
-    <additionalHeaders>
-        <javadoc_style>
-            <firstLine>/**</firstLine>
-            <beforeEachLine> * </beforeEachLine>
-            <endLine> */</endLine>
-            <afterEachLine></afterEachLine>
-            <!--skipLine></skipLine-->
-            <firstLineDetectionPattern>(\s|\t)*/\*.*$</firstLineDetectionPattern>
-            <lastLineDetectionPattern>.*\*/(\s|\t)*$</lastLineDetectionPattern>
-            <allowBlankLines>false</allowBlankLines>
-            <isMultiline>true</isMultiline>
-            <padLines>false</padLines>
-        </javadoc_style>
-    </additionalHeaders>
+```xml
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<additionalHeaders>
+    <javadoc_style>
+        <firstLine>/**</firstLine>
+        <beforeEachLine> * </beforeEachLine>
+        <endLine> */</endLine>
+        <afterEachLine></afterEachLine>
+        <!--skipLine></skipLine-->
+        <firstLineDetectionPattern>(\s|\t)*/\*.*$</firstLineDetectionPattern>
+        <lastLineDetectionPattern>.*\*/(\s|\t)*$</lastLineDetectionPattern>
+        <allowBlankLines>false</allowBlankLines>
+        <isMultiline>true</isMultiline>
+        <padLines>false</padLines>
+    </javadoc_style>
+</additionalHeaders>
+```
 
 And for XML:
 
-    <?xml version="1.0" encoding="ISO-8859-1"?>
-    <additionalHeaders>
-        <javadoc_style>
-            <firstLine><![CDATA[<!--\n]]></firstLine>
-            <beforeEachLine>    </beforeEachLine>
-            <endLine><![CDATA[-->]]></endLine>
-            <afterEachLine></afterEachLine>
-            <skipLine><![CDATA[^<\?xml.*>$]]></skipLine>
-            <firstLineDetectionPattern><![CDATA[(\s|\t)*<!--.*$]]></firstLineDetectionPattern>
-            <lastLineDetectionPattern><![CDATA[.*-->(\s|\t)*$]]></lastLineDetectionPattern>
-            <allowBlankLines>false</allowBlankLines>
-            <isMultiline>true</isMultiline>
-            <padLines>false</padLines>
-        </javadoc_style>
-    </additionalHeaders>
+```xml
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<additionalHeaders>
+    <javadoc_style>
+        <firstLine><![CDATA[<!--\n]]></firstLine>
+        <beforeEachLine>    </beforeEachLine>
+        <endLine><![CDATA[-->]]></endLine>
+        <afterEachLine></afterEachLine>
+        <skipLine><![CDATA[^<\?xml.*>$]]></skipLine>
+        <firstLineDetectionPattern><![CDATA[(\s|\t)*<!--.*$]]></firstLineDetectionPattern>
+        <lastLineDetectionPattern><![CDATA[.*-->(\s|\t)*$]]></lastLineDetectionPattern>
+        <allowBlankLines>false</allowBlankLines>
+        <isMultiline>true</isMultiline>
+        <padLines>false</padLines>
+    </javadoc_style>
+</additionalHeaders>
+```
 
 With the `headerDefinitions` option, you can redefine existing header styles and also add some if we do not support the styles you want yet. You just have to provide a list of `headerDefinition` containing a resource name. Like the header, the resource is searched on the file system, in the classpath of the project, the plugin and also as a URL.
 
@@ -508,18 +517,20 @@ __Full Example__
 
 This page will show you how you can define extended header definitions to fit your needs. The next example will define headers in a _region_ area allowed in C# source files:
 
-    <?xml version="1.0" encoding="ISO-8859-1"?>
-    <additionalHeaders>
-        <csregion_style>
-            <firstLine>#region LicenseEOL/**</firstLine>
-            <beforeEachLine> * </beforeEachLine>
-            <endLine> */EOL#endregion</endLine>
-            <firstLineDetectionPattern>#region.*^EOL/\*\*.*$</firstLineDetectionPattern>
-            <lastLineDetectionPattern>\*/EOL#endregion"</lastLineDetectionPattern>
-            <allowBlankLines>true</allowBlankLines>
-            <isMultiline>true</isMultiline>
-        </csregion_style>
-    </additionalHeaders>
+```xml
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<additionalHeaders>
+    <csregion_style>
+        <firstLine>#region LicenseEOL/**</firstLine>
+        <beforeEachLine> * </beforeEachLine>
+        <endLine> */EOL#endregion</endLine>
+        <firstLineDetectionPattern>#region.*^EOL/\*\*.*$</firstLineDetectionPattern>
+        <lastLineDetectionPattern>\*/EOL#endregion"</lastLineDetectionPattern>
+        <allowBlankLines>true</allowBlankLines>
+        <isMultiline>true</isMultiline>
+    </csregion_style>
+</additionalHeaders>
+```
 
  * The `EOL` string will be replaced with the proper end of line depending the file format your are processing.
  * We also have defined the _skipLine_ attribute to skip the region tags (which starts with a '#')
@@ -528,18 +539,23 @@ This page will show you how you can define extended header definitions to fit yo
 
 You now have to add this new header definition file to the plugin configuration. It is done as the following in your pom:
 
-    <headerDefinitions>
-       <headerDefinition>yourdefinition.xml</headerDefinition>
-    </headerDefinitions>
+```xml
+<headerDefinitions>
+   <headerDefinition>yourdefinition.xml</headerDefinition>
+</headerDefinitions>
+```
 
 You now have to add the new mapping for `*.cs` files to use this new header definition. It is done as the following in your pom:
 
-    <mapping>
-        <cs>CSREGION_STYLE</cs>
-    </mapping>
+```xml
+<mapping>
+    <cs>CSREGION_STYLE</cs>
+</mapping>
+```
 
 And it should generate headers like:
 
+```csharp
     #region License
     /**
      * Copyright (C) 2008 http://code.google.com/p/license-maven-plugin/
@@ -557,3 +573,4 @@ And it should generate headers like:
      * limitations under the License.
      */
     #endregion
+```
