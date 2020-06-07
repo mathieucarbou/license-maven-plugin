@@ -17,6 +17,8 @@ package com.mycila.maven.plugin.license;
 
 import org.apache.maven.plugins.annotations.Parameter;
 
+import java.util.Arrays;
+
 public class Multi {
 
     public static final String DEFAULT_SEPARATOR =
@@ -65,6 +67,25 @@ public class Multi {
         return headers;
     }
 
+    /**
+     * Set a header.
+     *
+     * Used by Maven to configure the {@link #headers}
+     * field, as the class field name is different
+     * to the alias name used in the pom.xml
+     * plugin configuration.
+     *
+     * @param header the header to set
+     */
+    public void setHeader(final String header) {
+        if (headers == null) {
+            headers = new String[] { header };
+        } else {
+            headers = Arrays.copyOf(headers, headers.length + 1);
+            headers[headers.length - 1] = header;
+        }
+    }
+
     public void setHeaders(final String[] headers) {
         this.headers = headers;
     }
@@ -73,12 +94,50 @@ public class Multi {
         return inlineHeaders;
     }
 
+    /**
+     * Set an inline header.
+     *
+     * Used by Maven to configure the {@link #inlineHeaders}
+     * field, as the class field name is different
+     * to the alias name used in the pom.xml
+     * plugin configuration.
+     *
+     * @param inlineHeader the inline header to set
+     */
+    public void setInlineHeader(final String inlineHeader) {
+        if (inlineHeaders == null) {
+            inlineHeaders = new String[] { inlineHeader };
+        } else {
+            inlineHeaders = Arrays.copyOf(inlineHeaders, inlineHeaders.length + 1);
+            inlineHeaders[inlineHeaders.length - 1] = inlineHeader;
+        }
+    }
+
     public void setInlineHeaders(final String[] inlineHeaders) {
         this.inlineHeaders = inlineHeaders;
     }
 
     public String[] getSeparators() {
         return separators;
+    }
+
+    /**
+     * Set a separator.
+     *
+     * Used by Maven to configure the {@link #separators}
+     * field, as the class field name is different
+     * to the alias name used in the pom.xml
+     * plugin configuration.
+     *
+     * @param separator the separator to set
+     */
+    public void setSeparator(final String separator) {
+        if (separators == null) {
+            separators = new String[] { separator };
+        } else {
+            separators = Arrays.copyOf(separators, separators.length + 1);
+            separators[separators.length - 1] = separator;
+        }
     }
 
     public void setSeparators(final String[] separators) {
