@@ -16,14 +16,18 @@
 package com.mycila.maven.plugin.license.util;
 
 import com.mycila.maven.plugin.license.Default;
-import org.codehaus.plexus.util.DirectoryScanner;
+import org.apache.maven.plugin.logging.Log;
+import org.apache.maven.shared.utils.io.DirectoryScanner;
+import org.apache.maven.shared.utils.io.MatchPatterns;
+import org.apache.maven.shared.utils.io.ScanConductor;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
-import static java.util.Arrays.*;
 import static java.util.Arrays.asList;
 
 /**
@@ -35,19 +39,29 @@ public final class Selection {
     private final File basedir;
     private final String[] included;
     private final String[] excluded;
+    private final Log log;
+    private final String[] userExcluded;
 
     private DirectoryScanner scanner;
 
-    public Selection(File basedir, String[] included, String[] excluded, boolean useDefaultExcludes) {
+    public Selection(File basedir, String[] included, String[] excluded, boolean useDefaultExcludes,
+                     final Log log) {
         this.basedir = basedir;
+        this.log = log;
         String[] overrides = buildOverrideInclusions(useDefaultExcludes, included);
         this.included = buildInclusions(included, overrides);
+        this.userExcluded = excluded;
         this.excluded = buildExclusions(useDefaultExcludes, excluded, overrides);
     }
 
     public String[] getSelectedFiles() {
         scanIfneeded();
         return scanner.getIncludedFiles();
+    }
+
+    // for tests
+    DirectoryScanner getScanner() {
+        return scanner;
     }
 
     public File getBasedir() {
@@ -64,12 +78,47 @@ public final class Selection {
 
     private void scanIfneeded() {
         if (scanner == null) {
+            final boolean debugEnabled = log.isDebugEnabled();
+            final String[] folderExcludes = findFolderExcludes();
+            final MatchPatterns excludePatterns = MatchPatterns.from(folderExcludes);
+            if (debugEnabled) {
+                log.debug("Starting to visit '" + basedir + "' with excludes: " + asList(folderExcludes));
+            }
             scanner = new DirectoryScanner();
+            scanner.setScanConductor(new ScanConductor() {
+                @Override
+                public ScanAction visitDirectory(final String name, final File directory) {
+                    if (excludePatterns.matches(name, true)) {
+                        return ScanAction.NO_RECURSE;
+                    }
+                    return ScanAction.CONTINUE;
+                }
+
+                @Override
+                public ScanAction visitFile(final String name, final File file) {
+                    return ScanAction.CONTINUE;
+                }
+            });
             scanner.setBasedir(basedir);
             scanner.setIncludes(included);
             scanner.setExcludes(excluded);
             scanner.scan();
         }
+    }
+
+    private String[] findFolderExcludes() { // less we keep, less overhead we get so we only use user excludes there
+        final List<String> excludes = new ArrayList<String>(excluded.length / 2 /*estimate*/);
+        for (final String exclude : (userExcluded != null ? userExcluded : excluded)) {
+            if (isFolderExclusion(exclude)) {
+                excludes.add(exclude);
+            }
+        }
+        Collections.reverse(excludes); // assume user ones are more important than the set of defaults we appended
+        return excludes.toArray(new String[0]);
+    }
+
+    private boolean isFolderExclusion(final String exclude) {
+        return exclude.endsWith(File.separator + "**");
     }
 
     private static String[] buildExclusions(boolean useDefaultExcludes, String[] excludes, String[] overrides) {
@@ -106,5 +155,4 @@ public final class Selection {
         overrides.retainAll(asList(includes));
         return overrides.toArray(new String[0]);
     }
-
 }

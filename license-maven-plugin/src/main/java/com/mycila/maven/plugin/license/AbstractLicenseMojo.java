@@ -601,7 +601,9 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
 
     private String[] listSelectedFiles(final LicenseSet licenseSet) {
         final boolean useDefaultExcludes = (licenseSet.useDefaultExcludes != null ? licenseSet.useDefaultExcludes : defaultUseDefaultExcludes);
-        final Selection selection = new Selection(firstNonNull(licenseSet.basedir, defaultBasedir), licenseSet.includes, buildExcludes(licenseSet), useDefaultExcludes);
+        final Selection selection = new Selection(
+                firstNonNull(licenseSet.basedir, defaultBasedir), licenseSet.includes, buildExcludes(licenseSet), useDefaultExcludes,
+                getLog());
         debug("From: %s", firstNonNull(licenseSet.basedir, defaultBasedir));
         debug("Including: %s", deepToString(selection.getIncluded()));
         debug("Excluding: %s", deepToString(selection.getExcluded()));
