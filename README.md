@@ -6,10 +6,11 @@ __Upcoming release__
 
 __Lastest releases__ (note that it may take up to 1-2 days to be in Maven Central repository):
 
-* [3.0](http://repo1.maven.org/maven2/com/mycila/license-maven-plugin/3.0/) (2016-08-20) - see [issues and pull requests](https://github.com/mycila/license-maven-plugin/issues?q=milestone%3A3.0)
-* [3.0.rc1](http://repo1.maven.org/maven2/com/mycila/license-maven-plugin/3.0.rc1/) (2016-04-26) - see [issues and pull requests](https://github.com/mycila/license-maven-plugin/issues?q=milestone%3A3.0.rc1)
-* [2.11](http://repo1.maven.org/maven2/com/mycila/license-maven-plugin/2.11/) (2015-04-20) - see [issues and pull requests](https://github.com/mycila/license-maven-plugin/issues?q=milestone%3A2.11)
-* [2.10](http://repo1.maven.org/maven2/com/mycila/license-maven-plugin/2.10/) (2015-03-16) - see [issues and pull requests](https://github.com/mycila/license-maven-plugin/issues?q=milestone%3A2.8)
+* [4.0.rc1](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/4.0.rc1/) (2020-06-09) - see [issues and pull requests](https://github.com/mycila/license-maven-plugin/milestone/14?closed=1)
+* [3.0](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/3.0/) (2016-08-20) - see [issues and pull requests](https://github.com/mycila/license-maven-plugin/issues?q=milestone%3A3.0)
+* [3.0.rc1](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/3.0.rc1/) (2016-04-26) - see [issues and pull requests](https://github.com/mycila/license-maven-plugin/issues?q=milestone%3A3.0.rc1)
+* [2.11](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/2.11/) (2015-04-20) - see [issues and pull requests](https://github.com/mycila/license-maven-plugin/issues?q=milestone%3A2.11)
+* [2.10](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/2.10/) (2015-03-16) - see [issues and pull requests](https://github.com/mycila/license-maven-plugin/issues?q=milestone%3A2.8)
 
 ---------------
 
@@ -67,7 +68,7 @@ __Contributors__
 
  __Releases__ 
 
-Available in Maven Central Repository: http://repo1.maven.org/maven2/com/mycila/license-maven-plugin/
+Available in Maven Central Repository: https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/
 
  __Snapshots__
  
@@ -164,11 +165,12 @@ more license configurations in a single execution of the plugin. In simple terms
 wraps the previous configuration options for a license. The previous
 configuration syntax is still supported but deprecated, and may be removed in future. 
 
- - [3.0](http://code.mycila.com/license-maven-plugin/reports/3.0/plugin-info.html)
- - [3.0.rc1](http://code.mycila.com/license-maven-plugin/reports/3.0.rc1/plugin-info.html)
- - [2.3](http://code.mycila.com/license-maven-plugin/reports/2.3/plugin-info.html)
- - [2.2](http://code.mycila.com/license-maven-plugin/reports/2.2/plugin-info.html)
- - [2.0](http://code.mycila.com/license-maven-plugin/reports/2.0/plugin-info.html)
+ - [4.0.rc1](https://mycila.mathieu.photography/license-maven-plugin/reports/4.0.rc1/license-maven-plugin/plugin-info.html)
+ - [3.0](https://mycila.mathieu.photography/license-maven-plugin/reports/3.0/plugin-info.html)
+ - [3.0.rc1](https://mycila.mathieu.photography/license-maven-plugin/reports/3.0.rc1/plugin-info.html)
+ - [2.3](https://mycila.mathieu.photography/license-maven-plugin/reports/2.3/plugin-info.html)
+ - [2.2](https://mycila.mathieu.photography/license-maven-plugin/reports/2.2/plugin-info.html)
+ - [2.0](https://mycila.mathieu.photography/license-maven-plugin/reports/2.0/plugin-info.html)
 
 __WARNING__: there is good chances the latest version is greater than latest documentation, if nothing has changed concerning the plugin configurations.
 
