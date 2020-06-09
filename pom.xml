@@ -37,6 +37,7 @@
     <properties>
         <jdk.version>1.6</jdk.version>
         <mycila.github.name>license-maven-plugin</mycila.github.name>
+        <junit.version>4.12</junit.version>
     </properties>
 
     <modules>
@@ -108,13 +109,22 @@
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
-                <version>4.12</version>
+                <version>${junit.version}</version>
             </dependency>
 
         </dependencies>
     </dependencyManagement>
 
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-invoker-plugin</artifactId>
+                    <version>3.2.1</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
             <plugin>
                 <artifactId>maven-release-plugin</artifactId>

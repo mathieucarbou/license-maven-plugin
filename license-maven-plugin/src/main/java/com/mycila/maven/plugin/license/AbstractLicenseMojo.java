@@ -44,16 +44,7 @@ import org.xml.sax.InputSource;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.ServiceLoader;
+import java.util.*;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutionException;
@@ -72,26 +63,39 @@ import static java.util.Arrays.deepToString;
  */
 public abstract class AbstractLicenseMojo extends AbstractMojo {
 
+    @Parameter
+    public LicenseSet[] licenseSets;
+
     /**
      * The base directory, in which to search for project files.
+     *
+     * This is named `defaultBaseDirectory` as it will be used as the default
+     * value for the base directory. This default value can be overridden
+     * in each LicenseSet by setting {@link LicenseSet#basedir}.
      */
-    @Parameter(property = "license.basedir", defaultValue = "${basedir}", required = true)
-    public File basedir;
+    @Parameter(property = "license.basedir", defaultValue = "${basedir}", alias = "basedir", required = true)
+    public File defaultBasedir;
 
     /**
      * Location of the header. It can be a relative path, absolute path,
      * classpath resource, any URL. The plugin first check if the name specified
      * is a relative file, then an absolute file, then in the classpath. If not
      * found, it tries to construct a URL from the location.
+     *
+     * @deprecated use {@link LicenseSet#header}
      */
-    @Parameter(property = "license.header")
-    public String header;
+    @Deprecated
+    @Parameter(property = "license.header", alias = "header")
+    public String legacyConfigHeader;
 
     /**
      * Header, as text, directly in pom file. Using a CDATA section is strongly recommended.
+     *
+     * @deprecated use {@link LicenseSet#inlineHeader}
      */
-    @Parameter(property = "license.inlineHeader")
-    public String inlineHeader;
+    @Deprecated
+    @Parameter(property = "license.inlineHeader", alias="inlineHeader")
+    public String legacyConfigInlineHeader;
 
     /**
      * Specifies additional header files to use when checking for the presence
@@ -102,9 +106,12 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
      * <br>
      * When using remove goal, this property will be used to detect all valid
      * headers that also must be removed.
+     *
+     * @deprecated use {@link LicenseSet#validHeaders}
      */
-    @Parameter
-    public String[] validHeaders = new String[0];
+    @Deprecated
+    @Parameter(alias = "validHeaders")
+    public String[] legacyConfigValidHeaders = new String[0];
 
     /**
      * Alternative to `header`, `inlineHeader`, or `validHeaders`
@@ -114,23 +121,33 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
      * and have them concatenated together by the plugin. This
      * allows you to maintain each distinct license header in
      * its own file and combined them in different ways.
+     *
+     * @deprecated use {@link LicenseSet#multi}
      */
+    @Deprecated
     @Parameter
-    public Multi multi;
+    public Multi legacyConfigMulti;
 
     /**
      * Allows the use of external header definitions files. These files are
      * properties like files.
+     *
+     * This is named `defaultHeaderDefinitions` as it will be used as the default
+     * value for the header definitions. This default value can be overridden
+     * in each LicenseSet by setting {@link LicenseSet#headerDefinitions}.
      */
-    @Parameter
-    public String[] headerDefinitions = new String[0];
+    @Parameter(alias = "headerDefinitions")
+    public String[] defaultHeaderDefinitions = new String[0];
 
     /**
      * HeadSections define special regions of a header that allow for dynamic
      * substitution and validation
+     *
+     * @deprecated use {@link LicenseSet#headerSections}
      */
-    @Parameter
-    public HeaderSection[] headerSections = new HeaderSection[0];
+    @Deprecated
+    @Parameter(alias = "headerSections")
+    public HeaderSection[] legacyConfigHeaderSections = new HeaderSection[0];
 
     /**
      * You can set here some properties that you want to use when reading the
@@ -138,39 +155,56 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
      * ${year}, ${owner} or whatever you want for the name. They will be
      * replaced when the header file is read by those you specified in the
      * command line, in the POM and in system environment.
+     *
+     * This is named `defaultProperties` as it will be used as the default
+     * value for the properties. This default value can be overridden
+     * in each LicenseSet by setting {@link LicenseSet#properties}.
      */
-    @Parameter
-    public Map<String, String> properties = new HashMap<String, String>();
+    @Parameter(alias = "properties")
+    public Map<String, String> defaultProperties = new HashMap<String, String>();
 
     /**
      * Specifies files, which are included in the check. By default, all files
      * are included.
+     *
+     * @deprecated use {@link LicenseSet#includes}
      */
-    @Parameter(property = "license.includes")
-    public String[] includes = new String[0];
+    @Deprecated
+    @Parameter(alias = "includes", property = "license.includes")
+    public String[] legacyConfigIncludes = new String[0];
 
     /**
      * Specifies files, which are excluded in the check. By default, only the
      * files matching the default exclude patterns are excluded.
+     *
+     * @deprecated use {@link LicenseSet#excludes}
      */
-    @Parameter(property = "license.excludes")
-    public String[] excludes = new String[0];
+    @Deprecated
+    @Parameter(alias = "excludes", property = "license.excludes")
+    public String[] legacyConfigExcludes = new String[0];
 
     /**
      * Specify the list of keywords to use to detect a header. A header must
      * include all keywords to be valid. By default, the word 'copyright' is
      * used. Detection is done case insensitive.
+     *
+     * @deprecated use {@link LicenseSet#keywords}
      */
-    @Parameter
-    public String[] keywords = new String[]{"copyright"};
+    @Deprecated
+    @Parameter(alias = "keywords")
+    public String[] legacyConfigKeywords = new String[]{"copyright"};
 
     /**
      * Specify if you want to use default exclusions besides the files you have
      * excluded. Default exclusions exclude CVS and SVN folders, IDE descriptors
      * and so on.
+     *
+     * This is named `defaultUseDefaultExcludes` as it will be used as the default
+     * value for whether to use default excludes. This default value can be overridden
+     * in each LicenseSet by setting {@link LicenseSet#useDefaultExcludes}.
      */
-    @Parameter(property = "license.useDefaultExcludes", defaultValue = "true")
-    public boolean useDefaultExcludes = true;
+    @Parameter(property = "license.useDefaultExcludes", defaultValue = "true", alias = "useDefaultExcludes")
+    public boolean defaultUseDefaultExcludes = true;
 
     /**
      * You can set this flag to true if you want to check the headers for all
@@ -302,8 +336,6 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
     @Component
     private SettingsDecrypter settingsDecrypter;
 
-    private ResourceFinder finder;
-
     protected abstract class AbstractCallback implements Callback {
 
         /**
@@ -333,146 +365,201 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
     @SuppressWarnings({"unchecked"})
     public final void execute(final Callback callback) throws MojoExecutionException, MojoFailureException {
         if (!skip) {
-            if (!hasHeader()) {
-                warn("No header file specified to check for license");
-                return;
-            }
-            if (!strictCheck) {
-                warn("Property 'strictCheck' is not enabled. Please consider adding <strictCheck>true</strictCheck> in your pom.xml file.");
-                warn("See http://mycila.github.io/license-maven-plugin for more information.");
-            }
 
-            finder = new ResourceFinder(basedir);
-            try {
-                finder.setCompileClassPath(project.getCompileClasspathElements());
-            } catch (DependencyResolutionRequiredException e) {
-                throw new MojoExecutionException(e.getMessage(), e);
-            }
-            finder.setPluginClassPath(getClass().getClassLoader());
+            // collect all the license sets together
+            final LicenseSet[] allLicenseSets;
 
-            final HeaderSource headerSource = HeaderSource.of(this.multi, this.inlineHeader, this.header, this.encoding, this.finder);
-            final Header h = new Header(headerSource, headerSections);
-            debug("Header: %s", h.getLocation());
-
-            if (this.validHeaders == null) {
-                this.validHeaders = new String[0];
-            }
-            final List<Header> validHeaders = new ArrayList<Header>(this.validHeaders.length);
-            for (String validHeader : this.validHeaders) {
-                final HeaderSource validHeaderSource = HeaderSource.of(null, null, validHeader, this.encoding, this.finder);
-                validHeaders.add(new Header(validHeaderSource, headerSections));
-            }
-
-            final List<PropertiesProvider> propertiesProviders = new LinkedList<PropertiesProvider>();
-            for (PropertiesProvider provider : ServiceLoader.load(PropertiesProvider.class, Thread.currentThread().getContextClassLoader())) {
-                propertiesProviders.add(provider);
-            }
-            final DocumentPropertiesLoader propertiesLoader = new DocumentPropertiesLoader() {
-                @Override
-                public Properties load(Document document) {
-                    Properties props = new Properties();
-
-                    for (Map.Entry<String, String> entry : mergeProperties(document).entrySet()) {
-                        if (entry.getValue() != null) {
-                            props.setProperty(entry.getKey(), entry.getValue());
-                        } else {
-                            props.remove(entry.getKey());
-                        }
-                    }
-                    for (PropertiesProvider provider : propertiesProviders) {
-                        try {
-                            final Map<String, String> providerProperties = provider.getAdditionalProperties(AbstractLicenseMojo.this, props, document);
-                            if (getLog().isDebugEnabled()) {
-                                getLog().debug("provider: " + provider.getClass() + " brought new properties\n" + providerProperties);
-                            }
-                            for (Map.Entry<String, String> entry : providerProperties.entrySet()) {
-                                if (entry.getValue() != null) {
-                                    props.setProperty(entry.getKey(), entry.getValue());
-                                } else {
-                                    props.remove(entry.getKey());
-                                }
-                            }
-                        } catch (Exception e) {
-                            getLog().warn("failure occured while calling " + provider.getClass(), e);
-                        }
-                    }
-                    return props;
+            // if we abandon the legacy config this contiguous block can be removed
+            final LicenseSet legacyLicenseSet = convertLegacyConfigToLicenseSet();
+            if (legacyLicenseSet != null) {
+                if (licenseSets == null) {
+                    allLicenseSets = new LicenseSet[]{legacyLicenseSet};
+                } else {
+                    allLicenseSets = Arrays.copyOf(licenseSets, licenseSets.length + 1);
+                    allLicenseSets[licenseSets.length] = legacyLicenseSet;
                 }
-            };
-
-            final DocumentFactory documentFactory = new DocumentFactory(basedir, buildMapping(), buildHeaderDefinitions(), encoding, keywords, propertiesLoader);
-
-            int nThreads = getNumberOfExecutorThreads();
-            ExecutorService executorService = Executors.newFixedThreadPool(nThreads);
-            CompletionService completionService = new ExecutorCompletionService(executorService);
-            int count = 0;
-            debug("Number of execution threads: %s", nThreads);
-
-            try {
-                for (final String file : listSelectedFiles()) {
-                    completionService.submit(new Runnable() {
-                        @Override
-                        public void run() {
-                            Document document = documentFactory.createDocuments(file);
-                            debug("Selected file: %s [header style: %s]", document.getFilePath(), document.getHeaderDefinition());
-                            if (document.isNotSupported()) {
-                                callback.onUnknownFile(document, h);
-                            } else if (document.is(h)) {
-                                debug("Skipping header file: %s", document.getFilePath());
-                            } else if (document.hasHeader(h, strictCheck)) {
-                                callback.onExistingHeader(document, h);
-                            } else {
-                                boolean headerFound = false;
-                                for (Header validHeader : validHeaders) {
-                                    if (headerFound = document.hasHeader(validHeader, strictCheck)) {
-                                        callback.onExistingHeader(document, h);
-                                        break;
-                                    }
-                                }
-                                if (!headerFound) {
-                                    callback.onHeaderNotFound(document, h);
-                                }
-                            }
-                        }
-                    }, null);
-                    count++;
-                }
-
-                while (count-- > 0) {
-                    try {
-                        completionService.take().get();
-                    } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
-                    } catch (ExecutionException e) {
-                        Throwable cause = e.getCause();
-                        if (cause instanceof Error) {
-                            throw (Error) cause;
-                        }
-                        if (cause instanceof MojoExecutionException) {
-                            throw (MojoExecutionException) cause;
-                        }
-                        if (cause instanceof MojoFailureException) {
-                            throw (MojoFailureException) cause;
-                        }
-                        if (cause instanceof RuntimeException) {
-                            throw (RuntimeException) cause;
-                        }
-                        throw new RuntimeException(cause.getMessage(), cause);
-                    }
-                }
-
-            } finally {
-                executorService.shutdownNow();
+            } else {
+                allLicenseSets = licenseSets;
             }
+
+            // execute
+            executeForLicenseSets(allLicenseSets, callback);
         }
     }
 
-    private boolean hasHeader() {
+    private void executeForLicenseSets(final LicenseSet[] licenseSets, final Callback callback) throws MojoFailureException, MojoExecutionException {
+        if (licenseSets == null || licenseSets.length == 0) {
+            warn("At least one licenseSet must be specified");
+            return;
+        }
+
+        // need to perform validation first
+        for (int i = 0 ; i < licenseSets.length; i++) {
+            final LicenseSet licenseSet = licenseSets[i];
+            if (!hasHeader(licenseSet)) {
+                warn("No header file specified to check for license in licenseSet: " + i);
+                return;
+            }
+        }
+        if (!strictCheck) {
+            warn("Property 'strictCheck' is not enabled. Please consider adding <strictCheck>true</strictCheck> in your pom.xml file.");
+            warn("See http://mycila.github.io/license-maven-plugin for more information.");
+        }
+
+        // then execute each license set
+        for (final LicenseSet licenseSet : licenseSets) {
+            executeForLicenseSet(licenseSet, callback);
+        }
+    }
+
+    private LicenseSet convertLegacyConfigToLicenseSet() {
+        if (legacyConfigHeader == null && (this.legacyConfigInlineHeader == null || this.legacyConfigInlineHeader.isEmpty())) {
+            return null;
+        }
+
+        final LicenseSet legacyLicenseSet = new LicenseSet();
+        legacyLicenseSet.header = legacyConfigHeader;
+        legacyLicenseSet.inlineHeader = legacyConfigInlineHeader;
+        legacyLicenseSet.validHeaders = legacyConfigValidHeaders;
+        legacyLicenseSet.multi = legacyConfigMulti;
+        legacyLicenseSet.headerSections = legacyConfigHeaderSections;
+        legacyLicenseSet.includes = legacyConfigIncludes;
+        legacyLicenseSet.excludes = legacyConfigExcludes;
+        legacyLicenseSet.keywords = legacyConfigKeywords;
+        return legacyLicenseSet;
+    }
+
+    private void executeForLicenseSet(final LicenseSet licenseSet, final Callback callback) throws MojoExecutionException, MojoFailureException {
+        final ResourceFinder finder = new ResourceFinder(firstNonNull(licenseSet.basedir, defaultBasedir));
+        try {
+            finder.setCompileClassPath(project.getCompileClasspathElements());
+        } catch (DependencyResolutionRequiredException e) {
+            throw new MojoExecutionException(e.getMessage(), e);
+        }
+        finder.setPluginClassPath(getClass().getClassLoader());
+
+        final HeaderSource headerSource = HeaderSource.of(licenseSet.multi, licenseSet.inlineHeader, licenseSet.header, this.encoding, finder);
+        final Header h = new Header(headerSource, licenseSet.headerSections);
+        debug("Header: %s", h.getLocation());
+
+        if (licenseSet.validHeaders == null) {
+            licenseSet.validHeaders = new String[0];
+        }
+        final List<Header> validHeaders = new ArrayList<Header>(licenseSet.validHeaders.length);
+        for (final String validHeader : licenseSet.validHeaders) {
+            final HeaderSource validHeaderSource = HeaderSource.of(null, null, validHeader, this.encoding, finder);
+            validHeaders.add(new Header(validHeaderSource, licenseSet.headerSections));
+        }
+
+        final List<PropertiesProvider> propertiesProviders = new LinkedList<PropertiesProvider>();
+        for (final PropertiesProvider provider : ServiceLoader.load(PropertiesProvider.class, Thread.currentThread().getContextClassLoader())) {
+            propertiesProviders.add(provider);
+        }
+        final DocumentPropertiesLoader propertiesLoader = new DocumentPropertiesLoader() {
+            @Override
+            public Properties load(final Document document) {
+                final Properties props = new Properties();
+
+                for (final Map.Entry<String, String> entry : mergeProperties(licenseSet, document).entrySet()) {
+                    if (entry.getValue() != null) {
+                        props.setProperty(entry.getKey(), entry.getValue());
+                    } else {
+                        props.remove(entry.getKey());
+                    }
+                }
+                for (final PropertiesProvider provider : propertiesProviders) {
+                    try {
+                        final Map<String, String> providerProperties = provider.getAdditionalProperties(AbstractLicenseMojo.this, props, document);
+                        if (getLog().isDebugEnabled()) {
+                            getLog().debug("provider: " + provider.getClass() + " brought new properties\n" + providerProperties);
+                        }
+                        for (Map.Entry<String, String> entry : providerProperties.entrySet()) {
+                            if (entry.getValue() != null) {
+                                props.setProperty(entry.getKey(), entry.getValue());
+                            } else {
+                                props.remove(entry.getKey());
+                            }
+                        }
+                    } catch (Exception e) {
+                        getLog().warn("failure occurred while calling " + provider.getClass(), e);
+                    }
+                }
+                return props;
+            }
+        };
+
+        final DocumentFactory documentFactory = new DocumentFactory(firstNonNull(licenseSet.basedir, defaultBasedir), buildMapping(), buildHeaderDefinitions(licenseSet, finder), encoding, licenseSet.keywords, propertiesLoader);
+
+        int nThreads = getNumberOfExecutorThreads();
+        ExecutorService executorService = Executors.newFixedThreadPool(nThreads);
+        CompletionService completionService = new ExecutorCompletionService(executorService);
+        int count = 0;
+        debug("Number of execution threads: %s", nThreads);
+
+        try {
+            for (final String file : listSelectedFiles(licenseSet)) {
+                completionService.submit(new Runnable() {
+                    @Override
+                    public void run() {
+                        Document document = documentFactory.createDocuments(file);
+                        debug("Selected file: %s [header style: %s]", document.getFilePath(), document.getHeaderDefinition());
+                        if (document.isNotSupported()) {
+                            callback.onUnknownFile(document, h);
+                        } else if (document.is(h)) {
+                            debug("Skipping header file: %s", document.getFilePath());
+                        } else if (document.hasHeader(h, strictCheck)) {
+                            callback.onExistingHeader(document, h);
+                        } else {
+                            boolean headerFound = false;
+                            for (final Header validHeader : validHeaders) {
+                                if (headerFound = document.hasHeader(validHeader, strictCheck)) {
+                                    callback.onExistingHeader(document, h);
+                                    break;
+                                }
+                            }
+                            if (!headerFound) {
+                                callback.onHeaderNotFound(document, h);
+                            }
+                        }
+                    }
+                }, null);
+                count++;
+            }
+
+            while (count-- > 0) {
+                try {
+                    completionService.take().get();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                } catch (ExecutionException e) {
+                    Throwable cause = e.getCause();
+                    if (cause instanceof Error) {
+                        throw (Error) cause;
+                    }
+                    if (cause instanceof MojoExecutionException) {
+                        throw (MojoExecutionException) cause;
+                    }
+                    if (cause instanceof MojoFailureException) {
+                        throw (MojoFailureException) cause;
+                    }
+                    if (cause instanceof RuntimeException) {
+                        throw (RuntimeException) cause;
+                    }
+                    throw new RuntimeException(cause.getMessage(), cause);
+                }
+            }
+
+        } finally {
+            executorService.shutdownNow();
+        }
+    }
+
+    private boolean hasHeader(final LicenseSet licenseSet) {
         return
-                (multi != null
-                        && ((multi.headers != null && multi.headers.length > 0)
-                        || (multi.inlineHeaders != null && multi.inlineHeaders.length > 0 && !multi.inlineHeaders[0].isEmpty()))
-                ) || (header != null || (inlineHeader != null && !this.inlineHeader.isEmpty()));
+                (licenseSet.multi != null
+                        && ((licenseSet.multi.headers != null && licenseSet.multi.headers.length > 0)
+                        || (licenseSet.multi.inlineHeaders != null && licenseSet.multi.inlineHeaders.length > 0 && !licenseSet.multi.inlineHeaders[0].isEmpty()))
+                ) || (licenseSet.header != null || (licenseSet.inlineHeader != null && !licenseSet.inlineHeader.isEmpty()));
     }
 
     private int getNumberOfExecutorThreads() {
@@ -481,8 +568,8 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
             Math.max(1, (int) (Runtime.getRuntime().availableProcessors() * concurrencyFactor));
     }
 
-    private Map<String, String> mergeProperties(Document document) {
-        // first put systen environment
+    private Map<String, String> mergeProperties(final LicenseSet licenseSet, final Document document) {
+        // first put system environment
         Map<String, String> props = new LinkedHashMap<String, String>(System.getenv());
         // then add ${project.XYZ} properties
         props.put("project.groupId", project.getGroupId());
@@ -494,10 +581,17 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
         props.put("project.url", project.getUrl());
         // then add per document properties
         props.put("file.name", document.getFile().getName());
+
         // we override by properties in the POM
-        if (this.properties != null) {
-            props.putAll(this.properties);
+        if (this.defaultProperties != null) {
+            props.putAll(this.defaultProperties);
         }
+
+        // we override by properties in the licenseSet
+        if (licenseSet.properties != null) {
+            props.putAll(licenseSet.properties);
+        }
+
         // then we override by java system properties (command-line -D...)
         for (String key : System.getProperties().stringPropertyNames()) {
             props.put(key, System.getProperty(key));
@@ -505,17 +599,18 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
         return props;
     }
 
-    private String[] listSelectedFiles() {
-        Selection selection = new Selection(basedir, includes, buildExcludes(), useDefaultExcludes);
-        debug("From: %s", basedir);
+    private String[] listSelectedFiles(final LicenseSet licenseSet) {
+        final boolean useDefaultExcludes = (licenseSet.useDefaultExcludes != null ? licenseSet.useDefaultExcludes : defaultUseDefaultExcludes);
+        final Selection selection = new Selection(firstNonNull(licenseSet.basedir, defaultBasedir), licenseSet.includes, buildExcludes(licenseSet), useDefaultExcludes);
+        debug("From: %s", firstNonNull(licenseSet.basedir, defaultBasedir));
         debug("Including: %s", deepToString(selection.getIncluded()));
         debug("Excluding: %s", deepToString(selection.getExcluded()));
         return selection.getSelectedFiles();
     }
 
-    private String[] buildExcludes() {
+    private String[] buildExcludes(final LicenseSet licenseSet) {
         List<String> ex = new ArrayList<String>();
-        ex.addAll(asList(this.excludes));
+        ex.addAll(asList(licenseSet.excludes));
         if (project != null && project.getModules() != null && !aggregate) {
             for (String module : (List<String>) project.getModules()) {
                 ex.add(module + "/**");
@@ -559,25 +654,36 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
         return extensionMapping;
     }
 
-    private Map<String, HeaderDefinition> buildHeaderDefinitions() throws MojoFailureException {
+    private Map<String, HeaderDefinition> buildHeaderDefinitions(final LicenseSet licenseSet, final ResourceFinder finder) throws MojoFailureException {
         // like mappings, first get default definitions
         final Map<String, HeaderDefinition> headers = new HashMap<String, HeaderDefinition>(HeaderType.defaultDefinitions());
-        // and then override them with those provided in properties file
-        for (String resource : headerDefinitions) {
-            try {
-                InputSource source = new InputSource(finder.findResource(resource).openStream());
-                source.setEncoding(encoding);
-                final AdditionalHeaderDefinition fileDefinitions = new AdditionalHeaderDefinition(XMLDoc.from(source, true));
-                final Map<String, HeaderDefinition> map = fileDefinitions.getDefinitions();
-                debug("%d header definitions loaded from '%s'", map.size(), resource);
-                headers.putAll(map);
-            } catch (IOException ex) {
-                throw new MojoFailureException("Error reading header definition: " + resource, ex);
-            }
+
+        // and then override them with those provided in base config
+        for (final String headerDefiniton : defaultHeaderDefinitions) {
+            headers.putAll(loadHeaderDefinition(headerDefiniton, finder));
         }
-        // force inclusion of unknow item to manage unknown files
+
+        // and then override them with those provided in licenseSet config
+        for (final String headerDefiniton : licenseSet.headerDefinitions) {
+            headers.putAll(loadHeaderDefinition(headerDefiniton, finder));
+        }
+
+        // force inclusion of unknown item to manage unknown files
         headers.put(HeaderType.UNKNOWN.getDefinition().getType(), HeaderType.UNKNOWN.getDefinition());
         return headers;
+    }
+
+    private Map<String, HeaderDefinition> loadHeaderDefinition(final String headerDefinition, final ResourceFinder finder) throws MojoFailureException {
+        try {
+            final InputSource source = new InputSource(finder.findResource(headerDefinition).openStream());
+            source.setEncoding(encoding);
+            final AdditionalHeaderDefinition fileDefinitions = new AdditionalHeaderDefinition(XMLDoc.from(source, true));
+            final Map<String, HeaderDefinition> map = fileDefinitions.getDefinitions();
+            debug("%d header definitions loaded from '%s'", map.size(), headerDefinition);
+            return map;
+        } catch (final IOException ex) {
+            throw new MojoFailureException("Error reading header definition: " + headerDefinition, ex);
+        }
     }
 
     /**
@@ -618,5 +724,12 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
             return null;
         }
         return str.replaceAll(".", "*");
+    }
+
+    private static <T> T firstNonNull(final T t1, final T t2) {
+        if (t1 != null) {
+            return t1;
+        }
+        return t2;
     }
 }

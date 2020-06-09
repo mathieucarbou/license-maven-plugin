@@ -32,12 +32,12 @@ public final class QuietMojoTest {
     @Test
     public void test_load_header_from_relative_file() throws Exception {
         LicenseCheckMojo check = new LicenseCheckMojo();
-        check.basedir = new File("src/test/resources/check");
-        check.header = "header.txt";
+        check.defaultBasedir = new File("src/test/resources/check");
+        check.legacyConfigHeader = "header.txt";
         check.project = new MavenProjectStub();
         check.failIfMissing = false;
         check.strictCheck = true;
-        check.excludes = new String[]{"**/issue107/**"};
+        check.legacyConfigExcludes = new String[]{"**/issue107/**"};
 
         MockedLog logger = new MockedLog();
         check.setLog(new DefaultLog(logger));

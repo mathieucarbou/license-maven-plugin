@@ -37,8 +37,8 @@ public final class MappingMojoTest {
         LicenseCheckMojo check = new LicenseCheckMojo();
         MockedLog logger = new MockedLog();
         check.setLog(new DefaultLog(logger));
-        check.basedir = new File("src/test/resources/check");
-        check.header = "header.txt";
+        check.defaultBasedir = new File("src/test/resources/check");
+        check.legacyConfigHeader = "header.txt";
         check.project = new MavenProjectStub();
         check.useDefaultMapping = true;
         check.strictCheck = true;
@@ -74,11 +74,11 @@ public final class MappingMojoTest {
         MockedLog logger = new MockedLog();
         check.setLog(new DefaultLog(logger));
         //check.setLog(new SystemStreamLog());
-        check.basedir = new File("src/test/resources/check");
-        check.header = "header.txt";
+        check.defaultBasedir = new File("src/test/resources/check");
+        check.legacyConfigHeader = "header.txt";
         check.project = new MavenProjectStub();
-        check.includes = new String[]{"test.apt.vm"};
-        check.properties = new HashMap<String, String>() {{
+        check.legacyConfigIncludes = new String[]{"test.apt.vm"};
+        check.defaultProperties = new HashMap<String, String>() {{
             put("year", "2008");
         }};
 
@@ -105,11 +105,11 @@ public final class MappingMojoTest {
         MockedLog logger = new MockedLog();
         check.setLog(new DefaultLog(logger));
         //check.setLog(new SystemStreamLog());
-        check.basedir = new File("src/test/resources/check/issue107");
-        check.header = "header.txt";
+        check.defaultBasedir = new File("src/test/resources/check/issue107");
+        check.legacyConfigHeader = "header.txt";
         check.project = new MavenProjectStub();
-        check.includes = new String[]{"test.xml.tmpl"};
-        check.properties = new HashMap<String, String>() {{
+        check.legacyConfigIncludes = new String[]{"test.xml.tmpl"};
+        check.defaultProperties = new HashMap<String, String>() {{
             put("year", "2008");
         }};
 
@@ -131,11 +131,11 @@ public final class MappingMojoTest {
         MockedLog logger = new MockedLog();
         check.setLog(new DefaultLog(logger));
         //check.setLog(new SystemStreamLog());
-        check.basedir = new File("src/test/resources/extensionless");
-        check.header = "header.txt";
+        check.defaultBasedir = new File("src/test/resources/extensionless");
+        check.legacyConfigHeader = "header.txt";
         check.project = new MavenProjectStub();
-        check.includes = new String[]{"extensionless-file"};
-        check.properties = new HashMap<String, String>() {{
+        check.legacyConfigIncludes = new String[]{"extensionless-file"};
+        check.defaultProperties = new HashMap<String, String>() {{
             put("year", "2008");
         }};
 
@@ -168,11 +168,11 @@ public final class MappingMojoTest {
         MockedLog logger = new MockedLog();
         check.setLog(new DefaultLog(logger));
         //check.setLog(new SystemStreamLog());
-        check.basedir = new File("src/test/resources/unknown");
-        check.header = "header.txt";
+        check.defaultBasedir = new File("src/test/resources/unknown");
+        check.legacyConfigHeader = "header.txt";
         check.project = new MavenProjectStub();
-        check.includes = new String[]{"file.unknown"};
-        check.properties = new HashMap<String, String>() {{
+        check.legacyConfigIncludes = new String[]{"file.unknown"};
+        check.defaultProperties = new HashMap<String, String>() {{
             put("year", "2008");
         }};
         check.failIfUnknown = true;

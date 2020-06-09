@@ -1,0 +1,59 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.mycila.license-maven-plugin.it</groupId>
+    <artifactId>tri-license-set</artifactId>
+    <version>1.0.0</version>
+
+    <name>Check a Triple License Set</name>
+    <description>Integration Test for checking a triple license set</description>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>@project.version@</version>
+                <configuration>
+                    <licenseSets>
+                        <licenseSet>
+                            <header>mock-license-1.txt</header>
+                            <excludes>
+                                <exclude>invoker.properties</exclude>
+                                <exclude>pom.xml</exclude>
+                                <exclude>*.groovy</exclude>
+                                <exclude>**/*.bak</exclude>
+                                <exclude>*.log</exclude>
+                                <exclude>mock-license-*</exclude>
+                                <exclude>**/Unformatted2.java</exclude>
+                                <exclude>**/Unformatted3.java</exclude>
+                            </excludes>
+                        </licenseSet>
+                        <licenseSet>
+                            <header>mock-license-2.txt</header>
+                            <excludes>
+                                <exclude>invoker.properties</exclude>
+                                <exclude>pom.xml</exclude>
+                                <exclude>*.groovy</exclude>
+                                <exclude>**/*.bak</exclude>
+                                <exclude>*.log</exclude>
+                                <exclude>mock-license-*</exclude>
+                                <exclude>**/Unformatted1.java</exclude>
+                                <exclude>**/Unformatted3.java</exclude>
+                            </excludes>
+                        </licenseSet>
+                        <licenseSet>
+                            <header>mock-license-3.txt</header>
+                            <includes>
+                                <include>**/Unformatted3.java</include>
+                            </includes>
+                        </licenseSet>
+                    </licenseSets>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
