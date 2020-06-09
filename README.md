@@ -158,6 +158,12 @@ options are concatenated together to produce a header template.
 
 The detailed Maven Plugin Documentation generated for each build is available here:
 
+__NOTE__: Between versions 4.0 and 3.0 the configuration syntax has been changed. The
+plugin now has the concept of *License Sets*, which allow you to work with one or
+more license configurations in a single execution of the plugin. In simple terms, a `<licenseSet>`
+wraps the previous configuration options for a license. The previous
+configuration syntax is still supported but deprecated, and may be removed in future. 
+
  - [3.0](http://code.mycila.com/license-maven-plugin/reports/3.0/plugin-info.html)
  - [3.0.rc1](http://code.mycila.com/license-maven-plugin/reports/3.0.rc1/plugin-info.html)
  - [2.3](http://code.mycila.com/license-maven-plugin/reports/2.3/plugin-info.html)
