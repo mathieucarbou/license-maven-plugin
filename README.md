@@ -20,8 +20,9 @@ __Lastest releases__ (note that it may take up to 1-2 days to be in Maven Centra
 		- [Properties](#properties-and-placeholders)
 		- [Supported comment types](#supported-comment-types)
 		- [Changing header style definitions](#changing-header-style-definitions)
+	- [Development](#development)
 
-# Maven License Plugin (the Official and Original one) #
+# Maven License Plugin (Official & Original) #
 
 Basically, when you are developing a project either in open source or in a company, you often need to add at the top of your source files a license to protect your work. I didn't find any maven plugin on Internet to help you maintain these license headers. By maintaining, i mean checking if the header is here or not, generating a report and of course having the possibility to update / reformat missing license headers.
 
@@ -583,4 +584,44 @@ And it should generate headers like:
      * limitations under the License.
      */
     #endregion
+```
+
+## Development
+
+### Requirements:
+
+- Java 1.8
+- Verify with: `mvn -v` that the right version is used
+- Replace my GPG key (EDEA921A) by yours
+
+### Releasing a version:
+
+Example: `4.0.rc1`
+
+```bash
+mvn release:prepare -DreleaseVersion=4.0.rc1 -Dtag=license-maven-plugin-4.0.rc1 -DdevelopmentVersion=4.0-SNAPSHOT
+mvn release:perform -Darguments="-Dgpg.keyname=EDEA921A"
+```
+
+Example: `4.0.rc2`
+
+```bash
+mvn release:prepare -DreleaseVersion=4.0.rc2 -Dtag=license-maven-plugin-4.0.rc2-DdevelopmentVersion=4.0-SNAPSHOT
+mvn release:perform -Darguments="-Dgpg.keyname=EDEA921A"
+```
+
+Example: `4.0`
+
+```bash
+mvn release:prepare -DreleaseVersion=4.0 -Dtag=license-maven-plugin-4.0 -DdevelopmentVersion=4.1-SNAPSHOT
+mvn release:perform -Darguments="-Dgpg.keyname=EDEA921A"
+```
+
+Then, go to https://oss.sonatype.org/ to "close and release".
+Then you should see a few minutes later the new version at https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/
+
+### Generate site from any branch or tag:
+
+```bash
+mvn clean verify site -DperformRelease=true -Dgpg.skip=true
 ```
