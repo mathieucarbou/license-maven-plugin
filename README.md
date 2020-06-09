@@ -1,9 +1,3 @@
-The following documentation is not up to date. 
-
-Please help if you want to contribute!
-
-__Upcoming release__
-
 __Lastest releases__ (note that it may take up to 1-2 days to be in Maven Central repository):
 
 * [4.0.rc1](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/4.0.rc1/) (2020-06-09) - see [issues and pull requests](https://github.com/mycila/license-maven-plugin/milestone/14?closed=1)
@@ -244,7 +238,7 @@ You have access to the Mojo, the current built properties and the document being
 
 The plugin has been designed so that it is very easy to add new supports for new sorts of comment. The plugin currently support these types of comment:
 
- - `JAVADOC_STYLE` (Java-like comments): *.java, *.groovy, *.css, *.cs, *.as, *.aj, *.c, *.h, *.cpp
+ - `JAVADOC_STYLE` (Java-like comments): *.groovy, *.css, *.cs, *.as, *.aj, *.c, *.h, *.cpp
 
     ```java
     /**
@@ -386,7 +380,7 @@ The plugin has been designed so that it is very easy to add new supports for new
     !
     ```
 
- - `SLASHSTAR_STYLE` (JavaScript like comments): *.js
+ - `SLASHSTAR_STYLE` (JavaScript like comments): *.js, *.java, *.fx
 
     ```javascript
     /*
