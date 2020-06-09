@@ -21,7 +21,7 @@
     <parent>
         <groupId>com.mycila</groupId>
         <artifactId>license-maven-plugin-parent</artifactId>
-        <version>3.1-SNAPSHOT</version>
+        <version>4.0.rc1</version>
         <relativePath>..</relativePath>
     </parent>
     <artifactId>license-maven-plugin-svn</artifactId>
