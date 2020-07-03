@@ -32,7 +32,7 @@ before_install:
 
 install: /usr/bin/env true
 
-script: mvn clean install --quiet -B -Dmaven.artifact.threads=64 -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+script: mvn clean install -V -B -Dmaven.artifact.threads=64 -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
 
 before_cache:
   - |
