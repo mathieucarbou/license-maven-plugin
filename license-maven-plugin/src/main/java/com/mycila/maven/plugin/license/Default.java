@@ -78,6 +78,7 @@ public final class Default {
         // git
         "**/.git",
         "**/.git/**",
+        "**/.gitattributes",
         "**/.gitignore",
         "**/.gitmodules",
 
