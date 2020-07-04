@@ -79,6 +79,7 @@ public enum DocumentType {
     RUBY("rb", HeaderType.SCRIPT_STYLE),
     SCALA("scala", HeaderType.JAVADOC_STYLE),
     SCAML("scaml", HeaderType.HAML_STYLE),
+    SCSS("scss", HeaderType.JAVADOC_STYLE),
     SHELL("sh", HeaderType.SCRIPT_STYLE),
     SQL("sql", HeaderType.DOUBLEDASHES_STYLE),
     TAGX("tagx", HeaderType.XML_STYLE),
