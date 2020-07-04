@@ -200,6 +200,7 @@ public final class Default {
         // fonts
         "**/*.svg",
         "**/*.eot",
+        "**/*.otf",
         "**/*.ttf",
         "**/*.woff",
 
