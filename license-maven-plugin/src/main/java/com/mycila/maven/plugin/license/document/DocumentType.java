@@ -94,6 +94,7 @@ public enum DocumentType {
     VELOCITY("vm", HeaderType.SHARPSTAR_STYLE),
     WINDOWS_BATCH("bat", HeaderType.BATCH),
     WINDOWS_SHELL("cmd", HeaderType.BATCH),
+    WSDL("wsdl", HeaderType.XML_STYLE),
     XHTML("xhtml", HeaderType.XML_STYLE),
     XML("xml", HeaderType.XML_STYLE),
     XSD("xsd", HeaderType.XML_STYLE),
