@@ -108,6 +108,7 @@ public final class Default {
         "**/dependency-reduced-pom.xml",
         "**/release-pom.xml",
         "**/pom.xml.releaseBackup",
+        "**/pom.xml.versionsBackup",
 
         // code coverage tools
         "**/cobertura.ser",
