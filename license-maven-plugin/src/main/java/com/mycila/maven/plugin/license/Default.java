@@ -164,9 +164,6 @@ public final class Default {
         "**/*.tar.bz2",
         "**/*.gz",
 
-        // binary files - documents
-        "**/*.xls",
-
         // ServiceLoader files
         "**/META-INF/services/**",
 
