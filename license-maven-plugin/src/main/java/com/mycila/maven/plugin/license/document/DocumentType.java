@@ -99,6 +99,7 @@ public enum DocumentType {
     XML("xml", HeaderType.XML_STYLE),
     XSD("xsd", HeaderType.XML_STYLE),
     XSL("xsl", HeaderType.XML_STYLE),
+    XSLT("xslt", HeaderType.XML_STYLE),
     YAML("yaml", HeaderType.SCRIPT_STYLE),
     YML("yml", HeaderType.SCRIPT_STYLE);
 
