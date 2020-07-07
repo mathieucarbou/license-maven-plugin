@@ -53,6 +53,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static com.mycila.maven.plugin.license.document.DocumentType.defaultMapping;
+import static com.mycila.maven.plugin.license.util.FileUtils.asPath;
 import static java.lang.String.format;
 import static java.util.Arrays.asList;
 import static java.util.Arrays.deepToString;
@@ -430,7 +431,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
     }
 
     private void executeForLicenseSet(final LicenseSet licenseSet, final Callback callback) throws MojoExecutionException, MojoFailureException {
-        final ResourceFinder finder = new ResourceFinder(firstNonNull(licenseSet.basedir, defaultBasedir));
+        final ResourceFinder finder = new ResourceFinder(firstNonNull(asPath(licenseSet.basedir), asPath(defaultBasedir)));
         try {
             finder.setCompileClassPath(project.getCompileClasspathElements());
         } catch (DependencyResolutionRequiredException e) {
