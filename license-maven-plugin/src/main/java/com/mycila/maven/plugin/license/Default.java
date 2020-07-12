@@ -80,6 +80,7 @@ public final class Default {
         "**/.git/**",
         "**/.gitattributes",
         "**/.gitignore",
+        "**/.gitkeep",
         "**/.gitmodules",
 
         // GitHub
