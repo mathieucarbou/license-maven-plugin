@@ -177,6 +177,9 @@ public final class Default {
         "**/*.ods",
         "**/*.pdf",
 
+        // Jenkins
+        "**/Jenkinsfile",
+
         // Travis
         "**/.travis.yml",
 
