@@ -127,6 +127,9 @@ public final class Default {
         // Netbeans
         "**/nb-configuration.xml",
 
+        // Hibernate Validator Annotation Processor
+        "**/.factorypath",
+
         // descriptors
         "**/MANIFEST.MF",
 
