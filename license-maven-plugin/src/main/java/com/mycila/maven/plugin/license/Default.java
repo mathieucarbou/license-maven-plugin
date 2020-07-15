@@ -111,6 +111,9 @@ public final class Default {
         "**/pom.xml.releaseBackup",
         "**/pom.xml.versionsBackup",
 
+        // Node Modules
+        "**/node_modules/**",
+
         // code coverage tools
         "**/cobertura.ser",
         "**/.clover/**",
