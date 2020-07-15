@@ -31,6 +31,7 @@ public final class Default {
         "**/%*%",
         "**/._*",
         "**/.repository/**",
+        "**/*.lck",
 
         // CVS
         "**/CVS",
