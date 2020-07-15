@@ -209,6 +209,9 @@ public final class Default {
         "**/*.woff",
         "**/*.woff2",
 
+        // logs
+        "**/*.log",
+
         // office documents
         "**/*.xlsx",
         "**/*.docx",
