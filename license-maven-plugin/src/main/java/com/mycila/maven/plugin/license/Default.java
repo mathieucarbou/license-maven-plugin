@@ -139,6 +139,10 @@ public final class Default {
         // descriptors
         "**/MANIFEST.MF",
 
+        // License files
+        "**/LICENSE",
+        "**/LICENSE_HEADER",
+
         // binary files - images
         "**/*.jpg",
         "**/*.png",
