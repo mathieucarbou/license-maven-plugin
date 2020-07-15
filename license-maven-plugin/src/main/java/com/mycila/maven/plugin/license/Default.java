@@ -111,7 +111,8 @@ public final class Default {
         "**/pom.xml.releaseBackup",
         "**/pom.xml.versionsBackup",
 
-        // Node Modules
+        // Node
+        "**/node/**",
         "**/node_modules/**",
 
         // code coverage tools
