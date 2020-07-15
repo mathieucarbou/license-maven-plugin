@@ -202,6 +202,15 @@ public final class Default {
         // SourceHut
         "**/.build.yml",
 
+        // Wrappers
+        "**/gradlew",
+        "**/gradlew.bat",
+        "**/gradle-wrapper.properties",
+        "**/mvnw",
+        "**/mvnw.cmd",
+        "**/maven-wrapper.properties",
+        "**/MavenWrapperDownloader.java",
+
         // flash
         "**/*.swf",
 
