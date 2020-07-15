@@ -214,6 +214,10 @@ public final class Default {
         // SourceHut
         "**/.build.yml",
 
+        // Maven 3.3+ configs
+        "**/jvm.config"
+        "**/maven.config"
+
         // Wrappers
         "**/gradlew",
         "**/gradlew.bat",
