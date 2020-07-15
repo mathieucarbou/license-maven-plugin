@@ -128,8 +128,8 @@ public final class Default {
         "**/*.iml",
         "**/*.ipr",
         "**/*.iws",
-        ".idea/**",
-        
+        "**/.idea/**",
+
         // Netbeans
         "**/nb-configuration.xml",
 
