@@ -216,8 +216,8 @@ public final class Default {
         "**/.build.yml",
 
         // Maven 3.3+ configs
-        "**/jvm.config"
-        "**/maven.config"
+        "**/jvm.config",
+        "**/maven.config",
 
         // Wrappers
         "**/gradlew",
