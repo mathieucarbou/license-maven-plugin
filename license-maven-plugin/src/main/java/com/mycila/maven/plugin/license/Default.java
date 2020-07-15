@@ -166,6 +166,14 @@ public final class Default {
         "**/*.sha256",
         "**/*.sha512",
 
+        // Security files
+        "**/*.asc",
+        "**/*.jks",
+        "**/*.keytab",
+        "**/*.lic",
+        "**/*.p12",
+        "**/*.pub",
+
         // binary files - archives
         "**/*.jar",
         "**/*.zip",
