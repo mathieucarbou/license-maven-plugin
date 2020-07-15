@@ -203,6 +203,7 @@ public final class Default {
         "**/*.otf",
         "**/*.ttf",
         "**/*.woff",
+        "**/*.woff2",
 
         // office documents
         "**/*.xlsx",
