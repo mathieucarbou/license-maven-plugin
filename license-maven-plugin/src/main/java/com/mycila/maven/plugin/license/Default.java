@@ -114,6 +114,7 @@ public final class Default {
         // code coverage tools
         "**/cobertura.ser",
         "**/.clover/**",
+        "**/jacoco.exec",
 
         // eclipse project files
         "**/.classpath",
