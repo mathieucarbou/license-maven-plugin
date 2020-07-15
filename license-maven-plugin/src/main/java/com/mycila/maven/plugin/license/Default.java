@@ -156,6 +156,8 @@ public final class Default {
         // checksum files
         "**/*.md5",
         "**/*.sha1",
+        "**/*.sha256",
+        "**/*.sha512",
 
         // binary files - archives
         "**/*.jar",
