@@ -167,6 +167,7 @@ public final class Default {
         "**/*.tar.gz",
         "**/*.tar.bz2",
         "**/*.gz",
+        "**/*.7z",
 
         // ServiceLoader files
         "**/META-INF/services/**",
