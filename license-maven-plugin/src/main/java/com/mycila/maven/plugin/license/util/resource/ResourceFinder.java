@@ -17,10 +17,12 @@ package com.mycila.maven.plugin.license.util.resource;
 
 import org.apache.maven.plugin.MojoFailureException;
 
-import java.io.File;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 /**
@@ -28,11 +30,11 @@ import java.util.List;
  * <b>Author:</b> Mathieu Carbou (mathieu.carbou@gmail.com)
  */
 public final class ResourceFinder {
-    private final File basedir;
+    private final Path basedir;
     private CustomClassLoader compileClassPath;
     private CustomClassLoader pluginClassPath;
 
-    public ResourceFinder(File basedir) {
+    public ResourceFinder(final Path basedir) {
         this.basedir = basedir;
     }
 
@@ -62,27 +64,33 @@ public final class ResourceFinder {
      * @throws MojoFailureException If the resource is not found
      */
     public URL findResource(String resource) throws MojoFailureException {
+        URL res = null;
+
         // first search relatively to the base directory
-        URL res ;
         try {
-            res = toURL(new File(basedir, resource).getCanonicalFile());
-        } catch (IOException e) {
-            throw new MojoFailureException("Resource " + resource + " not found in file system, classpath or URL: " + e.getMessage(), e);
+            final Path p = basedir.resolve(resource);
+            res = toURL(p.toAbsolutePath());
+        } catch (final InvalidPathException e) {
+            // no-op - can be caused by resource being a URI on windows when Path.resolve is called
         }
         if (res != null) {
             return res;
         }
 
         // if not found, search for absolute location on file system, or relative to execution dir
-        res = toURL(new File(resource));
+        try {
+            res = toURL(Paths.get(resource));
+        } catch (final InvalidPathException e) {
+            // no-op - can be caused by resource being a URI on windows when Paths.get is called
+        }
         if (res != null) {
             return res;
         }
 
         // if not found, try the classpaths
-        String cpResource = resource.startsWith("/") ? resource.substring(1) : resource;
+        final String cpResource = resource.startsWith("/") ? resource.substring(1) : resource;
 
-        // tries compile claspath of projet
+        // tries compile claspath of project
         res = compileClassPath.getResource(cpResource);
         if (res != null) {
             return res;
@@ -105,10 +113,10 @@ public final class ResourceFinder {
         }
     }
 
-    private URL toURL(File file) {
-        if (file.exists() && file.canRead()) {
+    private URL toURL(final Path path) {
+        if (Files.exists(path) && Files.isReadable(path)) {
             try {
-                return file.toURI().toURL();
+                return path.toUri().toURL();
             }
             catch (MalformedURLException e) {
             }

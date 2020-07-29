@@ -1,6 +1,6 @@
 package com.mycila.maven.plugin.license.header;
 
-import java.io.File;
+import java.nio.file.Paths;
 
 import com.mycila.maven.plugin.license.Multi;
 import org.junit.Assert;
@@ -12,7 +12,7 @@ import static com.mycila.maven.plugin.license.Multi.DEFAULT_SEPARATOR;
 
 public class HeaderSourceTest {
     
-    private ResourceFinder finder = new ResourceFinder(new File("src/test/resources"));
+    private ResourceFinder finder = new ResourceFinder(Paths.get("src", "test", "resources"));
 
     @Test
     public void testOfInline() {

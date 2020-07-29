@@ -79,6 +79,7 @@ public enum DocumentType {
     RUBY("rb", HeaderType.SCRIPT_STYLE),
     SCALA("scala", HeaderType.JAVADOC_STYLE),
     SCAML("scaml", HeaderType.HAML_STYLE),
+    SCSS("scss", HeaderType.JAVADOC_STYLE),
     SHELL("sh", HeaderType.SCRIPT_STYLE),
     SQL("sql", HeaderType.DOUBLEDASHES_STYLE),
     TAGX("tagx", HeaderType.XML_STYLE),
@@ -93,10 +94,12 @@ public enum DocumentType {
     VELOCITY("vm", HeaderType.SHARPSTAR_STYLE),
     WINDOWS_BATCH("bat", HeaderType.BATCH),
     WINDOWS_SHELL("cmd", HeaderType.BATCH),
+    WSDL("wsdl", HeaderType.XML_STYLE),
     XHTML("xhtml", HeaderType.XML_STYLE),
     XML("xml", HeaderType.XML_STYLE),
     XSD("xsd", HeaderType.XML_STYLE),
     XSL("xsl", HeaderType.XML_STYLE),
+    XSLT("xslt", HeaderType.XML_STYLE),
     YAML("yaml", HeaderType.SCRIPT_STYLE),
     YML("yml", HeaderType.SCRIPT_STYLE);
 

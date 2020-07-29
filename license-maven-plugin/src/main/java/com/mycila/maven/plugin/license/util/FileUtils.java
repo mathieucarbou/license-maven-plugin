@@ -23,6 +23,7 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
+import java.nio.file.Path;
 import java.util.Map;
 
 /**
@@ -118,5 +119,13 @@ public final class FileUtils {
             if (outChannel != null) outChannel.close();
         }
 
+    }
+
+    public static Path asPath(final File file) {
+        if (file == null) {
+            return null;
+        }
+
+        return file.toPath();
     }
 }

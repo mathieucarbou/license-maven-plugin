@@ -78,7 +78,7 @@ public final class SelectionTest {
         File root = createAFakeProject(log);
         Selection selection = new Selection(root,
                 new String[] { "**" + File.separator + "*.txt" },
-                new String[] {"target" + File.separator + "**", "module/**/target" + File.separator + "**"}, false,
+                new String[] {"target" + File.separator + "**", "module" + File.separator + "**" + File.separator + "target" + File.separator + "**"}, false,
                 log);
 
         selection.getSelectedFiles(); // triggers scan and scanner build
@@ -112,7 +112,7 @@ public final class SelectionTest {
     private void assertIncludedFilesInFakeProject(Selection selection, String debugMessage) {
         List<String> selected = new ArrayList<String>(asList(selection.getSelectedFiles()));
         Collections.sort(selected);
-        assertEquals(debugMessage, asList("included.txt", "module/src/main/java/not-ignored.txt", "module/sub/subsub/src/main/java/not-ignored.txt"), selected);
+        assertEquals(debugMessage, asList("included.txt", "module" + File.separator + "src" + File.separator + "main" + File.separator + "java" + File.separator + "not-ignored.txt", "module" + File.separator + "sub" + File.separator + "subsub" + File.separator + "src" + File.separator + "main" + File.separator + "java" + File.separator + "not-ignored.txt"), selected);
     }
 
     private File createAFakeProject(Log log) throws IOException {

@@ -19,8 +19,10 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.io.File;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
@@ -36,16 +38,17 @@ public final class ResourceFinderTest {
 
     @BeforeClass
     public static void setup() {
-        finder = new ResourceFinder(new File("."));
+        finder = new ResourceFinder(Paths.get("."));
         finder.setCompileClassPath(Arrays.asList("src/test/data/compileCP"));
         finder.setPluginClassPath(ResourceFinderTest.class.getClassLoader());
     }
 
     @Test
     public void test_load_absolute_file() throws Exception {
-        String path = new File("src/test/data/compileCP/test.txt").getCanonicalPath();
-        URL u = finder.findResource(path);
-        assertEquals(new File(u.toURI()).getCanonicalPath(), path);
+        final Path path = Paths.get("src").resolve("test/data/compileCP/test.txt").toAbsolutePath();
+        assertTrue(Files.exists(path));
+        final URL u = finder.findResource(path.toString());
+        assertEquals(path, Paths.get(u.toURI()));
     }
 
     @Test(expected = MojoFailureException.class)
@@ -55,7 +58,7 @@ public final class ResourceFinderTest {
 
     @Test
     public void test_load_relative_file() throws Exception {
-        URL u = finder.findResource("src/test/data/compileCP/test.txt");
+        final URL u = finder.findResource("src/test/data/compileCP/test.txt");
         assertTrue(u.getPath().contains("src/test/data/compileCP/test.txt"));
     }
 
@@ -71,6 +74,9 @@ public final class ResourceFinderTest {
 
     @Test
     public void test_load_from_URL() throws Exception {
-        assertNotNull(finder.findResource("file://" + new File(".").toURI().toURL().getPath() + "/src/test/data/compileCP/test.txt"));
+        final Path path = Paths.get("src").resolve("test/data/compileCP/test.txt").toAbsolutePath();
+        assertTrue(Files.exists(path));
+        final String url = path.toUri().toURL().toString();
+        assertNotNull(finder.findResource(url));
     }
 }

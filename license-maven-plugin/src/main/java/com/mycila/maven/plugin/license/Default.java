@@ -31,6 +31,7 @@ public final class Default {
         "**/%*%",
         "**/._*",
         "**/.repository/**",
+        "**/*.lck",
 
         // CVS
         "**/CVS",
@@ -78,7 +79,9 @@ public final class Default {
         // git
         "**/.git",
         "**/.git/**",
+        "**/.gitattributes",
         "**/.gitignore",
+        "**/.gitkeep",
         "**/.gitmodules",
 
         // GitHub
@@ -106,10 +109,16 @@ public final class Default {
         "**/dependency-reduced-pom.xml",
         "**/release-pom.xml",
         "**/pom.xml.releaseBackup",
+        "**/pom.xml.versionsBackup",
+
+        // Node
+        "**/node/**",
+        "**/node_modules/**",
 
         // code coverage tools
         "**/cobertura.ser",
         "**/.clover/**",
+        "**/jacoco.exec",
 
         // eclipse project files
         "**/.classpath",
@@ -120,13 +129,20 @@ public final class Default {
         "**/*.iml",
         "**/*.ipr",
         "**/*.iws",
-        ".idea/**",
-        
+        "**/.idea/**",
+
         // Netbeans
         "**/nb-configuration.xml",
 
+        // Hibernate Validator Annotation Processor
+        "**/.factorypath",
+
         // descriptors
         "**/MANIFEST.MF",
+
+        // License files
+        "**/LICENSE",
+        "**/LICENSE_HEADER",
 
         // binary files - images
         "**/*.jpg",
@@ -148,6 +164,16 @@ public final class Default {
         // checksum files
         "**/*.md5",
         "**/*.sha1",
+        "**/*.sha256",
+        "**/*.sha512",
+
+        // Security files
+        "**/*.asc",
+        "**/*.jks",
+        "**/*.keytab",
+        "**/*.lic",
+        "**/*.p12",
+        "**/*.pub",
 
         // binary files - archives
         "**/*.jar",
@@ -157,9 +183,7 @@ public final class Default {
         "**/*.tar.gz",
         "**/*.tar.bz2",
         "**/*.gz",
-
-        // binary files - documents
-        "**/*.xls",
+        "**/*.7z",
 
         // ServiceLoader files
         "**/META-INF/services/**",
@@ -173,6 +197,9 @@ public final class Default {
         "**/*.odt",
         "**/*.ods",
         "**/*.pdf",
+
+        // Jenkins
+        "**/Jenkinsfile",
 
         // Travis
         "**/.travis.yml",
@@ -188,6 +215,19 @@ public final class Default {
         // SourceHut
         "**/.build.yml",
 
+        // Maven 3.3+ configs
+        "**/jvm.config",
+        "**/maven.config",
+
+        // Wrappers
+        "**/gradlew",
+        "**/gradlew.bat",
+        "**/gradle-wrapper.properties",
+        "**/mvnw",
+        "**/mvnw.cmd",
+        "**/maven-wrapper.properties",
+        "**/MavenWrapperDownloader.java",
+
         // flash
         "**/*.swf",
 
@@ -197,8 +237,13 @@ public final class Default {
         // fonts
         "**/*.svg",
         "**/*.eot",
+        "**/*.otf",
         "**/*.ttf",
         "**/*.woff",
+        "**/*.woff2",
+
+        // logs
+        "**/*.log",
 
         // office documents
         "**/*.xlsx",
