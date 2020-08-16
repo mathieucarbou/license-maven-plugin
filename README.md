@@ -606,7 +606,7 @@ mvn release:perform -Darguments="-Dgpg.keyname=EDEA921A"
 Example: `4.0.rc2`
 
 ```bash
-mvn release:prepare -DreleaseVersion=4.0.rc2 -Dtag=license-maven-plugin-4.0.rc2-DdevelopmentVersion=4.0-SNAPSHOT
+mvn release:prepare -DreleaseVersion=4.0.rc2 -Dtag=license-maven-plugin-4.0.rc2 -DdevelopmentVersion=4.0-SNAPSHOT
 mvn release:perform -Darguments="-Dgpg.keyname=EDEA921A"
 ```
 
