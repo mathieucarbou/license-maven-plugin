@@ -1,5 +1,6 @@
 __Lastest releases__ (note that it may take up to 1-2 days to be in Maven Central repository):
 
+* [4.0.rc2](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/4.0.rc2/) (2020-08-16) - see [issues and pull requests](https://github.com/mycila/license-maven-plugin/milestone/15?closed=1)
 * [4.0.rc1](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/4.0.rc1/) (2020-06-09) - see [issues and pull requests](https://github.com/mycila/license-maven-plugin/milestone/14?closed=1)
 * [3.0](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/3.0/) (2016-08-20) - see [issues and pull requests](https://github.com/mycila/license-maven-plugin/issues?q=milestone%3A3.0)
 * [3.0.rc1](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/3.0.rc1/) (2016-04-26) - see [issues and pull requests](https://github.com/mycila/license-maven-plugin/issues?q=milestone%3A3.0.rc1)
@@ -607,14 +608,14 @@ Example: `4.0.rc2`
 
 ```bash
 mvn release:prepare -DreleaseVersion=4.0.rc2 -Dtag=license-maven-plugin-4.0.rc2 -DdevelopmentVersion=4.0-SNAPSHOT
-mvn release:perform -Darguments="-Dgpg.keyname=EDEA921A"
+mvn release:perform -Darguments="-Dgpg.keyname=EDEA921A -Dgpg.passphrase=XYZ"
 ```
 
 Example: `4.0`
 
 ```bash
 mvn release:prepare -DreleaseVersion=4.0 -Dtag=license-maven-plugin-4.0 -DdevelopmentVersion=4.1-SNAPSHOT
-mvn release:perform -Darguments="-Dgpg.keyname=EDEA921A"
+mvn release:perform -Darguments="-Dgpg.keyname=EDEA921A -Dgpg.passphrase=XYZ"
 ```
 
 Then, go to https://oss.sonatype.org/ to "close and release".
