@@ -44,6 +44,8 @@ public final class UseDefaultMappingMojoTest {
         check.execute();
         assertFalse(logger.getContent().contains("header style: text"));
         assertTrue(logger.getContent().contains("header style: unknown"));
+        String canonicalFileName = new File("src/test/resources/check/doc1.txt").getCanonicalFile().getPath();
+        assertTrue(logger.getContent().contains("Unknown file extension: " + canonicalFileName));
     }
 
     @Test
@@ -61,7 +63,8 @@ public final class UseDefaultMappingMojoTest {
             fail();
         } catch (MojoExecutionException e) {
             assertTrue(logger.getContent().contains("header style: text"));
-            assertTrue(logger.getContent().contains("Header OK in: src/test/resources/check/Dockerfile"));
+            String canonicalDockerfileName = new File("src/test/resources/check/Dockerfile").getCanonicalFile().getPath();
+            assertTrue(logger.getContent().contains("Header OK in: " + canonicalDockerfileName));
             assertEquals("Some files do not have the expected license header", e.getMessage());
         }
     }

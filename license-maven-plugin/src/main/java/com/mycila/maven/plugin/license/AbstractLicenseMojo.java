@@ -367,6 +367,9 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
     public final void execute(final Callback callback) throws MojoExecutionException, MojoFailureException {
         if (!skip) {
 
+            // make default base dir canonical
+            this.defaultBasedir = this.getCanonicalFile(this.defaultBasedir, "license.basedir");
+
             // collect all the license sets together
             final LicenseSet[] allLicenseSets;
 
@@ -388,6 +391,17 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
         }
     }
 
+    private File getCanonicalFile(final File file, final String description) throws MojoFailureException {
+        if (file == null) {
+            return null;
+        }
+        try {
+            return file.getCanonicalFile();
+        } catch (final IOException e) {
+            throw new MojoFailureException("Could not get canonical path of " + description, e);
+        }
+    }
+
     private void executeForLicenseSets(final LicenseSet[] licenseSets, final Callback callback) throws MojoFailureException, MojoExecutionException {
         if (licenseSets == null || licenseSets.length == 0) {
             warn("At least one licenseSet must be specified");
@@ -401,6 +415,8 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
                 warn("No header file specified to check for license in licenseSet: " + i);
                 return;
             }
+            // make licenseSet baseDir canonical
+            licenseSet.basedir = this.getCanonicalFile(licenseSet.basedir, "licenseSet[" + i + "].basedir");
         }
         if (!strictCheck) {
             warn("Property 'strictCheck' is not enabled. Please consider adding <strictCheck>true</strictCheck> in your pom.xml file.");
