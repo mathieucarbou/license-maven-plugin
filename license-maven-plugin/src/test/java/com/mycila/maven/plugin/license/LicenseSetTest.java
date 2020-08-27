@@ -55,13 +55,52 @@ public class LicenseSetTest {
         check.execute();
 
         final String log = logger.getContent();
-        final String fileFromFirstSet = new File("src/test/resources/check/strict/space.java").getCanonicalFile().getPath();
-        final String fileFromSecondSet = new File("src/test/resources/check/issue76/after.xml").getCanonicalFile().getPath();
-        final String fileFromDefaultBaseDirSet = new File("src/test/resources/unknown/header.txt").getCanonicalFile().getPath();
+        final String fileFromFirstSet = new File("src/test/resources/check/strict/space.java").getCanonicalPath().replace('\\', '/');
+        final String fileFromSecondSet = new File("src/test/resources/check/issue76/after.xml").getCanonicalPath().replace('\\', '/');
+        final String fileFromDefaultBaseDirSet = new File("src/test/resources/unknown/header.txt").getCanonicalPath().replace('\\', '/');
 
         assertTrue(log.contains("Header OK in: " + fileFromFirstSet));
         assertTrue(log.contains("Header OK in: " + fileFromSecondSet));
         assertTrue(log.contains("Header OK in: " + fileFromDefaultBaseDirSet));
     }
+
+    @Test
+    public void multipleLicenseSetsWithRelativePaths() throws Exception {
+        final LicenseSet licenseSet1 = new LicenseSet();
+        licenseSet1.basedir = new File("src/test/resources/check/def/../strict");
+        licenseSet1.header = "src/test/resources/test-header1-diff.txt";
+
+        final LicenseSet licenseSet2 = new LicenseSet();
+        licenseSet2.basedir = new File("src/test/resources/check/def/../issue76");
+        licenseSet2.header = "src/test/resources/test-header1.txt";
+
+        final LicenseSet licenseSetWithoutBaseDir = new LicenseSet();
+        licenseSetWithoutBaseDir.header = "test-header1.txt";
+
+        final LicenseSet[] licenseSets = {
+                licenseSet1,
+                licenseSet2,
+                licenseSetWithoutBaseDir
+        };
+
+        final LicenseCheckMojo check = new LicenseCheckMojo();
+        check.licenseSets = licenseSets;
+        check.project = new MavenProjectStub();
+        check.strictCheck = false;
+        check.defaultBasedir = new File("src/test/resources/unknown/../unknown");
+        final MockedLog logger = new MockedLog();
+        check.setLog(new DefaultLog(logger));
+        check.execute();
+
+        final String log = logger.getContent();
+        final String fileFromFirstSet = new File("src/test/resources/check/strict/space.java").getCanonicalPath().replace('\\', '/');
+        final String fileFromSecondSet = new File("src/test/resources/check/issue76/after.xml").getCanonicalPath().replace('\\', '/');
+        final String fileFromDefaultBaseDirSet = new File("src/test/resources/unknown/header.txt").getCanonicalPath().replace('\\', '/');
+
+        assertTrue(log.contains("Header OK in: " + fileFromFirstSet));
+        assertTrue(log.contains("Header OK in: " + fileFromSecondSet));
+        assertTrue(log.contains("Header OK in: " + fileFromDefaultBaseDirSet));
+    }
+
 
 }
