@@ -44,6 +44,8 @@ public final class UseDefaultMappingMojoTest {
         check.execute();
         assertFalse(logger.getContent().contains("header style: text"));
         assertTrue(logger.getContent().contains("header style: unknown"));
+        String absoluteFileName = new File("src/test/resources/check/doc1.txt").getCanonicalPath().replace('\\', '/');
+        assertTrue(logger.getContent().contains("Unknown file extension: " + absoluteFileName));
     }
 
     @Test
@@ -61,7 +63,8 @@ public final class UseDefaultMappingMojoTest {
             fail();
         } catch (MojoExecutionException e) {
             assertTrue(logger.getContent().contains("header style: text"));
-            assertTrue(logger.getContent().contains("Header OK in: src/test/resources/check/Dockerfile"));
+            String absoluteDockerfileName = new File("src/test/resources/check/Dockerfile").getCanonicalPath().replace('\\', '/');
+            assertTrue(logger.getContent().contains("Header OK in: " + absoluteDockerfileName));
             assertEquals("Some files do not have the expected license header", e.getMessage());
         }
     }
