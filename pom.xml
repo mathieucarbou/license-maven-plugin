@@ -39,7 +39,7 @@
         <jdk.version>1.8</jdk.version>
         <source.encoding>UTF-8</source.encoding>
         <mycila.github.name>license-maven-plugin</mycila.github.name>
-        <junit.version>4.12</junit.version>
+        <junit.version>4.13.1</junit.version>
     </properties>
 
     <modules>
