@@ -44,7 +44,7 @@ public final class FileUtils {
         }
     }
 
-    public static String read(URL location, String encoding, Map<String, String> properties) throws IOException {
+    public static String read(URL location, String encoding, Map<String, Object> properties) throws IOException {
         Reader reader = new InterpolationFilterReader(new BufferedReader(new InputStreamReader(location.openStream(), encoding)), properties);
         try {
             return IOUtil.toString(reader);
