@@ -22,8 +22,7 @@
     <parent>
         <groupId>com.mycila</groupId>
         <artifactId>mycila-pom</artifactId>
-        <version>3</version>
-        <relativePath />
+        <version>9</version>
     </parent>
 
     <artifactId>license-maven-plugin-parent</artifactId>
@@ -73,11 +72,6 @@
                 <version>3.6.0</version>
             </dependency>
             <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-core</artifactId>
-                <version>4.3.19.RELEASE</version>
-            </dependency>
-            <dependency>
                 <groupId>com.mycila</groupId>
                 <artifactId>mycila-xmltool</artifactId>
                 <version>4.4.ga</version>
@@ -99,7 +93,6 @@
                 <artifactId>junit</artifactId>
                 <version>${junit.version}</version>
             </dependency>
-
         </dependencies>
     </dependencyManagement>
 
@@ -108,7 +101,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-plugin-plugin</artifactId>
-                <version>3.2</version>
+                <version>3.6.0</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -141,12 +134,17 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-gpg-plugin</artifactId>
-                    <version>1.4</version>
+                    <version>1.6</version>
                     <configuration>
                         <useAgent>false</useAgent>
                         <keyname>${gpg.keyname}</keyname>
                         <passphrase>${gpg.passphrase}</passphrase>
                     </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-plugin-plugin</artifactId>
+                    <version>3.6.0</version>
                 </plugin>
             </plugins>
         </pluginManagement>
