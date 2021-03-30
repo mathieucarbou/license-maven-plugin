@@ -21,7 +21,6 @@ import com.mycila.maven.plugin.license.header.HeaderParser;
 import com.mycila.maven.plugin.license.header.HeaderType;
 import com.mycila.maven.plugin.license.util.FileContent;
 import com.mycila.maven.plugin.license.util.FileUtils;
-import org.springframework.util.PropertyPlaceholderHelper;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,7 +37,7 @@ public final class Document {
     private final String encoding;
     private final String[] keywords;
     private final DocumentPropertiesLoader documentPropertiesLoader;
-    private final PropertyPlaceholderHelper placeholderHelper = new PropertyPlaceholderHelper("${", "}", ":", true);
+    private final PropertyPlaceholderResolver placeholderResolver = new PropertyPlaceholderResolver();
     private HeaderParser parser;
 
 
@@ -94,7 +93,7 @@ public final class Document {
     }
 
     public String mergeProperties(String str) {
-        return placeholderHelper.replacePlaceholders(str, documentPropertiesLoader.load(this));
+        return placeholderResolver.replacePlaceholders(str, documentPropertiesLoader.load(this));
     }
 
     public void save() {
