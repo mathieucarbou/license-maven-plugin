@@ -221,6 +221,8 @@ Properties which can be used as placeholder comes from:
    - `project.description`
    - `project.inceptionYear`
    - `project.url`
+   - `project.organization.name`
+   - `project.organization.url`
  - Per-Document properties
    - `file.name`
  - Plugin configuration properties (from `<properties>` tag)
