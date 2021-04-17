@@ -1,3 +1,4 @@
+image: maven:latest
 osx_image: xcode9.3
 sudo: false
 
@@ -25,24 +26,17 @@ before_install:
   - |
     if [ "${TRAVIS_OS_NAME}" == windows ]; then
       choco install -y zulu8
-      choco install -y maven
-      export PATH=/C/Program\ Files/Zulu/zulu-8/bin:/C/ProgramData/chocolatey/lib/maven/apache-maven-3.6.3/bin:$PATH
+      choco install -y maven --version 3.8.1
+      export PATH=/C/Program\ Files/Zulu/zulu-8/bin:/C/ProgramData/chocolatey/lib/maven/apache-maven-3.8.1/bin:$PATH
       echo "PATH=${PATH}"
     fi
 
 install: /usr/bin/env true
 
-script: mvn clean install -V -B -Dmaven.artifact.threads=64 -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
-
-before_cache:
-  - |
-    find $HOME/.m2/repository/ -name *SNAPSHOT | xargs rm -Rf
-    if [ "${TRAVIS_OS_NAME}" == osx ]; then
-      brew cleanup
-    fi
+script: mvn clean install -V -B -s settings.xml -Dmaven.artifact.threads=64 -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
 
 cache:
-  timeout: 1000
+  #  timeout: 5000
   directories:
     - "$HOME/.m2"
     - $HOME/AppData/Local/Temp/chocolatey
