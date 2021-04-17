@@ -1,6 +1,6 @@
 <!--
 
-    Copyright (C) 2008 Mycila (mathieu.carbou@gmail.com)
+    Copyright (C) 2008-2021 Mycila (mathieu.carbou@gmail.com)
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -193,7 +193,7 @@
                     <header>com/mycila/licenses/APACHE-2</header>
                     <properties>
                         <owner>Mycila</owner>
-                        <year>${project.inceptionYear}</year>
+                        <year>${project.inceptionYear}-2021</year>
                         <email>mathieu.carbou@gmail.com</email>
                     </properties>
                     <excludes>
