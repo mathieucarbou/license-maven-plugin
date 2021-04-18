@@ -1,0 +1,11 @@
+Mock license
+${project.groupId}
+${project.artifactId}
+${project.version}
+${project.name}
+${project.description}
+${project.inceptionYear}
+${project.url}
+${project.organization.name}
+${project.organization.url}
+ends here
