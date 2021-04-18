@@ -28,6 +28,7 @@ import com.mycila.maven.plugin.license.util.Selection;
 import com.mycila.maven.plugin.license.util.resource.ResourceFinder;
 import com.mycila.xmltool.XMLDoc;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
+import org.apache.maven.model.Organization;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -596,6 +597,11 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
         props.put("project.description", project.getDescription());
         props.put("project.inceptionYear", project.getInceptionYear());
         props.put("project.url", project.getUrl());
+        Organization org = project.getOrganization();
+        if(org != null){
+            props.put("project.organization.name", org.getName());
+            props.put("project.organization.url", org.getUrl());
+        }
         // then add per document properties
         props.put("file.name", document.getFile().getName());
 

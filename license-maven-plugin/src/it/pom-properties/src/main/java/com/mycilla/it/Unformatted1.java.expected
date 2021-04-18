@@ -1,0 +1,17 @@
+/*
+ * Mock license
+ * com.mycila.license-maven-plugin.it
+ * pom-properties
+ * 1.0.0
+ * Format using pom properties
+ * Integration Test for checking pom property replacement
+ * 2008
+ * https://it.example.org
+ * Example, Inc.
+ * https://example.com
+ * ends here
+ */
+package com.mycila.it;
+
+public class Unformatted1 {
+}
