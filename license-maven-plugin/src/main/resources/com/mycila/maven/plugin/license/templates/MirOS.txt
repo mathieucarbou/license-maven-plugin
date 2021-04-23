@@ -1,4 +1,4 @@
-Copyright © ${project.inceptionYear}
+Copyright © ${year}
 	${owner} <${email}>
 
 Provided that these terms and disclaimer and all copyright notices
