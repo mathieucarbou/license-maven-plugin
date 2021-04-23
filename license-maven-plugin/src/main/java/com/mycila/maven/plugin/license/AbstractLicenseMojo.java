@@ -596,9 +596,11 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
         props.put("project.name", project.getName());
         props.put("project.description", project.getDescription());
         props.put("project.inceptionYear", project.getInceptionYear());
+        props.put("year", project.getInceptionYear()); // maintains backward compatibility
         props.put("project.url", project.getUrl());
         Organization org = project.getOrganization();
         if(org != null){
+            props.put("owner", org.getName()); // maintains backward compatibility
             props.put("project.organization.name", org.getName());
             props.put("project.organization.url", org.getUrl());
         }

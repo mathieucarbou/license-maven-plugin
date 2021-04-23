@@ -1,4 +1,4 @@
-Copyright (c) ${project.inceptionYear} ${owner}
+Copyright (c) ${year} ${owner}
 
 “Commons Clause” License Condition v1.0
 

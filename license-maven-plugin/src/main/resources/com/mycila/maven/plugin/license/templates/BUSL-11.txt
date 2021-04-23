@@ -1,5 +1,5 @@
 ${project.name} - ${project.description}
-Copyright (c) ${project.inceptionYear} ${owner}
+Copyright (c) ${year} ${owner}
 
 Use of this software is governed by the Business Source License included
 in the LICENSE file and at www.mariadb.com/bsl11.
