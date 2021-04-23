@@ -1,5 +1,6 @@
 __Lastest releases__ (note that it may take up to 1-2 days to be in Maven Central repository):
 
+* [4.1](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/4.1/) (2021-04-23) - see [issues and pull requests](https://github.com/mycila/license-maven-plugin/milestone/17?closed=1)
 * [4.0](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/4.0/) (2021-03-30) - see [issues and pull requests](https://github.com/mycila/license-maven-plugin/milestone/16?closed=1)
 * [4.0.rc2](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/4.0.rc2/) (2020-08-16) - see [issues and pull requests](https://github.com/mycila/license-maven-plugin/milestone/15?closed=1)
 * [4.0.rc1](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/4.0.rc1/) (2020-06-09) - see [issues and pull requests](https://github.com/mycila/license-maven-plugin/milestone/14?closed=1)
