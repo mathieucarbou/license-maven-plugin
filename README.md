@@ -40,7 +40,7 @@ __Features:__
 
 __Project:__
 
- - __Build Status:__ [![Build Status](https://travis-ci.org/mathieucarbou/license-maven-plugin.png?branch=master)](https://travis-ci.org/mathieucarbou/license-maven-plugin)
+ - __Build Status:__ [![Build Status](https://travis-ci.com/mathieucarbou/license-maven-plugin.png?branch=master)](https://travis-ci.org/mathieucarbou/license-maven-plugin)
  - __Issues:__ https://github.com/mathieucarbou/license-maven-plugin/issues
  - __License:__ [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0)
 
