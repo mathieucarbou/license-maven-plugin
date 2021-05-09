@@ -159,12 +159,12 @@ more license configurations in a single execution of the plugin. In simple terms
 wraps the previous configuration options for a license. The previous
 configuration syntax is still supported but deprecated, and may be removed in future. 
 
- - [4.0.rc1](https://code.mathieu.photography/license-maven-plugin/reports/4.0.rc1/license-maven-plugin/plugin-info.html)
- - [3.0](https://code.mathieu.photography/license-maven-plugin/reports/3.0/plugin-info.html)
- - [3.0.rc1](https://code.mathieu.photography/license-maven-plugin/reports/3.0.rc1/plugin-info.html)
- - [2.3](https://code.mathieu.photography/license-maven-plugin/reports/2.3/plugin-info.html)
- - [2.2](https://code.mathieu.photography/license-maven-plugin/reports/2.2/plugin-info.html)
- - [2.0](https://code.mathieu.photography/license-maven-plugin/reports/2.0/plugin-info.html)
+ - [4.0.rc1](https://mycila.carbou.me/license-maven-plugin/reports/4.0.rc1/license-maven-plugin/plugin-info.html)
+ - [3.0](https://mycila.carbou.me/license-maven-plugin/reports/3.0/plugin-info.html)
+ - [3.0.rc1](https://mycila.carbou.me/license-maven-plugin/reports/3.0.rc1/plugin-info.html)
+ - [2.3](https://mycila.carbou.me/license-maven-plugin/reports/2.3/plugin-info.html)
+ - [2.2](https://mycila.carbou.me/license-maven-plugin/reports/2.2/plugin-info.html)
+ - [2.0](https://mycila.carbou.me/license-maven-plugin/reports/2.0/plugin-info.html)
 
 __WARNING__: there is good chances the latest version is greater than latest documentation, if nothing has changed concerning the plugin configurations.
 
