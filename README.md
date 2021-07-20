@@ -31,12 +31,12 @@ Basically, when you are developing a project either in open source or in a compa
 
 __Features:__
 
-  * `check`: check if header is missing in some source file
-  * `format`: add headers if missing
-  * `remove`: can remove existing header
-  * `update`: update existing header with a new one
-  * `custom mappings`: enables easy support of new file extensions
-  * `variable replacement`: You can add some variable in your header, such as ${year}, ${owner} and they will be replaced by the corresponding values taken from the pom or system properties.
+  * Check if header is missing in some source file (`check` goal).
+  * Add headers if missing (`format` goal).
+  * Update existing header with the new one (`format` goal).
+  * Remove existing header (`remove` goal).
+  * Custom mappings: enables easy support of new file extensions.
+  * Variable replacement: you can add some variable in your header, such as ${year} or ${owner} and they will be replaced by the corresponding values taken from the pom or system properties.
 
 __Project:__
 
