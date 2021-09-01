@@ -167,11 +167,11 @@ public final class HeaderParser {
             boolean foundEnd = false;
             do {
                 inPlaceHeader.append(line.toLowerCase());
-                line = fileContent.nextLine();
                 if (headerDefinition.isMultiLine() && headerDefinition.isLastHeaderLine(line)) {
                     foundEnd = true;
                     break;
                 }
+                line = fileContent.nextLine();
             }
             while (line != null && line.startsWith(before));
             // skip blank lines after header text
