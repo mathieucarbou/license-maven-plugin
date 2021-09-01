@@ -1,0 +1,48 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.mycila.license-maven-plugin.it</groupId>
+    <artifactId>dependencies-enforce</artifactId>
+    <version>1.0.0</version>
+
+    <name>Enforce licenses in dependencies</name>
+    <description>Integration Test for validating enforcement of licenses in dependencies</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>${env.LICENSE_PLUGIN_VERSION}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <phase>verify</phase>
+                    </execution>
+                </executions>
+                <configuration>
+                    <dependencyEnforce>true</dependencyEnforce>
+                    <!-- shouldn't find anything to complain about -->
+                    <dependencyScopes>
+                        <dependencyScope>runtime</dependencyScope>
+                        <dependencyScope>compile</dependencyScope>
+                    </dependencyScopes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
