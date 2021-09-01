@@ -91,7 +91,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
      * value for the base directory. This default value can be overridden
      * in each LicenseSet by setting {@link LicenseSet#basedir}.
      */
-    @Parameter(property = "license.basedir", defaultValue = "${basedir}", alias = "basedir", required = true)
+    @Parameter(property = "license.basedir", defaultValue = "${project.basedir}", alias = "basedir", required = true)
     public File defaultBasedir;
 
     /**
