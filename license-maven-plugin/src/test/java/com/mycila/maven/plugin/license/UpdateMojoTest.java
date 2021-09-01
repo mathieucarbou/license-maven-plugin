@@ -311,4 +311,41 @@ public final class UpdateMojoTest {
             // check that the original line is kept as the latest one even when introducing a license header
             assertThat(linesOfOriginFile.get(0), is(linesOfUpdatedFile.get(linesOfUpdatedFile.size() - 1)));
     }
+
+
+    @Test
+    /**
+     * Checks that xml with --> on the same line does not become corrupted when license is already correct
+     */
+    public void test_issue213() throws Exception {
+        File tmp = new File("target/test/update/issue213");
+        tmp.mkdirs();
+        FileUtils.copyFileToFolder(new File("src/test/resources/update/issue213/test.xml"), tmp);
+
+        LicenseFormatMojo updater = new LicenseFormatMojo();
+        updater.defaultBasedir = tmp;
+
+        LicenseSet licenseSet = new LicenseSet();
+        licenseSet.basedir = tmp;
+        licenseSet.inlineHeader = "All content copyright (c) 2003-2021 Bla, Inc., except as may\n" +
+                "  otherwise be noted in a separate copyright notice. All rights reserved.";
+        updater.licenseSets = new LicenseSet[] { licenseSet };
+        updater.project = new MavenProjectStub();
+        updater.execute();
+
+        // XML comment gets reformatted but document should still be valid:
+        assertEquals(
+                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                        "<!--\n" +
+                        "\n" +
+                        "    All content copyright (c) 2003-2021 Bla, Inc., except as may\n" +
+                        "      otherwise be noted in a separate copyright notice. All rights reserved.\n" +
+                        "\n" +
+                        "-->\n" +
+                        "<top>\n" +
+                        "    <element>value</element>\n" +
+                        "</top>\n",
+                FileUtils.read(new File(tmp, "test.xml"), System.getProperty("file.encoding"))
+        );
+    }
 }

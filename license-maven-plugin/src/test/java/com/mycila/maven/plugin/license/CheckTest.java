@@ -15,19 +15,27 @@
  */
 package com.mycila.maven.plugin.license;
 
-import com.mycila.maven.plugin.license.util.FileUtils;
+import static org.junit.Assert.assertEquals;
+
+import java.io.File;
+
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
 import org.junit.Test;
 
-import java.io.File;
-
-import static org.junit.Assert.assertEquals;
+import com.mycila.maven.plugin.license.util.FileUtils;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
 public final class CheckTest {
+	
+	@Test
+    public void test_defaultStubProject() throws Exception {
+        LicenseCheckMojo check = new LicenseCheckMojo();
+        check.project = new MavenProjectStub();
+        check.execute();
+    }	
 
     @Test
     public void test_line_wrapping() throws Exception {
