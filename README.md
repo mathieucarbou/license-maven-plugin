@@ -240,7 +240,7 @@ You have access to the Mojo, the current built properties and the document being
 
 The plugin has been designed so that it is very easy to add new supports for new sorts of comment. The plugin currently support these types of comment:
 
- - `JAVADOC_STYLE` (Java-like comments): *.groovy, *.css, *.cs, *.as, *.aj, *.c, *.h, *.cpp
+ - `JAVADOC_STYLE` (Java-like comments): *.css, *.cs, *.as, *.aj, *.c, *.h, *.cpp
 
     ```java
     /**
@@ -382,7 +382,7 @@ The plugin has been designed so that it is very easy to add new supports for new
     !
     ```
 
- - `SLASHSTAR_STYLE` (JavaScript like comments): *.js, *.java, *.fx
+ - `SLASHSTAR_STYLE` (JavaScript like comments): *.js, *.fx, *.java, *.groovy, *.kt, *.scala
 
     ```javascript
     /*
