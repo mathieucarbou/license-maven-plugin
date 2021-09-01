@@ -1,9 +1,9 @@
 package com.mycila.maven.plugin.license;
 
-import java.util.Arrays;
-
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
+
+import java.util.Arrays;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.not;

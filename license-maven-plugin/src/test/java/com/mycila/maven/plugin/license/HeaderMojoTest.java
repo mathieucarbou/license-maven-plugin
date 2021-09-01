@@ -15,10 +15,9 @@
  */
 package com.mycila.maven.plugin.license;
 
+import com.mycila.maven.plugin.license.util.FileUtils;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
 import org.junit.Test;
-
-import com.mycila.maven.plugin.license.util.FileUtils;
 
 import java.io.File;
 

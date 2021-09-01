@@ -15,14 +15,14 @@
  */
 package com.mycila.maven.plugin.license.git;
 
+import com.mycila.maven.plugin.license.AbstractLicenseMojo;
+import com.mycila.maven.plugin.license.PropertiesProvider;
+import com.mycila.maven.plugin.license.document.Document;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-
-import com.mycila.maven.plugin.license.AbstractLicenseMojo;
-import com.mycila.maven.plugin.license.PropertiesProvider;
-import com.mycila.maven.plugin.license.document.Document;
 
 /**
  * An implementation of {@link PropertiesProvider} that adds {@value #COPYRIGHT_CREATION_AUTHOR_NAME_KEY} and

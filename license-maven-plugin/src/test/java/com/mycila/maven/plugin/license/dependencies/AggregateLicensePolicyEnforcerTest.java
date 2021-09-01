@@ -15,15 +15,15 @@
  */
 package com.mycila.maven.plugin.license.dependencies;
 
-import static org.junit.Assert.assertEquals;
+import org.apache.maven.artifact.Artifact;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.maven.artifact.Artifact;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 public final class AggregateLicensePolicyEnforcerTest extends ArtifactLicensePolicyEnforcerTestBase {
 	LicenseMapData data;

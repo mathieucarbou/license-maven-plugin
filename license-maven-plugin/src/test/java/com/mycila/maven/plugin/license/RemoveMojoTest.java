@@ -24,9 +24,9 @@ import java.io.File;
 import java.nio.charset.Charset;
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
-import static org.hamcrest.CoreMatchers.*;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)

@@ -15,15 +15,14 @@
  */
 package com.mycila.maven.plugin.license;
 
-import static org.junit.Assert.assertEquals;
-
-import java.io.File;
-
+import com.mycila.maven.plugin.license.util.FileUtils;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
 import org.junit.Test;
 
-import com.mycila.maven.plugin.license.util.FileUtils;
+import java.io.File;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)

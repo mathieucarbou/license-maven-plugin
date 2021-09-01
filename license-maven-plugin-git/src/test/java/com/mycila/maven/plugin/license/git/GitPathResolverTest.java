@@ -15,13 +15,11 @@
  */
 package com.mycila.maven.plugin.license.git;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.mycila.maven.plugin.license.git.GitPathResolver;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author <a href="mailto:ppalaga@redhat.com">Peter Palaga</a>
