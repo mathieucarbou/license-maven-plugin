@@ -32,7 +32,7 @@
     <name>license-maven-plugin-parent</name>
     <description>Contains a Maven 2 plugin to check and update license headers in source files and its optional dependencies</description>
     <inceptionYear>2008</inceptionYear>
-    <url>http://mycila.github.io/${mycila.github.name}</url>
+    <url>https://mycila.carbou.me/license-maven-plugin/reports/${project.version}</url>
 
     <properties>
         <jdk.version>1.8</jdk.version>
@@ -50,7 +50,7 @@
     <scm>
         <connection>scm:git:https://github.com/mycila/${mycila.github.name}.git</connection>
         <developerConnection>scm:git:git@github.com:mycila/${mycila.github.name}.git</developerConnection>
-        <url>http://github.com/mycila/${mycila.github.name}</url>
+        <url>https://github.com/mathieucarbou/${mycila.github.name}</url>
         <tag>HEAD</tag>
     </scm>
 
@@ -110,6 +110,7 @@
     </dependencyManagement>
 
     <reporting>
+        <outputDirectory>target/site/${project.version}</outputDirectory>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -123,6 +124,13 @@
             </plugin>
         </plugins>
     </reporting>
+
+    <distributionManagement>
+        <site>
+            <id>report</id>
+            <url>https://mycila.carbou.me/license-maven-plugin/reports/${project.version}</url>
+        </site>
+    </distributionManagement>
 
     <build>
         <pluginManagement>

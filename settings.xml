@@ -16,15 +16,21 @@
     limitations under the License.
 
 -->
-<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
-          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+<settings xmlns="https://maven.apache.org/POM/4.0.0"
+          xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="https://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd">
   <mirrors>
     <mirror>
       <id>maven-central</id>
       <name>Maven Central</name>
       <url>https://repo1.maven.org/maven2</url>
       <mirrorOf>central</mirrorOf>
+    </mirror>
+    <mirror>
+      <id>codehaus.org</id>
+      <mirrorOf>external:http:*</mirrorOf>
+      <url>https://repo.maven.apache.org/maven2</url>
+      <blocked>false</blocked>
     </mirror>
   </mirrors>
 </settings>
