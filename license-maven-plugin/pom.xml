@@ -31,12 +31,12 @@
     <name>license-maven-plugin</name>
     <description>Maven 2 plugin to check and update license headers in source files</description>
     <inceptionYear>2008</inceptionYear>
-    <url>http://mycila.github.io/${mycila.github.name}</url>
+    <url>https://mycila.carbou.me/${mycila.github.name}</url>
 
     <scm>
         <connection>scm:git:https://github.com/mycila/${mycila.github.name}.git</connection>
         <developerConnection>scm:git:git@github.com:mycila/${mycila.github.name}.git</developerConnection>
-        <url>http://github.com/mycila/${mycila.github.name}</url>
+        <url>https://github.com/mathieucarbou/${mycila.github.name}</url>
         <tag>HEAD</tag>
     </scm>
 
