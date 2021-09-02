@@ -34,6 +34,7 @@ __Features:__
   * Remove existing header (`remove` goal).
   * Custom mappings: enables easy support of new file extensions.
   * Variable replacement: you can add some variable in your header, such as ${year} or ${owner} and they will be replaced by the corresponding values taken from the pom or system properties.
+  * [Dependency enforcement](./src/site/markdown/dependency-enforcement.md): optionally fail the build if the dependencies do not meet your license policies
 
 __Project:__
 
