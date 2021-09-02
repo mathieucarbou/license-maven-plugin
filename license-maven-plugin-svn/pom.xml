@@ -17,25 +17,36 @@
 
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>com.mycila</groupId>
-        <artifactId>license-maven-plugin-parent</artifactId>
-        <version>4.2-SNAPSHOT</version>
-    </parent>
-    <artifactId>license-maven-plugin-svn</artifactId>
-    <packaging>jar</packaging>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.mycila</groupId>
+    <artifactId>license-maven-plugin-parent</artifactId>
+    <version>4.2-SNAPSHOT</version>
+  </parent>
+  <artifactId>license-maven-plugin-svn</artifactId>
+  <packaging>jar</packaging>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.mycila</groupId>
-            <artifactId>license-maven-plugin</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.tmatesoft.svnkit</groupId>
-            <artifactId>svnkit</artifactId>
-            <version>1.8.7</version>
-        </dependency>
-    </dependencies>
+  <reporting>
+    <outputDirectory>../target/site/${project.version}/${project.artifactId}</outputDirectory>
+  </reporting>
+
+  <distributionManagement>
+    <site>
+      <id>report</id>
+      <url>https://mycila.carbou.me/license-maven-plugin/reports/${project.version}/${project.artifactId}</url>
+    </site>
+  </distributionManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.mycila</groupId>
+      <artifactId>license-maven-plugin</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.tmatesoft.svnkit</groupId>
+      <artifactId>svnkit</artifactId>
+      <version>1.8.7</version>
+    </dependency>
+  </dependencies>
 </project>

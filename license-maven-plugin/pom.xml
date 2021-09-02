@@ -83,6 +83,7 @@
             <plugin>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <configuration>
+                    <failOnError>false</failOnError>
                     <!--additionalparam>-Xdoclint:none</additionalparam-->
                     <sourceFileExcludes combine.children="append">
                         <sourceFileExclude>**/*Mojo.java</sourceFileExclude>
@@ -117,6 +118,17 @@
             </plugin>
         </plugins>
     </build>
+
+    <reporting>
+        <outputDirectory>../target/site/${project.version}/${project.artifactId}</outputDirectory>
+    </reporting>
+
+    <distributionManagement>
+        <site>
+            <id>report</id>
+            <url>https://mycila.carbou.me/license-maven-plugin/reports/${project.version}/${project.artifactId}</url>
+        </site>
+    </distributionManagement>
 
     <dependencies>
         <dependency>

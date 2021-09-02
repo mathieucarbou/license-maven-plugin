@@ -28,11 +28,22 @@
   <name>license-maven-plugin-git</name>
   <description>An optional module for license-maven-plugin adding git related functionality</description>
 
+  <reporting>
+    <outputDirectory>../target/site/${project.version}/${project.artifactId}</outputDirectory>
+  </reporting>
+
+  <distributionManagement>
+    <site>
+      <id>report</id>
+      <url>https://mycila.carbou.me/license-maven-plugin/reports/${project.version}/${project.artifactId}</url>
+    </site>
+  </distributionManagement>
+
   <dependencies>
     <dependency>
-       <groupId>com.mycila</groupId>
-       <artifactId>license-maven-plugin</artifactId>
-       <version>${project.version}</version>
+      <groupId>com.mycila</groupId>
+      <artifactId>license-maven-plugin</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jgit</groupId>
