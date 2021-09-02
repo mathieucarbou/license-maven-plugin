@@ -1,12 +1,11 @@
 package com.mycila.maven.plugin.license.header;
 
-import java.nio.file.Paths;
-
 import com.mycila.maven.plugin.license.Multi;
+import com.mycila.maven.plugin.license.util.resource.ResourceFinder;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.mycila.maven.plugin.license.util.resource.ResourceFinder;
+import java.nio.file.Paths;
 
 import static com.mycila.maven.plugin.license.Multi.DEFAULT_SEPARATOR;
 

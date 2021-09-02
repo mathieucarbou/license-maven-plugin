@@ -15,13 +15,13 @@
  */
 package com.mycila.maven.plugin.license.header;
 
-import java.io.IOException;
-import java.net.URL;
-
 import com.mycila.maven.plugin.license.Multi;
 import com.mycila.maven.plugin.license.util.FileUtils;
 import com.mycila.maven.plugin.license.util.resource.ResourceFinder;
 import org.apache.maven.plugin.MojoFailureException;
+
+import java.io.IOException;
+import java.net.URL;
 
 import static com.mycila.maven.plugin.license.Multi.DEFAULT_SEPARATOR;
 

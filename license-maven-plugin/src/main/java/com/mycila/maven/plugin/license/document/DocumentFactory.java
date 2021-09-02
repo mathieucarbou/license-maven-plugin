@@ -16,11 +16,10 @@
 package com.mycila.maven.plugin.license.document;
 
 import com.mycila.maven.plugin.license.header.HeaderDefinition;
+import org.codehaus.plexus.util.FileUtils;
 
 import java.io.File;
 import java.util.Map;
-
-import org.codehaus.plexus.util.FileUtils;
 
 /**
  * <b>Date:</b> 14-Feb-2008<br>

@@ -23,10 +23,8 @@ import org.apache.maven.shared.utils.io.ScanConductor;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import static java.util.Arrays.asList;
 

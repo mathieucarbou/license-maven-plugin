@@ -15,7 +15,6 @@
  */
 package com.mycila.maven.plugin.license;
 
-import com.mycila.maven.plugin.license.LicenseSet;
 import org.apache.maven.monitor.logging.DefaultLog;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
 import org.junit.Test;

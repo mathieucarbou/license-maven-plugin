@@ -15,13 +15,10 @@
  */
 package com.mycila.maven.plugin.license.dependencies;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.ArrayList;
-
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.shared.artifact.filter.StrictPatternIncludesArtifactFilter;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public final class ArtifactLicensePolicyEnforcerTest extends ArtifactLicensePolicyEnforcerTestBase {
 	Artifact artifact;

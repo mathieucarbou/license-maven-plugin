@@ -1,11 +1,13 @@
 package com.mycila.maven.plugin.license;
 
 import com.google.common.base.Strings;
-import java.util.UUID;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
+import java.util.UUID;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.junit.Assert.assertThat;
 
 
 /**

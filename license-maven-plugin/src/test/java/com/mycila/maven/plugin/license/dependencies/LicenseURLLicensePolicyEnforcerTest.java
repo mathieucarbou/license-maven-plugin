@@ -15,13 +15,13 @@
  */
 package com.mycila.maven.plugin.license.dependencies;
 
-import static org.junit.Assert.assertEquals;
+import org.apache.maven.model.License;
+import org.junit.Test;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.apache.maven.model.License;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 public final class LicenseURLLicensePolicyEnforcerTest extends ArtifactLicensePolicyEnforcerTestBase {
 	License license;

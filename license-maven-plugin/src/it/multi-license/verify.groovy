@@ -1,9 +1,7 @@
 import java.nio.file.Files
 import java.nio.file.Path
-import java.util.Arrays
-import java.util.List
 
-import static org.junit.Assert.*
+import static org.junit.Assert.assertEquals
 
 
 final Path base = basedir.toPath()

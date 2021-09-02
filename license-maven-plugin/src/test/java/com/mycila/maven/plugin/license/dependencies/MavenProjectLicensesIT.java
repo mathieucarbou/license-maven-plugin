@@ -15,14 +15,7 @@
  */
 package com.mycila.maven.plugin.license.dependencies;
 
-import static org.junit.Assert.assertEquals;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Optional;
-
+import com.google.common.io.Files;
 import org.apache.maven.it.VerificationException;
 import org.apache.maven.it.Verifier;
 import org.junit.Before;
@@ -30,7 +23,13 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-import com.google.common.io.Files;
+import java.io.File;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Optional;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * We use {@link Verifier} here for mvn executions, mainly so:
