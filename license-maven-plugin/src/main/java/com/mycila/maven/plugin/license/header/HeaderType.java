@@ -69,12 +69,6 @@ public enum HeaderType {
 
     ////////////////////////////////////
 
-    //REGEXP NOTE:
-    //You can use control characters. I.E. (?si)mathieu.*best maches:
-    //Mathieu
-    //is the
-    //best
-
     private static final Map<String, HeaderDefinition> DEFINITIONS = new HashMap<String, HeaderDefinition>(values().length);
 
     static {
