@@ -715,7 +715,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
 
     private Map<String, String> buildMapping() {
         Map<String, String> extensionMapping = new LinkedHashMap<String, String>();
-        // force inclusion of unknow item to manage unknown files
+        // force inclusion of unknown item to manage unknown files
         extensionMapping.put(DocumentType.UNKNOWN.getExtension(), DocumentType.UNKNOWN.getDefaultHeaderTypeName());
         for (Map.Entry<String, String> entry : mapping.entrySet()) {
             extensionMapping.put(entry.getKey().toLowerCase(), entry.getValue().toLowerCase());
