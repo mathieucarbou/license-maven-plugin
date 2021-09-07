@@ -21,7 +21,7 @@ exemptProjects: false
 exemptMilestones: true
 
 # Set to true to ignore issues with an assignee (defaults to false)
-exemptAssignees: true
+exemptAssignees: false
 
 # Label to use when marking as stale
 staleLabel: stale
