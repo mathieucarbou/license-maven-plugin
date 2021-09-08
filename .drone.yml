@@ -1,0 +1,43 @@
+kind: pipeline
+type: exec
+name: linux
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+  - name: build
+    image: maven:3-jdk-8
+    commands:
+      - "./mvnw clean install site -DperformRelease=true -Dgpg.skip=true -V -B -s settings.xml -Dmaven.artifact.threads=64 -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
+
+---
+kind: pipeline
+type: exec
+name: macosx
+
+platform:
+  os: darwin
+  arch: amd64
+
+steps:
+  - name: build
+    image: maven:3-jdk-8
+    commands:
+      - "./mvnw clean install site -DperformRelease=true -Dgpg.skip=true -V -B -s settings.xml -Dmaven.artifact.threads=64 -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
+
+---
+kind: pipeline
+type: exec
+name: windows
+
+platform:
+  os: windows
+  arch: amd64
+
+steps:
+  - name: build
+    image: maven:3-jdk-8
+    commands:
+      - "mvnw clean install site -DperformRelease=true -Dgpg.skip=true -V -B -s settings.xml -Dmaven.artifact.threads=64 -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
