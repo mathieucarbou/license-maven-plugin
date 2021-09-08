@@ -19,21 +19,19 @@ addons:
   apt:
     packages:
       - openjdk-8-jdk
-      - maven
 
-# Install OpenJDK 8 (Zulu) and Maven on Windows
+# Install OpenJDK 8 (Zulu)
 before_install:
   - |
     if [ "${TRAVIS_OS_NAME}" == windows ]; then
       choco install -y zulu8
-      choco install -y maven --version 3.8.1
-      export PATH=/C/Program\ Files/Zulu/zulu-8/bin:/C/ProgramData/chocolatey/lib/maven/apache-maven-3.8.1/bin:$PATH
+      export PATH=/C/Program\ Files/Zulu/zulu-8/bin:$PATH
       echo "PATH=${PATH}"
     fi
 
 install: /usr/bin/env true
 
-script: mvn clean install site -DperformRelease=true -Dgpg.skip=true -V -B -s settings.xml -Dmaven.artifact.threads=64 -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+script: ./mvnw clean install site -DperformRelease=true -Dgpg.skip=true -V -B -s settings.xml -Dmaven.artifact.threads=64 -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
 
 cache:
   #  timeout: 5000
