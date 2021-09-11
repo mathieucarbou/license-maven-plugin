@@ -31,6 +31,7 @@ public enum DocumentType {
     ACTIONSCRIPT("as", HeaderType.JAVADOC_STYLE),
     ADA_BODY("adb", HeaderType.DOUBLEDASHES_STYLE),
     ADA_SPEC("ads", HeaderType.DOUBLEDASHES_STYLE),
+    ASCII_DOC("adoc", HeaderType.ASCIIDOC_STYLE),
     ASP("asp", HeaderType.ASP),
     ASPECTJ("aj", HeaderType.JAVADOC_STYLE),
     ASSEMBLER("asm", HeaderType.SEMICOLON_STYLE),

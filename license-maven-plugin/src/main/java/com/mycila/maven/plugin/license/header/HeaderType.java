@@ -29,8 +29,9 @@ import java.util.Map;
 public enum HeaderType {
     ////////// COMMENT TYPES //////////
 
-    //              firstLine   beforeEachLine   endLine   afterEachLine   skipLinePattern   firstLineDetectionPattern   endLineDetectionPattern   allowBlankLines   isMultiline   padLines
+    //              firstLine   beforeEachLine   endLine   afterEachLine   skipLinePattern   firstLineDetectionPattern   lastLineDetectionPattern   allowBlankLines   isMultiline   padLines
     //generic
+    ASCIIDOC_STYLE("////", "  // ", "////", "", null, "^////$", "^////$", false, true, false),
     JAVADOC_STYLE("/**", " * ", " */", "", null, "(\\s|\\t)*/\\*.*$", ".*\\*/(\\s|\\t)*$", false, true, false),
     SCALA_STYLE("/**", "  * ", "  */", "", null, "(\\s|\\t)*/\\*.*$", ".*\\*/(\\s|\\t)*$", false, true, false),
     JAVAPKG_STYLE("EOL/*-", " * ", " */", "", "^package [a-z_]+(\\.[a-z_][a-z0-9_]*)*;$", "(EOL)*(\\s|\\t)*/\\*.*$", ".*\\*/(\\s|\\t)*$", false, true, false),
@@ -81,9 +82,9 @@ public enum HeaderType {
 
     private HeaderType(String firstLine, String beforeEachLine,
                        String endLine, String afterEachLine,
-                       String skipLinePattern, String firstLineDetectionPattern, String endLineDetectionPattern,
+                       String skipLinePattern, String firstLineDetectionPattern, String lastLineDetectionPattern,
                        boolean allowBlankLines, boolean isMultiline, boolean padLines) {
-        definition = new HeaderDefinition(this.name().toLowerCase(), firstLine, beforeEachLine, endLine, afterEachLine, skipLinePattern, firstLineDetectionPattern, endLineDetectionPattern, allowBlankLines, isMultiline, padLines);
+        definition = new HeaderDefinition(this.name().toLowerCase(), firstLine, beforeEachLine, endLine, afterEachLine, skipLinePattern, firstLineDetectionPattern, lastLineDetectionPattern, allowBlankLines, isMultiline, padLines);
     }
 
     /**
