@@ -27,16 +27,17 @@ import java.nio.charset.Charset;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
 public final class UpdateMojoTest {
     public static final String LS = "\n";
-    
+
     @Test
     public void test_update() throws Exception {
         File tmp = new File("target/test/update");
@@ -244,7 +245,7 @@ public final class UpdateMojoTest {
 
         assertEquals(expectedString, readModifiedContent);
     }
-    
+
     @Test
     public void test_issue71_canSkipSeveralLines() throws Exception {
         File tmp = new File("target/test/update/issue71");
@@ -267,29 +268,29 @@ public final class UpdateMojoTest {
         assertThat(linesOfModifiedFile.get(0 /* line 1 */), is("|||"));
         assertThat(linesOfModifiedFile.get(8) /* line 9 */, is("|||"));
     }
-    
+
     @Test
     public void test_issue37_RunningUpdaterTwiceMustNotChangeTheFile() throws Exception {
         File tmp = new File("target/test/update/issue37");
         tmp.mkdirs();
         FileUtils.copyFileToFolder(new File("src/test/resources/update/issue37/xwiki.xml"), tmp);
-        
+
         LicenseFormatMojo execution1 = new LicenseFormatMojo();
         execution1.defaultBasedir = tmp;
         execution1.legacyConfigHeader = "src/test/resources/update/issue37/xwiki-license.txt";
         execution1.project = new MavenProjectStub();
         execution1.execute();
-        
+
         String execution1FileContent = FileUtils.read(new File(tmp, "xwiki.xml"), System.getProperty("file.encoding"));
-        
+
         LicenseFormatMojo execution2 = new LicenseFormatMojo();
         execution2.defaultBasedir = tmp;
         execution2.legacyConfigHeader = "src/test/resources/update/issue37/xwiki-license.txt";
         execution2.project = new MavenProjectStub();
         execution2.execute();
-        
+
         String execution2FileContent = FileUtils.read(new File(tmp, "xwiki.xml"), System.getProperty("file.encoding"));
-        
+
         assertThat(execution1FileContent, is(execution2FileContent));
     }
 
@@ -298,16 +299,16 @@ public final class UpdateMojoTest {
             File tmp = new File("target/test/update/issue30");
             tmp.mkdirs();
             FileUtils.copyFileToFolder(new File("src/test/resources/update/issue30/one-line-comment.ftl"), tmp);
-    
+
             LicenseFormatMojo updater = new LicenseFormatMojo();
             updater.defaultBasedir = tmp;
             updater.legacyConfigHeader = "src/test/resources/single-line-header.txt";
             updater.project = new MavenProjectStub();
             updater.execute();
-            
+
             List<String> linesOfOriginFile = Files.readLines(new File("src/test/resources/update/issue30/one-line-comment.ftl"), Charset.defaultCharset());
             List<String> linesOfUpdatedFile = Files.readLines(new File(tmp, "one-line-comment.ftl"), Charset.defaultCharset());
-            
+
             // check that the original line is kept as the latest one even when introducing a license header
             assertThat(linesOfOriginFile.get(0), is(linesOfUpdatedFile.get(linesOfUpdatedFile.size() - 1)));
     }
@@ -347,5 +348,27 @@ public final class UpdateMojoTest {
                         "</top>\n",
                 FileUtils.read(new File(tmp, "test.xml"), System.getProperty("file.encoding"))
         );
+    }
+
+    @Test
+    public void test_issue71_underscore_in_package_name() throws Exception {
+        File tmp = new File("target/test/update/issue-187");
+        tmp.mkdirs();
+        FileUtils.copyFileToFolder(new File("src/test/resources/update/issue-187/Main.java"), tmp);
+
+        LicenseFormatMojo updater = new LicenseFormatMojo();
+        updater.defaultBasedir = tmp;
+        updater.legacyConfigHeader = "src/test/resources/update/issue-187/header.txt";
+        updater.project = new MavenProjectStub();
+        updater.mapping = new LinkedHashMap<String, String>() {{
+            put("java", "JAVAPKG_STYLE");
+        }};
+
+        updater.execute();
+
+        String processed = FileUtils.read(new File(tmp, "Main.java"), System.getProperty("file.encoding"));
+        String expected = FileUtils.read(new File("src/test/resources/update/issue-187/expected.txt"), System.getProperty("file.encoding"));
+
+        assertThat(processed, is(equalTo(expected)));
     }
 }
