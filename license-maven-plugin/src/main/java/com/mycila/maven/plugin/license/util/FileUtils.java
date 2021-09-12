@@ -26,12 +26,17 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.UncheckedIOException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
+import java.util.stream.Stream;
+
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 /**
  * <b>Date:</b> 16-Feb-2008<br>
@@ -134,5 +139,17 @@ public final class FileUtils {
         }
 
         return file.toPath();
+    }
+
+    @SuppressWarnings({"ConstantConditions", "ResultOfMethodCallIgnored"})
+    public static void copyFilesToFolder(File src, File dst) {
+        dst.mkdirs();
+        Stream.of(src.listFiles()).filter(File::isFile).forEach(file -> {
+            try {
+                Files.copy(file.toPath(), dst.toPath().resolve(file.getName()), REPLACE_EXISTING);
+            } catch (IOException e) {
+                throw new UncheckedIOException(e);
+            }
+        });
     }
 }

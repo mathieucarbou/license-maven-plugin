@@ -80,7 +80,7 @@ public final class Selection {
             final String[] folderExcludes = findFolderExcludes();
             final MatchPatterns excludePatterns = MatchPatterns.from(folderExcludes);
             if (debugEnabled) {
-                log.debug("Starting to visit '" + basedir + "' with excludes: " + asList(folderExcludes));
+                log.debug("Starting to visit " + basedir + ", excluding directories: " + asList(folderExcludes));
             }
             scanner = new DirectoryScanner();
             scanner.setScanConductor(new ScanConductor() {
