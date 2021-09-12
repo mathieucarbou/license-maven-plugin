@@ -1,33 +1,33 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+  <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.mycila.license-maven-plugin.it</groupId>
-    <artifactId>legacy-config</artifactId>
-    <version>1.0.0</version>
+  <groupId>com.mycila.license-maven-plugin.it</groupId>
+  <artifactId>legacy-config</artifactId>
+  <version>1.0.0</version>
 
-    <name>Check Legacy Configuration</name>
-    <description>Integration Test for checking legacy configuration</description>
+  <name>Check Legacy Configuration</name>
+  <description>Integration Test for checking legacy configuration</description>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>com.mycila</groupId>
-                <artifactId>license-maven-plugin</artifactId>
-                <version>@project.version@</version>
-                <configuration>
-                    <header>mock-license.txt</header>
-                    <excludes>
-                        <exclude>invoker.properties</exclude>
-                        <exclude>pom.xml</exclude>
-                        <exclude>*.groovy</exclude>
-                        <exclude>**/*.bak</exclude>
-                        <exclude>*.log</exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.mycila</groupId>
+        <artifactId>license-maven-plugin</artifactId>
+        <version>@project.version@</version>
+        <configuration>
+          <header>mock-license.txt</header>
+          <excludes>
+            <exclude>invoker.properties</exclude>
+            <exclude>pom.xml</exclude>
+            <exclude>*.groovy</exclude>
+            <exclude>**/*.bak</exclude>
+            <exclude>*.log</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>

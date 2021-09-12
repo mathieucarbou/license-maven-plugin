@@ -27,99 +27,99 @@ import java.util.Map;
  * @see com.mycila.maven.plugin.license.header.HeaderDefinition
  */
 public enum HeaderType {
-    ////////// COMMENT TYPES //////////
+  ////////// COMMENT TYPES //////////
 
-    //              firstLine   beforeEachLine   endLine   afterEachLine   skipLinePattern   firstLineDetectionPattern   lastLineDetectionPattern   allowBlankLines   isMultiline   padLines
-    //generic
-    ASCIIDOC_STYLE("////", "  // ", "////", "", null, "^////$", "^////$", false, true, false),
-    MVEL_STYLE("@comment{", "  ", "}", "", null, "@comment\\{$", "\\}$", true, true, false),
-    JAVADOC_STYLE("/**", " * ", " */", "", null, "(\\s|\\t)*/\\*.*$", ".*\\*/(\\s|\\t)*$", false, true, false),
-    SCALA_STYLE("/**", "  * ", "  */", "", null, "(\\s|\\t)*/\\*.*$", ".*\\*/(\\s|\\t)*$", false, true, false),
-    JAVAPKG_STYLE("EOL/*-", " * ", " */", "", "^package [a-z_]+(\\.[a-z_][a-z0-9_]*)*;$", "(EOL)*(\\s|\\t)*/\\*.*$", ".*\\*/(\\s|\\t)*$", false, true, false),
-    SCRIPT_STYLE("#", "# ", "#EOL", "", "^#!.*$", "#.*$", "#.*$", false, false, false),
-    HAML_STYLE("-#", "-# ", "-#EOL", "", "^-#!.*$", "-#.*$", "-#.*$", false, false, false),
-    XML_STYLE("<!--EOL", "    ", "EOL-->", "", "^<\\?xml.*>$", "(\\s|\\t)*<!--.*$", ".*-->(\\s|\\t)*$", true, true, false),
-    XML_PER_LINE("EOL", "<!-- ", "EOL", " -->", "^<\\?xml.*>$", "(\\s|\\t)*<!--.*$", ".*-->(\\s|\\t)*$", true, false, true),
-    SEMICOLON_STYLE(";", "; ", ";EOL", "", null, ";.*$", ";.*$", false, false, false),
-    APOSTROPHE_STYLE("'", "' ", "'EOL", "", null, "'.*$", "'.*$", false, false, false),
-    EXCLAMATION_STYLE("!", "! ", "!EOL", "", null, "!.*$", "!.*$", false, false, false),
-    DOUBLEDASHES_STYLE("--", "-- ", "--EOL", "", null, "--.*$", "--.*$", false, false, false),
-    SLASHSTAR_STYLE("/*", " * ", " */", "", null, "(\\s|\\t)*/\\*.*$", ".*\\*/(\\s|\\t)*$", false, true, false),
-    BRACESSTAR_STYLE("\\{*", " * ", " *\\}", "", null, "(\\s|\\t)*\\{\\*.*$", ".*\\*\\}(\\s|\\t)*$", false, true, false),
-    SHARPSTAR_STYLE("#*", " * ", " *#", "", null, "(\\s|\\t)*#\\*.*$", ".*\\*#(\\s|\\t)*$", false, true, false),
-    DOUBLETILDE_STYLE("~~", "~~ ", "~~EOL", "", null, "~~.*$", "~~.*$", false, false, false),
-    DYNASCRIPT_STYLE("<%--EOL", "    ", "EOL--%>", "", null, "(\\s|\\t)*<%--.*$", ".*--%>(\\s|\\t)*$", true, true, false),
-    DYNASCRIPT3_STYLE("<!---EOL", "    ", "EOL--->", "", null, "(\\s|\\t)*<!---.*$", ".*--->(\\s|\\t)*$", true, true, false),
-    PERCENT_STYLE("", "% ", "EOL", "", null, "^% .*$", "^% .*$", false, false, false),
-    PERCENT3_STYLE("%%%", "%%% ", "%%%EOL", "", null, "%%%.*$", "%%%.*$", false, false, false),
-    EXCLAMATION3_STYLE("!!!", "!!! ", "!!!EOL", "", null, "!!!.*$", "!!!.*$", false, false, false),
+  //              firstLine   beforeEachLine   endLine   afterEachLine   skipLinePattern   firstLineDetectionPattern   lastLineDetectionPattern   allowBlankLines   isMultiline   padLines
+  //generic
+  ASCIIDOC_STYLE("////", "  // ", "////", "", null, "^////$", "^////$", false, true, false),
+  MVEL_STYLE("@comment{", "  ", "}", "", null, "@comment\\{$", "\\}$", true, true, false),
+  JAVADOC_STYLE("/**", " * ", " */", "", null, "(\\s|\\t)*/\\*.*$", ".*\\*/(\\s|\\t)*$", false, true, false),
+  SCALA_STYLE("/**", "  * ", "  */", "", null, "(\\s|\\t)*/\\*.*$", ".*\\*/(\\s|\\t)*$", false, true, false),
+  JAVAPKG_STYLE("EOL/*-", " * ", " */", "", "^package [a-z_]+(\\.[a-z_][a-z0-9_]*)*;$", "(EOL)*(\\s|\\t)*/\\*.*$", ".*\\*/(\\s|\\t)*$", false, true, false),
+  SCRIPT_STYLE("#", "# ", "#EOL", "", "^#!.*$", "#.*$", "#.*$", false, false, false),
+  HAML_STYLE("-#", "-# ", "-#EOL", "", "^-#!.*$", "-#.*$", "-#.*$", false, false, false),
+  XML_STYLE("<!--EOL", "    ", "EOL-->", "", "^<\\?xml.*>$", "(\\s|\\t)*<!--.*$", ".*-->(\\s|\\t)*$", true, true, false),
+  XML_PER_LINE("EOL", "<!-- ", "EOL", " -->", "^<\\?xml.*>$", "(\\s|\\t)*<!--.*$", ".*-->(\\s|\\t)*$", true, false, true),
+  SEMICOLON_STYLE(";", "; ", ";EOL", "", null, ";.*$", ";.*$", false, false, false),
+  APOSTROPHE_STYLE("'", "' ", "'EOL", "", null, "'.*$", "'.*$", false, false, false),
+  EXCLAMATION_STYLE("!", "! ", "!EOL", "", null, "!.*$", "!.*$", false, false, false),
+  DOUBLEDASHES_STYLE("--", "-- ", "--EOL", "", null, "--.*$", "--.*$", false, false, false),
+  SLASHSTAR_STYLE("/*", " * ", " */", "", null, "(\\s|\\t)*/\\*.*$", ".*\\*/(\\s|\\t)*$", false, true, false),
+  BRACESSTAR_STYLE("\\{*", " * ", " *\\}", "", null, "(\\s|\\t)*\\{\\*.*$", ".*\\*\\}(\\s|\\t)*$", false, true, false),
+  SHARPSTAR_STYLE("#*", " * ", " *#", "", null, "(\\s|\\t)*#\\*.*$", ".*\\*#(\\s|\\t)*$", false, true, false),
+  DOUBLETILDE_STYLE("~~", "~~ ", "~~EOL", "", null, "~~.*$", "~~.*$", false, false, false),
+  DYNASCRIPT_STYLE("<%--EOL", "    ", "EOL--%>", "", null, "(\\s|\\t)*<%--.*$", ".*--%>(\\s|\\t)*$", true, true, false),
+  DYNASCRIPT3_STYLE("<!---EOL", "    ", "EOL--->", "", null, "(\\s|\\t)*<!---.*$", ".*--->(\\s|\\t)*$", true, true, false),
+  PERCENT_STYLE("", "% ", "EOL", "", null, "^% .*$", "^% .*$", false, false, false),
+  PERCENT3_STYLE("%%%", "%%% ", "%%%EOL", "", null, "%%%.*$", "%%%.*$", false, false, false),
+  EXCLAMATION3_STYLE("!!!", "!!! ", "!!!EOL", "", null, "!!!.*$", "!!!.*$", false, false, false),
 
-    DOUBLESLASH_STYLE("//", "// ", "//EOL", "", null, "//.*$", "//.*$", false, false, false),
-    SINGLE_LINE_DOUBLESLASH_STYLE("", "// ", "", "", null, "//.*$", "//.*$", false, false, false),
-    TRIPLESLASH_STYLE("///", "/// ", "///EOL", "", null, "///.*$", "///.*$", false, false, false),
-    // non generic
-    PHP("/*", " * ", " */", "", "^<\\?php.*$", "(\\s|\\t)*/\\*.*$", ".*\\*/(\\s|\\t)*$", false, true, false),
-    ASP("<%", "    ", "%>", "", null, "(\\s|\\t)*<%[^@].*$", ".*%>(\\s|\\t)*$", true, true, false),
-    LUA("--[[EOL", "    ", "EOL]]", "", null, "--\\[\\[$", "\\]\\]$", true, true, false),
-    FTL("<#--EOL", "    ", "EOL-->", "", null, "(\\s|\\t)*<#--.*$", ".*-->(\\s|\\t)*$", true, true, false),
-    FTL_ALT("[#--EOL", "    ", "EOL--]", "", "\\[#ftl(\\s.*)?\\]", "(\\s|\\t)*\\[#--.*$", ".*--\\](\\s|\\t)*$", true, true, false),
-    TEXT("====", "    ", "====EOL", "", null, "====.*$", "====.*$", true, true, false),
-    BATCH("@REM", "@REM ", "@REMEOL", "", null, "@REM.*$", "@REM.*$", false, false, false),
-    MUSTACHE_STYLE("{{!", "    ", "}}", "", null, "\\{\\{\\!.*$", "\\}\\}.*$", false, true, false),
-    // unknown
-    UNKNOWN("", "", "", "", null, null, null, false, false, false);
+  DOUBLESLASH_STYLE("//", "// ", "//EOL", "", null, "//.*$", "//.*$", false, false, false),
+  SINGLE_LINE_DOUBLESLASH_STYLE("", "// ", "", "", null, "//.*$", "//.*$", false, false, false),
+  TRIPLESLASH_STYLE("///", "/// ", "///EOL", "", null, "///.*$", "///.*$", false, false, false),
+  // non generic
+  PHP("/*", " * ", " */", "", "^<\\?php.*$", "(\\s|\\t)*/\\*.*$", ".*\\*/(\\s|\\t)*$", false, true, false),
+  ASP("<%", "    ", "%>", "", null, "(\\s|\\t)*<%[^@].*$", ".*%>(\\s|\\t)*$", true, true, false),
+  LUA("--[[EOL", "    ", "EOL]]", "", null, "--\\[\\[$", "\\]\\]$", true, true, false),
+  FTL("<#--EOL", "    ", "EOL-->", "", null, "(\\s|\\t)*<#--.*$", ".*-->(\\s|\\t)*$", true, true, false),
+  FTL_ALT("[#--EOL", "    ", "EOL--]", "", "\\[#ftl(\\s.*)?\\]", "(\\s|\\t)*\\[#--.*$", ".*--\\](\\s|\\t)*$", true, true, false),
+  TEXT("====", "    ", "====EOL", "", null, "====.*$", "====.*$", true, true, false),
+  BATCH("@REM", "@REM ", "@REMEOL", "", null, "@REM.*$", "@REM.*$", false, false, false),
+  MUSTACHE_STYLE("{{!", "    ", "}}", "", null, "\\{\\{\\!.*$", "\\}\\}.*$", false, true, false),
+  // unknown
+  UNKNOWN("", "", "", "", null, null, null, false, false, false);
 
-    ////////////////////////////////////
+  ////////////////////////////////////
 
-    private static final Map<String, HeaderDefinition> DEFINITIONS = new HashMap<String, HeaderDefinition>(values().length);
+  private static final Map<String, HeaderDefinition> DEFINITIONS = new HashMap<String, HeaderDefinition>(values().length);
 
-    static {
-        for (HeaderType type : values()) {
-            DEFINITIONS.put(type.getDefinition().getType(), type.getDefinition());
-        }
+  static {
+    for (HeaderType type : values()) {
+      DEFINITIONS.put(type.getDefinition().getType(), type.getDefinition());
     }
+  }
 
-    private final HeaderDefinition definition;
+  private final HeaderDefinition definition;
 
-    private HeaderType(String firstLine, String beforeEachLine,
-                       String endLine, String afterEachLine,
-                       String skipLinePattern, String firstLineDetectionPattern, String lastLineDetectionPattern,
-                       boolean allowBlankLines, boolean isMultiline, boolean padLines) {
-        definition = new HeaderDefinition(this.name().toLowerCase(), firstLine, beforeEachLine, endLine, afterEachLine, skipLinePattern, firstLineDetectionPattern, lastLineDetectionPattern, allowBlankLines, isMultiline, padLines);
+  private HeaderType(String firstLine, String beforeEachLine,
+                     String endLine, String afterEachLine,
+                     String skipLinePattern, String firstLineDetectionPattern, String lastLineDetectionPattern,
+                     boolean allowBlankLines, boolean isMultiline, boolean padLines) {
+    definition = new HeaderDefinition(this.name().toLowerCase(), firstLine, beforeEachLine, endLine, afterEachLine, skipLinePattern, firstLineDetectionPattern, lastLineDetectionPattern, allowBlankLines, isMultiline, padLines);
+  }
+
+  /**
+   * Returns the <code>HeaderDefinition</code> which corresponds to this enumeration instance.
+   *
+   * @return The header definition.
+   */
+  public HeaderDefinition getDefinition() {
+    return definition;
+  }
+
+  /**
+   * Returns the <code>HeaderType</code> declared in this enumeration for the given header type name.
+   *
+   * @param name The header definition type name.
+   * @return The <code>HeaderType</code> declared in this enumeration if found or {@link
+   * com.mycila.maven.plugin.license.header.HeaderType#UNKNOWN}.
+   */
+  public static HeaderType fromName(String name) {
+    for (HeaderType type : values()) {
+      if (type.name().equalsIgnoreCase(name)) {
+        return type;
+      }
     }
+    return UNKNOWN;
+  }
 
-    /**
-     * Returns the <code>HeaderDefinition</code> which corresponds to this enumeration instance.
-     *
-     * @return The header definition.
-     */
-    public HeaderDefinition getDefinition() {
-        return definition;
-    }
-
-    /**
-     * Returns the <code>HeaderType</code> declared in this enumeration for the given header type name.
-     *
-     * @param name The header definition type name.
-     * @return The <code>HeaderType</code> declared in this enumeration if found or {@link
-     *         com.mycila.maven.plugin.license.header.HeaderType#UNKNOWN}.
-     */
-    public static HeaderType fromName(String name) {
-        for (HeaderType type : values()) {
-            if (type.name().equalsIgnoreCase(name)) {
-                return type;
-            }
-        }
-        return UNKNOWN;
-    }
-
-    /**
-     * Returns the header definitions of every default definitions declared by this enumeration as a map using the
-     * header type name as key.
-     *
-     * @return The default definitions declared by this enumeration.
-     */
-    public static Map<String, HeaderDefinition> defaultDefinitions() {
-        return Collections.unmodifiableMap(DEFINITIONS);
-    }
+  /**
+   * Returns the header definitions of every default definitions declared by this enumeration as a map using the
+   * header type name as key.
+   *
+   * @return The default definitions declared by this enumeration.
+   */
+  public static Map<String, HeaderDefinition> defaultDefinitions() {
+    return Collections.unmodifiableMap(DEFINITIONS);
+  }
 }

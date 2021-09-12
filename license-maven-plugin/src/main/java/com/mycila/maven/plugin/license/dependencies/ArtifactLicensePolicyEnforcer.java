@@ -23,31 +23,30 @@ import java.util.Collections;
 
 /**
  * Make policy decisions on a {@link Artifact} based on an {@link ArtifactFilter}.
- * 
- * @author Royce Remer
  *
+ * @author Royce Remer
  */
 public class ArtifactLicensePolicyEnforcer extends AbstractLicensePolicyEnforcer<Artifact> {
-	private ArtifactFilter filter;
+  private ArtifactFilter filter;
 
-	public ArtifactLicensePolicyEnforcer(final LicensePolicy policy, final ArtifactFilter filter) {
-		super(policy);
-		this.filter = filter;
-	}
-	
-	public ArtifactLicensePolicyEnforcer(final LicensePolicy policy) {
-		super(policy);
-		this.filter = new StrictPatternIncludesArtifactFilter(Collections.singletonList(policy.getValue()));
-	}
+  public ArtifactLicensePolicyEnforcer(final LicensePolicy policy, final ArtifactFilter filter) {
+    super(policy);
+    this.filter = filter;
+  }
 
-	@Override
-	public boolean apply(final Artifact target) {
-		final boolean matches = filter.include(target);
-		return getPolicy().getRule().isAllowed(matches);
-	}
+  public ArtifactLicensePolicyEnforcer(final LicensePolicy policy) {
+    super(policy);
+    this.filter = new StrictPatternIncludesArtifactFilter(Collections.singletonList(policy.getValue()));
+  }
 
-	@Override
-	public Class<?> getType() {
-		return Artifact.class;
-	}
+  @Override
+  public boolean apply(final Artifact target) {
+    final boolean matches = filter.include(target);
+    return getPolicy().getRule().isAllowed(matches);
+  }
+
+  @Override
+  public Class<?> getType() {
+    return Artifact.class;
+  }
 }

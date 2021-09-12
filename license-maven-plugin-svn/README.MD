@@ -1,6 +1,7 @@
 # license-maven-plugin-svn
 
-It is quite common that legal departments require updating of copyright years in header sections whenever the given source file changes. `license-maven-plugin-svn` aims at making it easier not only to enforce this requirement but also to fix found inconsistencies for projects hosted on Subversion SCM.
+It is quite common that legal departments require updating of copyright years in header sections whenever the given source file changes. `license-maven-plugin-svn` aims at making it easier not only to enforce this requirement but also to fix found inconsistencies for projects hosted on Subversion
+SCM.
 
 ## What is license-maven-plugin-svn?
 
@@ -10,14 +11,15 @@ It is quite common that legal departments require updating of copyright years in
 ## Which properties is license-maven-plugin-svn adding?
 
 - `license.svn.lastchange.year`: the year of the last change (year of last commit) on 4 digits
-- `license.svn.lastchange.timestamp`: the last change timestamp (timestamp of last commit) using [SimpleDateFormat](https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html) `yyyyMMdd-HH:mm:ss` 
-- `license.svn.lastchange.date`: the last change date (date of last commit) using [SimpleDateFormat](https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html) `yyyyMMdd` 
+- `license.svn.lastchange.timestamp`: the last change timestamp (timestamp of last commit) using [SimpleDateFormat](https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html) `yyyyMMdd-HH:mm:ss`
+- `license.svn.lastchange.date`: the last change date (date of last commit) using [SimpleDateFormat](https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html) `yyyyMMdd`
 - `license.svn.lastchange.revision`: the SVN revision number of last change
 - `license.svn.years.range`: the combination of `project.inceptionYear` and `license.svn.lastchange.year` delimited by a dash (-), or just `license.svn.lastchange.year` if `project.inceptionYear` is eqal to `license.svn.lastchange.year` or if `project.inceptionYear` isn't defined
 
 ## How to use license-maven-plugin-git
 
 Just add `license-maven-plugin-svn` as a dependency to `license-maven-plugin` in your pom.xml file:
+
 ``` xml
 ...
 <properties>
@@ -55,12 +57,14 @@ Just add `license-maven-plugin-svn` as a dependency to `license-maven-plugin` in
 With this configuration, the plugin will be able to query svn metadata, described by the above properties, for each of the files it will handle.
 
 For example if the beginning of the file my-header-folder/my-header-template.txt from the above example looks like this:
+
 ```
 Copyright ${license.svn.years.range} My Company, Inc.
 ...
 ```
 
-Within  a porject with inceptionYear 2010 and a file with last change in 2013, this example template would be resolved by license-maven-plugin to something like this:
+Within a porject with inceptionYear 2010 and a file with last change in 2013, this example template would be resolved by license-maven-plugin to something like this:
+
 ```
 Copyright 2010-2013 My Company, Inc.
 ...
@@ -72,6 +76,7 @@ Your Subversion repository is probably a secured one.
 `license-maven-plugin-svn` supports authentication based on user/password and relies on standard maven `<server>` entries in the maven `settings` plus a dedicated configuration in the `license-maven-plugin`.
 
 Thus having in your settings
+
 ``` xml
 <servers>
     ...

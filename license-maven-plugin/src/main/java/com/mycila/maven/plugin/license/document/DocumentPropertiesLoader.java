@@ -22,5 +22,5 @@ import java.util.Properties;
  * 2013-08-27
  */
 public interface DocumentPropertiesLoader {
-    Properties load(Document d);
+  Properties load(Document d);
 }

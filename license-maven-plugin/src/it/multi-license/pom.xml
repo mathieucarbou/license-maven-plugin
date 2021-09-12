@@ -1,44 +1,44 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+  <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.mycila.license-maven-plugin.it</groupId>
-    <artifactId>multi-license-set</artifactId>
-    <version>1.0.0</version>
+  <groupId>com.mycila.license-maven-plugin.it</groupId>
+  <artifactId>multi-license-set</artifactId>
+  <version>1.0.0</version>
 
-    <name>Check a Multi-License Set</name>
-    <description>Integration Test for checking a multi-license set</description>
+  <name>Check a Multi-License Set</name>
+  <description>Integration Test for checking a multi-license set</description>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>com.mycila</groupId>
-                <artifactId>license-maven-plugin</artifactId>
-                <version>@project.version@</version>
-                <configuration>
-                    <licenseSets>
-                        <licenseSet>
-                            <multi>
-                                <preamble><![CDATA[This product is multi-licensed under X, Y, Z licenses.]]></preamble>
-                                <header>mock-license-1.txt</header>
-                                <separator>*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#**#*#*#*#*#*#*</separator>
-                                <header>mock-license-2.txt</header>
-                                <separator>====================================================================</separator>
-                                <header>mock-license-3.txt</header>
-                            </multi>
-                            <excludes>
-                                <exclude>invoker.properties</exclude>
-                                <exclude>pom.xml</exclude>
-                                <exclude>*.groovy</exclude>
-                                <exclude>**/*.bak</exclude>
-                                <exclude>*.log</exclude>
-                            </excludes>
-                        </licenseSet>
-                    </licenseSets>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.mycila</groupId>
+        <artifactId>license-maven-plugin</artifactId>
+        <version>@project.version@</version>
+        <configuration>
+          <licenseSets>
+            <licenseSet>
+              <multi>
+                <preamble><![CDATA[This product is multi-licensed under X, Y, Z licenses.]]></preamble>
+                <header>mock-license-1.txt</header>
+                <separator>*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#**#*#*#*#*#*#*</separator>
+                <header>mock-license-2.txt</header>
+                <separator>====================================================================</separator>
+                <header>mock-license-3.txt</header>
+              </multi>
+              <excludes>
+                <exclude>invoker.properties</exclude>
+                <exclude>pom.xml</exclude>
+                <exclude>*.groovy</exclude>
+                <exclude>**/*.bak</exclude>
+                <exclude>*.log</exclude>
+              </excludes>
+            </licenseSet>
+          </licenseSets>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>

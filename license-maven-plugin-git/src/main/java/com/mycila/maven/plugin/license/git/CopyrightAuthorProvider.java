@@ -33,40 +33,38 @@ import java.util.Properties;
  */
 public class CopyrightAuthorProvider extends GitPropertiesProvider implements PropertiesProvider {
 
-    public static final String COPYRIGHT_CREATION_AUTHOR_NAME_KEY= "license.git.CreationAuthorName";
-    public static final String COPYRIGHT_CREATION_AUTHOR_EMAIL_KEY="license.git.CreationAuthorEmail";
-    
+  public static final String COPYRIGHT_CREATION_AUTHOR_NAME_KEY = "license.git.CreationAuthorName";
+  public static final String COPYRIGHT_CREATION_AUTHOR_EMAIL_KEY = "license.git.CreationAuthorEmail";
 
-    public CopyrightAuthorProvider() {
-        super();
+
+  public CopyrightAuthorProvider() {
+    super();
+  }
+
+  /**
+   * Returns an unmodifiable map containing the two entries {@value #COPYRIGHT_CREATION_AUTHOR_NAME_KEY} and {@value #COPYRIGHT_CREATION_AUTHOR_EMAIL_KEY},
+   * , whose values are set based on inspecting git history.
+   *
+   * <ul>
+   * <li>{@value #COPYRIGHT_CREATION_AUTHOR_NAME_KEY} key stores the author name of the first git commit.
+   * <li>{@value #COPYRIGHT_CREATION_AUTHOR_EMAIL_KEY} key stores the author's email address of the first git commit.
+   * </ul>
+   */
+  public Map<String, String> getAdditionalProperties(AbstractLicenseMojo mojo, Properties properties,
+                                                     Document document) {
+
+    try {
+      Map<String, String> result = new HashMap<String, String>(3);
+      GitLookup gitLookup = getGitLookup(document.getFile(), properties);
+
+      result.put(COPYRIGHT_CREATION_AUTHOR_NAME_KEY, gitLookup.getAuthorNameOfCreation(document.getFile()));
+      result.put(COPYRIGHT_CREATION_AUTHOR_EMAIL_KEY, gitLookup.getAuthorEmailOfCreation(document.getFile()));
+      return Collections.unmodifiableMap(result);
+    } catch (Exception e) {
+      throw new RuntimeException("Could not compute the year of the last git commit for file "
+          + document.getFile().getAbsolutePath(), e);
     }
+  }
 
-    /**
-     * Returns an unmodifiable map containing the two entries {@value #COPYRIGHT_CREATION_AUTHOR_NAME_KEY} and {@value #COPYRIGHT_CREATION_AUTHOR_EMAIL_KEY},
-     * , whose values are set based on inspecting git history.
-     *
-     * <ul>
-     * <li>{@value #COPYRIGHT_CREATION_AUTHOR_NAME_KEY} key stores the author name of the first git commit.
-     * <li>{@value #COPYRIGHT_CREATION_AUTHOR_EMAIL_KEY} key stores the author's email address of the first git commit. 
-     * </ul>
-     *
-     */
-    public Map<String, String> getAdditionalProperties(AbstractLicenseMojo mojo, Properties properties,
-            Document document) {
-
-        try {
-            Map<String, String> result = new HashMap<String, String>(3);
-            GitLookup gitLookup = getGitLookup(document.getFile(), properties);
-
-            result.put(COPYRIGHT_CREATION_AUTHOR_NAME_KEY, gitLookup.getAuthorNameOfCreation(document.getFile()) );
-            result.put(COPYRIGHT_CREATION_AUTHOR_EMAIL_KEY, gitLookup.getAuthorEmailOfCreation(document.getFile()) );
-            return Collections.unmodifiableMap(result);
-        } catch (Exception e) {
-            throw new RuntimeException("Could not compute the year of the last git commit for file "
-                    + document.getFile().getAbsolutePath(), e);
-        }
-    }
-
- 
 
 }

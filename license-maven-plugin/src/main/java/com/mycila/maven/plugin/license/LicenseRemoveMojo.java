@@ -31,45 +31,45 @@ import java.io.File;
 @Mojo(name = "remove", threadSafe = true)
 public final class LicenseRemoveMojo extends AbstractLicenseMojo {
 
-    @Override
-    public void execute() throws MojoExecutionException, MojoFailureException {
-        if(!skip) {
-            getLog().info("Removing license headers...");
-        }
-
-        AbstractCallback callback = new AbstractCallback() {
-
-            @Override
-            public void onHeaderNotFound(Document document, Header header) {
-                debug("Header was not found in: %s (But keep trying to find another header to remove)", document.getFile());
-                remove(document);
-            }
-
-            @Override
-            public void onExistingHeader(Document document, Header header) {
-                info("Removing license header from: %s", document.getFile());
-                remove(document);
-            }
-
-        };
-
-        execute(callback);
-
-        callback.checkUnknown();
+  @Override
+  public void execute() throws MojoExecutionException, MojoFailureException {
+    if (!skip) {
+      getLog().info("Removing license headers...");
     }
 
-    private void remove(Document document) {
-        document.parseHeader();
-        if (document.headerDetected())
-            document.removeHeader();
-        if (!dryRun) {
-            document.save();
-        } else {
-            String name = document.getFile().getName() + ".licensed";
-            File copy = new File(document.getFile().getParentFile(), name);
-            info("Result saved to: %s", copy);
-            document.saveTo(copy);
-        }
+    AbstractCallback callback = new AbstractCallback() {
+
+      @Override
+      public void onHeaderNotFound(Document document, Header header) {
+        debug("Header was not found in: %s (But keep trying to find another header to remove)", document.getFile());
+        remove(document);
+      }
+
+      @Override
+      public void onExistingHeader(Document document, Header header) {
+        info("Removing license header from: %s", document.getFile());
+        remove(document);
+      }
+
+    };
+
+    execute(callback);
+
+    callback.checkUnknown();
+  }
+
+  private void remove(Document document) {
+    document.parseHeader();
+    if (document.headerDetected())
+      document.removeHeader();
+    if (!dryRun) {
+      document.save();
+    } else {
+      String name = document.getFile().getName() + ".licensed";
+      File copy = new File(document.getFile().getParentFile(), name);
+      info("Result saved to: %s", copy);
+      document.saveTo(copy);
     }
+  }
 
 }

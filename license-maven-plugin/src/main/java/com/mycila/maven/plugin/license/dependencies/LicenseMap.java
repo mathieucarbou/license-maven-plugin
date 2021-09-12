@@ -24,11 +24,10 @@ import java.util.Set;
 /**
  * To be implemented by different project/build-framework scanners presenting
  * licenses of dependencies.
- * 
- * @author Royce Remer
  *
+ * @author Royce Remer
  */
 public interface LicenseMap {
 
-	Map<License, Set<Artifact>> getLicenseMap();
+  Map<License, Set<Artifact>> getLicenseMap();
 }

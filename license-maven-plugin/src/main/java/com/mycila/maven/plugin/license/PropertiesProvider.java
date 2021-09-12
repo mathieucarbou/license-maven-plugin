@@ -25,5 +25,5 @@ import java.util.Properties;
  * 2013-08-27
  */
 public interface PropertiesProvider {
-    Map<String, String> getAdditionalProperties(AbstractLicenseMojo mojo, Properties currentProperties, Document document);
+  Map<String, String> getAdditionalProperties(AbstractLicenseMojo mojo, Properties currentProperties, Document document);
 }

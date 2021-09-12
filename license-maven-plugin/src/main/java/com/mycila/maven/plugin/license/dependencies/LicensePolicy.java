@@ -22,110 +22,112 @@ import java.util.Optional;
 /**
  * A policy decision based on some matcher/value and type. Different policy
  * enforcers should take this class as a constructor argument.
- * 
- * @author Royce Remer
  *
+ * @author Royce Remer
  */
 public class LicensePolicy {
-	public enum Type {
-		LICENSE_NAME, LICENSE_URL, ARTIFACT_PATTERN;
-	}
+  public enum Type {
+    LICENSE_NAME, LICENSE_URL, ARTIFACT_PATTERN;
+  }
 
-	public enum Rule {
-		APPROVE(true), DENY(false);
-		boolean allowed;
-		Rule(final boolean allowed) {
-			this.allowed = allowed;
-		}
-		
-		/**
-		 * Get a boolean form of a rule.
-		 * @return
-		 */
-		public boolean getPredicate() {
-			return allowed;
-		}
-		
-		/**
-		 * Simple policy decision based on whether a matcher succeeded.
-		 * @param matched - boolean result of some matching operation.
-		 * @return
-		 */
-		public boolean isAllowed(final boolean matched) {
-			if ( matched && allowed) {
-				return true;
-			} else if ( !matched && !allowed) {
-				return true;
-			} else {
-				return false;
-			}
-		}
-		
-		public static Rule valueOf(final boolean allowed) {
-			if (allowed) {
-				return APPROVE;
-			} else {
-				return DENY;
-			}
-		}
-	}
+  public enum Rule {
+    APPROVE(true), DENY(false);
+    boolean allowed;
 
-	@Parameter
-	private Type type;
-	@Parameter
-	private Rule rule;
-	@Parameter
-	private String value;
-	
-	// only here for plexus container injection by maven
-	public LicensePolicy() {}
+    Rule(final boolean allowed) {
+      this.allowed = allowed;
+    }
 
-	public LicensePolicy(final Rule rule, final Type type, final String value) {
-		this.setRule(rule);
-		this.setType(type);
-		this.setValue(value);
-	}
-	
-	@Override
-	public int hashCode() {
-		return 11 * (rule.hashCode() + type.hashCode() + value.hashCode());
-	}
-	
-	@Override
-	public boolean equals(final Object other) {
-		if (other == null) {
-			return false;
-		} else {
-			return (other.hashCode() == hashCode());
-		}
-	}
+    /**
+     * Get a boolean form of a rule.
+     *
+     * @return
+     */
+    public boolean getPredicate() {
+      return allowed;
+    }
 
-	public String getValue() {
-		return value;
-	}
+    /**
+     * Simple policy decision based on whether a matcher succeeded.
+     *
+     * @param matched - boolean result of some matching operation.
+     * @return
+     */
+    public boolean isAllowed(final boolean matched) {
+      if (matched && allowed) {
+        return true;
+      } else if (!matched && !allowed) {
+        return true;
+      } else {
+        return false;
+      }
+    }
 
-	public Rule getRule() {
-		return rule;
-	}
+    public static Rule valueOf(final boolean allowed) {
+      if (allowed) {
+        return APPROVE;
+      } else {
+        return DENY;
+      }
+    }
+  }
 
-	public Type getType() {
-		return type;
-	}
+  @Parameter
+  private Type type;
+  @Parameter
+  private Rule rule;
+  @Parameter
+  private String value;
 
-	private void setType(Type type) {
-		this.type = type;
-	}
+  // only here for plexus container injection by maven
+  public LicensePolicy() {}
 
-	private void setRule(Rule rule) {
-		this.rule = Optional.ofNullable(rule).orElse(Rule.DENY);
-	}
+  public LicensePolicy(final Rule rule, final Type type, final String value) {
+    this.setRule(rule);
+    this.setType(type);
+    this.setValue(value);
+  }
 
-	private void setValue(String value) {
-		this.value = Optional.ofNullable(value).orElse("");
-	}
-	
-	@Override
-	public String toString() {
-		return String.format("%s:%s:%s", getType(), getRule(), getValue());
-	}
+  @Override
+  public int hashCode() {
+    return 11 * (rule.hashCode() + type.hashCode() + value.hashCode());
+  }
+
+  @Override
+  public boolean equals(final Object other) {
+    if (other == null) {
+      return false;
+    } else {
+      return (other.hashCode() == hashCode());
+    }
+  }
+
+  public String getValue() {
+    return value;
+  }
+
+  public Rule getRule() {
+    return rule;
+  }
+
+  public Type getType() {
+    return type;
+  }
+
+  private void setType(Type type) {
+    this.type = type;
+  }
+
+  private void setRule(Rule rule) {
+    this.rule = Optional.ofNullable(rule).orElse(Rule.DENY);
+  }
+
+  private void setValue(String value) {
+    this.value = Optional.ofNullable(value).orElse("");
+  }
+
+  @Override
+  public String toString() {
+    return String.format("%s:%s:%s", getType(), getRule(), getValue());
+  }
 }

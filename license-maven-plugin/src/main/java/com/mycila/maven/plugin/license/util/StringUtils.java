@@ -20,30 +20,30 @@ package com.mycila.maven.plugin.license.util;
  */
 public final class StringUtils {
 
-    private StringUtils() {
+  private StringUtils() {
+  }
+
+  public static String rtrim(java.lang.String s) {
+    int i;
+    for (i = s.length() - 1; i >= 0; i--) {
+      if (Character.isWhitespace(s.charAt(i))) {
+        continue;
+      }
+      break;
+    }
+    return s.substring(0, i + 1);
+  }
+
+  public static String padRight(String s, int len) {
+    if (s == null || s.length() >= len) {
+      return s;
     }
 
-    public static String rtrim(java.lang.String s) {
-        int i;
-        for (i = s.length() - 1; i >= 0; i--) {
-            if (Character.isWhitespace(s.charAt(i))) {
-                continue;
-            }
-            break;
-        }
-        return s.substring(0, i + 1);
+    StringBuilder sb = new StringBuilder(len);
+    sb.append(s);
+    for (int i = s.length(); i < len; i++) {
+      sb.append(' ');
     }
-
-    public static String padRight(String s, int len) {
-        if (s == null || s.length() >= len) {
-            return s;
-        }
-
-        StringBuilder sb = new StringBuilder(len);
-        sb.append(s);
-        for (int i = s.length(); i < len; i++) {
-          sb.append(' ');
-        }
-        return sb.toString();
-    }
+    return sb.toString();
+  }
 }

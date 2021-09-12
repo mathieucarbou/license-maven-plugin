@@ -17,23 +17,23 @@ package com.mycila.maven.plugin.license;
 
 /**
  * Simple wrapper class to transport login/password information.
- * 
+ *
  * @author Matthieu Brouillard
  */
 public class Credentials {
-    private final String login;
-    private final String password;
+  private final String login;
+  private final String password;
 
-    public Credentials(String login, String password) {
-        this.login = login;
-        this.password = password;
-    }
+  public Credentials(String login, String password) {
+    this.login = login;
+    this.password = password;
+  }
 
-    public String getLogin() {
-        return login;
-    }
+  public String getLogin() {
+    return login;
+  }
 
-    public String getPassword() {
-        return password;
-    }
+  public String getPassword() {
+    return password;
+  }
 }

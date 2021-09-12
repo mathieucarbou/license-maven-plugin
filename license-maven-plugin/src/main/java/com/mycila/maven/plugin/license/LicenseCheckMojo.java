@@ -44,69 +44,69 @@ import java.util.stream.Collectors;
 @Mojo(name = "check", defaultPhase = LifecyclePhase.VERIFY, threadSafe = true)
 public final class LicenseCheckMojo extends AbstractLicenseMojo {
 
-    @Parameter(property = "license.errorMessage", defaultValue = "Some files do not have the expected license header")
-    public String errorMessage = "Some files do not have the expected license header";
+  @Parameter(property = "license.errorMessage", defaultValue = "Some files do not have the expected license header")
+  public String errorMessage = "Some files do not have the expected license header";
 
-    public final Collection<File> missingHeaders = new ConcurrentLinkedQueue<File>();
+  public final Collection<File> missingHeaders = new ConcurrentLinkedQueue<File>();
 
-    @Override
-    public void execute() throws MojoExecutionException, MojoFailureException {
-        if(!skip) {
-            getLog().info("Checking licenses...");
-        }
-        missingHeaders.clear();
-
-        AbstractCallback callback = new AbstractCallback() {
-            @Override
-            public void onHeaderNotFound(Document document, Header header) {
-                if (skipExistingHeaders) {
-                    document.parseHeader();
-                    if (document.headerDetected()) {
-                        debug("Existing header in: %s", document.getFilePath());
-                        return;
-                    }
-                }
-                warn("Missing header in: %s", document.getFilePath());
-                missingHeaders.add(document.getFile());
-            }
-
-            @Override
-            public void onExistingHeader(Document document, Header header) {
-                debug("Header OK in: %s", document.getFilePath());
-            }
-        };
-
-        if(dependencyEnforce) {
-        	//TODO(rremer) config-driven factory of the LicenseMap implementation	
-		    final LicenseMap licenseMap = new MavenProjectLicenses(session, project, dependencyGraphBuilder, projectBuilder, dependencyScopes, getLog());
-		    final AggregateLicensePolicyEnforcer enforcer = new AggregateLicensePolicyEnforcer(dependencyPolicies);
-		    final Map<Artifact, LicensePolicyEnforcerResult> licenseResult = enforcer.apply(licenseMap);
-		    final Set<LicensePolicyEnforcerResult> deniedLicenseResult = licenseResult.values().stream()
-		    		.filter(result -> result.getRuling().equals(LicensePolicy.Rule.DENY))
-		    		.collect(Collectors.toSet());
-		    
-		    if (deniedLicenseResult.size() != 0) {
-		    	final StringBuilder licenseExceptionMsg = new StringBuilder(dependencyExceptionMessage);
-		    	deniedLicenseResult.stream().forEach(result -> {
-		    		licenseExceptionMsg.append(System.lineSeparator());
-		    		licenseExceptionMsg.append(result);
-		    	});
-		    	throw new MojoExecutionException(licenseExceptionMsg.toString());
-		    }
-        }
-
-        execute(callback);
-
-        if (!missingHeaders.isEmpty()) {
-            if (failIfMissing) {
-                throw new MojoExecutionException(errorMessage);
-            }
-            getLog().warn(errorMessage);
-        }
-
-        if(!skip) {
-            callback.checkUnknown();
-        }
+  @Override
+  public void execute() throws MojoExecutionException, MojoFailureException {
+    if (!skip) {
+      getLog().info("Checking licenses...");
     }
+    missingHeaders.clear();
+
+    AbstractCallback callback = new AbstractCallback() {
+      @Override
+      public void onHeaderNotFound(Document document, Header header) {
+        if (skipExistingHeaders) {
+          document.parseHeader();
+          if (document.headerDetected()) {
+            debug("Existing header in: %s", document.getFilePath());
+            return;
+          }
+        }
+        warn("Missing header in: %s", document.getFilePath());
+        missingHeaders.add(document.getFile());
+      }
+
+      @Override
+      public void onExistingHeader(Document document, Header header) {
+        debug("Header OK in: %s", document.getFilePath());
+      }
+    };
+
+    if (dependencyEnforce) {
+      //TODO(rremer) config-driven factory of the LicenseMap implementation
+      final LicenseMap licenseMap = new MavenProjectLicenses(session, project, dependencyGraphBuilder, projectBuilder, dependencyScopes, getLog());
+      final AggregateLicensePolicyEnforcer enforcer = new AggregateLicensePolicyEnforcer(dependencyPolicies);
+      final Map<Artifact, LicensePolicyEnforcerResult> licenseResult = enforcer.apply(licenseMap);
+      final Set<LicensePolicyEnforcerResult> deniedLicenseResult = licenseResult.values().stream()
+          .filter(result -> result.getRuling().equals(LicensePolicy.Rule.DENY))
+          .collect(Collectors.toSet());
+
+      if (deniedLicenseResult.size() != 0) {
+        final StringBuilder licenseExceptionMsg = new StringBuilder(dependencyExceptionMessage);
+        deniedLicenseResult.stream().forEach(result -> {
+          licenseExceptionMsg.append(System.lineSeparator());
+          licenseExceptionMsg.append(result);
+        });
+        throw new MojoExecutionException(licenseExceptionMsg.toString());
+      }
+    }
+
+    execute(callback);
+
+    if (!missingHeaders.isEmpty()) {
+      if (failIfMissing) {
+        throw new MojoExecutionException(errorMessage);
+      }
+      getLog().warn(errorMessage);
+    }
+
+    if (!skip) {
+      callback.checkUnknown();
+    }
+  }
 
 }

@@ -3,11 +3,13 @@
 This plugin can be configured to break the build when its dependencies do not adhere to a configured license policy. This plugin relies on the accuracy of the `<licenses>` maven property configured in the pom of artifacts your project declares in `<dependencies>`.
 
 There are currently three types of policies which can be enforced:
+
 1. LICENSE_URL - strict match on the URL element of a License
 2. LICENSE_NAME - strict match on the name of a License
 3. ARTIFACT_PATTERN - regex on a groupdId:artifactId
 
 Rules can be defined in the plugin configuration like so:
+
 ```xml
 <plugin>
     <groupId>com.mycila</groupId>
@@ -47,11 +49,13 @@ Rules can be defined in the plugin configuration like so:
 ```
 
 There is also an implicit default deny artifact pattern policy, so if you enable dependency enforcement and have any dependencies, you must configure a policy. The ordering of the declared dependencyPolicies does not matter, and in aggregate they will be enforced in the following way:
+
 1. defaultPolicy included in the plugin, matching all artifacts with a deny rule
 2. APPROVE policies
 3. DENY policies
 
 Given the above configuration example, you could state:
+
 * the allow rule for com.example.subpackage:other-artifact:jar:1.0.0 will never do anything, because there is a deny rule for com.example.*
 * all com.mycila artifacts will be allowed, regardless of their license
 * any other artifact with a license name of 'Public Domain' will be allowed

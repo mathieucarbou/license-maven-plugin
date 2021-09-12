@@ -24,7 +24,7 @@ import java.util.Map;
 /**
  * The class <code>AdditionalHeaderDefinition</code> is used to collect header definitions declared in an "external" XML
  * document configuration.
- *
+ * <p>
  * The XML document must respect the following XML schema: <pre>
  * &lt;?xml version="1.0" encoding="UTF-8"?&gt;
  * &lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
@@ -61,58 +61,58 @@ import java.util.Map;
  * @author Cedric Pronzato
  */
 public final class AdditionalHeaderDefinition {
-    private final Map<String, HeaderDefinition> definitions = new HashMap<String, HeaderDefinition>();
+  private final Map<String, HeaderDefinition> definitions = new HashMap<String, HeaderDefinition>();
 
-    /**
-     * Construct an <code>AdditionalHeaderDefinition</code> object using the given XML document as header definitions
-     * input.
-     *
-     * @param doc The XML definition to read.
-     */
-    public AdditionalHeaderDefinition(XMLTag doc) {
-        if (doc == null) {
-            throw new IllegalArgumentException("The header definition XML document cannot be null");
+  /**
+   * Construct an <code>AdditionalHeaderDefinition</code> object using the given XML document as header definitions
+   * input.
+   *
+   * @param doc The XML definition to read.
+   */
+  public AdditionalHeaderDefinition(XMLTag doc) {
+    if (doc == null) {
+      throw new IllegalArgumentException("The header definition XML document cannot be null");
+    }
+    doc.gotoRoot().forEachChild(new CallBack() {
+      @Override
+      public void execute(XMLTag doc) {
+        final String type = doc.getCurrentTagName().toLowerCase();
+        HeaderDefinition definition = definitions.get(type);
+        if (definition == null) {
+          definition = new HeaderDefinition(type);
+          definitions.put(type, definition);
         }
-        doc.gotoRoot().forEachChild(new CallBack() {
-            @Override
-            public void execute(XMLTag doc) {
-                final String type = doc.getCurrentTagName().toLowerCase();
-                HeaderDefinition definition = definitions.get(type);
-                if (definition == null) {
-                    definition = new HeaderDefinition(type);
-                    definitions.put(type, definition);
-                }
-                doc.forEachChild(new FeedProperty(definition));
-                definition.validate();
-            }
-        });
+        doc.forEachChild(new FeedProperty(definition));
+        definition.validate();
+      }
+    });
+  }
+
+  /**
+   * Returns the header definitions declared by the external header definition as a map using the header type name as
+   * key.
+   *
+   * @return The header definitions declared.
+   */
+  public Map<String, HeaderDefinition> getDefinitions() {
+    return definitions;
+  }
+
+  private static final class FeedProperty implements CallBack {
+    private final HeaderDefinition definition;
+
+    private FeedProperty(HeaderDefinition definition) {
+      this.definition = definition;
     }
 
-    /**
-     * Returns the header definitions declared by the external header definition as a map using the header type name as
-     * key.
-     *
-     * @return The header definitions declared.
-     */
-    public Map<String, HeaderDefinition> getDefinitions() {
-        return definitions;
+    @Override
+    public void execute(XMLTag xmlDocument) {
+      String value = xmlDocument.getText();
+      if ("".equals(value)) // value can't be null
+      {
+        value = xmlDocument.getCDATA();
+      }
+      definition.setPropertyFromString(xmlDocument.getCurrentTagName(), value);
     }
-
-    private static final class FeedProperty implements CallBack {
-        private final HeaderDefinition definition;
-
-        private FeedProperty(HeaderDefinition definition) {
-            this.definition = definition;
-        }
-
-        @Override
-        public void execute(XMLTag xmlDocument) {
-            String value = xmlDocument.getText();
-            if ("".equals(value)) // value can't be null
-            {
-                value = xmlDocument.getCDATA();
-            }
-            definition.setPropertyFromString(xmlDocument.getCurrentTagName(), value);
-        }
-    }
+  }
 }

@@ -1,12 +1,12 @@
 /**
  * Copyright (C) 2008 Mycila (mathieu.carbou@gmail.com)
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *         http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -28,56 +28,56 @@ import static org.junit.Assert.assertEquals;
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
 public final class CheckTest {
-	
-	@Test
-    public void test_defaultStubProject() throws Exception {
-        LicenseCheckMojo check = new LicenseCheckMojo();
-        check.project = new MavenProjectStub();
-        check.execute();
-    }	
 
-    @Test
-    public void test_line_wrapping() throws Exception {
-        MavenProjectStub project = new MavenProjectStub();
+  @Test
+  public void test_defaultStubProject() throws Exception {
+    LicenseCheckMojo check = new LicenseCheckMojo();
+    check.project = new MavenProjectStub();
+    check.execute();
+  }
 
-        LicenseCheckMojo check = new LicenseCheckMojo();
-        check.defaultBasedir = new File("src/test/resources/check/linewrap");
-        check.legacyConfigHeader = "header.txt";
-        check.project = project;
+  @Test
+  public void test_line_wrapping() throws Exception {
+    MavenProjectStub project = new MavenProjectStub();
 
-        // check by default - should work
-        check.strictCheck = false;
-        check.execute();
+    LicenseCheckMojo check = new LicenseCheckMojo();
+    check.defaultBasedir = new File("src/test/resources/check/linewrap");
+    check.legacyConfigHeader = "header.txt";
+    check.project = project;
 
-        // the strict test fail because if the missing blank lines
-        try {
-            check.strictCheck = true;
-            check.execute();
-        } catch (MojoExecutionException e) {
-            assertEquals("Some files do not have the expected license header", e.getMessage());
-        }
+    // check by default - should work
+    check.strictCheck = false;
+    check.execute();
 
-        // prepare to reformat the file
-        File tmp = new File("target/test/linewrap");
-        tmp.mkdirs();
-        FileUtils.copyFileToFolder(new File("src/test/resources/check/linewrap/testconfig.xml"), tmp);
-
-        LicenseFormatMojo updater = new LicenseFormatMojo();
-        updater.defaultBasedir = tmp;
-        updater.legacyConfigHeader = "src/test/resources/check/linewrap/header.txt";
-        updater.project = project;
-        updater.strictCheck = true;
-        updater.execute();
-
-        // the check again, strictly. should work now
-        check = new LicenseCheckMojo();
-        check.defaultBasedir = tmp;
-        check.legacyConfigHeader = "src/test/resources/check/linewrap/header.txt";
-        check.project = project;
-
-        check.strictCheck = true;
-        check.execute();
-
+    // the strict test fail because if the missing blank lines
+    try {
+      check.strictCheck = true;
+      check.execute();
+    } catch (MojoExecutionException e) {
+      assertEquals("Some files do not have the expected license header", e.getMessage());
     }
+
+    // prepare to reformat the file
+    File tmp = new File("target/test/linewrap");
+    tmp.mkdirs();
+    FileUtils.copyFileToFolder(new File("src/test/resources/check/linewrap/testconfig.xml"), tmp);
+
+    LicenseFormatMojo updater = new LicenseFormatMojo();
+    updater.defaultBasedir = tmp;
+    updater.legacyConfigHeader = "src/test/resources/check/linewrap/header.txt";
+    updater.project = project;
+    updater.strictCheck = true;
+    updater.execute();
+
+    // the check again, strictly. should work now
+    check = new LicenseCheckMojo();
+    check.defaultBasedir = tmp;
+    check.legacyConfigHeader = "src/test/resources/check/linewrap/header.txt";
+    check.project = project;
+
+    check.strictCheck = true;
+    check.execute();
+
+  }
 
 }

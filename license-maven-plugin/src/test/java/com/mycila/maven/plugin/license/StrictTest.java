@@ -1,12 +1,12 @@
 /**
  * Copyright (C) 2008 Mycila (mathieu.carbou@gmail.com)
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *         http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -28,9 +28,9 @@ import static org.junit.Assert.assertEquals;
  */
 public final class StrictTest {
 
-    @Test
-    public void test_strict() throws Exception {
-        MavenProjectStub project = new MavenProjectStub();
+  @Test
+  public void test_strict() throws Exception {
+    MavenProjectStub project = new MavenProjectStub();
 
         /*LicenseFormatMojo format = new LicenseFormatMojo();
         format.basedir = new File("src/test/resources/check/issue76");
@@ -38,28 +38,28 @@ public final class StrictTest {
         format.project = project;
         format.execute();*/
 
-        // all the headers are by default checked not strictlty
-        LicenseCheckMojo check = new LicenseCheckMojo();
-        check.defaultBasedir = new File("src/test/resources/check/issue76");
-        check.legacyConfigHeader = "src/test/resources/test-header1.txt";
-        check.project = project;
-        check.strictCheck = false;
-        check.execute();
+    // all the headers are by default checked not strictlty
+    LicenseCheckMojo check = new LicenseCheckMojo();
+    check.defaultBasedir = new File("src/test/resources/check/issue76");
+    check.legacyConfigHeader = "src/test/resources/test-header1.txt";
+    check.project = project;
+    check.strictCheck = false;
+    check.execute();
 
-        // all the headers are by default checked not strictlty
-        check.strictCheck = true;
-        try {
-            check.execute();
-        } catch (MojoExecutionException e) {
-            assertEquals("Some files do not have the expected license header", e.getMessage());
-        }
-        System.out.println(check.missingHeaders);
-        assertEquals(check.missingHeaders.size(), 4);
+    // all the headers are by default checked not strictlty
+    check.strictCheck = true;
+    try {
+      check.execute();
+    } catch (MojoExecutionException e) {
+      assertEquals("Some files do not have the expected license header", e.getMessage());
     }
+    System.out.println(check.missingHeaders);
+    assertEquals(check.missingHeaders.size(), 4);
+  }
 
-    @Test
-    public void test_space() throws Exception {
-        MavenProjectStub project = new MavenProjectStub();
+  @Test
+  public void test_space() throws Exception {
+    MavenProjectStub project = new MavenProjectStub();
 
         /*LicenseFormatMojo format = new LicenseFormatMojo();
         format.basedir = new File("src/test/resources/check/strict");
@@ -67,18 +67,18 @@ public final class StrictTest {
         format.project = project;
         format.execute();*/
 
-        // all the headers are by default checked not strictlty
-        LicenseCheckMojo check = new LicenseCheckMojo();
-        check.defaultBasedir = new File("src/test/resources/check/strict");
-        check.legacyConfigHeader = "src/test/resources/test-header1-diff.txt";
-        check.project = project;
-        check.execute();
+    // all the headers are by default checked not strictlty
+    LicenseCheckMojo check = new LicenseCheckMojo();
+    check.defaultBasedir = new File("src/test/resources/check/strict");
+    check.legacyConfigHeader = "src/test/resources/test-header1-diff.txt";
+    check.project = project;
+    check.execute();
 
-        // all the headers are by default checked not strictlty
-        check.strictCheck = true;
-        check.execute();
-        System.out.println(check.missingHeaders);
-        assertEquals(check.missingHeaders.size(), 0);
-    }
+    // all the headers are by default checked not strictlty
+    check.strictCheck = true;
+    check.execute();
+    System.out.println(check.missingHeaders);
+    assertEquals(check.missingHeaders.size(), 0);
+  }
 
 }

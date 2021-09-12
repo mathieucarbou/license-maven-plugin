@@ -14,13 +14,13 @@ import static org.junit.Assert.assertThat;
  * @author Matthieu Brouillard
  */
 public class AbstractLicenseMojoTest {
-    @Test
-    public void test_StarEncryptMethodWorksAsExpected() {
-        assertThat(AbstractLicenseMojo.starEncrypt("dummy"), is("*****"));
-        
-        assertThat(AbstractLicenseMojo.starEncrypt(null), nullValue());
-        
-        String generatedPassword = UUID.randomUUID().toString();
-        assertThat(AbstractLicenseMojo.starEncrypt(generatedPassword), is(Strings.repeat("*", generatedPassword.length())));
-    }
+  @Test
+  public void test_StarEncryptMethodWorksAsExpected() {
+    assertThat(AbstractLicenseMojo.starEncrypt("dummy"), is("*****"));
+
+    assertThat(AbstractLicenseMojo.starEncrypt(null), nullValue());
+
+    String generatedPassword = UUID.randomUUID().toString();
+    assertThat(AbstractLicenseMojo.starEncrypt(generatedPassword), is(Strings.repeat("*", generatedPassword.length())));
+  }
 }

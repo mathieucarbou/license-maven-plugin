@@ -24,25 +24,25 @@ import java.net.URLClassLoader;
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
 final class CustomClassLoader extends URLClassLoader {
-    CustomClassLoader() {
-        super(new URL[0], null);
-    }
+  CustomClassLoader() {
+    super(new URL[0], null);
+  }
 
-    CustomClassLoader(ClassLoader parent) {
-        super(new URL[0], parent);
-    }
+  CustomClassLoader(ClassLoader parent) {
+    super(new URL[0], parent);
+  }
 
-    public void addFolder(String absolutePath) {
-        addFolder(new File(absolutePath));
-    }
+  public void addFolder(String absolutePath) {
+    addFolder(new File(absolutePath));
+  }
 
-    public void addFolder(File folder) {
-        if (folder.isDirectory()) {
-            try {
-                super.addURL(folder.toURI().toURL());
-            } catch (MalformedURLException e) {
-                throw new IllegalArgumentException(e.getMessage(), e);
-            }
-        }
+  public void addFolder(File folder) {
+    if (folder.isDirectory()) {
+      try {
+        super.addURL(folder.toURI().toURL());
+      } catch (MalformedURLException e) {
+        throw new IllegalArgumentException(e.getMessage(), e);
+      }
     }
+  }
 }

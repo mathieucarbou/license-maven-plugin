@@ -1,7 +1,7 @@
 <additionalHeaders>
   <xml_style>
     <firstLine><![CDATA[<!--]]></firstLine>
-    <beforeEachLine> * </beforeEachLine>
+    <beforeEachLine>*</beforeEachLine>
     <endLine><![CDATA[-->]]></endLine>
     <skipLine><![CDATA[^<\?xml.*>$]]></skipLine>
     <firstLineDetectionPattern><![CDATA[(\s|\t)*<!--.*$]]></firstLineDetectionPattern>

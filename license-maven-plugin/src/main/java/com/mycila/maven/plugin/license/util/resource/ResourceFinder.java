@@ -30,98 +30,96 @@ import java.util.List;
  * <b>Author:</b> Mathieu Carbou (mathieu.carbou@gmail.com)
  */
 public final class ResourceFinder {
-    private final Path basedir;
-    private CustomClassLoader compileClassPath;
-    private CustomClassLoader pluginClassPath;
+  private final Path basedir;
+  private CustomClassLoader compileClassPath;
+  private CustomClassLoader pluginClassPath;
 
-    public ResourceFinder(final Path basedir) {
-        this.basedir = basedir;
+  public ResourceFinder(final Path basedir) {
+    this.basedir = basedir;
+  }
+
+  public void setCompileClassPath(List<String> classpath) {
+    compileClassPath = new CustomClassLoader();
+    if (classpath != null) {
+      for (String absolutePath : classpath) {
+        compileClassPath.addFolder(absolutePath);
+      }
+    }
+  }
+
+  public void setPluginClassPath(ClassLoader classLoader) {
+    pluginClassPath = new CustomClassLoader(classLoader);
+  }
+
+  /**
+   * Find a resource by searching:
+   * 1. In the filesystem, relative to basedir
+   * 2. In the filesystem, as an absolute path (or relative to current execution directory)
+   * 3. In project classpath
+   * 4. In plugin classpath
+   * 5. As a URL
+   *
+   * @param resource The resource to get
+   * @return A valid URL
+   * @throws MojoFailureException If the resource is not found
+   */
+  public URL findResource(String resource) throws MojoFailureException {
+    URL res = null;
+
+    // first search relatively to the base directory
+    try {
+      final Path p = basedir.resolve(resource);
+      res = toURL(p.toAbsolutePath());
+    } catch (final InvalidPathException e) {
+      // no-op - can be caused by resource being a URI on windows when Path.resolve is called
+    }
+    if (res != null) {
+      return res;
     }
 
-    public void setCompileClassPath(List<String> classpath) {
-        compileClassPath = new CustomClassLoader();
-        if (classpath != null) {
-            for (String absolutePath : classpath) {
-                compileClassPath.addFolder(absolutePath);
-            }
-        }
+    // if not found, search for absolute location on file system, or relative to execution dir
+    try {
+      res = toURL(Paths.get(resource));
+    } catch (final InvalidPathException e) {
+      // no-op - can be caused by resource being a URI on windows when Paths.get is called
+    }
+    if (res != null) {
+      return res;
     }
 
-    public void setPluginClassPath(ClassLoader classLoader) {
-        pluginClassPath = new CustomClassLoader(classLoader);
+    // if not found, try the classpaths
+    final String cpResource = resource.startsWith("/") ? resource.substring(1) : resource;
+
+    // tries compile claspath of project
+    res = compileClassPath.getResource(cpResource);
+    if (res != null) {
+      return res;
     }
 
-    /**
-     * Find a resource by searching:
-     * 1. In the filesystem, relative to basedir
-     * 2. In the filesystem, as an absolute path (or relative to current execution directory)
-     * 3. In project classpath
-     * 4. In plugin classpath
-     * 5. As a URL
-     *
-     * @param resource The resource to get
-     * @return A valid URL
-     * @throws MojoFailureException If the resource is not found
-     */
-    public URL findResource(String resource) throws MojoFailureException {
-        URL res = null;
-
-        // first search relatively to the base directory
-        try {
-            final Path p = basedir.resolve(resource);
-            res = toURL(p.toAbsolutePath());
-        } catch (final InvalidPathException e) {
-            // no-op - can be caused by resource being a URI on windows when Path.resolve is called
-        }
-        if (res != null) {
-            return res;
-        }
-
-        // if not found, search for absolute location on file system, or relative to execution dir
-        try {
-            res = toURL(Paths.get(resource));
-        } catch (final InvalidPathException e) {
-            // no-op - can be caused by resource being a URI on windows when Paths.get is called
-        }
-        if (res != null) {
-            return res;
-        }
-
-        // if not found, try the classpaths
-        final String cpResource = resource.startsWith("/") ? resource.substring(1) : resource;
-
-        // tries compile claspath of project
-        res = compileClassPath.getResource(cpResource);
-        if (res != null) {
-            return res;
-        }
-
-        // tries this plugin classpath
-        res = pluginClassPath.getResource(cpResource);
-        if (res != null) {
-            return res;
-        }
-
-        // otherwise, tries to return a valid URL
-        try {
-            res = new URL(resource);
-            res.openStream().close();
-            return res;
-        }
-        catch (Exception e) {
-            throw new MojoFailureException("Resource " + resource + " not found in file system, classpath or URL: " + e.getMessage(), e);
-        }
+    // tries this plugin classpath
+    res = pluginClassPath.getResource(cpResource);
+    if (res != null) {
+      return res;
     }
 
-    private URL toURL(final Path path) {
-        if (Files.exists(path) && Files.isReadable(path)) {
-            try {
-                return path.toUri().toURL();
-            }
-            catch (MalformedURLException e) {
-            }
-        }
-        return null;
+    // otherwise, tries to return a valid URL
+    try {
+      res = new URL(resource);
+      res.openStream().close();
+      return res;
+    } catch (Exception e) {
+      throw new MojoFailureException("Resource " + resource + " not found in file system, classpath or URL: " + e.getMessage(), e);
     }
+  }
+
+  private URL toURL(final Path path) {
+    if (Files.exists(path) && Files.isReadable(path)) {
+      try {
+        return path.toUri().toURL();
+      } catch (MalformedURLException e) {
+      }
+    }
+    return null;
+  }
 
 }

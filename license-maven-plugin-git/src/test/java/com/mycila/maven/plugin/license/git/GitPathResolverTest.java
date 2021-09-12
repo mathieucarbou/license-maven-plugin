@@ -25,38 +25,38 @@ import static org.junit.Assert.assertTrue;
  * @author <a href="mailto:ppalaga@redhat.com">Peter Palaga</a>
  */
 public class GitPathResolverTest {
-    @Test
-    public void relativize() throws Exception {
-        /* *nix-like */
-        assertRelativized("/path/to/my/git/repo", '/', "/path/to/my/git/repo/dir/file.txt", "dir/file.txt");
-        assertRelativized("/path/to/my/git/repo/", '/', "/path/to/my/git/repo/dir/file.txt", "dir/file.txt");
+  @Test
+  public void relativize() throws Exception {
+    /* *nix-like */
+    assertRelativized("/path/to/my/git/repo", '/', "/path/to/my/git/repo/dir/file.txt", "dir/file.txt");
+    assertRelativized("/path/to/my/git/repo/", '/', "/path/to/my/git/repo/dir/file.txt", "dir/file.txt");
 
-        assertFail("/path/to/my/git/repo/", '/', "/path/to/other/git/repo/dir/file.txt");
+    assertFail("/path/to/my/git/repo/", '/', "/path/to/other/git/repo/dir/file.txt");
 
-        /* Windows */
-        assertRelativized("c:\\path\\to\\my\\repo", '\\', "c:\\path\\to\\my\\repo\\dir\\file.txt", "dir/file.txt");
-        assertRelativized("c:\\path\\to\\my\\repo\\", '\\', "c:\\path\\to\\my\\repo\\dir\\file.txt", "dir/file.txt");
-        assertRelativized("\\\\path\\to\\my\\repo", '\\', "\\\\path\\to\\my\\repo\\dir\\file.txt", "dir/file.txt");
-        assertRelativized("\\\\path\\to\\my\\repo\\", '\\', "\\\\path\\to\\my\\repo\\dir\\file.txt", "dir/file.txt");
+    /* Windows */
+    assertRelativized("c:\\path\\to\\my\\repo", '\\', "c:\\path\\to\\my\\repo\\dir\\file.txt", "dir/file.txt");
+    assertRelativized("c:\\path\\to\\my\\repo\\", '\\', "c:\\path\\to\\my\\repo\\dir\\file.txt", "dir/file.txt");
+    assertRelativized("\\\\path\\to\\my\\repo", '\\', "\\\\path\\to\\my\\repo\\dir\\file.txt", "dir/file.txt");
+    assertRelativized("\\\\path\\to\\my\\repo\\", '\\', "\\\\path\\to\\my\\repo\\dir\\file.txt", "dir/file.txt");
 
-        assertFail("c:\\path\\to\\my\\repo\\", '\\', "c:\\path\\to\\other\\repo\\dir\\file.txt");
+    assertFail("c:\\path\\to\\my\\repo\\", '\\', "c:\\path\\to\\other\\repo\\dir\\file.txt");
 
+  }
+
+  private void assertRelativized(String repoRoot, char nativePathSepartor, String absoluteNativePath, String expected) {
+    GitPathResolver resolver = new GitPathResolver(repoRoot, nativePathSepartor);
+    String actual = resolver.relativize(absoluteNativePath);
+    assertEquals(expected, actual);
+  }
+
+  private void assertFail(String repoRoot, char nativePathSepartor, String absoluteNativePath) {
+    GitPathResolver resolver = new GitPathResolver(repoRoot, nativePathSepartor);
+    try {
+      resolver.relativize(absoluteNativePath);
+      Assert.fail("RuntimeException expected");
+    } catch (RuntimeException e) {
+      assertTrue(e.getMessage().startsWith("Cannot relativize"));
     }
-
-    private void assertRelativized(String repoRoot, char nativePathSepartor, String absoluteNativePath, String expected) {
-        GitPathResolver resolver = new GitPathResolver(repoRoot, nativePathSepartor);
-        String actual = resolver.relativize(absoluteNativePath);
-        assertEquals(expected, actual);
-    }
-
-    private void assertFail(String repoRoot, char nativePathSepartor, String absoluteNativePath) {
-        GitPathResolver resolver = new GitPathResolver(repoRoot, nativePathSepartor);
-        try {
-            resolver.relativize(absoluteNativePath);
-            Assert.fail("RuntimeException expected");
-        } catch (RuntimeException e) {
-            assertTrue(e.getMessage().startsWith("Cannot relativize"));
-        }
-    }
+  }
 
 }

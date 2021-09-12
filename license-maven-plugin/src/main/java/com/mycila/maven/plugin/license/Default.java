@@ -21,232 +21,232 @@ package com.mycila.maven.plugin.license;
  */
 public final class Default {
 
-    public static final String[] INCLUDE = new String[]{"**"};
+  public static final String[] INCLUDE = new String[]{"**"};
 
-    public static final String[] EXCLUDES = {
-        // Miscellaneous typical temporary files
-        "**/*~",
-        "**/#*#",
-        "**/.#*",
-        "**/%*%",
-        "**/._*",
-        "**/.repository/**",
-        "**/*.lck",
+  public static final String[] EXCLUDES = {
+      // Miscellaneous typical temporary files
+      "**/*~",
+      "**/#*#",
+      "**/.#*",
+      "**/%*%",
+      "**/._*",
+      "**/.repository/**",
+      "**/*.lck",
 
-        // CVS
-        "**/CVS",
-        "**/CVS/**",
-        "**/.cvsignore",
+      // CVS
+      "**/CVS",
+      "**/CVS/**",
+      "**/.cvsignore",
 
-        // RCS
-        "**/RCS",
-        "**/RCS/**",
+      // RCS
+      "**/RCS",
+      "**/RCS/**",
 
-        // SCCS
-        "**/SCCS",
-        "**/SCCS/**",
+      // SCCS
+      "**/SCCS",
+      "**/SCCS/**",
 
-        // Visual SourceSafe
-        "**/vssver.scc",
+      // Visual SourceSafe
+      "**/vssver.scc",
 
-        // Subversion
-        "**/.svn",
-        "**/.svn/**",
+      // Subversion
+      "**/.svn",
+      "**/.svn/**",
 
-        // Arch
-        "**/.arch-ids",
-        "**/.arch-ids/**",
+      // Arch
+      "**/.arch-ids",
+      "**/.arch-ids/**",
 
-        //Bazaar
-        "**/.bzr",
-        "**/.bzr/**",
+      //Bazaar
+      "**/.bzr",
+      "**/.bzr/**",
 
-        //SurroundSCM
-        "**/.MySCMServerInfo",
+      //SurroundSCM
+      "**/.MySCMServerInfo",
 
-        // Mac
-        "**/.DS_Store",
+      // Mac
+      "**/.DS_Store",
 
-        // Serena Dimensions Version 10
-        "**/.metadata",
-        "**/.metadata/**",
+      // Serena Dimensions Version 10
+      "**/.metadata",
+      "**/.metadata/**",
 
-        // Mercurial
-        "**/.hg",
-        "**/.hg/**",
-        "**/.hgignore",
+      // Mercurial
+      "**/.hg",
+      "**/.hg/**",
+      "**/.hgignore",
 
-        // git
-        "**/.git",
-        "**/.git/**",
-        "**/.gitattributes",
-        "**/.gitignore",
-        "**/.gitkeep",
-        "**/.gitmodules",
+      // git
+      "**/.git",
+      "**/.git/**",
+      "**/.gitattributes",
+      "**/.gitignore",
+      "**/.gitkeep",
+      "**/.gitmodules",
 
-        // GitHub
-        "**/.github",
-        "**/.github/**",
+      // GitHub
+      "**/.github",
+      "**/.github/**",
 
-        // BitKeeper
-        "**/BitKeeper",
-        "**/BitKeeper/**",
-        "**/ChangeSet",
-        "**/ChangeSet/**",
+      // BitKeeper
+      "**/BitKeeper",
+      "**/BitKeeper/**",
+      "**/ChangeSet",
+      "**/ChangeSet/**",
 
-        // darcs
-        "**/_darcs",
-        "**/_darcs/**",
-        "**/.darcsrepo",
-        "**/.darcsrepo/**",
-        "**/-darcs-backup*",
-        "**/.darcs-temp-mail",
+      // darcs
+      "**/_darcs",
+      "**/_darcs/**",
+      "**/.darcsrepo",
+      "**/.darcsrepo/**",
+      "**/-darcs-backup*",
+      "**/.darcs-temp-mail",
 
-        // maven project's temporary files
-        "**/target/**",
-        "**/test-output/**",
-        "**/release.properties",
-        "**/dependency-reduced-pom.xml",
-        "**/release-pom.xml",
-        "**/pom.xml.releaseBackup",
-        "**/pom.xml.versionsBackup",
+      // maven project's temporary files
+      "**/target/**",
+      "**/test-output/**",
+      "**/release.properties",
+      "**/dependency-reduced-pom.xml",
+      "**/release-pom.xml",
+      "**/pom.xml.releaseBackup",
+      "**/pom.xml.versionsBackup",
 
-        // Node
-        "**/node/**",
-        "**/node_modules/**",
+      // Node
+      "**/node/**",
+      "**/node_modules/**",
 
-        // code coverage tools
-        "**/cobertura.ser",
-        "**/.clover/**",
-        "**/jacoco.exec",
+      // code coverage tools
+      "**/cobertura.ser",
+      "**/.clover/**",
+      "**/jacoco.exec",
 
-        // eclipse project files
-        "**/.classpath",
-        "**/.project",
-        "**/.settings/**",
+      // eclipse project files
+      "**/.classpath",
+      "**/.project",
+      "**/.settings/**",
 
-        // IDEA projet files
-        "**/*.iml",
-        "**/*.ipr",
-        "**/*.iws",
-        "**/.idea/**",
+      // IDEA projet files
+      "**/*.iml",
+      "**/*.ipr",
+      "**/*.iws",
+      "**/.idea/**",
 
-        // Netbeans
-        "**/nb-configuration.xml",
+      // Netbeans
+      "**/nb-configuration.xml",
 
-        // Hibernate Validator Annotation Processor
-        "**/.factorypath",
+      // Hibernate Validator Annotation Processor
+      "**/.factorypath",
 
-        // descriptors
-        "**/MANIFEST.MF",
+      // descriptors
+      "**/MANIFEST.MF",
 
-        // License files
-        "**/LICENSE",
-        "**/LICENSE_HEADER",
+      // License files
+      "**/LICENSE",
+      "**/LICENSE_HEADER",
 
-        // binary files - images
-        "**/*.jpg",
-        "**/*.png",
-        "**/*.gif",
-        "**/*.ico",
-        "**/*.bmp",
-        "**/*.tiff",
-        "**/*.tif",
-        "**/*.cr2",
-        "**/*.xcf",
+      // binary files - images
+      "**/*.jpg",
+      "**/*.png",
+      "**/*.gif",
+      "**/*.ico",
+      "**/*.bmp",
+      "**/*.tiff",
+      "**/*.tif",
+      "**/*.cr2",
+      "**/*.xcf",
 
-        // binary files - programs
-        "**/*.class",
-        "**/*.exe",
-        "**/*.dll",
-        "**/*.so",
+      // binary files - programs
+      "**/*.class",
+      "**/*.exe",
+      "**/*.dll",
+      "**/*.so",
 
-        // checksum files
-        "**/*.md5",
-        "**/*.sha1",
-        "**/*.sha256",
-        "**/*.sha512",
+      // checksum files
+      "**/*.md5",
+      "**/*.sha1",
+      "**/*.sha256",
+      "**/*.sha512",
 
-        // Security files
-        "**/*.asc",
-        "**/*.jks",
-        "**/*.keytab",
-        "**/*.lic",
-        "**/*.p12",
-        "**/*.pub",
+      // Security files
+      "**/*.asc",
+      "**/*.jks",
+      "**/*.keytab",
+      "**/*.lic",
+      "**/*.p12",
+      "**/*.pub",
 
-        // binary files - archives
-        "**/*.jar",
-        "**/*.zip",
-        "**/*.rar",
-        "**/*.tar",
-        "**/*.tar.gz",
-        "**/*.tar.bz2",
-        "**/*.gz",
-        "**/*.7z",
+      // binary files - archives
+      "**/*.jar",
+      "**/*.zip",
+      "**/*.rar",
+      "**/*.tar",
+      "**/*.tar.gz",
+      "**/*.tar.bz2",
+      "**/*.gz",
+      "**/*.7z",
 
-        // ServiceLoader files
-        "**/META-INF/services/**",
+      // ServiceLoader files
+      "**/META-INF/services/**",
 
-        // Markdown files
-        "**/*.md",
+      // Markdown files
+      "**/*.md",
 
-        // Office documents
-        "**/*.xls",
-        "**/*.doc",
-        "**/*.odt",
-        "**/*.ods",
-        "**/*.pdf",
+      // Office documents
+      "**/*.xls",
+      "**/*.doc",
+      "**/*.odt",
+      "**/*.ods",
+      "**/*.pdf",
 
-        // Travis
-        "**/.travis.yml",
+      // Travis
+      "**/.travis.yml",
 
-        // AppVeyor
-        "**/.appveyor.yml",
-        "**/appveyor.yml",
+      // AppVeyor
+      "**/.appveyor.yml",
+      "**/appveyor.yml",
 
-        // CircleCI
-        "**/.circleci",
-        "**/.circleci/**",
+      // CircleCI
+      "**/.circleci",
+      "**/.circleci/**",
 
-        // SourceHut
-        "**/.build.yml",
+      // SourceHut
+      "**/.build.yml",
 
-        // Maven 3.3+ configs
-        "**/jvm.config",
-        "**/maven.config",
+      // Maven 3.3+ configs
+      "**/jvm.config",
+      "**/maven.config",
 
-        // Wrappers
-        "**/gradlew",
-        "**/gradlew.bat",
-        "**/gradle-wrapper.properties",
-        "**/mvnw",
-        "**/mvnw.cmd",
-        "**/maven-wrapper.properties",
-        "**/MavenWrapperDownloader.java",
+      // Wrappers
+      "**/gradlew",
+      "**/gradlew.bat",
+      "**/gradle-wrapper.properties",
+      "**/mvnw",
+      "**/mvnw.cmd",
+      "**/maven-wrapper.properties",
+      "**/MavenWrapperDownloader.java",
 
-        // flash
-        "**/*.swf",
+      // flash
+      "**/*.swf",
 
-        // json files
-        "**/*.json",
+      // json files
+      "**/*.json",
 
-        // fonts
-        "**/*.svg",
-        "**/*.eot",
-        "**/*.otf",
-        "**/*.ttf",
-        "**/*.woff",
-        "**/*.woff2",
+      // fonts
+      "**/*.svg",
+      "**/*.eot",
+      "**/*.otf",
+      "**/*.ttf",
+      "**/*.woff",
+      "**/*.woff2",
 
-        // logs
-        "**/*.log",
+      // logs
+      "**/*.log",
 
-        // office documents
-        "**/*.xlsx",
-        "**/*.docx",
-        "**/*.ppt",
-        "**/*.pptx",
-    };
+      // office documents
+      "**/*.xlsx",
+      "**/*.docx",
+      "**/*.ppt",
+      "**/*.pptx",
+  };
 
 }

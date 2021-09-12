@@ -23,10 +23,10 @@ import com.mycila.maven.plugin.license.header.Header;
  * <b>Author:</b> Mathieu Carbou (mathieu.carbou@gmail.com)
  */
 public interface Callback {
-    void onHeaderNotFound(Document document, Header header);
+  void onHeaderNotFound(Document document, Header header);
 
-    void onExistingHeader(Document document, Header header);
+  void onExistingHeader(Document document, Header header);
 
-    void onUnknownFile(Document document, Header header);
+  void onUnknownFile(Document document, Header header);
 
 }

@@ -1,12 +1,12 @@
 /**
  * Copyright (C) 2008 Mycila (mathieu.carbou@gmail.com)
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *         http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -30,41 +30,41 @@ import static org.junit.Assert.fail;
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
 public final class AggregateMojoTest {
-    @Test
-    public void test_modules_ignored() throws Exception {
-        MavenProjectStub project = new MavenProjectStub() {
-            @Override
-            public List<String> getModules() {
-                return Arrays.<String>asList("module1", "module2", "module3");
-            }
-        };
-        LicenseCheckMojo check = new LicenseCheckMojo();
-        check.defaultBasedir = new File("src/test/resources/check/modules");
-        check.legacyConfigHeader = "header.txt";
-        check.project = project;
-        check.strictCheck = true;
-        check.execute();
-    }
+  @Test
+  public void test_modules_ignored() throws Exception {
+    MavenProjectStub project = new MavenProjectStub() {
+      @Override
+      public List<String> getModules() {
+        return Arrays.<String>asList("module1", "module2", "module3");
+      }
+    };
+    LicenseCheckMojo check = new LicenseCheckMojo();
+    check.defaultBasedir = new File("src/test/resources/check/modules");
+    check.legacyConfigHeader = "header.txt";
+    check.project = project;
+    check.strictCheck = true;
+    check.execute();
+  }
 
-    @Test
-    public void test_modules_scanned() throws Exception {
-        MavenProjectStub project = new MavenProjectStub() {
-            @Override
-            public List<String> getModules() {
-                return Arrays.<String>asList("module1", "module2", "module3");
-            }
-        };
-        LicenseCheckMojo check = new LicenseCheckMojo();
-        check.project = project;
-        check.defaultBasedir = new File("src/test/resources/check/modules");
-        check.legacyConfigHeader = "header.txt";
-        check.aggregate = true;
-        check.strictCheck = true;
-        try {
-            check.execute();
-            fail();
-        } catch (MojoExecutionException e) {
-            assertEquals("Some files do not have the expected license header", e.getMessage());
-        }
+  @Test
+  public void test_modules_scanned() throws Exception {
+    MavenProjectStub project = new MavenProjectStub() {
+      @Override
+      public List<String> getModules() {
+        return Arrays.<String>asList("module1", "module2", "module3");
+      }
+    };
+    LicenseCheckMojo check = new LicenseCheckMojo();
+    check.project = project;
+    check.defaultBasedir = new File("src/test/resources/check/modules");
+    check.legacyConfigHeader = "header.txt";
+    check.aggregate = true;
+    check.strictCheck = true;
+    try {
+      check.execute();
+      fail();
+    } catch (MojoExecutionException e) {
+      assertEquals("Some files do not have the expected license header", e.getMessage());
     }
+  }
 }

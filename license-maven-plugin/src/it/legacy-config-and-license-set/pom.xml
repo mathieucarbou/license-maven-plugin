@@ -1,53 +1,53 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+  <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.mycila.license-maven-plugin.it</groupId>
-    <artifactId>legacy-config-and-license-set</artifactId>
-    <version>1.0.0</version>
+  <groupId>com.mycila.license-maven-plugin.it</groupId>
+  <artifactId>legacy-config-and-license-set</artifactId>
+  <version>1.0.0</version>
 
-    <name>Check Legacy Configuration mixed with LicenseSet Configuration</name>
-    <description>Integration Test for checking legacy configuration when used with license set configuration</description>
+  <name>Check Legacy Configuration mixed with LicenseSet Configuration</name>
+  <description>Integration Test for checking legacy configuration when used with license set configuration</description>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>com.mycila</groupId>
-                <artifactId>license-maven-plugin</artifactId>
-                <version>@project.version@</version>
-                <configuration>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.mycila</groupId>
+        <artifactId>license-maven-plugin</artifactId>
+        <version>@project.version@</version>
+        <configuration>
 
-                    <!-- legacy config -->
-                    <header>mock-license-1.txt</header>
-                    <excludes>
-                        <exclude>invoker.properties</exclude>
-                        <exclude>pom.xml</exclude>
-                        <exclude>*.groovy</exclude>
-                        <exclude>**/*.bak</exclude>
-                        <exclude>*.log</exclude>
-                        <exclude>mock-license-*</exclude>
-                        <exclude>**/Unformatted2.java</exclude>
-                    </excludes>
+          <!-- legacy config -->
+          <header>mock-license-1.txt</header>
+          <excludes>
+            <exclude>invoker.properties</exclude>
+            <exclude>pom.xml</exclude>
+            <exclude>*.groovy</exclude>
+            <exclude>**/*.bak</exclude>
+            <exclude>*.log</exclude>
+            <exclude>mock-license-*</exclude>
+            <exclude>**/Unformatted2.java</exclude>
+          </excludes>
 
-                    <!-- license sets config -->
-                    <licenseSets>
-                        <licenseSet>
-                            <header>mock-license-2.txt</header>
-                            <excludes>
-                                <exclude>invoker.properties</exclude>
-                                <exclude>pom.xml</exclude>
-                                <exclude>*.groovy</exclude>
-                                <exclude>**/*.bak</exclude>
-                                <exclude>*.log</exclude>
-                                <exclude>mock-license-*</exclude>
-                                <exclude>**/Unformatted1.java</exclude>
-                            </excludes>
-                        </licenseSet>
-                    </licenseSets>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+          <!-- license sets config -->
+          <licenseSets>
+            <licenseSet>
+              <header>mock-license-2.txt</header>
+              <excludes>
+                <exclude>invoker.properties</exclude>
+                <exclude>pom.xml</exclude>
+                <exclude>*.groovy</exclude>
+                <exclude>**/*.bak</exclude>
+                <exclude>*.log</exclude>
+                <exclude>mock-license-*</exclude>
+                <exclude>**/Unformatted1.java</exclude>
+              </excludes>
+            </licenseSet>
+          </licenseSets>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>

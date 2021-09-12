@@ -20,54 +20,54 @@ import org.apache.maven.model.License;
 
 public class LicensePolicyEnforcerResult {
 
-	private final LicensePolicy policy;
-	private final License license;
-	private final Artifact artifact;
-	private final LicensePolicy.Rule ruling;
-	
-	public LicensePolicyEnforcerResult(final LicensePolicy policy, final License license, final Artifact artifact, final LicensePolicy.Rule ruling) {
-		this.policy = policy;
-		this.license = license;
-		this.artifact = artifact;
-		this.ruling = ruling;
-	}
-	
-	@Override
-	public int hashCode() {
-		return 11 * (policy.hashCode() + license.hashCode() + artifact.hashCode() + ruling.hashCode());
-	}
-	
-	@Override
-	public boolean equals(final Object other) {
-		if (other == null) {
-			return false;
-		} else {
-			return (other.hashCode() == hashCode());
-		}
-	}
+  private final LicensePolicy policy;
+  private final License license;
+  private final Artifact artifact;
+  private final LicensePolicy.Rule ruling;
 
-	public LicensePolicy getPolicy() {
-		return policy;
-	}
+  public LicensePolicyEnforcerResult(final LicensePolicy policy, final License license, final Artifact artifact, final LicensePolicy.Rule ruling) {
+    this.policy = policy;
+    this.license = license;
+    this.artifact = artifact;
+    this.ruling = ruling;
+  }
 
-	public Artifact getArtifact() {
-		return artifact;
-	}
+  @Override
+  public int hashCode() {
+    return 11 * (policy.hashCode() + license.hashCode() + artifact.hashCode() + ruling.hashCode());
+  }
 
-	public Boolean isAllowed() {
-		return ruling.getPredicate();
-	}
-	
-	public LicensePolicy.Rule getRuling() {
-		return ruling;
-	}
+  @Override
+  public boolean equals(final Object other) {
+    if (other == null) {
+      return false;
+    } else {
+      return (other.hashCode() == hashCode());
+    }
+  }
 
-	public License getLicense() {
-		return license;
-	}
-	
-	@Override
-	public String toString() {
-		return String.format("%s [%s] %s", getArtifact(), getLicense().getName(), getPolicy());
-	}
+  public LicensePolicy getPolicy() {
+    return policy;
+  }
+
+  public Artifact getArtifact() {
+    return artifact;
+  }
+
+  public Boolean isAllowed() {
+    return ruling.getPredicate();
+  }
+
+  public LicensePolicy.Rule getRuling() {
+    return ruling;
+  }
+
+  public License getLicense() {
+    return license;
+  }
+
+  @Override
+  public String toString() {
+    return String.format("%s [%s] %s", getArtifact(), getLicense().getName(), getPolicy());
+  }
 }

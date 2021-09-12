@@ -17,55 +17,55 @@
 -->
 <config>
 
-	<properties>
-		<!-- provider name must match the property-section containing the connection data -->
-		<jdbcClass>oracle.jdbc.driver.OracleDriver</jdbcClass>
-		<jdbcURL>jdbc:oracle:thin:@192.168.0.2:1521:ora10</jdbcURL>
-		<jdbcUser>DBSAMPLE</jdbcUser>
-		<jdbcPwd>DBSAMPLE</jdbcPwd>
+  <properties>
+    <!-- provider name must match the property-section containing the connection data -->
+    <jdbcClass>oracle.jdbc.driver.OracleDriver</jdbcClass>
+    <jdbcURL>jdbc:oracle:thin:@192.168.0.2:1521:ora10</jdbcURL>
+    <jdbcUser>DBSAMPLE</jdbcUser>
+    <jdbcPwd>DBSAMPLE</jdbcPwd>
 
-		<!-- Schema options -->
-		<dbCatalog></dbCatalog>
-		<dbSchema>DBSAMPLE</dbSchema>
-		<dbTablePattern></dbTablePattern>
-		<timestampColumn>CREATIONDATE</timestampColumn>
-		
-		<!-- generation options -->
-		<targetFolder>target/generated/dbsample</targetFolder>
-		<packageName>org.apache.empire.db.samples.dbsample</packageName>
-		<dbClassName>SampleDB</dbClassName>
-		<tableBaseName>SampleTable</tableBaseName>
-		<viewBaseName>SampleView</viewBaseName>
-		<recordBaseName>SampleRecord</recordBaseName>
-		<tableClassPrefix>T</tableClassPrefix>
-		<tableClassSuffix>Table</tableClassSuffix>
-		<viewClassPrefix>V</viewClassPrefix>
-		<nestTables>True</nestTables>
-		<nestViews>False</nestViews>
-		<createRecordProperties>true</createRecordProperties>
-	</properties>
-	
-	<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+    <!-- Schema options -->
+    <dbCatalog></dbCatalog>
+    <dbSchema>DBSAMPLE</dbSchema>
+    <dbTablePattern></dbTablePattern>
+    <timestampColumn>CREATIONDATE</timestampColumn>
 
-		<appender name="default" class="org.apache.log4j.ConsoleAppender">
-			<!-- layout class="org.apache.log4j.TTCCLayout"/ -->
-			<layout class="org.apache.log4j.PatternLayout">
-				<!-- param name="ConversionPattern" value="NSB(%c) %-5p %m	at %l%n"/ -->
-				<param name="ConversionPattern" value="%-5p [%d{yyyy/MM/dd HH:mm}]: %m		at %l %n"/>
-			</layout>
-		</appender>
-	
-		<!-- log detail configuration -->
-		<logger name="org.apache.empire.commons" additivity="false">
-			<level value="warn"/>
-			<appender-ref ref="default"/>
-		</logger>
-	
-		<root>
-			<priority value="info"/>
-			<appender-ref ref="default"/>
-		</root>
+    <!-- generation options -->
+    <targetFolder>target/generated/dbsample</targetFolder>
+    <packageName>org.apache.empire.db.samples.dbsample</packageName>
+    <dbClassName>SampleDB</dbClassName>
+    <tableBaseName>SampleTable</tableBaseName>
+    <viewBaseName>SampleView</viewBaseName>
+    <recordBaseName>SampleRecord</recordBaseName>
+    <tableClassPrefix>T</tableClassPrefix>
+    <tableClassSuffix>Table</tableClassSuffix>
+    <viewClassPrefix>V</viewClassPrefix>
+    <nestTables>True</nestTables>
+    <nestViews>False</nestViews>
+    <createRecordProperties>true</createRecordProperties>
+  </properties>
 
-	</log4j:configuration>
-	
+  <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+    <appender name="default" class="org.apache.log4j.ConsoleAppender">
+      <!-- layout class="org.apache.log4j.TTCCLayout"/ -->
+      <layout class="org.apache.log4j.PatternLayout">
+        <!-- param name="ConversionPattern" value="NSB(%c) %-5p %m	at %l%n"/ -->
+        <param name="ConversionPattern" value="%-5p [%d{yyyy/MM/dd HH:mm}]: %m		at %l %n"/>
+      </layout>
+    </appender>
+
+    <!-- log detail configuration -->
+    <logger name="org.apache.empire.commons" additivity="false">
+      <level value="warn"/>
+      <appender-ref ref="default"/>
+    </logger>
+
+    <root>
+      <priority value="info"/>
+      <appender-ref ref="default"/>
+    </root>
+
+  </log4j:configuration>
+
 </config>

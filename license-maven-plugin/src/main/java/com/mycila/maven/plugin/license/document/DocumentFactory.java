@@ -26,37 +26,37 @@ import java.util.Map;
  * <b>Author:</b> Mathieu Carbou (mathieu.carbou@gmail.com)
  */
 public final class DocumentFactory {
-    private final Map<String, String> mapping;
-    private final Map<String, HeaderDefinition> definitions;
-    private final File basedir;
-    private final String encoding;
-    private final String[] keywords;
-    private final DocumentPropertiesLoader documentPropertiesLoader;
+  private final Map<String, String> mapping;
+  private final Map<String, HeaderDefinition> definitions;
+  private final File basedir;
+  private final String encoding;
+  private final String[] keywords;
+  private final DocumentPropertiesLoader documentPropertiesLoader;
 
-    public DocumentFactory(final File basedir, final Map<String, String> mapping, final Map<String, HeaderDefinition> definitions, final String encoding, final String[] keywords, final DocumentPropertiesLoader documentPropertiesLoader) {
-        this.mapping = mapping;
-        this.definitions = definitions;
-        this.basedir = basedir;
-        this.encoding = encoding;
-        this.keywords = keywords.clone();
-        this.documentPropertiesLoader = documentPropertiesLoader;
-    }
+  public DocumentFactory(final File basedir, final Map<String, String> mapping, final Map<String, HeaderDefinition> definitions, final String encoding, final String[] keywords, final DocumentPropertiesLoader documentPropertiesLoader) {
+    this.mapping = mapping;
+    this.definitions = definitions;
+    this.basedir = basedir;
+    this.encoding = encoding;
+    this.keywords = keywords.clone();
+    this.documentPropertiesLoader = documentPropertiesLoader;
+  }
 
-    public Document createDocuments(final String file) {
-        return getWrapper(file);
-    }
+  public Document createDocuments(final String file) {
+    return getWrapper(file);
+  }
 
-    private Document getWrapper(final String file) {
-        String headerType = mapping.get("");
-        String lowerFileName = FileUtils.filename(file).toLowerCase();
-        for (Map.Entry<String, String> entry : mapping.entrySet()) {
-            String lowerKey = entry.getKey().toLowerCase();
-            if (lowerFileName.endsWith("." + lowerKey) || lowerFileName.equals(lowerKey)) {
-                headerType = entry.getValue().toLowerCase();
-                break;
-            }
-        }
-        return new Document(new File(basedir, file), definitions.get(headerType), encoding, keywords, documentPropertiesLoader);
+  private Document getWrapper(final String file) {
+    String headerType = mapping.get("");
+    String lowerFileName = FileUtils.filename(file).toLowerCase();
+    for (Map.Entry<String, String> entry : mapping.entrySet()) {
+      String lowerKey = entry.getKey().toLowerCase();
+      if (lowerFileName.endsWith("." + lowerKey) || lowerFileName.equals(lowerKey)) {
+        headerType = entry.getValue().toLowerCase();
+        break;
+      }
     }
+    return new Document(new File(basedir, file), definitions.get(headerType), encoding, keywords, documentPropertiesLoader);
+  }
 
 }

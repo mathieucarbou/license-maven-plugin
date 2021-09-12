@@ -31,44 +31,44 @@ import java.io.File;
 @Mojo(name = "format", threadSafe = true)
 public final class LicenseFormatMojo extends AbstractLicenseMojo {
 
-    @Override
-    public void execute() throws MojoExecutionException, MojoFailureException {
-        if(!skip) {
-            getLog().info("Updating license headers...");
-        }
-
-        AbstractCallback callback = new AbstractCallback() {
-            @Override
-            public void onHeaderNotFound(Document document, Header header) {
-                document.parseHeader();
-                if (document.headerDetected()) {
-                    if (skipExistingHeaders) {
-                        debug("Keeping license header in: %s", document.getFilePath());
-                        return;
-                    }
-                    document.removeHeader();
-                }
-                info("Updating license header in: %s", document.getFilePath());
-                document.updateHeader(header);
-                if (!dryRun) {
-                    document.save();
-                } else {
-                    String name = document.getFile().getName() + ".licensed";
-                    File copy = new File(document.getFile().getParentFile(), name);
-                    info("Result saved to: %s", copy);
-                    document.saveTo(copy);
-                }
-            }
-
-            @Override
-            public void onExistingHeader(Document document, Header header) {
-                debug("Header OK in: %s", document.getFilePath());
-            }
-        };
-
-        execute(callback);
-
-        callback.checkUnknown();
+  @Override
+  public void execute() throws MojoExecutionException, MojoFailureException {
+    if (!skip) {
+      getLog().info("Updating license headers...");
     }
+
+    AbstractCallback callback = new AbstractCallback() {
+      @Override
+      public void onHeaderNotFound(Document document, Header header) {
+        document.parseHeader();
+        if (document.headerDetected()) {
+          if (skipExistingHeaders) {
+            debug("Keeping license header in: %s", document.getFilePath());
+            return;
+          }
+          document.removeHeader();
+        }
+        info("Updating license header in: %s", document.getFilePath());
+        document.updateHeader(header);
+        if (!dryRun) {
+          document.save();
+        } else {
+          String name = document.getFile().getName() + ".licensed";
+          File copy = new File(document.getFile().getParentFile(), name);
+          info("Result saved to: %s", copy);
+          document.saveTo(copy);
+        }
+      }
+
+      @Override
+      public void onExistingHeader(Document document, Header header) {
+        debug("Header OK in: %s", document.getFilePath());
+      }
+    };
+
+    execute(callback);
+
+    callback.checkUnknown();
+  }
 
 }

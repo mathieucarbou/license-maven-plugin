@@ -19,24 +19,23 @@ import org.apache.maven.model.License;
 
 /**
  * Make policy decisions on a {@link License} based on the license URL.
- * 
- * @author Royce Remer
  *
+ * @author Royce Remer
  */
 public class LicenseURLLicensePolicyEnforcer extends AbstractLicensePolicyEnforcer<License> {
 
-	public LicenseURLLicensePolicyEnforcer(final LicensePolicy policy) {
-		super(policy);
-	}
+  public LicenseURLLicensePolicyEnforcer(final LicensePolicy policy) {
+    super(policy);
+  }
 
-	@Override
-	public boolean apply(final License target) {
-		final Boolean matches = getPolicy().getValue().equals(target.getUrl());
-		return getPolicy().getRule().isAllowed(matches);
-	}
+  @Override
+  public boolean apply(final License target) {
+    final Boolean matches = getPolicy().getValue().equals(target.getUrl());
+    return getPolicy().getRule().isAllowed(matches);
+  }
 
-	@Override
-	public Class<?> getType() {
-		return License.class;
-	}
+  @Override
+  public Class<?> getType() {
+    return License.class;
+  }
 }

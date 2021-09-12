@@ -11,10 +11,10 @@ import java.util.Properties;
  * 2013-08-27
  */
 public final class MyPropertiesProvider implements PropertiesProvider {
-    @Override
-    public Map<String, String> getAdditionalProperties(AbstractLicenseMojo mojo, Properties currentProperties, Document document) {
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("my-custom-property", "my-custom-value");
-        return map;
-    }
+  @Override
+  public Map<String, String> getAdditionalProperties(AbstractLicenseMojo mojo, Properties currentProperties, Document document) {
+    Map<String, String> map = new HashMap<String, String>();
+    map.put("my-custom-property", "my-custom-value");
+    return map;
+  }
 }
