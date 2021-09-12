@@ -70,6 +70,7 @@ public enum DocumentType {
     LISP("el", HeaderType.EXCLAMATION3_STYLE),
     LUA("lua", HeaderType.LUA),
     MUSTACHE("mustache", HeaderType.MUSTACHE_STYLE),
+    MVEL("mv", HeaderType.MVEL_STYLE),
     MXML("mxml", HeaderType.XML_STYLE),
     PERL("pl", HeaderType.SCRIPT_STYLE),
     PERL_MODULE("pm", HeaderType.SCRIPT_STYLE),
