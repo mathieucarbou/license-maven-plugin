@@ -1,0 +1,8 @@
+title: License Maven Plugin (Official & Original)
+description: Manage license headers in your source files
+google_analytics: UA-5669052-12
+show_downloads: true
+theme: jekyll-theme-cayman
+
+gems:
+  - jekyll-mentions
