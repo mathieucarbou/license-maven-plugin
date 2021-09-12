@@ -99,6 +99,8 @@ __Plugin declaration__
     </plugin>
 ```
 
+Note: `inlineHeader` can also be used instead of `header` to specify directly the header content in the POM.
+
 __Plugin declaration ([Multi-Licensing](https://en.wikipedia.org/wiki/Multi-licensing))__
 
 If your source code makes use of multi-licensing, then instead of
