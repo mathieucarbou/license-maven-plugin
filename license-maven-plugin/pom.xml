@@ -120,7 +120,7 @@
     </build>
 
     <reporting>
-        <outputDirectory>../target/site/${project.version}/${project.artifactId}</outputDirectory>
+        <outputDirectory>../docs/reports/${project.version}/${project.artifactId}</outputDirectory>
     </reporting>
 
     <distributionManagement>

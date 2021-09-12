@@ -110,7 +110,7 @@
     </dependencyManagement>
 
     <reporting>
-        <outputDirectory>target/site/${project.version}</outputDirectory>
+        <outputDirectory>docs/reports/${project.version}</outputDirectory>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -220,6 +220,7 @@
                     <excludes>
                         <exclude>src/test/resources/**</exclude>
                         <exclude>**/release-pom.xml</exclude>
+                        <exclude>docs/**</exclude>
                     </excludes>
                     <mapping>
                         <java>SLASHSTAR_STYLE</java>
