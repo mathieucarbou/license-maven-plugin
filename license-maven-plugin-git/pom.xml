@@ -29,7 +29,7 @@
   <description>An optional module for license-maven-plugin adding git related functionality</description>
 
   <reporting>
-    <outputDirectory>../target/site/${project.version}/${project.artifactId}</outputDirectory>
+    <outputDirectory>../docs/reports/${project.version}/${project.artifactId}</outputDirectory>
   </reporting>
 
   <distributionManagement>
