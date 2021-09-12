@@ -1,28 +1,23 @@
-__Lastest releases__ (note that it may take up to 1-2 days to be in Maven Central repository):
+# Table of contents
 
-* [4.1](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/4.1/) (2021-04-23) - see [issues and pull requests](https://github.com/mathieucarbou/license-maven-plugin/milestone/17?closed=1)
-* [4.0](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/4.0/) (2021-03-30) - see [issues and pull requests](https://github.com/mathieucarbou/license-maven-plugin/milestone/16?closed=1)
-* [3.0](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/3.0/) (2016-08-20) - see [issues and pull requests](https://github.com/mathieucarbou/license-maven-plugin/issues?q=milestone%3A3.0)
-* [2.11](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/2.11/) (2015-04-20) - see [issues and pull requests](https://github.com/mathieucarbou/license-maven-plugin/issues?q=milestone%3A2.11)
-* [2.10](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/2.10/) (2015-03-16) - see [issues and pull requests](https://github.com/mathieucarbou/license-maven-plugin/issues?q=milestone%3A2.8)
+- [Table of Contents](#table-of-contents)
+- [Maven License Plugin (Official & Original)](#maven-license-plugin-official--original)
+  - [Releases](#releases)
+  - [Documentation](#documentation)
+    - [Plugin declaration](#plugin-declaration)
+    - [Reports](#reports)
+    - [Goals](#goals)
+    - [Configuration](#configuration)
+    - [License templates](#license-templates)
+    - [Properties and placeholders](#properties-and-placeholders)
+    - [Supported comment types](#supported-comment-types)
+    - [Changing header style definitions](#changing-header-style-definitions)
+  - [Development](#development)
+    - [Requirements](#requirements)
+    - [Releasing a version](#releasing-a-version)
+    - [Generate site from any branch or tag](#generate-site-from-any-branch-or-tag)
 
----------------
-
-**Table of Contents**
-
-- [Maven License Plugin](#maven-license-plugin)
-    - [Maven Repository](#maven-repository)
-    - [Documentation](#documentation)
-        - [Detailed Maven documentation](#detailed-maven-documentation)
-        - [Goals](#goals)
-        - [Configuration](#configuration)
-        - [License templates](#license-templates)
-        - [Properties](#properties-and-placeholders)
-        - [Supported comment types](#supported-comment-types)
-        - [Changing header style definitions](#changing-header-style-definitions)
-    - [Development](#development)
-
-# Maven License Plugin (Official & Original) #
+# Maven License Plugin (Official & Original)
 
 Basically, when you are developing a project either in open source or in a company, you often need to add at the top of your source files a license to protect your work. I didn't find any maven plugin on Internet to help you maintain these license headers. By maintaining, i mean checking if the header is here or not, generating a report and of course having the possibility to update / reformat missing license headers.
 
@@ -56,20 +51,22 @@ __Contributors__
 * [@hgschmie](https://github.com/hgschmie)
 * [@mirabilos](https://github.com/mirabilos)
 
-## Maven Repository ##
-
-__Releases__
+## Releases
 
 Available in Maven Central Repository: https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/
 
-__Snapshots__
+* [4.1](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/4.1/) (2021-04-23) - see [issues and pull requests](https://github.com/mathieucarbou/license-maven-plugin/milestone/17?closed=1)
+* [4.0](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/4.0/) (2021-03-30) - see [issues and pull requests](https://github.com/mathieucarbou/license-maven-plugin/milestone/16?closed=1)
+* [3.0](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/3.0/) (2016-08-20) - see [issues and pull requests](https://github.com/mathieucarbou/license-maven-plugin/issues?q=milestone%3A3.0)
+* [2.11](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/2.11/) (2015-04-20) - see [issues and pull requests](https://github.com/mathieucarbou/license-maven-plugin/issues?q=milestone%3A2.11)
+* [2.10](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/2.10/) (2015-03-16) - see [issues and pull requests](https://github.com/mathieucarbou/license-maven-plugin/issues?q=milestone%3A2.8)
 
-Available in OSS Repository:  https://oss.sonatype.org/content/repositories/snapshots/com/mycila/license-maven-plugin/
+## Documentation
 
-__Plugin declaration__
+### Plugin declaration
 
 ```xml
-    <plugin>
+<plugin>
   <groupId>com.mycila</groupId>
   <artifactId>license-maven-plugin</artifactId>
   <version>X.Y.ga</version>
@@ -101,7 +98,7 @@ __Plugin declaration__
 
 Note: `inlineHeader` can also be used instead of `header` to specify directly the header content in the POM.
 
-__Plugin declaration ([Multi-Licensing](https://en.wikipedia.org/wiki/Multi-licensing))__
+__For [Multi-Licensing](https://en.wikipedia.org/wiki/Multi-licensing)__
 
 If your source code makes use of multi-licensing, then instead of
 a `<header>` or `<inlineHeader>` element in the configuration
@@ -147,9 +144,7 @@ options are concatenated together to produce a header template.
 </plugin>
 ```
 
-## Documentation ##
-
-### Detailed Maven documentation ###
+### Reports
 
 The detailed Maven Plugin Documentation generated for each build is available here:
 
@@ -169,14 +164,14 @@ configuration syntax is still supported but deprecated, and may be removed in fu
 
 __WARNING__: there is good chances the latest version is greater than latest documentation, if nothing has changed concerning the plugin configurations.
 
-### Goals ###
+### Goals
 
 * `license:check`: verify if some files miss license header. This goal is attached to the verify phase if declared in your pom.xml like above.
 * `license:format`: add the license header when missing. If a header is existing, it is updated to the new one.
 * `license:remove`: remove existing license header
 
 
-### Configuration ###
+### Configuration
 
 The table below shows all the available options you can use in the configure section of the plugin. A lot of are also available from the command-line. To use them, simply launch your maven command with a property like `-Dproperty=value` (i.e. `mvn license:check -Dlicense.header=src/etc/header.txt`)
 
@@ -185,7 +180,7 @@ All plugin configuration options are described in the [Detailed Maven documentat
 - `useDefaultExcludes`: The default exclusion list can be found [here](https://github.com/mathieucarbou/license-maven-plugin/blob/master/license-maven-plugin/src/main/java/com/mycila/maven/plugin/license/Default.java)
 
 
-### License templates ###
+### License templates
 
 Maven license plugin comes with the following license templates:
 
@@ -206,7 +201,7 @@ Maven license plugin comes with the following license templates:
 
 You can find those license templates with preconfigured placeholders [here](https://github.com/mathieucarbou/license-maven-plugin/tree/master/license-maven-plugin/src/main/resources/com/mycila/maven/plugin/license/templates)
 
-### Properties and placeholders ###
+### Properties and placeholders
 
 Properties which can be used as placeholder comes from:
 
@@ -237,7 +232,7 @@ public interface PropertiesProvider {
 You have access to the Mojo, the current built properties and the document being checked or formatted. The plugin uses the JDK ServiceLoader mechanism to find all `PropertiesProvider` implementations on the plugin classpath and execute them. Thus, just add the implementation class name in the file `META-INF/services/com.mycila.maven.plugin.license.PropertiesProvider` in your JAR file.
 
 
-### Supported comment types ###
+### Supported comment types
 
 The plugin has been designed so that it is very easy to add new supports for new sorts of comment. The plugin currently support these types of comment:
 
@@ -481,7 +476,7 @@ Another use case for custom mappings is when writing Java code in packages; the 
 </mapping>
 ```
 
-### Changing header style definitions ###
+### Changing header style definitions
 
 In license-maven-plugin, each header style is defined by patterns to detect it and also strings to insert it correctly in files. If we take for example the Javadoc style header definition. It is defined as follow:
 
@@ -590,13 +585,13 @@ And it should generate headers like:
 
 ## Development
 
-### Requirements:
+### Requirements
 
 - Java 1.8
 - Verify with: `mvn -v` that the right version is used
-- Replace my GPG key (EDEA921A) by yours
+- Replace my GPG key (EDEA921A) by yours in the following lines
 
-### Releasing a version:
+### Releasing a version
 
 Example: `4.0.rc1`
 
@@ -622,7 +617,7 @@ mvn release:perform -Darguments="-Dgpg.keyname=EDEA921A -Dgpg.passphrase=XYZ"
 Then, go to https://oss.sonatype.org/ to "close and release".
 Then you should see a few minutes later the new version at https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/
 
-### Generate site from any branch or tag:
+### Generate site from any branch or tag
 
 ```bash
 mvn clean verify site -DperformRelease=true -Dgpg.skip=true
