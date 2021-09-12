@@ -1,7 +1,10 @@
 # Table of contents
 
-- [Table of Contents](#table-of-contents)
+- [Table of contents](#table-of-contents)
 - [Maven License Plugin (Official & Original)](#maven-license-plugin-official--original)
+  - [Features](#features)
+  - [Links](#links)
+  - [Contributors](#contributors)
   - [Releases](#releases)
   - [Documentation](#documentation)
     - [Plugin declaration](#plugin-declaration)
@@ -21,7 +24,7 @@
 
 Basically, when you are developing a project either in open source or in a company, you often need to add at the top of your source files a license to protect your work. I didn't find any maven plugin on Internet to help you maintain these license headers. By maintaining, i mean checking if the header is here or not, generating a report and of course having the possibility to update / reformat missing license headers.
 
-__Features:__
+## Features
 
 * Check if header is missing in some source file (`check` goal).
 * Add headers if missing (`format` goal).
@@ -31,25 +34,44 @@ __Features:__
 * Variable replacement: you can add some variable in your header, such as ${year} or ${owner} and they will be replaced by the corresponding values taken from the pom or system properties.
 * [Dependency enforcement](license-maven-plugin/src/site/markdown/dependency-enforcement.md): optionally fail the build if the dependencies do not meet your license policies
 
-__Project:__
+## Links
 
 - __Build Status:__ [![Build Status](https://app.travis-ci.com/mathieucarbou/license-maven-plugin.svg?branch=master)](https://app.travis-ci.com/mathieucarbou/license-maven-plugin)
 - __Issues:__ https://github.com/mathieucarbou/license-maven-plugin/issues
 - __License:__ [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0)
 
-__Contributors__
+## Contributors
 
-* [@mathieucarbou](https://github.com/mathieucarbou)
-* [@sebhoss](https://github.com/sebhoss)
-* [@ppalaga](https://github.com/ppalaga)
+* [@Flamenco](https://github.com/Flamenco)
 * [@McFoggy](https://github.com/McFoggy)
-* [@eincs](https://github.com/eincs)
-* [@mcculls](https://github.com/mcculls)
-* [@stain](https://github.com/stain)
 * [@adamretter](https://github.com/adamretter)
-* [@vromero](https://github.com/vromero)
+* [@akomakom](https://github.com/akomakom)
+* [@ankon](https://github.com/ankon)
+* [@christopherlakey](https://github.com/christopherlakey)
+* [@eincs](https://github.com/eincs)
+* [@geoff-wasilwa](https://github.com/geoff-wasilwa)
+* [@hazendaz](https://github.com/hazendaz)
 * [@hgschmie](https://github.com/hgschmie)
+* [@jdhoek](https://github.com/jdhoek)
+* [@jfim](https://github.com/jfim)
+* [@jgerken](https://github.com/jgerken)
+* [@liry](https://github.com/liry)
+* [@masakimu](https://github.com/masakimu)
+* [@mathieucarbou](https://github.com/mathieucarbou)
+* [@mcculls](https://github.com/mcculls)
 * [@mirabilos](https://github.com/mirabilos)
+* [@peterlynch](https://github.com/peterlynch)
+* [@ppalaga](https://github.com/ppalaga)
+* [@rhuss](https://github.com/rhuss)
+* [@rmannibucau](https://github.com/rmannibucau)
+* [@rnc](https://github.com/rnc)
+* [@sebhoss](https://github.com/sebhoss)
+* [@shane-hp](https://github.com/shane-hp)
+* [@stain](https://github.com/stain)
+* [@vromero](https://github.com/vromero)
+* [@yoosiba](https://github.com/yoosiba)
+
+Please let me know if your name is missing!
 
 ## Releases
 
