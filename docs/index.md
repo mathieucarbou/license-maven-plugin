@@ -91,8 +91,12 @@ Available in Maven Central Repository: https://repo1.maven.org/maven2/com/mycila
 <plugin>
   <groupId>com.mycila</groupId>
   <artifactId>license-maven-plugin</artifactId>
-  <version>X.Y.ga</version>
+  <version>4.1</version>
   <configuration>
+    <properties>
+      <owner>Mycila</owner>
+      <email>mathieu.carbou@gmail.com</email>
+    </properties>
     <licenseSets>
       <licenseSet>
         <header>com/mycila/maven/plugin/license/templates/APACHE-2.txt</header>
@@ -103,18 +107,7 @@ Available in Maven Central Repository: https://repo1.maven.org/maven2/com/mycila
         </excludes>
       </licenseSet>
     </licenseSets>
-    <properties>
-      <owner>Mycila</owner>
-      <email>mathieu.carbou@gmail.com</email>
-    </properties>
   </configuration>
-  <executions>
-    <execution>
-      <goals>
-        <goal>check</goal>
-      </goals>
-    </execution>
-  </executions>
 </plugin>
 ```
 
@@ -131,10 +124,10 @@ one or more header (or inlineHeader) and separators between them. These
 options are concatenated together to produce a header template.
 
 ```xml
-    <plugin>
+<plugin>
   <groupId>com.mycila</groupId>
   <artifactId>license-maven-plugin</artifactId>
-  <version>X.Y.ga</version>
+  <version>4.1</version>
   <configuration>
     <licenseSets>
       <licenseSet>
@@ -156,13 +149,6 @@ options are concatenated together to produce a header template.
       <email>mathieu.carbou@gmail.com</email>
     </properties>
   </configuration>
-  <executions>
-    <execution>
-      <goals>
-        <goal>check</goal>
-      </goals>
-    </execution>
-  </executions>
 </plugin>
 ```
 
