@@ -51,6 +51,8 @@ public final class LicenseCheckMojo extends AbstractLicenseMojo {
 
   @Override
   public void execute() throws MojoExecutionException, MojoFailureException {
+    report = new Report(reportFormat, Report.Action.CHECK, project, clock, reportSkipped);
+
     if (!skip) {
       getLog().info("Checking licenses...");
     }
@@ -63,16 +65,19 @@ public final class LicenseCheckMojo extends AbstractLicenseMojo {
           document.parseHeader();
           if (document.headerDetected()) {
             debug("Existing header in: %s", document.getFilePath());
+            report.add(document.getFile(), Report.Result.PRESENT);
             return;
           }
         }
         warn("Missing header in: %s", document.getFilePath());
         missingHeaders.add(document.getFile());
+        report.add(document.getFile(), Report.Result.MISSING);
       }
 
       @Override
       public void onExistingHeader(Document document, Header header) {
         debug("Header OK in: %s", document.getFilePath());
+        report.add(document.getFile(), Report.Result.PRESENT);
       }
     };
 
@@ -104,9 +109,7 @@ public final class LicenseCheckMojo extends AbstractLicenseMojo {
       getLog().warn(errorMessage);
     }
 
-    if (!skip) {
-      callback.checkUnknown();
-    }
+    callback.checkUnknown();
   }
 
 }

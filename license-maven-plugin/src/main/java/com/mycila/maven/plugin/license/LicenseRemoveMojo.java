@@ -33,6 +33,8 @@ public final class LicenseRemoveMojo extends AbstractLicenseMojo {
 
   @Override
   public void execute() throws MojoExecutionException, MojoFailureException {
+    report = new Report(reportFormat, Report.Action.REMOVE, project, clock, reportSkipped);
+
     if (!skip) {
       getLog().info("Removing license headers...");
     }
@@ -60,15 +62,19 @@ public final class LicenseRemoveMojo extends AbstractLicenseMojo {
 
   private void remove(Document document) {
     document.parseHeader();
-    if (document.headerDetected())
+    if (document.headerDetected()) {
       document.removeHeader();
-    if (!dryRun) {
-      document.save();
+      if (!dryRun) {
+        document.save();
+      } else {
+        String name = document.getFile().getName() + ".licensed";
+        File copy = new File(document.getFile().getParentFile(), name);
+        info("Result saved to: %s", copy);
+        document.saveTo(copy);
+      }
+      report.add(document.getFile(), Report.Result.REMOVED);
     } else {
-      String name = document.getFile().getName() + ".licensed";
-      File copy = new File(document.getFile().getParentFile(), name);
-      info("Result saved to: %s", copy);
-      document.saveTo(copy);
+      report.add(document.getFile(), Report.Result.NOOP);
     }
   }
 
