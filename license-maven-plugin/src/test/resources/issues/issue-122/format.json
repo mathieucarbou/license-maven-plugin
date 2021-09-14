@@ -1,0 +1,27 @@
+{
+  "timestamp": "1631615047644",
+  "goal": "FORMAT",
+  "module": {
+    "groupId": "com.mycila",
+    "artifactId": "license-maven-plugin",
+    "version": "4.2-SNAPSHOT"
+  },
+  "files": [
+    {
+      "path": "target/test/issues/issue-122/test_format_json/file1.mv",
+      "result": "NOOP"
+    },
+    {
+      "path": "target/test/issues/issue-122/test_format_json/file2.mv",
+      "result": "ADDED"
+    },
+    {
+      "path": "target/test/issues/issue-122/test_format_json/file3.mv",
+      "result": "REPLACED"
+    },
+    {
+      "path": "target/test/issues/issue-122/test_format_json/file4.unknown",
+      "result": "UNKNOWN"
+    }
+  ]
+}

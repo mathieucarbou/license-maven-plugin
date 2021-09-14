@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<licensePluginReport goal="FORMAT" timestamp="1631615047644">
+    <module artifactId="license-maven-plugin" groupId="com.mycila" version="4.2-SNAPSHOT"/>
+    <files>
+        <file path="target/test/issues/issue-122/test_format_xml/file1.mv" result="NOOP"/>
+        <file path="target/test/issues/issue-122/test_format_xml/file2.mv" result="ADDED"/>
+        <file path="target/test/issues/issue-122/test_format_xml/file3.mv" result="REPLACED"/>
+        <file path="target/test/issues/issue-122/test_format_xml/file4.unknown" result="UNKNOWN"/>
+    </files>
+</licensePluginReport>

@@ -36,6 +36,9 @@ script: ./mvnw clean install site -DperformRelease=true -Dgpg.skip=true -V -B -s
 cache:
   #  timeout: 5000
   directories:
-    - "$HOME/.m2"
+    - $HOME/.m2
     - $HOME/AppData/Local/Temp/chocolatey
     - $HOME/Library/Caches/Homebrew
+
+after_failure:
+  - cat **/target/surefire-reports/*.txt

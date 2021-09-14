@@ -33,6 +33,8 @@ public final class LicenseFormatMojo extends AbstractLicenseMojo {
 
   @Override
   public void execute() throws MojoExecutionException, MojoFailureException {
+    report = new Report(reportFormat, Report.Action.FORMAT, project, clock, reportSkipped);
+
     if (!skip) {
       getLog().info("Updating license headers...");
     }
@@ -44,9 +46,13 @@ public final class LicenseFormatMojo extends AbstractLicenseMojo {
         if (document.headerDetected()) {
           if (skipExistingHeaders) {
             debug("Keeping license header in: %s", document.getFilePath());
+            report.add(document.getFile(), Report.Result.NOOP);
             return;
           }
           document.removeHeader();
+          report.add(document.getFile(), Report.Result.REPLACED);
+        } else {
+          report.add(document.getFile(), Report.Result.ADDED);
         }
         info("Updating license header in: %s", document.getFilePath());
         document.updateHeader(header);
@@ -63,6 +69,7 @@ public final class LicenseFormatMojo extends AbstractLicenseMojo {
       @Override
       public void onExistingHeader(Document document, Header header) {
         debug("Header OK in: %s", document.getFilePath());
+        report.add(document.getFile(), Report.Result.NOOP);
       }
     };
 

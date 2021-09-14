@@ -50,6 +50,7 @@ import org.xml.sax.InputSource;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Clock;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -387,6 +388,47 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
   @Parameter(defaultValue = "${session}")
   public MavenSession session;
 
+  /**
+   * The location where to write the report of the plugin execution (file processed, action taken, etc).
+   * <p>
+   * "PRESENT" means the file has a header (check goal)
+   * <p>
+   * "MISSING" means the header is missing (check goal)
+   * <p>
+   * "NOOP" means no action were performed (remove or format goal)
+   * <p>
+   * "ADDED" means a header was added (format goal)
+   * <p>
+   * "REPLACED" means a header was replaced (format goal)
+   * <p>
+   * "REMOVED" means a header was removed (format goal)
+   * <p>
+   * "UNKNOWN" means that the file extension is unknown
+   * <p>
+   * Activated by default.
+   */
+  @Parameter(property = "license.report.location", defaultValue = "${project.reporting.outputDirectory}/license-plugin-report.xml")
+  public File reportLocation;
+
+  /**
+   * Format of the report.
+   * <p>
+   * Can be (case-insensitive): 'xml', 'json'.
+   * <p>
+   * Default is XML.
+   */
+  @Parameter(property = "license.report.format")
+  public String reportFormat;
+
+  /**
+   * Skip the report generation. Default: false
+   */
+  @Parameter(property = "license.report.skip", defaultValue = "false")
+  public boolean reportSkipped = false;
+
+  protected Clock clock = Clock.systemUTC();
+  protected Report report;
+
   protected abstract class AbstractCallback implements Callback {
 
     /**
@@ -398,6 +440,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
     public void onUnknownFile(Document document, Header header) {
       warn("Unknown file extension: %s", document.getFilePath());
       unknownFiles.add(document.getFile());
+      report.add(document.getFile(), Report.Result.UNKNOWN);
     }
 
     public void checkUnknown() throws MojoExecutionException {
@@ -414,7 +457,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
   }
 
   @SuppressWarnings({"unchecked"})
-  public final void execute(final Callback callback) throws MojoExecutionException, MojoFailureException {
+  protected final void execute(final Callback callback) throws MojoExecutionException, MojoFailureException {
     if (!skip) {
 
       // make default base dir canonical
@@ -438,6 +481,8 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
 
       // execute
       executeForLicenseSets(allLicenseSets, callback);
+
+      report.exportTo(reportLocation);
     }
   }
 
