@@ -242,7 +242,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
    * support, and the value is the name of the comment type to use.
    */
   @Parameter
-  public LinkedHashMap<String, String> mapping = new LinkedHashMap<String, String>();
+  public Map<String, String> mapping = new LinkedHashMap<String, String>();
 
   /**
    * Whether to use the default mapping between file extensions and comment
@@ -604,34 +604,32 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
 
     int nThreads = getNumberOfExecutorThreads();
     ExecutorService executorService = Executors.newFixedThreadPool(nThreads);
-    CompletionService completionService = new ExecutorCompletionService(executorService);
+    CompletionService<?> completionService = new ExecutorCompletionService<>(executorService);
     int count = 0;
     debug("Number of execution threads: %s", nThreads);
 
     try {
       for (final String file : listSelectedFiles(licenseSet)) {
-        completionService.submit(new Runnable() {
-          @Override
-          public void run() {
-            Document document = documentFactory.createDocuments(file);
-            debug("Selected file: %s [header style: %s]", document.getFilePath(), document.getHeaderDefinition());
-            if (document.isNotSupported()) {
-              callback.onUnknownFile(document, h);
-            } else if (document.is(h)) {
-              debug("Skipping header file: %s", document.getFilePath());
-            } else if (document.hasHeader(h, strictCheck)) {
-              callback.onExistingHeader(document, h);
-            } else {
-              boolean headerFound = false;
-              for (final Header validHeader : validHeaders) {
-                if (headerFound = document.hasHeader(validHeader, strictCheck)) {
-                  callback.onExistingHeader(document, h);
-                  break;
-                }
+        completionService.submit(() -> {
+          Document document = documentFactory.createDocuments(file);
+          debug("Selected file: %s [header style: %s]", document.getFilePath(), document.getHeaderDefinition());
+          if (document.isNotSupported()) {
+            callback.onUnknownFile(document, h);
+          } else if (document.is(h)) {
+            debug("Skipping header file: %s", document.getFilePath());
+          } else if (document.hasHeader(h, strictCheck)) {
+            callback.onExistingHeader(document, h);
+          } else {
+            boolean headerFound = false;
+            for (final Header validHeader : validHeaders) {
+              headerFound = document.hasHeader(validHeader, strictCheck);
+              if (headerFound) {
+                callback.onExistingHeader(document, h);
+                break;
               }
-              if (!headerFound) {
-                callback.onHeaderNotFound(document, h);
-              }
+            }
+            if (!headerFound) {
+              callback.onHeaderNotFound(document, h);
             }
           }
         }, null);

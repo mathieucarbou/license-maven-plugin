@@ -93,6 +93,7 @@ public enum DocumentType {
   TXT("txt", HeaderType.TEXT),
   UNKNOWN("", HeaderType.UNKNOWN),
   VB("bas", HeaderType.HAML_STYLE),
+  VBA("vba", HeaderType.APOSTROPHE_STYLE),
   VELOCITY("vm", HeaderType.SHARPSTAR_STYLE),
   WINDOWS_BATCH("bat", HeaderType.BATCH),
   WINDOWS_SHELL("cmd", HeaderType.BATCH),

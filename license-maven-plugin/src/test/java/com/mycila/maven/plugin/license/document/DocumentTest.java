@@ -157,7 +157,7 @@ public final class DocumentTest {
         loader);
     doc.parseHeader();
     doc.removeHeader();
-    assertEquals(doc.getContent(), "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\r\n<web-app/>\r\n");
+    assertEquals(doc.getContent(), "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\r\n\r\n<web-app/>\r\n");
   }
 
   @Test
@@ -193,7 +193,7 @@ public final class DocumentTest {
         loader);
     doc.parseHeader();
     doc.removeHeader();
-    assertEquals(doc.getContent(), "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\r\n" +
+    assertEquals(doc.getContent(), "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\r\n\r\n\r\n\r\n" +
         "<web-app>\r\n" +
         "\r\n" +
         "</web-app>\r\n");

@@ -146,10 +146,16 @@ public final class HeaderParser {
     // check if there is already a header
     boolean gotHeader = false;
     if (headerDefinition.isFirstHeaderLine(line)) {
+      StringBuilder inPlaceHeader = new StringBuilder();
+      inPlaceHeader.append(line.toLowerCase());
+
+      line = fileContent.nextLine();
+
       // skip blank lines before header text
       if (headerDefinition.allowBlankLines()) {
-        do line = fileContent.nextLine();
-        while (line != null && "".equals(line.trim()));
+        while (line != null && "".equals(line.trim())) {
+          line = fileContent.nextLine();
+        }
       }
 
       // first header detected line & potential blank lines have been detected
@@ -158,28 +164,40 @@ public final class HeaderParser {
         // we detected previously a one line comment block that matches the header detection
         // it is not an header it is a comment
         return false;
+
+      } else {
+        inPlaceHeader.append(line.toLowerCase());
       }
 
-      StringBuilder inPlaceHeader = new StringBuilder();
       String before = StringUtils.rtrim(headerDefinition.getBeforeEachLine());
-      if ("".equals(before) && !headerDefinition.isMultiLine())
+      if ("".equals(before) && !headerDefinition.isMultiLine()) {
         before = headerDefinition.getBeforeEachLine();
-      boolean foundEnd = false;
-      do {
-        inPlaceHeader.append(line.toLowerCase());
-        if (headerDefinition.isMultiLine() && headerDefinition.isLastHeaderLine(line)) {
-          foundEnd = true;
-          break;
-        }
-        line = fileContent.nextLine();
       }
-      while (line != null && line.startsWith(before));
+
+      boolean foundEnd = false;
+      if (headerDefinition.isMultiLine() && headerDefinition.isLastHeaderLine(line)) {
+        foundEnd = true;
+
+      } else {
+        while ((line = fileContent.nextLine()) != null && line.startsWith(before)) {
+          inPlaceHeader.append(line.toLowerCase());
+          if (headerDefinition.isMultiLine() && headerDefinition.isLastHeaderLine(line)) {
+            foundEnd = true;
+            break;
+          }
+        }
+      }
+
       // skip blank lines after header text
-      if (headerDefinition.allowBlankLines())
+      if (headerDefinition.isMultiLine() && headerDefinition.allowBlankLines() && !foundEnd) {
         do line = fileContent.nextLine();
         while (line != null && "".equals(line.trim()));
-      if (headerDefinition.allowBlankLines() || !foundEnd)
         fileContent.rewind();
+
+      } else if (!headerDefinition.isMultiLine() && !foundEnd) {
+        fileContent.rewind();
+      }
+
       if (!headerDefinition.isMultiLine()) {
         // keep track of the position for headers where the end line is the same as the before each line
         int pos = fileContent.getPosition();
@@ -191,6 +209,14 @@ public final class HeaderParser {
           line = fileContent.nextLine();
         if (line == null)
           fileContent.resetTo(pos);
+      } else if (line != null) {
+        // we could end up there if we still have some lines, but not matching "before".
+        // This can be the last line in a multi line header
+        int pos = fileContent.getPosition();
+        line = fileContent.nextLine();
+        if (line == null || !headerDefinition.isLastHeaderLine(line)) {
+          fileContent.resetTo(pos);
+        }
       }
       gotHeader = true;
       for (String keyword : keywords) {
@@ -207,8 +233,14 @@ public final class HeaderParser {
     // we check if there is a header, if the next line is the blank line of the header
     int end = fileContent.getPosition();
     line = fileContent.nextLine();
-    if (line != null && "".equals(line.trim()))
+    if (beginPosition == 0) {
+      while (line != null && "".equals(line.trim())) {
+        end = fileContent.getPosition();
+        line = fileContent.nextLine();
+      }
+    } if (headerDefinition.getEndLine().endsWith("EOL") && line != null && "".equals(line.trim())) {
       end = fileContent.getPosition();
+    }
     return end;
   }
 }

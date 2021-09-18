@@ -69,7 +69,7 @@ public final class HeaderParserTest {
         HeaderType.XML_STYLE.getDefinition(), new String[]{"copyright"});
     assertTrue(parser.gotAnyHeader());
     assertEquals(parser.getBeginPosition(), 45);
-    assertEquals(parser.getEndPosition(), 866);
+    assertEquals(parser.getEndPosition(), 864);
   }
 
   @Test
@@ -99,6 +99,6 @@ public final class HeaderParserTest {
         HeaderType.XML_STYLE.getDefinition(), new String[]{"copyright"});
     assertTrue(parser.gotAnyHeader());
     assertEquals(parser.getBeginPosition(), 45);
-    assertEquals(parser.getEndPosition(), 870);
+    assertEquals(parser.getEndPosition(), 864);
   }
 }
