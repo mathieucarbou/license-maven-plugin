@@ -83,3 +83,12 @@ There are situations when `license-maven-plugin-git` produces results you might 
 * Further note that committing the result of `mvn license:format` may sometimes introduce the first change in the given year, which again may make the subsequent `mvn license:check` fail. In such cases, just run the combination of `mvn license:format` and `git commit` twice.
 
 You may want to consult `license-maven-plugin-git` sources (esp. `com.mycila.maven.plugin.license.git.CopyrightRangeProvider`) to learn about its configuration parameters that are not documented here.
+
+USAGE WARNING
+-------------
+
+Maven has changed the way of checkout projects during a release, which can make this plugin unusable.
+
+See the discussion here: https://github.com/mathieucarbou/license-maven-plugin/issues/206
+
+The workaround is to avoid that this plugin gets executed again during the `release:perform`.
