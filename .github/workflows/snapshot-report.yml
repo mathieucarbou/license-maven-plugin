@@ -23,6 +23,6 @@ jobs:
         with:
           commit-message: '[GA] Update snapshot report'
           title: '[GA] Update snapshot report'
-          body: 'This is an auto-generated PR with website updates.'
+          body: 'This is an auto-generated PR to update the snapshot report.'
           labels: 'in:doc'
           branch: generate-site
