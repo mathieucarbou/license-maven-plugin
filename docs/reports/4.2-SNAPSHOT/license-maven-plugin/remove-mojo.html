@@ -209,10 +209,32 @@ are properties like files.
 <p>This is named `defaultHeaderDefinitions` as it will be used as
 the default value for the header definitions. This default value
 can be overridden in each LicenseSet by setting
-<code>LicenseSet.headerDefinitions</code>.</p><br /><b>Alias is</b>: <code>headerDefinitions</code>.</td>
+<code>LicenseSet.headerDefinitions</code> or
+<code>LicenseSet.inlineHeaderStyles</code> and is overridden by
+<code>defaultInlineHeaderStyles</code>.</p><br /><b>Alias is</b>: <code>headerDefinitions</code>.</td>
           </tr>
           
 <tr class="a">
+            
+<td><code><a href="#defaultInlineHeaderStyles">&lt;defaultInlineHeaderStyles&gt;</a></code></td>
+            
+<td><code>HeaderStyle[]</code></td>
+            
+<td><code>-</code></td>
+            
+<td>Allows the use of inline header definitions. 
+
+<p>This is named `defaultInlineHeaderStyles` as it will be used as
+the default value for the header definitions.</p>
+
+<p>This default value can be overridden in each LicenseSet by
+setting <code>LicenseSet.headerDefinitions</code> or
+<code>LicenseSet.inlineHeaderStyles</code>.</p>
+
+<p>Inline styles overrides those read from file</p><br /></td>
+          </tr>
+          
+<tr class="b">
             
 <td><code><a href="#defaultProperties">&lt;defaultProperties&gt;</a></code></td>
             
@@ -232,7 +254,7 @@ overridden in each LicenseSet by setting
 <code>LicenseSet.properties</code>.</p><br /><b>Alias is</b>: <code>properties</code>.</td>
           </tr>
           
-<tr class="b">
+<tr class="a">
             
 <td><code><a href="#defaultUseDefaultExcludes">&lt;defaultUseDefaultExcludes&gt;</a></code></td>
             
@@ -250,7 +272,7 @@ value can be overridden in each LicenseSet by setting
 <code>LicenseSet.useDefaultExcludes</code>.</p><br /><b>Default value is</b>: <code>true</code>.<br /><b>User property is</b>: <code>license.useDefaultExcludes</code>.<br /><b>Alias is</b>: <code>useDefaultExcludes</code>.</td>
           </tr>
           
-<tr class="a">
+<tr class="b">
             
 <td><code><a href="#dependencyPolicies">&lt;dependencyPolicies&gt;</a></code></td>
             
@@ -262,7 +284,7 @@ value can be overridden in each LicenseSet by setting
 license adherence in dependencies.<br /><b>User property is</b>: <code>license.dependencies.policies</code>.<br /></td>
           </tr>
           
-<tr class="b">
+<tr class="a">
             
 <td><code><a href="#dryRun">&lt;dryRun&gt;</a></code></td>
             
@@ -275,7 +297,7 @@ will not overwrite the existing file but instead write the result
 to a new file with the same name but ending with `.licensed`.<br /><b>Default value is</b>: <code>false</code>.<br /><b>User property is</b>: <code>license.dryRun</code>.<br /></td>
           </tr>
           
-<tr class="a">
+<tr class="b">
             
 <td><code><a href="#encoding">&lt;encoding&gt;</a></code></td>
             
@@ -287,7 +309,7 @@ to a new file with the same name but ending with `.licensed`.<br /><b>Default va
 encoding property (project.build.sourceEncoding).<br /><b>Default value is</b>: <code>${project.build.sourceEncoding}</code>.<br /><b>User property is</b>: <code>license.encoding</code>.<br /></td>
           </tr>
           
-<tr class="b">
+<tr class="a">
             
 <td><code><a href="#failIfMissing">&lt;failIfMissing&gt;</a></code></td>
             
@@ -299,7 +321,7 @@ encoding property (project.build.sourceEncoding).<br /><b>Default value is</b>: 
 when some headers are missing.<br /><b>Default value is</b>: <code>true</code>.<br /><b>User property is</b>: <code>license.failIfMissing</code>.<br /></td>
           </tr>
           
-<tr class="a">
+<tr class="b">
             
 <td><code><a href="#failIfUnknown">&lt;failIfUnknown&gt;</a></code></td>
             
@@ -317,7 +339,7 @@ file type mappings cover all files included from your project.
 reasons.</p><br /><b>Default value is</b>: <code>false</code>.<br /><b>User property is</b>: <code>license.failIfUnknown</code>.<br /></td>
           </tr>
           
-<tr class="b">
+<tr class="a">
             
 <td><code><a href="#legacyConfigExcludes">&lt;legacyConfigExcludes&gt;</a></code></td>
             
@@ -328,7 +350,7 @@ reasons.</p><br /><b>Default value is</b>: <code>false</code>.<br /><b>User prop
 <td><b>Deprecated.</b> use <code>LicenseSet.excludes</code><br /><b>User property is</b>: <code>license.excludes</code>.<br /><b>Alias is</b>: <code>excludes</code>.</td>
           </tr>
           
-<tr class="a">
+<tr class="b">
             
 <td><code><a href="#legacyConfigHeader">&lt;legacyConfigHeader&gt;</a></code></td>
             
@@ -339,7 +361,7 @@ reasons.</p><br /><b>Default value is</b>: <code>false</code>.<br /><b>User prop
 <td><b>Deprecated.</b> use <code>LicenseSet.header</code><br /><b>User property is</b>: <code>license.header</code>.<br /><b>Alias is</b>: <code>header</code>.</td>
           </tr>
           
-<tr class="b">
+<tr class="a">
             
 <td><code><a href="#legacyConfigHeaderSections">&lt;legacyConfigHeaderSections&gt;</a></code></td>
             
@@ -350,7 +372,7 @@ reasons.</p><br /><b>Default value is</b>: <code>false</code>.<br /><b>User prop
 <td><b>Deprecated.</b> use <code>LicenseSet.headerSections</code><br /><b>Alias is</b>: <code>headerSections</code>.</td>
           </tr>
           
-<tr class="a">
+<tr class="b">
             
 <td><code><a href="#legacyConfigIncludes">&lt;legacyConfigIncludes&gt;</a></code></td>
             
@@ -361,7 +383,7 @@ reasons.</p><br /><b>Default value is</b>: <code>false</code>.<br /><b>User prop
 <td><b>Deprecated.</b> use <code>LicenseSet.includes</code><br /><b>User property is</b>: <code>license.includes</code>.<br /><b>Alias is</b>: <code>includes</code>.</td>
           </tr>
           
-<tr class="b">
+<tr class="a">
             
 <td><code><a href="#legacyConfigInlineHeader">&lt;legacyConfigInlineHeader&gt;</a></code></td>
             
@@ -372,7 +394,7 @@ reasons.</p><br /><b>Default value is</b>: <code>false</code>.<br /><b>User prop
 <td><b>Deprecated.</b> use <code>LicenseSet.inlineHeader</code><br /><b>User property is</b>: <code>license.inlineHeader</code>.<br /><b>Alias is</b>: <code>inlineHeader</code>.</td>
           </tr>
           
-<tr class="a">
+<tr class="b">
             
 <td><code><a href="#legacyConfigKeywords">&lt;legacyConfigKeywords&gt;</a></code></td>
             
@@ -383,7 +405,7 @@ reasons.</p><br /><b>Default value is</b>: <code>false</code>.<br /><b>User prop
 <td><b>Deprecated.</b> use <code>LicenseSet.keywords</code><br /><b>Alias is</b>: <code>keywords</code>.</td>
           </tr>
           
-<tr class="b">
+<tr class="a">
             
 <td><code><a href="#legacyConfigMulti">&lt;legacyConfigMulti&gt;</a></code></td>
             
@@ -394,7 +416,7 @@ reasons.</p><br /><b>Default value is</b>: <code>false</code>.<br /><b>User prop
 <td><b>Deprecated.</b> use <code>LicenseSet.multi</code><br /></td>
           </tr>
           
-<tr class="a">
+<tr class="b">
             
 <td><code><a href="#legacyConfigValidHeaders">&lt;legacyConfigValidHeaders&gt;</a></code></td>
             
@@ -405,7 +427,7 @@ reasons.</p><br /><b>Default value is</b>: <code>false</code>.<br /><b>User prop
 <td><b>Deprecated.</b> use <code>LicenseSet.validHeaders</code><br /><b>Alias is</b>: <code>validHeaders</code>.</td>
           </tr>
           
-<tr class="b">
+<tr class="a">
             
 <td><code><a href="#licenseSets">&lt;licenseSets&gt;</a></code></td>
             
@@ -416,7 +438,7 @@ reasons.</p><br /><b>Default value is</b>: <code>false</code>.<br /><b>User prop
 <td>(no description)<br /></td>
           </tr>
           
-<tr class="a">
+<tr class="b">
             
 <td><code><a href="#mapping">&lt;mapping&gt;</a></code></td>
             
@@ -433,7 +455,7 @@ is the new extension name to support, and the value is the name of
 the comment type to use.<br /></td>
           </tr>
           
-<tr class="b">
+<tr class="a">
             
 <td><code><a href="#nThreads">&lt;nThreads&gt;</a></code></td>
             
@@ -450,7 +472,7 @@ specified. If given it take precedence over
 <code>concurrencyFactor</code> is used.</p><br /><b>Default value is</b>: <code>0</code>.<br /><b>User property is</b>: <code>license.nThreads</code>.<br /></td>
           </tr>
           
-<tr class="a">
+<tr class="b">
             
 <td><code><a href="#quiet">&lt;quiet&gt;</a></code></td>
             
@@ -462,7 +484,7 @@ specified. If given it take precedence over
 you can add the quiet flag that will shorten the output<br /><b>Default value is</b>: <code>false</code>.<br /><b>User property is</b>: <code>license.quiet</code>.<br /></td>
           </tr>
           
-<tr class="b">
+<tr class="a">
             
 <td><code><a href="#reportFormat">&lt;reportFormat&gt;</a></code></td>
             
@@ -477,7 +499,7 @@ you can add the quiet flag that will shorten the output<br /><b>Default value is
 <p>Default is XML.</p><br /><b>User property is</b>: <code>license.report.format</code>.<br /></td>
           </tr>
           
-<tr class="a">
+<tr class="b">
             
 <td><code><a href="#reportLocation">&lt;reportLocation&gt;</a></code></td>
             
@@ -506,7 +528,7 @@ goal)</p>
 <p>Activated by default.</p><br /><b>Default value is</b>: <code>${project.reporting.outputDirectory}/license-plugin-report.xml</code>.<br /><b>User property is</b>: <code>license.report.location</code>.<br /></td>
           </tr>
           
-<tr class="b">
+<tr class="a">
             
 <td><code><a href="#reportSkipped">&lt;reportSkipped&gt;</a></code></td>
             
@@ -517,7 +539,7 @@ goal)</p>
 <td>Skip the report generation. Default: false<br /><b>Default value is</b>: <code>false</code>.<br /><b>User property is</b>: <code>license.report.skip</code>.<br /></td>
           </tr>
           
-<tr class="a">
+<tr class="b">
             
 <td><code><a href="#session">&lt;session&gt;</a></code></td>
             
@@ -528,7 +550,7 @@ goal)</p>
 <td>(no description)<br /><b>Default value is</b>: <code>${session}</code>.<br /></td>
           </tr>
           
-<tr class="b">
+<tr class="a">
             
 <td><code><a href="#skip">&lt;skip&gt;</a></code></td>
             
@@ -539,7 +561,7 @@ goal)</p>
 <td>Whether to skip the plugin execution<br /><b>Default value is</b>: <code>false</code>.<br /><b>User property is</b>: <code>license.skip</code>.<br /></td>
           </tr>
           
-<tr class="a">
+<tr class="b">
             
 <td><code><a href="#skipExistingHeaders">&lt;skipExistingHeaders&gt;</a></code></td>
             
@@ -551,7 +573,7 @@ goal)</p>
 header.<br /><b>Default value is</b>: <code>false</code>.<br /><b>User property is</b>: <code>license.skipExistingHeaders</code>.<br /></td>
           </tr>
           
-<tr class="b">
+<tr class="a">
             
 <td><code><a href="#strictCheck">&lt;strictCheck&gt;</a></code></td>
             
@@ -566,7 +588,7 @@ considering special characters (spaces, tabs, ...). <br />
 We highly recommend to keep this option set to <code>true</code>.<br /><b>Default value is</b>: <code>true</code>.<br /><b>User property is</b>: <code>license.strictCheck</code>.<br /></td>
           </tr>
           
-<tr class="a">
+<tr class="b">
             
 <td><code><a href="#useDefaultMapping">&lt;useDefaultMapping&gt;</a></code></td>
             
@@ -647,7 +669,9 @@ are properties like files.
 <p>This is named `defaultHeaderDefinitions` as it will be used as
 the default value for the header definitions. This default value
 can be overridden in each LicenseSet by setting
-<code>LicenseSet.headerDefinitions</code>.</p></div>
+<code>LicenseSet.headerDefinitions</code> or
+<code>LicenseSet.inlineHeaderStyles</code> and is overridden by
+<code>defaultInlineHeaderStyles</code>.</p></div>
         
 <ul>
           
@@ -656,6 +680,25 @@ can be overridden in each LicenseSet by setting
 <li><b>Required</b>: <code>No</code></li>
           
 <li><b>Alias</b>: <code>headerDefinitions</code></li>
+        </ul><hr /></section><section>
+<h4><a name="a.3CdefaultInlineHeaderStyles.3E"></a><b><a name="defaultInlineHeaderStyles">&lt;defaultInlineHeaderStyles&gt;</a></b></h4>
+        
+<div>Allows the use of inline header definitions. 
+
+<p>This is named `defaultInlineHeaderStyles` as it will be used as
+the default value for the header definitions.</p>
+
+<p>This default value can be overridden in each LicenseSet by
+setting <code>LicenseSet.headerDefinitions</code> or
+<code>LicenseSet.inlineHeaderStyles</code>.</p>
+
+<p>Inline styles overrides those read from file</p></div>
+        
+<ul>
+          
+<li><b>Type</b>: <code>com.mycila.maven.plugin.license.HeaderStyle[]</code></li>
+          
+<li><b>Required</b>: <code>No</code></li>
         </ul><hr /></section><section>
 <h4><a name="a.3CdefaultProperties.3E"></a><b><a name="defaultProperties">&lt;defaultProperties&gt;</a></b></h4>
         

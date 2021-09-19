@@ -28,6 +28,7 @@ import java.util.Map;
  */
 public enum HeaderType {
   ////////// COMMENT TYPES //////////
+  ////////// COMMENT TYPES //////////
 
   //              firstLine   beforeEachLine   endLine   afterEachLine   skipLinePattern   firstLineDetectionPattern   lastLineDetectionPattern   allowBlankLines   isMultiline   padLines
   //generic

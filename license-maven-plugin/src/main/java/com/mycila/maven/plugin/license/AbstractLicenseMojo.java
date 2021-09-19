@@ -152,10 +152,25 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
    * <p>
    * This is named `defaultHeaderDefinitions` as it will be used as the default
    * value for the header definitions. This default value can be overridden
-   * in each LicenseSet by setting {@link LicenseSet#headerDefinitions}.
+   * in each LicenseSet by setting {@link LicenseSet#headerDefinitions}  or
+   * {@link LicenseSet#inlineHeaderStyles} and is overridden by {@link #defaultInlineHeaderStyles}.
    */
   @Parameter(alias = "headerDefinitions")
   public String[] defaultHeaderDefinitions = new String[0];
+
+  /**
+   * Allows the use of inline header definitions.
+   * <p>
+   * This is named `defaultInlineHeaderStyles` as it will be used as the default
+   * value for the header definitions.
+   * <p>
+   * This default value can be overridden
+   * in each LicenseSet by setting {@link LicenseSet#headerDefinitions} or {@link LicenseSet#inlineHeaderStyles}.
+   * <p>
+   * Inline styles overrides those read from file
+   */
+  @Parameter
+  public HeaderStyle[] defaultInlineHeaderStyles = new HeaderStyle[0];
 
   /**
    * HeadSections define special regions of a header that allow for dynamic
@@ -782,9 +797,18 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
       headers.putAll(loadHeaderDefinition(headerDefiniton, finder));
     }
 
+    // then override by inline default styles
+    for (HeaderStyle defaultInlineHeaderStyle : defaultInlineHeaderStyles) {
+      headers.put(defaultInlineHeaderStyle.name, defaultInlineHeaderStyle.toHeaderDefinition());
+    }
+
     // and then override them with those provided in licenseSet config
     for (final String headerDefiniton : licenseSet.headerDefinitions) {
       headers.putAll(loadHeaderDefinition(headerDefiniton, finder));
+    }
+
+    for (HeaderStyle inlineHeaderStyle : licenseSet.inlineHeaderStyles) {
+      headers.put(inlineHeaderStyle.name, inlineHeaderStyle.toHeaderDefinition());
     }
 
     // force inclusion of unknown item to manage unknown files

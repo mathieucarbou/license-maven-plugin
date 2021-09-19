@@ -24,7 +24,7 @@ public class HeaderSection {
    * <p>
    * {@code COPYRIGHT_SECTION}
    */
-  @Parameter
+  @Parameter(required = true)
   public String key;
 
   /**
@@ -32,7 +32,7 @@ public class HeaderSection {
    * <p>
    * {@code Copyright (C) 2011 http://code.google.com/p/maven-license-plugin/}
    */
-  @Parameter
+  @Parameter(required = true)
   public String defaultValue;
 
   /**
@@ -40,10 +40,13 @@ public class HeaderSection {
    * <p>
    * {@code Copyright \(C\) \d{4} .*}
    */
-  @Parameter
+  @Parameter(required = true)
   public String ensureMatch;
 
-  @Parameter
+  /**
+   * Is the pattern needs to be applied on several header lines ?
+   */
+  @Parameter(defaultValue = "false")
   boolean multiLineMatch = false;
 
   public String getKey() {

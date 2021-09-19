@@ -205,7 +205,7 @@ public final class CompleteMojoTest {
     plugin.legacyConfigHeader = "src/test/resources/complete/header1.txt";
     plugin.legacyConfigIncludes = new String[]{"file." + extension};
     plugin.mapping = Collections.singletonMap(extension, headerType.name());
-    plugin.setLog(new DebugLog());
+    //plugin.setLog(new DebugLog());
 
     plugin.execute();
 

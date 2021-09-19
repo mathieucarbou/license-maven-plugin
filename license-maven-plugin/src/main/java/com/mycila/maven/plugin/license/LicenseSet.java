@@ -77,6 +77,12 @@ public class LicenseSet {
   public String[] headerDefinitions = new String[0];
 
   /**
+   * Allows the use of inline header definitions within the POM.
+   */
+  @Parameter
+  public HeaderStyle[] inlineHeaderStyles = new HeaderStyle[0];
+
+  /**
    * HeadSections define special regions of a header that allow for dynamic
    * substitution and validation
    */
