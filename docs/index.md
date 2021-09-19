@@ -555,7 +555,7 @@ And for XML:
 ```xml
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <additionalHeaders>
-  <javadoc_style>
+  <xml_style>
     <firstLine><![CDATA[<!--\n]]></firstLine>
     <beforeEachLine>    </beforeEachLine>
     <endLine><![CDATA[-->]]></endLine>
@@ -566,7 +566,7 @@ And for XML:
     <allowBlankLines>false</allowBlankLines>
     <isMultiline>true</isMultiline>
     <padLines>false</padLines>
-  </javadoc_style>
+  </xml_style>
 </additionalHeaders>
 ```
 
