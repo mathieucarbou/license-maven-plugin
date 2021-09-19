@@ -65,6 +65,9 @@ public final class RemoveMojoTest {
     remove.execute();
 
     assertEquals(FileUtils.read(new File(tmp, "doc9.xml"), System.getProperty("file.encoding")), "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\r\n" +
+        "\r\n" +
+        "\r\n" +
+        "\r\n" +
         "<web-app>\r\n" +
         "\r\n" +
         "</web-app>\r\n");
@@ -108,10 +111,10 @@ public final class RemoveMojoTest {
   }
 
   @Test
-  public void test_js() throws Exception {
+  public void test_js_1() throws Exception {
     File tmp = new File("target/test/remove/js");
     tmp.mkdirs();
-    FileUtils.copyFileToFolder(new File("src/test/resources/remove/test.js"), tmp);
+    FileUtils.copyFileToFolder(new File("src/test/resources/remove/test1.js"), tmp);
 
     LicenseRemoveMojo remove = new LicenseRemoveMojo();
     remove.defaultBasedir = tmp;
@@ -119,7 +122,26 @@ public final class RemoveMojoTest {
     remove.project = new MavenProjectStub();
     remove.execute();
 
-    assertEquals(FileUtils.read(new File(tmp, "test.js"), System.getProperty("file.encoding")), "/**" + LS + "" +
+    assertEquals(FileUtils.read(new File(tmp, "test1.js"), System.getProperty("file.encoding")), "/**" + LS + "" +
+        " * jrunscript JavaScript built-in functions and objects." + LS + "" +
+        " */" + LS + "" +
+        "" + LS + "" +
+        "function a(){}");
+  }
+
+  @Test
+  public void test_js_2() throws Exception {
+    File tmp = new File("target/test/remove/js");
+    tmp.mkdirs();
+    FileUtils.copyFileToFolder(new File("src/test/resources/remove/test2.js"), tmp);
+
+    LicenseRemoveMojo remove = new LicenseRemoveMojo();
+    remove.defaultBasedir = tmp;
+    remove.legacyConfigHeader = "src/test/resources/remove/header.txt";
+    remove.project = new MavenProjectStub();
+    remove.execute();
+
+    assertEquals(FileUtils.read(new File(tmp, "test2.js"), System.getProperty("file.encoding")), "/**" + LS + "" +
         " * jrunscript JavaScript built-in functions and objects." + LS + "" +
         " */" + LS + "" +
         "" + LS + "" +

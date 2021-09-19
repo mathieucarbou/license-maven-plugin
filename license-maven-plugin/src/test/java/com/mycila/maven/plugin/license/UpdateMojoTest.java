@@ -202,7 +202,7 @@ public final class UpdateMojoTest {
         "ruby code here" + LS + "");
 
     assertEquals(FileUtils.read(new File(tmp, "test.asp"), System.getProperty("file.encoding")), "<%\n" +
-        "    My @Copyright license 2 with my-custom-value and 2008 and test.asp\n" +
+        "' My @Copyright license 2 with my-custom-value and 2008 and test.asp\n" +
         "%>" +
         "\n" +
         "asp code");
@@ -342,7 +342,7 @@ public final class UpdateMojoTest {
             "    All content copyright (c) 2003-2021 Bla, Inc., except as may\n" +
             "      otherwise be noted in a separate copyright notice. All rights reserved.\n" +
             "\n" +
-            "-->\n" +
+            "-->\n\n" +
             "<top>\n" +
             "  <element>value</element>\n" +
             "</top>\n",
