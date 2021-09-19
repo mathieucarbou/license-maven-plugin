@@ -572,7 +572,6 @@ And for XML:
 
 With the `headerDefinitions` option, you can redefine existing header styles and also add some if we do not support the styles you want yet. You just have to provide a list of `headerDefinition` containing a resource name. Like the header, the resource is searched on the file system, in the classpath of the project, the plugin and also as a URL.
 
-
 __Full Example__
 
 This page will show you how you can define extended header definitions to fit your needs. The next example will define headers in a _region_ area allowed in C# source files:
@@ -633,6 +632,36 @@ And it should generate headers like:
      * limitations under the License.
      */
     #endregion
+```
+
+__Inline styles__
+
+This is also possible to configure new header style inline within the POM without using external files. This is a useful feature for module inheritance.
+
+The following example will redefine the header file for text files:
+
+```xml
+<plugin>
+    <groupId>com.mycila</groupId>
+    <artifactId>license-maven-plugin</artifactId>
+    <configuration>
+      <mapping>
+        <txt>SMILEY_STYLE</txt>
+      </mapping>
+      <defaultInlineHeaderStyles>
+        <defaultInlineHeaderStyle>
+          <name>SMILEY_STYLE</name>
+          <firstLine>:(</firstLine>
+          <beforeEachLine> ( </beforeEachLine>
+          <endLine>:(</endLine>
+          <firstLineDetectionPattern>\:\(</firstLineDetectionPattern>
+          <lastLineDetectionPattern>\:\(</lastLineDetectionPattern>
+          <allowBlankLines>false</allowBlankLines>
+          <multiline>false</multiline>
+        </defaultInlineHeaderStyle>
+      </defaultInlineHeaderStyles>
+    </configuration>
+</plugin>
 ```
 
 ### Dependency enforcement

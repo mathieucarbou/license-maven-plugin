@@ -73,6 +73,9 @@ public final class HeaderDefinition {
     this.isMultiline = isMultiline;
     this.padLines = padLines;
     if (!"unknown".equals(type)) validate();
+    if (allowBlankLines && !isMultiline) {
+      throw new IllegalArgumentException("Header style " + type + " is configured to allow blank lines, so it should be set as a multiline header style");
+    }
   }
 
   /**

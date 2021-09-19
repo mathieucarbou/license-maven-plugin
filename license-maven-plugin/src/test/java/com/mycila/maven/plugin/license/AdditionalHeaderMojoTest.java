@@ -15,11 +15,13 @@
  */
 package com.mycila.maven.plugin.license;
 
+import com.mycila.maven.plugin.license.util.DebugLog;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
 import org.junit.Test;
 
 import java.io.File;
+import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -45,6 +47,37 @@ public final class AdditionalHeaderMojoTest {
     }
 
     check.defaultHeaderDefinitions = new String[]{"/check/def/additionalHeaderDefinitions.xml"};
+    check.execute();
+  }
+
+  @Test
+  public void test_inline() throws Exception {
+    LicenseCheckMojo check = new LicenseCheckMojo();
+    check.defaultBasedir = new File("src/test/resources/check/def");
+    check.legacyConfigHeader = "src/test/resources/check/header.txt";
+    check.project = new MavenProjectStub();
+    check.legacyConfigExcludes = new String[]{"*.xml"};
+
+    try {
+      check.execute();
+      fail();
+    } catch (MojoExecutionException e) {
+      assertEquals("Some files do not have the expected license header", e.getMessage());
+    }
+
+    HeaderStyle style = new HeaderStyle();
+    style.name = "smiley";
+    style.firstLine = ":(";
+    style.beforeEachLine = " ( ";
+    style.endLine = ":(";
+    style.firstLineDetectionPattern = "\\:\\(";
+    style.lastLineDetectionPattern = "\\:\\(";
+    style.allowBlankLines = false;
+    style.multiline = false;
+
+    check.defaultInlineHeaderStyles = new HeaderStyle[]{style};
+    check.mapping = Collections.singletonMap("txt", "smiley");
+    check.setLog(new DebugLog());
     check.execute();
   }
 }
