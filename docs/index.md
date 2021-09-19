@@ -79,6 +79,7 @@ Please let me know if your name is missing!
 
 Available in Maven Central Repository: https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/
 
+* [4.2.rc1](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/4.2.rc1/) (2021-09-19) - see [issues and pull requests](https://github.com/mathieucarbou/license-maven-plugin/milestone/18?closed=1)
 * [4.1](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/4.1/) (2021-04-23) - see [issues and pull requests](https://github.com/mathieucarbou/license-maven-plugin/milestone/17?closed=1)
 * [4.0](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/4.0/) (2021-03-30) - see [issues and pull requests](https://github.com/mathieucarbou/license-maven-plugin/milestone/16?closed=1)
 * [3.0](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/3.0/) (2016-08-20) - see [issues and pull requests](https://github.com/mathieucarbou/license-maven-plugin/issues?q=milestone%3A3.0)
