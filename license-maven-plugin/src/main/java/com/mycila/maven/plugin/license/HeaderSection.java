@@ -19,14 +19,29 @@ import org.apache.maven.plugins.annotations.Parameter;
 
 public class HeaderSection {
 
+  /**
+   * The name of this section to match. Example:
+   * <p>
+   * {@code COPYRIGHT_SECTION}
+   */
   @Parameter
-  String key;
+  public String key;
 
+  /**
+   * The default value that will be used. Example:
+   * <p>
+   * {@code Copyright (C) 2011 http://code.google.com/p/maven-license-plugin/}
+   */
   @Parameter
-  String defaultValue;
+  public String defaultValue;
 
+  /**
+   * The pattern to use to match this section in the header. Example:
+   * <p>
+   * {@code Copyright \(C\) \d{4} .*}
+   */
   @Parameter
-  String ensureMatch;
+  public String ensureMatch;
 
   @Parameter
   boolean multiLineMatch = false;
