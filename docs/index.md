@@ -73,6 +73,7 @@ Basically, when you are developing a project either in open source or in a compa
 * [@stain](https://github.com/stain)
 * [@vromero](https://github.com/vromero)
 * [@yoosiba](https://github.com/yoosiba)
+* [@philippn](https://github.com/philippn)
 
 Please let me know if your name is missing!
 
