@@ -538,14 +538,14 @@ In license-maven-plugin, each header style is defined by patterns to detect it a
 <additionalHeaders>
   <javadoc_style>
     <firstLine>/**</firstLine>
-    <beforeEachLine> * </beforeEachLine>
-    <endLine> */</endLine>
+    <beforeEachLine xml:space="preserve"> * </beforeEachLine>
+    <endLine xml:space="preserve"> */</endLine>
     <afterEachLine></afterEachLine>
     <!--skipLine></skipLine-->
     <firstLineDetectionPattern>(\s|\t)*/\*.*$</firstLineDetectionPattern>
     <lastLineDetectionPattern>.*\*/(\s|\t)*$</lastLineDetectionPattern>
     <allowBlankLines>false</allowBlankLines>
-    <isMultiline>true</isMultiline>
+    <multiline>true</multiline>
     <padLines>false</padLines>
   </javadoc_style>
 </additionalHeaders>
@@ -558,14 +558,14 @@ And for XML:
 <additionalHeaders>
   <xml_style>
     <firstLine><![CDATA[<!--\n]]></firstLine>
-    <beforeEachLine>    </beforeEachLine>
+    <beforeEachLine xml:space="preserve">    </beforeEachLine>
     <endLine><![CDATA[-->]]></endLine>
     <afterEachLine></afterEachLine>
     <skipLine><![CDATA[^<\?xml.*>$]]></skipLine>
     <firstLineDetectionPattern><![CDATA[(\s|\t)*<!--.*$]]></firstLineDetectionPattern>
     <lastLineDetectionPattern><![CDATA[.*-->(\s|\t)*$]]></lastLineDetectionPattern>
     <allowBlankLines>false</allowBlankLines>
-    <isMultiline>true</isMultiline>
+    <multiline>true</multiline>
     <padLines>false</padLines>
   </xml_style>
 </additionalHeaders>
@@ -582,12 +582,12 @@ This page will show you how you can define extended header definitions to fit yo
 <additionalHeaders>
   <csregion_style>
     <firstLine>#region LicenseEOL/**</firstLine>
-    <beforeEachLine> * </beforeEachLine>
-    <endLine> */EOL#endregion</endLine>
+    <beforeEachLine xml:space="preserve"> * </beforeEachLine>
+    <endLine xml:space="preserve"> */EOL#endregion</endLine>
     <firstLineDetectionPattern>#region.*^EOL/\*\*.*$</firstLineDetectionPattern>
     <lastLineDetectionPattern>\*/EOL#endregion"</lastLineDetectionPattern>
     <allowBlankLines>true</allowBlankLines>
-    <isMultiline>true</isMultiline>
+    <multiline>true</multiline>
   </csregion_style>
 </additionalHeaders>
 ```
@@ -595,7 +595,7 @@ This page will show you how you can define extended header definitions to fit yo
 * The `EOL` string will be replaced with the proper end of line depending the file format your are processing.
 * We also have defined the _skipLine_ attribute to skip the region tags (which starts with a '#')
 * `allowBlankLines` allows you to define if this header style supports blank lines in it or not. In example, in XML headers, you could have blank lines after the <!-- and before --> because XML delimiters delimit a multiline block. When you work with script style comments like in Ruby, Porperties files, the # character delimit a comment for only one line. So when you create the header, for it to be uniform, you place # on each line. So allowBlankLines will be false.
-* `isMultiline` specifies if your header has tokens to delimit a multiline comment of if the tokens are a one-line comment. I.E.: XML style comments are multiline whereas script style comment where each line starts with # are not multiline
+* `multiline` specifies if your header has tokens to delimit a multiline comment of if the tokens are a one-line comment. I.E.: XML style comments are multiline whereas script style comment where each line starts with # are not multiline
 
 You now have to add this new header definition file to the plugin configuration. It is done as the following in your pom:
 
@@ -637,6 +637,8 @@ And it should generate headers like:
 
 __Inline styles__
 
+(since version 4.2)
+
 This is also possible to configure new header style inline within the POM without using external files. This is a useful feature for module inheritance.
 
 The following example will redefine the header file for text files:
@@ -653,7 +655,7 @@ The following example will redefine the header file for text files:
         <defaultInlineHeaderStyle>
           <name>SMILEY_STYLE</name>
           <firstLine>:(</firstLine>
-          <beforeEachLine> ( </beforeEachLine>
+          <beforeEachLine xml:space="preserve"> ( </beforeEachLine>
           <endLine>:(</endLine>
           <firstLineDetectionPattern>\:\(</firstLineDetectionPattern>
           <lastLineDetectionPattern>\:\(</lastLineDetectionPattern>
