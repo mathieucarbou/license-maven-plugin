@@ -179,7 +179,7 @@ public final class HeaderParser {
         foundEnd = true;
 
       } else {
-        while ((line = fileContent.nextLine()) != null && line.startsWith(before)) {
+        while ((line = fileContent.nextLine()) != null && headerDefinition.isOtherHeaderLine(line)) {
           inPlaceHeader.append(line.toLowerCase());
           if (headerDefinition.isMultiLine() && headerDefinition.isLastHeaderLine(line)) {
             foundEnd = true;

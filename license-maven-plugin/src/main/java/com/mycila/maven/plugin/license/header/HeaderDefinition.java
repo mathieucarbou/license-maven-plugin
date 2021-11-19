@@ -17,6 +17,8 @@ package com.mycila.maven.plugin.license.header;
 
 import java.util.regex.Pattern;
 
+import com.mycila.maven.plugin.license.util.StringUtils;
+
 /**
  * The <code>HeaderDefinition</code> class defines what is needed to output a header text into the of the given file
  * type and what is needed to match the first line as well as the last line of a previous header of the given file
@@ -34,6 +36,7 @@ public final class HeaderDefinition {
 
   private Pattern skipLinePattern;
   private Pattern firstLineDetectionPattern;
+  private Pattern otherLineDetectionPattern;
   private Pattern lastLineDetectionPattern;
   private Boolean isMultiline;
 
@@ -52,6 +55,7 @@ public final class HeaderDefinition {
    * @param skipLinePattern           The pattern of lines to skip before being allowed to output this header or null
    *                                  if it can be outputted from the line of the file.
    * @param firstLineDetectionPattern The pattern to detect the first line of a previous header.
+   * @param otherLineDetectionPattern The pattern to detect any following line of a previous header.
    * @param lastLineDetectionPattern  The pattern to detect the last line of a previous header.
    * @throws IllegalArgumentException If the type name is null.
    */
@@ -61,6 +65,32 @@ public final class HeaderDefinition {
                           String skipLinePattern,
                           String firstLineDetectionPattern, String lastLineDetectionPattern,
                           boolean allowBlankLines, boolean isMultiline, boolean padLines) {
+     this(type, firstLine, beforeEachLine, endLine, afterEachLine, skipLinePattern, firstLineDetectionPattern, null, lastLineDetectionPattern, allowBlankLines, isMultiline, padLines);
+  }  
+  
+  /**
+   * Constructs a new <code>HeaderDefinition</code> object with every header definition properties.
+   *
+   * @param type                      The type name for this header definition.
+   * @param firstLine                 The string to output before the content of the first line of this header.
+   * @param beforeEachLine            The string to output before the content of each line of this header (except
+   *                                  firstLine and endLine).
+   * @param endLine                   The string to output before the content of the last line of this header.
+   * @param afterEachLine             The string to output after the content of each line of this header (except
+   *                                  firstLine and endLine).
+   * @param skipLinePattern           The pattern of lines to skip before being allowed to output this header or null
+   *                                  if it can be outputted from the line of the file.
+   * @param firstLineDetectionPattern The pattern to detect the first line of a previous header.
+   * @param otherLineDetectionPattern The pattern to detect any following line of a previous header.
+   * @param lastLineDetectionPattern  The pattern to detect the last line of a previous header.
+   * @throws IllegalArgumentException If the type name is null.
+   */
+  public HeaderDefinition(String type,
+                          String firstLine, String beforeEachLine,
+                          String endLine, String afterEachLine,
+                          String skipLinePattern,
+                          String firstLineDetectionPattern, String otherLineDetectionPattern, String lastLineDetectionPattern,
+                          boolean allowBlankLines, boolean isMultiline, boolean padLines) {
     this(type);
     this.firstLine = firstLine;
     this.beforeEachLine = beforeEachLine;
@@ -68,6 +98,7 @@ public final class HeaderDefinition {
     this.afterEachLine = afterEachLine;
     this.skipLinePattern = compile(skipLinePattern);
     this.firstLineDetectionPattern = compile(firstLineDetectionPattern);
+    this.otherLineDetectionPattern = compile(otherLineDetectionPattern);
     this.lastLineDetectionPattern = compile(lastLineDetectionPattern);
     this.allowBlankLines = allowBlankLines;
     this.isMultiline = isMultiline;
@@ -141,12 +172,30 @@ public final class HeaderDefinition {
    * Tells if the given content line is the first line of a possible header of this definition kind.
    *
    * @param line The line to test.
-   * @return true if the first line of a header have been recognized or false.
+   * @return true if the first line of a header has been recognized or false.
    */
   public boolean isFirstHeaderLine(String line) {
     return firstLineDetectionPattern != null && line != null && firstLineDetectionPattern.matcher(line).matches();
   }
-
+  
+  /**
+   * Tells if the given content line is another than the first line of a possible header of this definition kind.
+   *
+   * @param line The line to test.
+   * @return true if another than the first line of a header has been recognized or false.
+   */
+  public boolean isOtherHeaderLine(String line) {
+     if (line == null) {
+        return false;
+     } else if (otherLineDetectionPattern != null) {
+        return otherLineDetectionPattern.matcher(line).matches();
+     } else if ("".equals(StringUtils.rtrim(beforeEachLine)) && !isMultiLine()) {
+        return line.startsWith(beforeEachLine);
+     } else {
+        return line.startsWith(StringUtils.rtrim(beforeEachLine));
+     }
+  }
+  
   /**
    * Tells if the given content line is the last line of a possible header of this definition kind.
    *
@@ -209,6 +258,7 @@ public final class HeaderDefinition {
     check("endLine", this.endLine);
     check("afterEachLine", this.afterEachLine);
     check("firstLineDetectionPattern", this.firstLineDetectionPattern);
+    // other line detection pattern can be null
     check("lastLineDetectionPattern", this.lastLineDetectionPattern);
     check("isMultiline", this.isMultiline);
     check("allowBlankLines", this.allowBlankLines);

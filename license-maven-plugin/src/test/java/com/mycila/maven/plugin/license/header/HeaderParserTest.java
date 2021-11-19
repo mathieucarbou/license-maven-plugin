@@ -101,4 +101,33 @@ public final class HeaderParserTest {
     assertEquals(parser.getBeginPosition(), 45);
     assertEquals(parser.getEndPosition(), 864);
   }
+  
+  @Test
+  public void test_parsing_java1() throws Exception {
+     HeaderParser parser = getCustomJavadocHeaderParser("src/test/resources/doc/java1.txt");
+     assertTrue(parser.gotAnyHeader());
+     assertEquals("package", parser.getFileContent().getContent().substring(parser.getEndPosition()).trim().substring(0, 7));
+  }
+  
+  @Test
+  public void test_parsing_java2() throws Exception {
+     HeaderParser parser = getCustomJavadocHeaderParser("src/test/resources/doc/java2.txt");
+     assertTrue(parser.gotAnyHeader());
+     assertEquals("package", parser.getFileContent().getContent().substring(parser.getEndPosition()).trim().substring(0, 7));
+  }
+  
+  @Test
+  public void test_parsing_java3() throws Exception {
+     HeaderParser parser = getCustomJavadocHeaderParser("src/test/resources/doc/java3.txt");
+     assertTrue(parser.gotAnyHeader());
+     assertEquals("package", parser.getFileContent().getContent().substring(parser.getEndPosition()).trim().substring(0, 7));
+  }
+  
+  private HeaderParser getCustomJavadocHeaderParser(final String fileName) {
+     final HeaderDefinition headerDefinition = new HeaderDefinition(
+           "javadoc2_style", "/**", " ** ", " **/", "", null, "^\\s*/\\*.*$", "^\\s*\\*.*$", "^.*\\*/\\s*$", false, true, false);
+     return new HeaderParser(new FileContent(new File(fileName), System.getProperty("file.encoding")), headerDefinition, new String[]{"copyright"});
+  }
+  
+  
 }
