@@ -55,7 +55,6 @@ public final class HeaderDefinition {
    * @param skipLinePattern           The pattern of lines to skip before being allowed to output this header or null
    *                                  if it can be outputted from the line of the file.
    * @param firstLineDetectionPattern The pattern to detect the first line of a previous header.
-   * @param otherLineDetectionPattern The pattern to detect any following line of a previous header.
    * @param lastLineDetectionPattern  The pattern to detect the last line of a previous header.
    * @throws IllegalArgumentException If the type name is null.
    */
