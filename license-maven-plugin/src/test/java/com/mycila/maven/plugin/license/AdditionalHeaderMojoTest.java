@@ -73,7 +73,7 @@ public final class AdditionalHeaderMojoTest {
     style.firstLineDetectionPattern = "\\:\\(";
     style.lastLineDetectionPattern = "\\:\\(";
     style.allowBlankLines = false;
-    style.multiline = false;
+    style.multiLine = false;
 
     check.defaultInlineHeaderStyles = new HeaderStyle[]{style};
     check.mapping = Collections.singletonMap("txt", "smiley");

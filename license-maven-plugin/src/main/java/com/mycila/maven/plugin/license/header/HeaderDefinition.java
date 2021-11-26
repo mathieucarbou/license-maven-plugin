@@ -35,7 +35,7 @@ public final class HeaderDefinition {
   private Pattern skipLinePattern;
   private Pattern firstLineDetectionPattern;
   private Pattern lastLineDetectionPattern;
-  private Boolean isMultiline;
+  private Boolean multiLine;
 
   private boolean padLines = false;
 
@@ -60,7 +60,7 @@ public final class HeaderDefinition {
                           String endLine, String afterEachLine,
                           String skipLinePattern,
                           String firstLineDetectionPattern, String lastLineDetectionPattern,
-                          boolean allowBlankLines, boolean isMultiline, boolean padLines) {
+                          boolean allowBlankLines, boolean multiLine, boolean padLines) {
     this(type);
     this.firstLine = firstLine;
     this.beforeEachLine = beforeEachLine;
@@ -70,11 +70,11 @@ public final class HeaderDefinition {
     this.firstLineDetectionPattern = compile(firstLineDetectionPattern);
     this.lastLineDetectionPattern = compile(lastLineDetectionPattern);
     this.allowBlankLines = allowBlankLines;
-    this.isMultiline = isMultiline;
+    this.multiLine = multiLine;
     this.padLines = padLines;
     if (!"unknown".equals(type)) validate();
-    if (allowBlankLines && !isMultiline) {
-      throw new IllegalArgumentException("Header style " + type + " is configured to allow blank lines, so it should be set as a multiline header style");
+    if (allowBlankLines && !multiLine) {
+      throw new IllegalArgumentException("Header style " + type + " is configured to allow blank lines, so it should be set as a multi-line header style");
     }
   }
 
@@ -178,8 +178,8 @@ public final class HeaderDefinition {
       firstLine = value;
     else if ("allowBlankLines".equalsIgnoreCase(property))
       allowBlankLines = Boolean.valueOf(value);
-    else if ("isMultiline".equalsIgnoreCase(property))
-      isMultiline = Boolean.valueOf(value);
+    else if ("multiLine".equalsIgnoreCase(property) || "isMultiline".equalsIgnoreCase(property))
+      multiLine = Boolean.valueOf(value);
     else if ("beforeEachLine".equalsIgnoreCase(property))
       beforeEachLine = value;
     else if ("endLine".equalsIgnoreCase(property))
@@ -210,7 +210,7 @@ public final class HeaderDefinition {
     check("afterEachLine", this.afterEachLine);
     check("firstLineDetectionPattern", this.firstLineDetectionPattern);
     check("lastLineDetectionPattern", this.lastLineDetectionPattern);
-    check("isMultiline", this.isMultiline);
+    check("multiLine", this.multiLine);
     check("allowBlankLines", this.allowBlankLines);
     // skip line can be null
   }
@@ -256,6 +256,6 @@ public final class HeaderDefinition {
   }
 
   public boolean isMultiLine() {
-    return isMultiline;
+    return multiLine;
   }
 }

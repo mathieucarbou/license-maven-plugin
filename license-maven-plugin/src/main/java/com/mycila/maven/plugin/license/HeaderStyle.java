@@ -61,8 +61,8 @@ public class HeaderStyle {
    * <p>
    * A style that is not multi-line is usually repeating in each line the characters before and after each line to delimit a one-line comment.
    */
-  @Parameter
-  public boolean multiline = true;
+  @Parameter(alias = "multiline")
+  public boolean multiLine = true;
 
   /**
    * Only for multi-line comments: specify if blank lines are allowed.
@@ -101,6 +101,6 @@ public class HeaderStyle {
   public String lastLineDetectionPattern;
 
   public HeaderDefinition toHeaderDefinition() {
-    return new HeaderDefinition(name, firstLine, beforeEachLine, endLine, afterEachLine, skipLinePattern, firstLineDetectionPattern, lastLineDetectionPattern, allowBlankLines, multiline, padLines);
+    return new HeaderDefinition(name, firstLine, beforeEachLine, endLine, afterEachLine, skipLinePattern, firstLineDetectionPattern, lastLineDetectionPattern, allowBlankLines, multiLine, padLines);
   }
 }

@@ -40,7 +40,7 @@ public final class AdditionalHeaderDefinitionTest {
         .addTag("firstLineDetectionPattern").addText("\\(\\:")
         .addTag("lastLineDetectionPattern").addText("\\:\\)")
         .addTag("allowBlankLines").addText("false")
-        .addTag("isMultiline").addText("false");
+        .addTag("multiLine").addText("false");
 
     System.out.println(def.toString());
 
@@ -69,7 +69,7 @@ public final class AdditionalHeaderDefinitionTest {
         .addTag("firstLineDetectionPattern").addText("\\:\\(")
         .addTag("lastLineDetectionPattern").addText("\\:\\(")
         .addTag("allowBlankLines").addText("false")
-        .addTag("isMultiline").addText("false");
+        .addTag("multiLine").addText("false");
 
     System.out.println(def.toString());
 
@@ -90,7 +90,7 @@ public final class AdditionalHeaderDefinitionTest {
         .addTag("firstLineDetectionPattern").addText("#region.*^EOL/\\*\\*.*$")
         .addTag("lastLineDetectionPattern").addText("\\*/EOL#endregion")
         .addTag("allowBlankLines").addText("false")
-        .addTag("isMultiline").addText("false");
+        .addTag("multiLine").addText("false");
 
     AdditionalHeaderDefinition loader = new AdditionalHeaderDefinition(def);
 

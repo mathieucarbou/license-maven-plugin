@@ -30,7 +30,7 @@ public enum HeaderType {
   ////////// COMMENT TYPES //////////
   ////////// COMMENT TYPES //////////
 
-  //              firstLine   beforeEachLine   endLine   afterEachLine   skipLinePattern   firstLineDetectionPattern   lastLineDetectionPattern   allowBlankLines   isMultiline   padLines
+  //              firstLine   beforeEachLine   endLine   afterEachLine   skipLinePattern   firstLineDetectionPattern   lastLineDetectionPattern   allowBlankLines   multiLine   padLines
   //generic
   ASCIIDOC_STYLE("////", "  // ", "////EOL", "", null, "^////$", "^////$", false, true, false),
   MVEL_STYLE("@comment{", "  ", "}", "", null, "@comment\\{$", "\\}$", true, true, false),
@@ -85,8 +85,8 @@ public enum HeaderType {
   private HeaderType(String firstLine, String beforeEachLine,
                      String endLine, String afterEachLine,
                      String skipLinePattern, String firstLineDetectionPattern, String lastLineDetectionPattern,
-                     boolean allowBlankLines, boolean isMultiline, boolean padLines) {
-    definition = new HeaderDefinition(this.name().toLowerCase(), firstLine, beforeEachLine, endLine, afterEachLine, skipLinePattern, firstLineDetectionPattern, lastLineDetectionPattern, allowBlankLines, isMultiline, padLines);
+                     boolean allowBlankLines, boolean multiLine, boolean padLines) {
+    definition = new HeaderDefinition(this.name().toLowerCase(), firstLine, beforeEachLine, endLine, afterEachLine, skipLinePattern, firstLineDetectionPattern, lastLineDetectionPattern, allowBlankLines, multiLine, padLines);
   }
 
   /**
