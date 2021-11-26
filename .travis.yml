@@ -7,7 +7,7 @@ language: shell
 
 os:
   - linux
-  - osx
+#  - osx
   - windows
 
 branches:
