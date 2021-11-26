@@ -35,6 +35,7 @@ public class CopyrightRangeProvider extends GitPropertiesProvider implements Pro
 
   public static final String COPYRIGHT_LAST_YEAR_KEY = "license.git.copyrightLastYear";
   public static final String COPYRIGHT_CREATION_YEAR_KEY = "license.git.copyrightCreationYear";
+  public static final String COPYRIGHT_EXISTENCE_YEARS_KEY = "license.git.copyrightExistenceYears";
   public static final String COPYRIGHT_YEARS_KEY = "license.git.copyrightYears";
   public static final String INCEPTION_YEAR_KEY = "project.inceptionYear";
 
@@ -44,17 +45,19 @@ public class CopyrightRangeProvider extends GitPropertiesProvider implements Pro
   }
 
   /**
-   * Returns an unmodifiable map containing the three entries {@value #COPYRIGHT_LAST_YEAR_KEY}, {@value #COPYRIGHT_YEARS_KEY},
-   * and {@value #COPYRIGHT_CREATION_YEAR_KEY}, whose values are set based on inspecting git history.
+   * Returns an unmodifiable map containing the following entries, whose values are set based on inspecting git history.
    *
    * <ul>
    * <li>{@value #COPYRIGHT_LAST_YEAR_KEY} key stores the year from the committer date of the last git commit that has
-   * modified the supplied {@code document}.
+   * modified the supplied {@code document}.</li>
    * <li>{@value #COPYRIGHT_YEARS_KEY} key stores the range from {@value #INCEPTION_YEAR_KEY} value to
    * {@value #COPYRIGHT_LAST_YEAR_KEY} value. If both values a equal, only the {@value #INCEPTION_YEAR_KEY} value is
-   * returned; otherwise, the two values are combined using dash, so that the result is e.g. {@code "2000 - 2010"}.
+   * returned; otherwise, the two values are combined using dash, so that the result is e.g. {@code "2000-2010"}.</li>
    * <li>{@value #COPYRIGHT_CREATION_YEAR_KEY} key stores the year from the committer date of the first git commit for
-   * the supplied {@code document}.
+   * the supplied {@code document}.</li>
+   * <li>{@value #COPYRIGHT_EXISTENCE_YEARS_KEY} key stores the range from {@value #COPYRIGHT_CREATION_YEAR_KEY} value to 
+   * {@value #COPYRIGHT_LAST_YEAR_KEY} value.  If both values are equal only the {@value #COPYRIGHT_CREATION_YEAR_KEY} is returned;
+   * otherwise, the two values are combined using dash, so that the result is e.g. {@code "2005-2010"}.</li>
    * </ul>
    * The {@value #INCEPTION_YEAR_KEY} value is read from the supplied properties and it must available. Otherwise a
    * {@link RuntimeException} is thrown.
@@ -88,6 +91,15 @@ public class CopyrightRangeProvider extends GitPropertiesProvider implements Pro
 
       int copyrightStart = gitLookup.getYearOfCreation(document.getFile());
       result.put(COPYRIGHT_CREATION_YEAR_KEY, Integer.toString(copyrightStart));
+      
+      final String copyrightExistenceYears;
+      if (copyrightStart >= copyrightEnd) {
+          copyrightExistenceYears = Integer.toString(copyrightStart);
+      } else {
+          copyrightExistenceYears = copyrightStart + "-" + copyrightEnd;
+      }
+      result.put(COPYRIGHT_EXISTENCE_YEARS_KEY, copyrightExistenceYears);
+      
       return Collections.unmodifiableMap(result);
     } catch (Exception e) {
       throw new RuntimeException("Could not compute the year of the last git commit for file "
