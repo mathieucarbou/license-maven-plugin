@@ -7,6 +7,6 @@
     <firstLineDetectionPattern><![CDATA[(\s|\t)*<!--.*$]]></firstLineDetectionPattern>
     <lastLineDetectionPattern><![CDATA[.*-->(\s|\t)*$]]></lastLineDetectionPattern>
     <allowBlankLines>false</allowBlankLines>
-    <isMultiline>true</isMultiline>
+    <multiLine>true</multiLine>
   </xml_style>
 </additionalHeaders>
