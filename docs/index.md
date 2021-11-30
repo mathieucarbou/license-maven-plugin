@@ -545,7 +545,7 @@ In license-maven-plugin, each header style is defined by patterns to detect it a
     <firstLineDetectionPattern>(\s|\t)*/\*.*$</firstLineDetectionPattern>
     <lastLineDetectionPattern>.*\*/(\s|\t)*$</lastLineDetectionPattern>
     <allowBlankLines>false</allowBlankLines>
-    <multiline>true</multiline>
+    <multiLine>true</multiLine>
     <padLines>false</padLines>
   </javadoc_style>
 </additionalHeaders>
@@ -565,7 +565,7 @@ And for XML:
     <firstLineDetectionPattern><![CDATA[(\s|\t)*<!--.*$]]></firstLineDetectionPattern>
     <lastLineDetectionPattern><![CDATA[.*-->(\s|\t)*$]]></lastLineDetectionPattern>
     <allowBlankLines>false</allowBlankLines>
-    <multiline>true</multiline>
+    <multiLine>true</multiLine>
     <padLines>false</padLines>
   </xml_style>
 </additionalHeaders>
@@ -587,7 +587,7 @@ This page will show you how you can define extended header definitions to fit yo
     <firstLineDetectionPattern>#region.*^EOL/\*\*.*$</firstLineDetectionPattern>
     <lastLineDetectionPattern>\*/EOL#endregion"</lastLineDetectionPattern>
     <allowBlankLines>true</allowBlankLines>
-    <multiline>true</multiline>
+    <multiLine>true</multiLine>
   </csregion_style>
 </additionalHeaders>
 ```
@@ -595,7 +595,7 @@ This page will show you how you can define extended header definitions to fit yo
 * The `EOL` string will be replaced with the proper end of line depending the file format your are processing.
 * We also have defined the _skipLine_ attribute to skip the region tags (which starts with a '#')
 * `allowBlankLines` allows you to define if this header style supports blank lines in it or not. In example, in XML headers, you could have blank lines after the <!-- and before --> because XML delimiters delimit a multiline block. When you work with script style comments like in Ruby, Porperties files, the # character delimit a comment for only one line. So when you create the header, for it to be uniform, you place # on each line. So allowBlankLines will be false.
-* `multiline` specifies if your header has tokens to delimit a multiline comment of if the tokens are a one-line comment. I.E.: XML style comments are multiline whereas script style comment where each line starts with # are not multiline
+* `multiLine` specifies if your header has tokens to delimit a multiline comment of if the tokens are a one-line comment. I.E.: XML style comments are multiline whereas script style comment where each line starts with # are not multiline
 
 You now have to add this new header definition file to the plugin configuration. It is done as the following in your pom:
 
@@ -660,7 +660,7 @@ The following example will redefine the header file for text files:
           <firstLineDetectionPattern>\:\(</firstLineDetectionPattern>
           <lastLineDetectionPattern>\:\(</lastLineDetectionPattern>
           <allowBlankLines>false</allowBlankLines>
-          <multiline>false</multiline>
+          <multiLine>false</multiLine>
         </defaultInlineHeaderStyle>
       </defaultInlineHeaderStyles>
     </configuration>

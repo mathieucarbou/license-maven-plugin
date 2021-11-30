@@ -8,7 +8,7 @@
     <firstLineDetectionPattern>\(\:</firstLineDetectionPattern>
     <lastLineDetectionPattern>\:\)</lastLineDetectionPattern>
     <allowBlankLines>false</allowBlankLines>
-    <isMultiline>false</isMultiline>
+    <multiLine>false</multiLine>
   </smiley>
   <text>
     <firstLine>:(</firstLine>
@@ -18,7 +18,7 @@
     <firstLineDetectionPattern>\:\(</firstLineDetectionPattern>
     <lastLineDetectionPattern>\:\(</lastLineDetectionPattern>
     <allowBlankLines>false</allowBlankLines>
-    <isMultiline>false</isMultiline>
+    <multiLine>false</multiLine>
   </text>
 </additionalHeaders>
         

@@ -8,7 +8,7 @@
     <firstLineDetectionPattern>#.*</firstLineDetectionPattern>
     <lastLineDetectionPattern>#.*</lastLineDetectionPattern>
     <allowBlankLines>true</allowBlankLines>
-    <isMultiline>false</isMultiline>
+    <multiLine>false</multiLine>
     <padLines>false</padLines>
   </extended_style>
 </additionalHeaders>

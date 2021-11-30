@@ -142,10 +142,6 @@ public class GitLookup {
   int getYearOfCreation(File file) throws IOException, GitAPIException {
     String repoRelativePath = pathResolver.relativize(file);
 
-    if (isFileModifiedOrUnstaged(repoRelativePath)) {
-      return getCurrentYear();
-    }
-
     int commitYear = 0;
     RevWalk walk = getGitRevWalk(repoRelativePath, true);
     Iterator<RevCommit> iterator = walk.iterator();
@@ -154,6 +150,12 @@ public class GitLookup {
       commitYear = getYearFromCommit(commit);
     }
     walk.dispose();
+    
+    // If we couldn't find a creation year from Git assume newly created file
+    if (commitYear == 0) {
+        return getCurrentYear();
+      }
+    
     return commitYear;
   }
 
