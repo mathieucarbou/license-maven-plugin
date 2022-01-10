@@ -1,5 +1,6 @@
 name: Snapshot plugin report
 on:
+  workflow_dispatch:
   push:
     branches:
       - master
