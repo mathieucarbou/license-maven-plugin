@@ -769,5 +769,5 @@ Then you should see a few minutes later the new version at https://repo1.maven.o
 ### Generate site from any branch or tag
 
 ```bash
-./mvnw clean verify site -DperformRelease=true -Dgpg.skip=true
+./mvnw verify site -DperformRelease=true -Dgpg.skip=true
 ```
