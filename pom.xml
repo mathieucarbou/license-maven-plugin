@@ -203,7 +203,7 @@
           <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-eclipse-batch</artifactId>
-            <version>3.0.4-02</version>
+            <version>3.0.8-01</version>
           </dependency>
         </dependencies>
       </plugin>
