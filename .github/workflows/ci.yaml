@@ -3,15 +3,9 @@ name: Java CI
 on:
   workflow_dispatch:
   pull_request:
-    paths-ignore:
-      - 'README.md'
-      - 'docs/**'
   push:
     branches:
       - master
-    paths-ignore:
-      - 'README.md'
-      - 'docs/**'
 jobs:
   test:
     runs-on: ${{ matrix.os }}
