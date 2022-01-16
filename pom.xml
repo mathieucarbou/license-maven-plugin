@@ -156,7 +156,7 @@
         </plugin>
         <plugin>
           <artifactId>maven-gpg-plugin</artifactId>
-          <version>1.6</version>
+          <version>3.0.1</version>
           <configuration>
             <useAgent>false</useAgent>
             <keyname>${gpg.keyname}</keyname>
