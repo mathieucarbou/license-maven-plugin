@@ -26,7 +26,6 @@ import com.mycila.maven.plugin.license.header.Header;
 import com.mycila.maven.plugin.license.header.HeaderDefinition;
 import com.mycila.maven.plugin.license.header.HeaderSource;
 import com.mycila.maven.plugin.license.header.HeaderType;
-import com.mycila.maven.plugin.license.util.ExecutingCommand;
 import com.mycila.maven.plugin.license.util.Selection;
 import com.mycila.maven.plugin.license.util.resource.ResourceFinder;
 import com.mycila.xmltool.XMLDoc;
@@ -297,13 +296,11 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
   public boolean skip = false;
 
   /**
-   * Whether to skip the plugin execution on a shallow git clone.
-   * <p>
-   * We recommend setting this to {@code true} if you are generating copyright
-   * ranges from file creation dates in git history.
+   * Whether to fail plugin execution on a shallow git clone if you are using
+   * git history for initial author or copyright ranges.
    */
-  @Parameter(property = "license.skipIfShallow", defaultValue = "false")
-  public boolean skipIfShallow;
+  @Parameter(property = "license.failIfShallow", defaultValue = "true")
+  public boolean failIfShallow = true;
   
   /**
    * If you do not want to see the list of file having a missing header, you
@@ -484,14 +481,6 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
   @SuppressWarnings({"unchecked"})
   protected final void execute(final Callback callback) throws MojoExecutionException, MojoFailureException {
     if (!skip) {
-      // skip if shallow clone detected
-      if (skipIfShallow) {
-        List<String> output = ExecutingCommand.runNative("git rev-parse --is-shallow-repository");
-        if (!output.isEmpty() && "true".equals(output.get(0))) {
-          warn("Shallow repository detected, skipping.");
-          return;
-        }              
-      }
 
       // make default base dir canonical
       this.defaultBasedir = this.getCanonicalFile(this.defaultBasedir, "license.basedir");

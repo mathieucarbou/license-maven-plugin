@@ -79,6 +79,9 @@ public class CopyrightRangeProvider extends GitPropertiesProvider implements Pro
     try {
       Map<String, String> result = new HashMap<String, String>(4);
       GitLookup gitLookup = getGitLookup(document.getFile(), properties);
+      if (mojo.failIfShallow && gitLookup.isShallowRepository()) {
+        throw new RuntimeException("Shallow repository detected.");
+      }
       int copyrightEnd = gitLookup.getYearOfLastChange(document.getFile());
       result.put(COPYRIGHT_LAST_YEAR_KEY, Integer.toString(copyrightEnd));
       final String copyrightYears;
@@ -102,7 +105,7 @@ public class CopyrightRangeProvider extends GitPropertiesProvider implements Pro
       
       return Collections.unmodifiableMap(result);
     } catch (Exception e) {
-      throw new RuntimeException("Could not compute the year of the last git commit for file "
+      throw new RuntimeException("Could not compute years requiring git commit history for file "
           + document.getFile().getAbsolutePath(), e);
     }
   }

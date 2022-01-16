@@ -184,6 +184,12 @@ public class GitLookup {
     walk.dispose();
     return authorEmail;
   }
+  
+  boolean isShallowRepository() {
+    File dotGit = repository.getDirectory();
+    File shallow = new File(dotGit.getPath() + File.separator + "shallow");
+    return shallow.exists();
+  }
 
   private boolean isFileModifiedOrUnstaged(String repoRelativePath) throws GitAPIException {
     Status status = new Git(repository).status().addPath(repoRelativePath).call();
