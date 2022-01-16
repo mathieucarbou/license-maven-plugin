@@ -23,6 +23,7 @@
     <groupId>com.mycila</groupId>
     <artifactId>mycila-pom</artifactId>
     <version>9</version>
+    <relativePath />
   </parent>
 
   <artifactId>license-maven-plugin-parent</artifactId>
