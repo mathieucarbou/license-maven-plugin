@@ -57,11 +57,11 @@ public final class Default {
       "**/.arch-ids",
       "**/.arch-ids/**",
 
-      //Bazaar
+      // Bazaar
       "**/.bzr",
       "**/.bzr/**",
 
-      //SurroundSCM
+      // SurroundSCM
       "**/.MySCMServerInfo",
 
       // Mac

@@ -47,7 +47,7 @@ public class HeaderSection {
    * Is the pattern needs to be applied on several header lines ?
    */
   @Parameter(defaultValue = "false")
-  boolean multiLineMatch = false;
+  boolean multiLineMatch;
 
   public String getKey() {
     return key;
