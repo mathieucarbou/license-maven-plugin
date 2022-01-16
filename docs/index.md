@@ -49,6 +49,7 @@ Basically, when you are developing a project either in open source or in a compa
 * [@akomakom](https://github.com/akomakom)
 * [@ankon](https://github.com/ankon)
 * [@christopherlakey](https://github.com/christopherlakey)
+* [@dbwiddis](https://github.com/dbwiddis)
 * [@eincs](https://github.com/eincs)
 * [@geoff-wasilwa](https://github.com/geoff-wasilwa)
 * [@hazendaz](https://github.com/hazendaz)
