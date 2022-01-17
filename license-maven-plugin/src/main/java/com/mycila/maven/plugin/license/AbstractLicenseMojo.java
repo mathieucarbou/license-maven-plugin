@@ -296,8 +296,11 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
   public boolean skip = false;
 
   /**
-   * Whether to fail plugin execution on a shallow git clone if you are using
-   * git history for initial author or copyright ranges.
+   * Determination of the year and author of the first commit and last change year
+   * of a file requires a full git history. By default the plugin will log an
+   * exception and take no action when attempting these substitutions on a shallow
+   * repository. If you are certain the repository depth will permit accurate
+   * determination of these values, you can disable this check.
    */
   @Parameter(property = "license.failIfShallow", defaultValue = "true")
   public boolean failIfShallow = true;
