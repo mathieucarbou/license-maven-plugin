@@ -186,6 +186,7 @@ public class GitLookup {
   }
 
   private boolean isFileModifiedOrUnstaged(String repoRelativePath) throws GitAPIException {
+    @SuppressWarnings("resource")
     Status status = new Git(repository).status().addPath(repoRelativePath).call();
     return !status.isClean();
   }
