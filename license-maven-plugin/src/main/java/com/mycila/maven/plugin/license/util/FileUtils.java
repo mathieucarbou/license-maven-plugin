@@ -47,9 +47,10 @@ public final class FileUtils {
   private FileUtils() {
   }
 
+  @SuppressWarnings("resource")
   public static void write(File file, String content, String encoding) throws IOException {
-    try (FileOutputStream outStream = new FileOutputStream(file)) {
-      outStream.getChannel().write(ByteBuffer.wrap(content.getBytes(encoding)));
+    try (FileChannel channel = new FileOutputStream(file).getChannel()) {
+      channel.write(ByteBuffer.wrap(content.getBytes(encoding)));
     }
   }
 
@@ -75,9 +76,9 @@ public final class FileUtils {
     return results;
   }
 
+  @SuppressWarnings("resource")
   public static String read(File file, String encoding) throws IOException {
-    try (FileInputStream inStream = new FileInputStream(file)) {
-      FileChannel in = inStream.getChannel();
+    try (FileChannel in = new FileInputStream(file).getChannel()) {
       ByteArrayOutputStream baos = new ByteArrayOutputStream();
       in.transferTo(0, in.size(), Channels.newChannel(baos));
       return baos.toString(encoding);
@@ -103,12 +104,11 @@ public final class FileUtils {
     return str;
   }
 
+  @SuppressWarnings("resource")
   public static void copyFileToFolder(File file, File folder) throws IOException {
     File dest = new File(folder, file.getName());
-    try (FileInputStream inStream = new FileInputStream(file);
-         FileOutputStream outStream = new FileOutputStream(dest)) {
-      FileChannel inChannel = inStream.getChannel();
-      FileChannel outChannel = outStream.getChannel();
+    try (FileChannel inChannel = new FileInputStream(file).getChannel();
+         FileChannel outChannel = new FileOutputStream(dest).getChannel()) {
       inChannel.transferTo(0, inChannel.size(), outChannel);
     }
   }
