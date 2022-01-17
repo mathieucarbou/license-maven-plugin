@@ -15,6 +15,7 @@
  */
 package com.mycila.maven.plugin.license.git;
 
+import com.mycila.maven.plugin.license.LicenseCheckMojo;
 import com.mycila.maven.plugin.license.document.Document;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -48,7 +49,7 @@ public class CopyrightAuthorProviderTest {
     Properties props = new Properties();
 
     Document document = newDocument(path);
-    Map<String, String> actual = provider.getAdditionalProperties(null, props, document);
+    Map<String, String> actual = provider.getAdditionalProperties(new LicenseCheckMojo(), props, document);
 
     HashMap<String, String> expected = new HashMap<String, String>();
     expected.put(CopyrightAuthorProvider.COPYRIGHT_CREATION_AUTHOR_NAME_KEY, copyrightAuthorName);
