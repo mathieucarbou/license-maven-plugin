@@ -17,11 +17,10 @@ package com.mycila.maven.plugin.license.git;
 
 import com.mycila.maven.plugin.license.git.GitLookup.DateSource;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -30,34 +29,34 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Calendar;
 import java.util.TimeZone;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * @author <a href="mailto:ppalaga@redhat.com">Peter Palaga</a>
  */
 public class GitLookupTest {
 
-  private static File gitRepoRoot;
-  private static TemporaryFolder tempFolder;
+  private static Path gitRepoRoot;
 
-  @BeforeClass
+  @TempDir
+  static File tempFolder;
+
+  @BeforeAll
   public static void beforeClass() throws IOException {
-    tempFolder = new TemporaryFolder();
-    tempFolder.create();
-
     URL url = GitLookupTest.class.getResource("git-test-repo.zip");
-    File unzipDestination = tempFolder.getRoot();
-    gitRepoRoot = new File(unzipDestination, "git-test-repo");
+    Path unzipDestination = tempFolder.toPath();
+    gitRepoRoot = Files.createDirectory(unzipDestination);
 
     unzip(url, unzipDestination);
   }
 
-  static void unzip(URL url, File unzipDestination) throws IOException {
+  static void unzip(URL url, Path unzipDestination) throws IOException {
     ZipInputStream zipInputStream = null;
     try {
       zipInputStream = new ZipInputStream(new BufferedInputStream(url.openStream()));
@@ -66,14 +65,14 @@ public class GitLookupTest {
       while ((entry = zipInputStream.getNextEntry()) != null) {
 
         String fileName = entry.getName();
-        File unzippedFile = new File(unzipDestination.getAbsolutePath() + File.separatorChar + fileName);
+        Path unzippedFile = Paths.get(unzipDestination.toAbsolutePath() + File.separator + fileName);
         if (entry.isDirectory()) {
-          unzippedFile.mkdirs();
+          unzippedFile.toFile().mkdirs();
         } else {
-          unzippedFile.getParentFile().mkdirs();
+          unzippedFile.toFile().getParentFile().mkdirs();
           OutputStream out = null;
           try {
-            out = new BufferedOutputStream(new FileOutputStream(unzippedFile), 2048);
+            out = new BufferedOutputStream(new FileOutputStream(unzippedFile.toFile()), 2048);
             int len;
             while ((len = zipInputStream.read(buffer)) != -1) {
               out.write(buffer, 0, len);
@@ -90,11 +89,6 @@ public class GitLookupTest {
         zipInputStream.close();
       }
     }
-  }
-
-  @AfterClass
-  public static void afterClass() {
-    tempFolder.delete();
   }
 
   @Test
@@ -165,8 +159,8 @@ public class GitLookupTest {
   @Test
   public void timezone() throws GitAPIException, IOException {
     try {
-      new GitLookup(gitRepoRoot, DateSource.AUTHOR, TimeZone.getTimeZone("GMT"), 10);
-      Assert.fail("RuntimeException expected");
+      new GitLookup(gitRepoRoot.toFile(), DateSource.AUTHOR, TimeZone.getTimeZone("GMT"), 10);
+      Assertions.fail("RuntimeException expected");
     } catch (RuntimeException e) {
       if (e.getMessage().startsWith("Time zone must be null with dateSource " + DateSource.AUTHOR.name() + "")) {
         /* expected */
@@ -176,42 +170,42 @@ public class GitLookupTest {
     }
 
     /* null is GMT */
-    GitLookup nullTzLookup = new GitLookup(gitRepoRoot, DateSource.COMMITER, null, 10);
+    GitLookup nullTzLookup = new GitLookup(gitRepoRoot.toFile(), DateSource.COMMITER, null, 10);
     assertLastChange(nullTzLookup, "dir1/file3.txt", 2010);
 
     /* explicit GMT */
-    GitLookup gmtLookup = new GitLookup(gitRepoRoot, DateSource.COMMITER, TimeZone.getTimeZone("GMT"), 10);
+    GitLookup gmtLookup = new GitLookup(gitRepoRoot.toFile(), DateSource.COMMITER, TimeZone.getTimeZone("GMT"), 10);
     assertLastChange(gmtLookup, "dir1/file3.txt", 2010);
 
     /*
      * explicit non-GMT zome. Note that the relevant commit's (GMT) time stamp is 2010-12-31T23:30:00 which yealds
      * 2011 in the CET (+01:00) time zone
      */
-    GitLookup cetLookup = new GitLookup(gitRepoRoot, DateSource.COMMITER, TimeZone.getTimeZone("CET"), 10);
+    GitLookup cetLookup = new GitLookup(gitRepoRoot.toFile(), DateSource.COMMITER, TimeZone.getTimeZone("CET"), 10);
     assertLastChange(cetLookup, "dir1/file3.txt", 2011);
 
   }
 
   private GitLookup newAuthorLookup() throws IOException {
-    return new GitLookup(gitRepoRoot, DateSource.AUTHOR, null, 10);
+    return new GitLookup(gitRepoRoot.toFile(), DateSource.AUTHOR, null, 10);
   }
 
   private GitLookup newCommitterLookup() throws IOException {
-    return new GitLookup(gitRepoRoot, DateSource.COMMITER, null, 10);
+    return new GitLookup(gitRepoRoot.toFile(), DateSource.COMMITER, null, 10);
   }
 
   private void assertLastChange(GitLookup provider, String relativePath, int expected) throws
       GitAPIException, IOException {
-    int actual = provider.getYearOfLastChange(new File(gitRepoRoot.getAbsolutePath() + File.separatorChar
-        + relativePath.replace('/', File.separatorChar)));
-    assertEquals(expected, actual);
+    int actual = provider.getYearOfLastChange(Paths.get(gitRepoRoot.toAbsolutePath() + File.separator
+        + relativePath.replace('/', File.separatorChar)).toFile());
+    Assertions.assertEquals(expected, actual);
   }
 
   private void assertCreation(GitLookup provider, String relativePath, int expected) throws
       GitAPIException, IOException {
-    int actual = provider.getYearOfCreation(new File(gitRepoRoot.getAbsolutePath() + File.separatorChar
-        + relativePath.replace('/', File.separatorChar)));
-    assertEquals(expected, actual);
+    int actual = provider.getYearOfCreation(Paths.get(gitRepoRoot.toAbsolutePath() + File.separator
+        + relativePath.replace('/', File.separatorChar)).toFile());
+    Assertions.assertEquals(expected, actual);
   }
 
 }

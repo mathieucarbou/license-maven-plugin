@@ -16,14 +16,13 @@
 package com.mycila.maven.plugin.license.dependencies;
 
 import org.apache.maven.model.License;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-
-public final class LicensePolicyEnforcerResultTest extends ArtifactLicensePolicyEnforcerTestBase {
+class LicensePolicyEnforcerResultTest extends ArtifactLicensePolicyEnforcerTestBase {
 
   @Test
-  public void test_toString() {
+  void test_toString() {
     final String description = "The printable toString of a LicensePolicy should be useful/legible.";
 
     final License license = getLicense("my license");
@@ -33,11 +32,11 @@ public final class LicensePolicyEnforcerResultTest extends ArtifactLicensePolicy
     final LicensePolicyEnforcerResult result = new LicensePolicyEnforcerResult(policy, license, getArtifact("com.example:foobar:jar:1.2.3"), LicensePolicy.Rule.DENY);
     final String expected = "com.example:foobar:jar:1.2.3:runtime [my license] LICENSE_URL:DENY:https://localhost/mylicense";
 
-    assertEquals(description, expected, result.toString());
+    Assertions.assertEquals(expected, result.toString(), description);
   }
 
   @Test
-  public void test_equals() {
+  void test_equals() {
     final String description = "To results with identical fields should be equal.";
 
     final License license = getLicense("");
@@ -46,6 +45,6 @@ public final class LicensePolicyEnforcerResultTest extends ArtifactLicensePolicy
     final LicensePolicyEnforcerResult resultOne = new LicensePolicyEnforcerResult(policy, license, getArtifact("com.example:foobar:jar:1.2.3"), LicensePolicy.Rule.DENY);
     final LicensePolicyEnforcerResult resultTwo = new LicensePolicyEnforcerResult(policy, license, getArtifact("com.example:foobar:jar:1.2.3"), LicensePolicy.Rule.DENY);
 
-    assertEquals(description, resultOne, resultTwo);
+    Assertions.assertEquals(resultOne, resultTwo, description);
   }
 }

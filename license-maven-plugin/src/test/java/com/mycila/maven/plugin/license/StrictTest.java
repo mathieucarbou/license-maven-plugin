@@ -17,19 +17,18 @@ package com.mycila.maven.plugin.license;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
-public final class StrictTest {
+class StrictTest {
 
   @Test
-  public void test_strict() throws Exception {
+  void test_strict() throws Exception {
     MavenProjectStub project = new MavenProjectStub();
 
         /*LicenseFormatMojo format = new LicenseFormatMojo();
@@ -51,14 +50,14 @@ public final class StrictTest {
     try {
       check.execute();
     } catch (MojoExecutionException e) {
-      assertEquals("Some files do not have the expected license header", e.getMessage());
+      Assertions.assertEquals("Some files do not have the expected license header", e.getMessage());
     }
     System.out.println(check.missingHeaders);
-    assertEquals(check.missingHeaders.size(), 4);
+    Assertions.assertEquals(4, check.missingHeaders.size());
   }
 
   @Test
-  public void test_space() throws Exception {
+  void test_space() throws Exception {
     MavenProjectStub project = new MavenProjectStub();
 
         /*LicenseFormatMojo format = new LicenseFormatMojo();
@@ -78,7 +77,7 @@ public final class StrictTest {
     check.strictCheck = true;
     check.execute();
     System.out.println(check.missingHeaders);
-    assertEquals(check.missingHeaders.size(), 0);
+    Assertions.assertEquals(0, check.missingHeaders.size());
   }
 
 }

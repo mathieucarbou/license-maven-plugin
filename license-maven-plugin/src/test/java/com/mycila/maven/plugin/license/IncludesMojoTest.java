@@ -17,17 +17,18 @@ package com.mycila.maven.plugin.license;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
-public final class IncludesMojoTest {
+class IncludesMojoTest {
 
   @Test
-  public void test_include() throws Exception {
+  void test_include() throws Exception {
     LicenseCheckMojo check = new LicenseCheckMojo();
     check.defaultBasedir = new File("src/test/resources/check");
     check.legacyConfigHeader = "header.txt";
@@ -37,25 +38,29 @@ public final class IncludesMojoTest {
     check.execute();
   }
 
-  @Test(expected = MojoExecutionException.class)
-  public void test_include_and_fail() throws Exception {
+  @Test
+  void test_include_and_fail() throws Exception {
     LicenseCheckMojo check = new LicenseCheckMojo();
     check.defaultBasedir = new File("src/test/resources/check");
     check.legacyConfigHeader = "header.txt";
     check.project = new MavenProjectStub();
     check.legacyConfigIncludes = new String[]{"doc1.txt"};
     check.strictCheck = true;
-    check.execute();
+    Assertions.assertThrows(MojoExecutionException.class, () -> {
+      check.execute();
+    });
   }
 
-  @Test(expected = MojoExecutionException.class)
-  public void test_include_overrides_default_exclusion() throws Exception {
+  @Test
+  void test_include_overrides_default_exclusion() throws Exception {
     LicenseCheckMojo check = new LicenseCheckMojo();
     check.defaultBasedir = new File("src/test/resources/issues/issue-71");
     check.legacyConfigHeader = "../../check/header.txt";
     check.project = new MavenProjectStub();
     check.legacyConfigIncludes = new String[]{"**/.travis.yml"};
-    check.execute();
+    Assertions.assertThrows(MojoExecutionException.class, () -> {
+      check.execute();
+    });
   }
 
 }

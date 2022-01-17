@@ -16,17 +16,16 @@
 package com.mycila.maven.plugin.license.dependencies;
 
 import org.apache.maven.artifact.Artifact;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-
-public final class ArtifactLicensePolicyEnforcerTest extends ArtifactLicensePolicyEnforcerTestBase {
+class ArtifactLicensePolicyEnforcerTest extends ArtifactLicensePolicyEnforcerTestBase {
   Artifact artifact;
   LicensePolicy policy;
   ArtifactLicensePolicyEnforcer enforcer;
 
   @Test
-  public void test_explicitPatternAllowed() {
+  void test_explicitPatternAllowed() {
     final String description = "An artifact inclusion pattern explicitely matching with an allow rule should be allowed.";
     final String pattern = "com.example:example:jar:1.0.0";
 
@@ -34,11 +33,11 @@ public final class ArtifactLicensePolicyEnforcerTest extends ArtifactLicensePoli
     policy = new LicensePolicy(LicensePolicy.Rule.APPROVE, LicensePolicy.Type.ARTIFACT_PATTERN, pattern);
     enforcer = new ArtifactLicensePolicyEnforcer(policy);
 
-    assertEquals(description, true, enforcer.apply(artifact));
+    Assertions.assertTrue(enforcer.apply(artifact), description);
   }
 
   @Test
-  public void test_explicitPatternUnmatchedAllowed() {
+  void test_explicitPatternUnmatchedAllowed() {
     final String description = "An artifact inclusion pattern explicitely matching with an allow rule should deny non-matching artifacts.";
     final String pattern = "com.example:example:jar:1.0.0";
 
@@ -46,22 +45,22 @@ public final class ArtifactLicensePolicyEnforcerTest extends ArtifactLicensePoli
     policy = new LicensePolicy(LicensePolicy.Rule.APPROVE, LicensePolicy.Type.ARTIFACT_PATTERN, pattern);
     enforcer = new ArtifactLicensePolicyEnforcer(policy);
 
-    assertEquals(description, false, enforcer.apply(artifact));
+    Assertions.assertFalse(enforcer.apply(artifact), description);
   }
 
   @Test
-  public void test_explicitPatternUnmatchedDenied() {
+  void test_explicitPatternUnmatchedDenied() {
     final String description = "An artifact inclusion pattern deny rule should allow unmatched artifacts.";
 
     artifact = getArtifact("com.example:example:jar:1.0.0");
     policy = new LicensePolicy(LicensePolicy.Rule.DENY, LicensePolicy.Type.ARTIFACT_PATTERN, "com.example:example:jar:0.0.1");
     enforcer = new ArtifactLicensePolicyEnforcer(policy);
 
-    assertEquals(description, true, enforcer.apply(artifact));
+    Assertions.assertTrue(enforcer.apply(artifact), description);
   }
 
   @Test
-  public void test_explicitPatternDenied() {
+  void test_explicitPatternDenied() {
     final String description = "An artifact inclusion pattern explicitely matching with a deny rule should be denied.";
     final String pattern = "com.example:example:jar:1.0.0";
 
@@ -69,11 +68,11 @@ public final class ArtifactLicensePolicyEnforcerTest extends ArtifactLicensePoli
     policy = new LicensePolicy(LicensePolicy.Rule.DENY, LicensePolicy.Type.ARTIFACT_PATTERN, pattern);
     enforcer = new ArtifactLicensePolicyEnforcer(policy);
 
-    assertEquals(description, false, enforcer.apply(artifact));
+    Assertions.assertFalse(enforcer.apply(artifact), description);
   }
 
   @Test
-  public void test_greedyPatternAllowed() {
+  void test_greedyPatternAllowed() {
     final String description = "A greedy artifact inclusion pattern matching with an allow rule should be allowed.";
     final String gav = "com.example:example:jar:1.0.0";
     final String pattern = "com.example*";
@@ -82,19 +81,18 @@ public final class ArtifactLicensePolicyEnforcerTest extends ArtifactLicensePoli
     policy = new LicensePolicy(LicensePolicy.Rule.APPROVE, LicensePolicy.Type.ARTIFACT_PATTERN, pattern);
     enforcer = new ArtifactLicensePolicyEnforcer(policy);
 
-    assertEquals(description, true, enforcer.apply(artifact));
+    Assertions.assertTrue(enforcer.apply(artifact), description);
   }
 
   @Test
-  public void test_greedyDeny() {
+  void test_greedyDeny() {
     final String description = "Greedy patterns with a deny rule should deny everything.";
     final String gav = "com.example:example:jar:1.0.0";
-    final String pattern = "*";
 
     artifact = getArtifact(gav);
     policy = new LicensePolicy(LicensePolicy.Rule.DENY, LicensePolicy.Type.ARTIFACT_PATTERN, null);
     enforcer = new ArtifactLicensePolicyEnforcer(policy);
 
-    assertEquals(description, false, enforcer.apply(artifact));
+    Assertions.assertFalse(enforcer.apply(artifact), description);
   }
 }

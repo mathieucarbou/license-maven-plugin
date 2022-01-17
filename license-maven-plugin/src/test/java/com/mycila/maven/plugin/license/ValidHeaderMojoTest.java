@@ -17,19 +17,17 @@ package com.mycila.maven.plugin.license;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
-public final class ValidHeaderMojoTest {
+class ValidHeaderMojoTest {
   @Test
-  public void test_validHeader() throws Exception {
+  void test_validHeader() throws Exception {
         /*LicenseFormatMojo format = new LicenseFormatMojo();
         format.basedir = new File("src/test/resources/check/valid");
         format.header = "src/test/resources/test-header1.txt";
@@ -43,9 +41,9 @@ public final class ValidHeaderMojoTest {
     check.strictCheck = true;
     try {
       check.execute();
-      fail();
+      Assertions.fail();
     } catch (MojoExecutionException e) {
-      assertEquals("Some files do not have the expected license header", e.getMessage());
+      Assertions.assertEquals("Some files do not have the expected license header", e.getMessage());
     }
 
     check.legacyConfigValidHeaders = new String[]{"src/test/resources/check/header2.txt"};

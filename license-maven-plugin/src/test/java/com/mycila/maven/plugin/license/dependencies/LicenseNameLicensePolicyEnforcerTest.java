@@ -16,17 +16,16 @@
 package com.mycila.maven.plugin.license.dependencies;
 
 import org.apache.maven.model.License;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-
-public final class LicenseNameLicensePolicyEnforcerTest extends ArtifactLicensePolicyEnforcerTestBase {
+class LicenseNameLicensePolicyEnforcerTest extends ArtifactLicensePolicyEnforcerTestBase {
   License license;
   LicensePolicy policy;
   LicenseNameLicensePolicyEnforcer enforcer;
 
   @Test
-  public void test_explicitLicenseAllowed() {
+  void test_explicitLicenseAllowed() {
     final String description = "An inclusion pattern explicitely matching with an allow rule should be allowed.";
     final String pattern = "MIT";
 
@@ -34,11 +33,11 @@ public final class LicenseNameLicensePolicyEnforcerTest extends ArtifactLicenseP
     policy = new LicensePolicy(LicensePolicy.Rule.APPROVE, LicensePolicy.Type.LICENSE_NAME, pattern);
     enforcer = new LicenseNameLicensePolicyEnforcer(policy);
 
-    assertEquals(description, true, enforcer.apply(license));
+    Assertions.assertTrue(enforcer.apply(license), description);
   }
 
   @Test
-  public void test_nullDeny() {
+  void test_nullDeny() {
     final String description = "A missing license attribute should never match an allow rule.";
     final String pattern = "MIT";
 
@@ -46,28 +45,28 @@ public final class LicenseNameLicensePolicyEnforcerTest extends ArtifactLicenseP
     policy = new LicensePolicy(LicensePolicy.Rule.APPROVE, LicensePolicy.Type.LICENSE_NAME, pattern);
     enforcer = new LicenseNameLicensePolicyEnforcer(policy);
 
-    assertEquals(description, false, enforcer.apply(license));
+    Assertions.assertFalse(enforcer.apply(license), description);
   }
 
   @Test
-  public void test_defaultDeny() {
+  void test_defaultDeny() {
     final String description = "An empty pattern should default deny unmatched license names.";
 
     license = getLicense("MIT");
     policy = new LicensePolicy(LicensePolicy.Rule.APPROVE, LicensePolicy.Type.LICENSE_NAME, null);
     enforcer = new LicenseNameLicensePolicyEnforcer(policy);
 
-    assertEquals(description, false, enforcer.apply(license));
+    Assertions.assertFalse(enforcer.apply(license), description);
   }
 
   @Test
-  public void test_explicitLicenseUnmatchedAllowed() {
+  void test_explicitLicenseUnmatchedAllowed() {
     final String description = "An explicit allow rule should deny unmatched license names.";
 
     license = getLicense("something like an MIT license");
     policy = new LicensePolicy(LicensePolicy.Rule.APPROVE, LicensePolicy.Type.LICENSE_NAME, "MIT");
     enforcer = new LicenseNameLicensePolicyEnforcer(policy);
 
-    assertEquals(description, false, enforcer.apply(license));
+    Assertions.assertFalse(enforcer.apply(license), description);
   }
 }

@@ -110,8 +110,8 @@
         </executions>
         <dependencies>
           <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
             <version>${junit.version}</version>
           </dependency>
         </dependencies>
@@ -178,8 +178,22 @@
     </dependency>
 
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-params</artifactId>
+      <version>5.8.2</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <version>3.22.0</version>
       <scope>test</scope>
     </dependency>
 
@@ -195,6 +209,12 @@
       <artifactId>maven-verifier</artifactId>
       <version>1.7.2</version>
       <scope>test</scope>
+      <exclusions>
+          <exclusion>
+              <groupId>junit</groupId>
+              <artifactId>junit</artifactId>
+          </exclusion>
+      </exclusions>
     </dependency>
   </dependencies>
 

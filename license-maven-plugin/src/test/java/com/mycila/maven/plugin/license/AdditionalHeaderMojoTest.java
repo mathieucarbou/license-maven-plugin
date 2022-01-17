@@ -18,20 +18,18 @@ package com.mycila.maven.plugin.license;
 import com.mycila.maven.plugin.license.util.DebugLog;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.util.Collections;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
-public final class AdditionalHeaderMojoTest {
+class AdditionalHeaderMojoTest {
   @Test
-  public void test_additionalHeaderDefinitions() throws Exception {
+  void test_additionalHeaderDefinitions() throws Exception {
     LicenseCheckMojo check = new LicenseCheckMojo();
     check.defaultBasedir = new File("src/test/resources/check/def");
     check.legacyConfigHeader = "src/test/resources/check/header.txt";
@@ -41,9 +39,9 @@ public final class AdditionalHeaderMojoTest {
 
     try {
       check.execute();
-      fail();
+      Assertions.fail();
     } catch (MojoExecutionException e) {
-      assertEquals("Some files do not have the expected license header", e.getMessage());
+      Assertions.assertEquals("Some files do not have the expected license header", e.getMessage());
     }
 
     check.defaultHeaderDefinitions = new String[]{"/check/def/additionalHeaderDefinitions.xml"};
@@ -51,7 +49,7 @@ public final class AdditionalHeaderMojoTest {
   }
 
   @Test
-  public void test_inline() throws Exception {
+  void test_inline() throws Exception {
     LicenseCheckMojo check = new LicenseCheckMojo();
     check.defaultBasedir = new File("src/test/resources/check/def");
     check.legacyConfigHeader = "src/test/resources/check/header.txt";
@@ -60,9 +58,9 @@ public final class AdditionalHeaderMojoTest {
 
     try {
       check.execute();
-      fail();
+      Assertions.fail();
     } catch (MojoExecutionException e) {
-      assertEquals("Some files do not have the expected license header", e.getMessage());
+      Assertions.assertEquals("Some files do not have the expected license header", e.getMessage());
     }
 
     HeaderStyle style = new HeaderStyle();

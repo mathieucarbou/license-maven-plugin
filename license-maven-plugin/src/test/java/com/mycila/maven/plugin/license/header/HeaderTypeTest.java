@@ -15,18 +15,17 @@
  */
 package com.mycila.maven.plugin.license.header;
 
-import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
-public final class HeaderTypeTest {
+class HeaderTypeTest {
   @Test
-  public void test() throws Exception {
-    assertEquals(HeaderType.ASP.getDefinition().getType(), "asp");
-    assertEquals(HeaderType.defaultDefinitions().size(), HeaderType.values().length);
+  void test() throws Exception {
+    Assertions.assertEquals("asp", HeaderType.ASP.getDefinition().getType());
+    Assertions.assertEquals(HeaderType.defaultDefinitions().size(), HeaderType.values().length);
     System.out.println(HeaderType.defaultDefinitions().keySet());
   }
 }

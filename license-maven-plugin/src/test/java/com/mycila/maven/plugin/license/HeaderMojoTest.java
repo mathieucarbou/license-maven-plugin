@@ -17,17 +17,17 @@ package com.mycila.maven.plugin.license;
 
 import com.mycila.maven.plugin.license.util.FileUtils;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
-public final class HeaderMojoTest {
+class HeaderMojoTest {
 
   @Test
-  public void test_create() throws Exception {
+  void test_create() throws Exception {
     MavenProjectStub project = new MavenProjectStub();
     LicenseCheckMojo check = new LicenseCheckMojo();
     check.defaultBasedir = new File("src/main/resources/check");
@@ -37,7 +37,7 @@ public final class HeaderMojoTest {
   }
 
   @Test
-  public void test_load_header_from_relative_file() throws Exception {
+  void test_load_header_from_relative_file() throws Exception {
     MavenProjectStub project = new MavenProjectStub();
     LicenseCheckMojo check = new LicenseCheckMojo();
     check.defaultBasedir = new File("src/test/resources/check");
@@ -49,7 +49,7 @@ public final class HeaderMojoTest {
   }
 
   @Test
-  public void test_load_header_from_absolute_file() throws Exception {
+  void test_load_header_from_absolute_file() throws Exception {
     MavenProjectStub project = new MavenProjectStub();
     LicenseCheckMojo check = new LicenseCheckMojo();
     check.defaultBasedir = new File("src/test/resources/check");
@@ -61,7 +61,7 @@ public final class HeaderMojoTest {
   }
 
   @Test
-  public void test_load_header_from_project_classpath() throws Exception {
+  void test_load_header_from_project_classpath() throws Exception {
     MavenProjectStub project = new MavenProjectStub();
     project.addCompileSourceRoot("src/test/resources/check/cp");
     LicenseCheckMojo check = new LicenseCheckMojo();
@@ -74,7 +74,7 @@ public final class HeaderMojoTest {
   }
 
   @Test
-  public void test_load_header_from_plugin_classpath() throws Exception {
+  void test_load_header_from_plugin_classpath() throws Exception {
     MavenProjectStub project = new MavenProjectStub();
     LicenseCheckMojo check = new LicenseCheckMojo();
     check.defaultBasedir = new File("src/test/resources/check");
@@ -86,7 +86,7 @@ public final class HeaderMojoTest {
   }
 
   @Test
-  public void test_inlineHeader() throws Exception {
+  void test_inlineHeader() throws Exception {
     MavenProjectStub project = new MavenProjectStub();
     LicenseCheckMojo check = new LicenseCheckMojo();
     check.defaultBasedir = new File("src/test/resources/check");
@@ -98,7 +98,7 @@ public final class HeaderMojoTest {
   }
 
   @Test
-  public void test_load_multi_headers_from_relative_file() throws Exception {
+  void test_load_multi_headers_from_relative_file() throws Exception {
     final MavenProjectStub project = new MavenProjectStub();
     final LicenseCheckMojo check = new LicenseCheckMojo();
     check.defaultBasedir = new File("src/test/resources/check");
@@ -112,7 +112,7 @@ public final class HeaderMojoTest {
   }
 
   @Test
-  public void test_load_multi_headers_from_absolute_file() throws Exception {
+  void test_load_multi_headers_from_absolute_file() throws Exception {
     final MavenProjectStub project = new MavenProjectStub();
     final LicenseCheckMojo check = new LicenseCheckMojo();
     check.defaultBasedir = new File("src/test/resources/check");
@@ -126,7 +126,7 @@ public final class HeaderMojoTest {
   }
 
   @Test
-  public void test_load_multi_headers_from_project_classpath() throws Exception {
+  void test_load_multi_headers_from_project_classpath() throws Exception {
     final MavenProjectStub project = new MavenProjectStub();
     project.addCompileSourceRoot("src/test/resources/check/cp");
     final LicenseCheckMojo check = new LicenseCheckMojo();
@@ -141,7 +141,7 @@ public final class HeaderMojoTest {
   }
 
   @Test
-  public void test_load_multi_headers_from_plugin_classpath() throws Exception {
+  void test_load_multi_headers_from_plugin_classpath() throws Exception {
     final MavenProjectStub project = new MavenProjectStub();
     final LicenseCheckMojo check = new LicenseCheckMojo();
     check.defaultBasedir = new File("src/test/resources/check");
@@ -155,7 +155,7 @@ public final class HeaderMojoTest {
   }
 
   @Test
-  public void test_multi_inlineHeader() throws Exception {
+  void test_multi_inlineHeader() throws Exception {
     final MavenProjectStub project = new MavenProjectStub();
     final LicenseCheckMojo check = new LicenseCheckMojo();
     check.defaultBasedir = new File("src/test/resources/check");
@@ -170,6 +170,5 @@ public final class HeaderMojoTest {
     check.strictCheck = true;
     check.execute();
   }
-
 
 }

@@ -16,89 +16,87 @@
 package com.mycila.maven.plugin.license.header;
 
 import com.mycila.maven.plugin.license.util.FileContent;
-import org.junit.Test;
 
 import java.io.File;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
-public final class HeaderParserTest {
+class HeaderParserTest {
 
   @Test
-  public void test_no_header() throws Exception {
+  void test_no_header() throws Exception {
     HeaderParser parser = new HeaderParser(new FileContent(new File("src/test/resources/doc/doc1.txt"), System.getProperty("file.encoding")),
         HeaderType.TEXT.getDefinition(), new String[]{"copyright"});
-    assertFalse(parser.gotAnyHeader());
+    Assertions.assertFalse(parser.gotAnyHeader());
   }
 
   @Test
-  public void test_has_header() throws Exception {
+  void test_has_header() throws Exception {
     HeaderParser parser = new HeaderParser(new FileContent(new File("src/test/resources/doc/doc2.txt"), System.getProperty("file.encoding")),
         HeaderType.TEXT.getDefinition(), new String[]{"copyright"});
-    assertTrue(parser.gotAnyHeader());
-    assertEquals(parser.getBeginPosition(), 0);
-    assertEquals(parser.getEndPosition(), 43);
+    Assertions.assertTrue(parser.gotAnyHeader());
+    Assertions.assertEquals(0, parser.getBeginPosition());
+    Assertions.assertEquals(43,  parser.getEndPosition());
   }
 
   @Test
-  public void test_has_header2() throws Exception {
+  void test_has_header2() throws Exception {
     HeaderParser parser = new HeaderParser(new FileContent(new File("src/test/resources/doc/doc3.txt"), System.getProperty("file.encoding")),
         HeaderType.TEXT.getDefinition(), new String[]{"copyright"});
-    assertTrue(parser.gotAnyHeader());
-    assertEquals(parser.getBeginPosition(), 0);
-    assertEquals(parser.getEndPosition(), 49);
+    Assertions.assertTrue(parser.gotAnyHeader());
+    Assertions.assertEquals(0, parser.getBeginPosition());
+    Assertions.assertEquals(49, parser.getEndPosition());
   }
 
   @Test
-  public void test_parsing_xml1() throws Exception {
+  void test_parsing_xml1() throws Exception {
     HeaderParser parser = new HeaderParser(new FileContent(new File("src/test/resources/doc/doc4.xml"), System.getProperty("file.encoding")),
         HeaderType.XML_STYLE.getDefinition(), new String[]{"copyright"});
-    assertTrue(parser.gotAnyHeader());
-    assertEquals(parser.getBeginPosition(), 45);
-    assertEquals(parser.getEndPosition(), 862);
+    Assertions.assertTrue(parser.gotAnyHeader());
+    Assertions.assertEquals(45, parser.getBeginPosition());
+    Assertions.assertEquals(862, parser.getEndPosition());
   }
 
   @Test
-  public void test_parsing_xml2() throws Exception {
+  void test_parsing_xml2() throws Exception {
     HeaderParser parser = new HeaderParser(new FileContent(new File("src/test/resources/doc/doc5.xml"), System.getProperty("file.encoding")),
         HeaderType.XML_STYLE.getDefinition(), new String[]{"copyright"});
-    assertTrue(parser.gotAnyHeader());
-    assertEquals(parser.getBeginPosition(), 45);
-    assertEquals(parser.getEndPosition(), 864);
+    Assertions.assertTrue(parser.gotAnyHeader());
+    Assertions.assertEquals(45, parser.getBeginPosition());
+    Assertions.assertEquals(864, parser.getEndPosition());
   }
 
   @Test
-  public void test_parsing_xml3() throws Exception {
+  void test_parsing_xml3() throws Exception {
     HeaderParser parser = new HeaderParser(new FileContent(new File("src/test/resources/doc/doc6.xml"), System.getProperty("file.encoding")),
         HeaderType.XML_STYLE.getDefinition(), new String[]{"copyright"});
-    assertFalse(parser.gotAnyHeader());
+    Assertions.assertFalse(parser.gotAnyHeader());
   }
 
   @Test
-  public void test_parsing_xml4() throws Exception {
+  void test_parsing_xml4() throws Exception {
     HeaderParser parser = new HeaderParser(new FileContent(new File("src/test/resources/doc/doc7.xml"), System.getProperty("file.encoding")),
         HeaderType.XML_STYLE.getDefinition(), new String[]{"copyright"});
-    assertFalse(parser.gotAnyHeader());
+    Assertions.assertFalse(parser.gotAnyHeader());
   }
 
   @Test
-  public void test_parsing_xml5() throws Exception {
+  void test_parsing_xml5() throws Exception {
     HeaderParser parser = new HeaderParser(new FileContent(new File("src/test/resources/doc/doc8.xml"), System.getProperty("file.encoding")),
         HeaderType.XML_STYLE.getDefinition(), new String[]{"copyright"});
-    assertFalse(parser.gotAnyHeader());
+    Assertions.assertFalse(parser.gotAnyHeader());
   }
 
   @Test
-  public void test_parsing_xml6() throws Exception {
+  void test_parsing_xml6() throws Exception {
     HeaderParser parser = new HeaderParser(new FileContent(new File("src/test/resources/doc/doc9.xml"), System.getProperty("file.encoding")),
         HeaderType.XML_STYLE.getDefinition(), new String[]{"copyright"});
-    assertTrue(parser.gotAnyHeader());
-    assertEquals(parser.getBeginPosition(), 45);
-    assertEquals(parser.getEndPosition(), 864);
+    Assertions.assertTrue(parser.gotAnyHeader());
+    Assertions.assertEquals(45, parser.getBeginPosition());
+    Assertions.assertEquals(864, parser.getEndPosition());
   }
 }

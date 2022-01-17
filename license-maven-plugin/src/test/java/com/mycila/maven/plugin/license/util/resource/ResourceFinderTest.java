@@ -16,8 +16,9 @@
 package com.mycila.maven.plugin.license.util.resource;
 
 import org.apache.maven.plugin.MojoFailureException;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.net.URL;
 import java.nio.file.Files;
@@ -25,58 +26,57 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
-public final class ResourceFinderTest {
+class ResourceFinderTest {
 
   static ResourceFinder finder;
 
-  @BeforeClass
-  public static void setup() {
+  @BeforeAll
+  static void setup() {
     finder = new ResourceFinder(Paths.get("."));
     finder.setCompileClassPath(Arrays.asList("src/test/data/compileCP"));
     finder.setPluginClassPath(ResourceFinderTest.class.getClassLoader());
   }
 
   @Test
-  public void test_load_absolute_file() throws Exception {
+  void test_load_absolute_file() throws Exception {
     final Path path = Paths.get("src").resolve("test/data/compileCP/test.txt").toAbsolutePath();
-    assertTrue(Files.exists(path));
+    Assertions.assertTrue(Files.exists(path));
     final URL u = finder.findResource(path.toString());
-    assertEquals(path, Paths.get(u.toURI()));
-  }
-
-  @Test(expected = MojoFailureException.class)
-  public void test_load_inexisting() throws Exception {
-    finder.findResource("ho ho");
+    Assertions.assertEquals(path, Paths.get(u.toURI()));
   }
 
   @Test
-  public void test_load_relative_file() throws Exception {
+  void test_load_inexisting() throws Exception {
+    Throwable throwable = Assertions.assertThrows(MojoFailureException.class, () -> {
+      finder.findResource("ho ho");
+    });
+    Assertions.assertEquals("Resource ho ho not found in file system, classpath or URL: no protocol: ho ho", throwable.getMessage());
+  }
+
+  @Test
+  void test_load_relative_file() throws Exception {
     final URL u = finder.findResource("src/test/data/compileCP/test.txt");
-    assertTrue(u.getPath().contains("src/test/data/compileCP/test.txt"));
+    Assertions.assertTrue(u.getPath().contains("src/test/data/compileCP/test.txt"));
   }
 
   @Test
-  public void test_load_from_compile_CP() throws Exception {
-    assertNotNull(finder.findResource("test.txt"));
+  void test_load_from_compile_CP() throws Exception {
+    Assertions.assertNotNull(finder.findResource("test.txt"));
   }
 
   @Test
-  public void test_load_from_plugin_CP() throws Exception {
-    assertNotNull(finder.findResource("/bouh.txt"));
+  void test_load_from_plugin_CP() throws Exception {
+    Assertions.assertNotNull(finder.findResource("/bouh.txt"));
   }
 
   @Test
-  public void test_load_from_URL() throws Exception {
+  void test_load_from_URL() throws Exception {
     final Path path = Paths.get("src").resolve("test/data/compileCP/test.txt").toAbsolutePath();
-    assertTrue(Files.exists(path));
+    Assertions.assertTrue(Files.exists(path));
     final String url = path.toUri().toURL().toString();
-    assertNotNull(finder.findResource(url));
+    Assertions.assertNotNull(finder.findResource(url));
   }
 }

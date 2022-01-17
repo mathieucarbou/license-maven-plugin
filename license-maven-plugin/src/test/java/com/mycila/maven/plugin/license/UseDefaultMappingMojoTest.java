@@ -18,21 +18,17 @@ package com.mycila.maven.plugin.license;
 import org.apache.maven.monitor.logging.DefaultLog;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
-public final class UseDefaultMappingMojoTest {
+class UseDefaultMappingMojoTest {
   @Test
-  public void test_not_useDefaultMapping() throws Exception {
+  void test_not_useDefaultMapping() throws Exception {
     LicenseCheckMojo check = new LicenseCheckMojo();
     check.defaultBasedir = new File("src/test/resources/check");
     check.legacyConfigHeader = "header.txt";
@@ -42,14 +38,14 @@ public final class UseDefaultMappingMojoTest {
     MockedLog logger = new MockedLog();
     check.setLog(new DefaultLog(logger));
     check.execute();
-    assertFalse(logger.getContent().contains("header style: text"));
-    assertTrue(logger.getContent().contains("header style: unknown"));
+    Assertions.assertFalse(logger.getContent().contains("header style: text"));
+    Assertions.assertTrue(logger.getContent().contains("header style: unknown"));
     String absoluteFileName = new File("src/test/resources/check/doc1.txt").getCanonicalPath().replace('\\', '/');
-    assertTrue(logger.getContent().contains("Unknown file extension: " + absoluteFileName));
+    Assertions.assertTrue(logger.getContent().contains("Unknown file extension: " + absoluteFileName));
   }
 
   @Test
-  public void test_useDefaultMapping() throws Exception {
+  void test_useDefaultMapping() throws Exception {
     LicenseCheckMojo check = new LicenseCheckMojo();
     check.defaultBasedir = new File("src/test/resources/check");
     check.legacyConfigHeader = "header.txt";
@@ -60,12 +56,12 @@ public final class UseDefaultMappingMojoTest {
     check.setLog(new DefaultLog(logger));
     try {
       check.execute();
-      fail();
+      Assertions.fail();
     } catch (MojoExecutionException e) {
-      assertTrue(logger.getContent().contains("header style: text"));
+      Assertions.assertTrue(logger.getContent().contains("header style: text"));
       String absoluteDockerfileName = new File("src/test/resources/check/Dockerfile").getCanonicalPath().replace('\\', '/');
-      assertTrue(logger.getContent().contains("Header OK in: " + absoluteDockerfileName));
-      assertEquals("Some files do not have the expected license header", e.getMessage());
+      Assertions.assertTrue(logger.getContent().contains("Header OK in: " + absoluteDockerfileName));
+      Assertions.assertEquals("Some files do not have the expected license header", e.getMessage());
     }
   }
 }

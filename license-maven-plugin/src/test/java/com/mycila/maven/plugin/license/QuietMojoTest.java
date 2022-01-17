@@ -17,20 +17,18 @@ package com.mycila.maven.plugin.license;
 
 import org.apache.maven.monitor.logging.DefaultLog;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
-public final class QuietMojoTest {
+class QuietMojoTest {
 
   @Test
-  public void test_load_header_from_relative_file() throws Exception {
+  void test_load_header_from_relative_file() throws Exception {
     LicenseCheckMojo check = new LicenseCheckMojo();
     check.defaultBasedir = new File("src/test/resources/check");
     check.legacyConfigHeader = "header.txt";
@@ -43,12 +41,12 @@ public final class QuietMojoTest {
     check.setLog(new DefaultLog(logger));
 
     check.execute();
-    assertTrue(logger.getLogEntries() > 2);
+    Assertions.assertTrue(logger.getLogEntries() > 2);
 
     logger.clear();
 
     check.quiet = true;
     check.execute();
-    assertEquals(logger.getLogEntries(), 2);
+    Assertions.assertEquals(2, logger.getLogEntries());
   }
 }

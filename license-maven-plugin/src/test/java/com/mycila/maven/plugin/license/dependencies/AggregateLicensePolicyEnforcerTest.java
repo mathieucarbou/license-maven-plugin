@@ -16,30 +16,29 @@
 package com.mycila.maven.plugin.license.dependencies;
 
 import org.apache.maven.artifact.Artifact;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
-
-public final class AggregateLicensePolicyEnforcerTest extends ArtifactLicensePolicyEnforcerTestBase {
+class AggregateLicensePolicyEnforcerTest extends ArtifactLicensePolicyEnforcerTestBase {
   LicenseMapData data;
   Set<LicensePolicy> policies;
   AggregateLicensePolicyEnforcer enforcer;
   LicensePolicy defaultPolicy;
 
-  @Before
-  public void setUp() {
+  @BeforeEach
+  void setUp() {
     data = new LicenseMapData();
     policies = new HashSet<LicensePolicy>();
     defaultPolicy = new DefaultLicensePolicyEnforcer().getPolicy();
   }
 
   @Test
-  public void test_defaultDeny() {
+  void test_defaultDeny() {
     final String description = "All artifacts should be denied by default.";
 
     data.put("com.example:example:jar:1.0.0", "", defaultPolicy, false);
@@ -48,11 +47,11 @@ public final class AggregateLicensePolicyEnforcerTest extends ArtifactLicensePol
     Map<Artifact, LicensePolicyEnforcerResult> expected = data.getExpected();
     Map<Artifact, LicensePolicyEnforcerResult> actual = enforcer.apply(data.getLicenseMap());
 
-    assertEquals(description, expected, actual);
+    Assertions.assertEquals(expected, actual, description);
   }
 
   @Test
-  public void test_allowedLicense() {
+  void test_allowedLicense() {
     final String description = "Artifacts with matching allowed licenses should be allowed, while unmatching should not.";
     final String license = "MIT";
     final LicensePolicy policy = new LicensePolicy(LicensePolicy.Rule.APPROVE, LicensePolicy.Type.LICENSE_NAME, license);
@@ -65,11 +64,11 @@ public final class AggregateLicensePolicyEnforcerTest extends ArtifactLicensePol
     policies.add(policy);
     enforcer = new AggregateLicensePolicyEnforcer(policies);
 
-    assertEquals(description, data.getExpected(), enforcer.apply(data.getLicenseMap()));
+    Assertions.assertEquals(data.getExpected(), enforcer.apply(data.getLicenseMap()), description);
   }
 
   @Test
-  public void test_allowedArtifact() {
+  void test_allowedArtifact() {
     final String description = "Artifacts with an approved pattern should be allowed, while unmatching should not.";
 
     final LicensePolicy licensePolicy = new LicensePolicy(LicensePolicy.Rule.APPROVE, LicensePolicy.Type.LICENSE_NAME, "MIT");
@@ -84,11 +83,11 @@ public final class AggregateLicensePolicyEnforcerTest extends ArtifactLicensePol
     policies.add(artifactPolicy);
     enforcer = new AggregateLicensePolicyEnforcer(policies);
 
-    assertEquals(description, data.getExpected(), enforcer.apply(data.getLicenseMap()));
+    Assertions.assertEquals(data.getExpected(), enforcer.apply(data.getLicenseMap()), description);
   }
 
   @Test
-  public void test_multiAllowedLicense() {
+  void test_multiAllowedLicense() {
     final String description = "Artifacts with matching allowed licenses should be allowed, even if there are multiple policies matching.";
 
     final LicensePolicy MITPolicy = new LicensePolicy(LicensePolicy.Rule.APPROVE, LicensePolicy.Type.LICENSE_NAME, "MIT");
@@ -103,11 +102,11 @@ public final class AggregateLicensePolicyEnforcerTest extends ArtifactLicensePol
     policies.add(ASL2Policy);
     enforcer = new AggregateLicensePolicyEnforcer(policies);
 
-    assertEquals(description, data.getExpected(), enforcer.apply(data.getLicenseMap()));
+    Assertions.assertEquals(data.getExpected(), enforcer.apply(data.getLicenseMap()), description);
   }
 
   @Test
-  public void test_explicitDeny() {
+  void test_explicitDeny() {
     final String description = "Artifacts with matching allowed licenses but matching denied artifact should be denied.";
     final String license = "MIT";
     final String artifact = "com.example.denied:evil:jar:0.0.1";
@@ -124,11 +123,11 @@ public final class AggregateLicensePolicyEnforcerTest extends ArtifactLicensePol
     policies.add(licensePolicy);
     enforcer = new AggregateLicensePolicyEnforcer(policies);
 
-    assertEquals(description, data.getExpected(), enforcer.apply(data.getLicenseMap()));
+    Assertions.assertEquals(data.getExpected(), enforcer.apply(data.getLicenseMap()), description);
   }
 
   @Test
-  public void test_denyOverride() {
+  void test_denyOverride() {
     final String description = "Conflicting policies should prefer deny rules.";
 
     final String license = "MIT";
@@ -141,6 +140,6 @@ public final class AggregateLicensePolicyEnforcerTest extends ArtifactLicensePol
     policies.add(denyPolicy);
     enforcer = new AggregateLicensePolicyEnforcer(policies);
 
-    assertEquals(description, data.getExpected(), enforcer.apply(data.getLicenseMap()));
+    Assertions.assertEquals(data.getExpected(), enforcer.apply(data.getLicenseMap()), description);
   }
 }

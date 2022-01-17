@@ -16,20 +16,19 @@
 package com.mycila.maven.plugin.license.dependencies;
 
 import org.apache.maven.model.License;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import static org.junit.Assert.assertEquals;
-
-public final class LicenseURLLicensePolicyEnforcerTest extends ArtifactLicensePolicyEnforcerTestBase {
+class LicenseURLLicensePolicyEnforcerTest extends ArtifactLicensePolicyEnforcerTestBase {
   License license;
   LicensePolicy policy;
   LicenseURLLicensePolicyEnforcer enforcer;
 
   @Test
-  public void test_explicitLicenseAllowed() throws MalformedURLException {
+  void test_explicitLicenseAllowed() throws MalformedURLException {
     final String description = "An inclusion pattern explicitely matching with an allow rule should be allowed.";
     final String pattern = "https://www.apache.org/licenses/LICENSE-2.0.txt";
 
@@ -37,11 +36,11 @@ public final class LicenseURLLicensePolicyEnforcerTest extends ArtifactLicensePo
     policy = new LicensePolicy(LicensePolicy.Rule.APPROVE, LicensePolicy.Type.LICENSE_NAME, pattern);
     enforcer = new LicenseURLLicensePolicyEnforcer(policy);
 
-    assertEquals(description, true, enforcer.apply(license));
+    Assertions.assertTrue(enforcer.apply(license), description);
   }
 
   @Test
-  public void test_nullDeny() {
+  void test_nullDeny() {
     final String description = "A missing license attribute should never match an allow rule.";
     final String pattern = "https://www.apache.org/licenses/LICENSE-2.0.txt";
 
@@ -49,28 +48,28 @@ public final class LicenseURLLicensePolicyEnforcerTest extends ArtifactLicensePo
     policy = new LicensePolicy(LicensePolicy.Rule.APPROVE, LicensePolicy.Type.LICENSE_NAME, pattern);
     enforcer = new LicenseURLLicensePolicyEnforcer(policy);
 
-    assertEquals(description, false, enforcer.apply(license));
+    Assertions.assertFalse(enforcer.apply(license), description);
   }
 
   @Test
-  public void test_defaultDeny() throws MalformedURLException {
+  void test_defaultDeny() throws MalformedURLException {
     final String description = "An empty pattern should default deny unmatched license URLs.";
 
     license = getLicense(new URL("https://localhost/my-license"));
     policy = new LicensePolicy(LicensePolicy.Rule.APPROVE, LicensePolicy.Type.LICENSE_NAME, null);
     enforcer = new LicenseURLLicensePolicyEnforcer(policy);
 
-    assertEquals(description, false, enforcer.apply(license));
+    Assertions.assertFalse(enforcer.apply(license), description);
   }
 
   @Test
-  public void test_explicitLicenseUnmatchedAllowed() throws MalformedURLException {
+  void test_explicitLicenseUnmatchedAllowed() throws MalformedURLException {
     final String description = "An explicit allow rule should deny unmatched license URLs.";
 
     license = getLicense(new URL("https://localhost/my-license"));
     policy = new LicensePolicy(LicensePolicy.Rule.APPROVE, LicensePolicy.Type.LICENSE_NAME, "https://www.apache.org/licenses/LICENSE-2.0.txt");
     enforcer = new LicenseURLLicensePolicyEnforcer(policy);
 
-    assertEquals(description, false, enforcer.apply(license));
+    Assertions.assertFalse(enforcer.apply(license), description);
   }
 }
