@@ -48,8 +48,8 @@ public final class FileUtils {
   }
 
   public static void write(File file, String content, String encoding) throws IOException {
-    try (FileChannel channel = new FileOutputStream(file).getChannel()) {
-      channel.write(ByteBuffer.wrap(content.getBytes(encoding)));
+    try (FileOutputStream outStream = new FileOutputStream(file)) {
+      outStream.getChannel().write(ByteBuffer.wrap(content.getBytes(encoding)));
     }
   }
 
@@ -68,18 +68,16 @@ public final class FileUtils {
   public static String[] read(final URL[] locations, final String encoding) throws IOException {
     final String[] results = new String[locations.length];
     for (int i = 0; i < locations.length; i++) {
-      final Reader reader = new BufferedReader(new InputStreamReader(locations[i].openStream(), encoding));
-      try {
+      try (Reader reader = new BufferedReader(new InputStreamReader(locations[i].openStream(), encoding))) {
         results[i] = IOUtil.toString(reader);
-      } finally {
-        reader.close();
       }
     }
     return results;
   }
 
   public static String read(File file, String encoding) throws IOException {
-    try (FileChannel in = new FileInputStream(file).getChannel()) {
+    try (FileInputStream inStream = new FileInputStream(file)) {
+      FileChannel in = inStream.getChannel();
       ByteArrayOutputStream baos = new ByteArrayOutputStream();
       in.transferTo(0, in.size(), Channels.newChannel(baos));
       return baos.toString(encoding);
@@ -107,8 +105,10 @@ public final class FileUtils {
 
   public static void copyFileToFolder(File file, File folder) throws IOException {
     File dest = new File(folder, file.getName());
-    try (FileChannel inChannel = new FileInputStream(file).getChannel();
-         FileChannel outChannel = new FileOutputStream(dest).getChannel()) {
+    try (FileInputStream inStream = new FileInputStream(file);
+         FileOutputStream outStream = new FileOutputStream(dest)) {
+      FileChannel inChannel = inStream.getChannel();
+      FileChannel outChannel = outStream.getChannel();
       inChannel.transferTo(0, inChannel.size(), outChannel);
     }
   }
