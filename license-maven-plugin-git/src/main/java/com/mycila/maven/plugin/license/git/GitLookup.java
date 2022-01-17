@@ -59,6 +59,7 @@ public class GitLookup {
   private final GitPathResolver pathResolver;
   private final Repository repository;
   private final TimeZone timeZone;
+  private final boolean shallow;
 
   /**
    * Creates a new {@link GitLookup} for a repository that is detected from the supplied {@code anyFile}.
@@ -78,7 +79,8 @@ public class GitLookup {
     /* A workaround for  https://bugs.eclipse.org/bugs/show_bug.cgi?id=457961 */
     this.repository.getObjectDatabase().newReader().getShallowCommits();
 
-    this.pathResolver = new GitPathResolver(repository.getWorkTree().getAbsolutePath());
+    String rootDir = repository.getWorkTree().getAbsolutePath();
+    this.pathResolver = new GitPathResolver(rootDir);
     this.dateSource = dateSource;
     switch (dateSource) {
       case COMMITER:
@@ -95,6 +97,8 @@ public class GitLookup {
         throw new IllegalStateException("Unexpected " + DateSource.class.getName() + " " + dateSource);
     }
     this.checkCommitsCount = checkCommitsCount;
+    String dotGitDir = rootDir + (rootDir.endsWith(File.separator) ? "" : File.separator) + ".git";
+    this.shallow = new File(dotGitDir + File.separator + "shallow").exists();
   }
 
   /**
@@ -186,9 +190,7 @@ public class GitLookup {
   }
   
   boolean isShallowRepository() {
-    File dotGit = repository.getDirectory();
-    File shallow = new File(dotGit.getPath() + File.separator + "shallow");
-    return shallow.exists();
+    return this.shallow;
   }
 
   private boolean isFileModifiedOrUnstaged(String repoRelativePath) throws GitAPIException {
