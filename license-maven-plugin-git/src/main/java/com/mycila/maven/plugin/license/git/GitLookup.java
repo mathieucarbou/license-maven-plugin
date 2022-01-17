@@ -77,10 +77,10 @@ public class GitLookup {
     super();
     this.repository = new FileRepositoryBuilder().findGitDir(anyFile).build();
     /* A workaround for  https://bugs.eclipse.org/bugs/show_bug.cgi?id=457961 */
-    this.repository.getObjectDatabase().newReader().getShallowCommits();
+    // Also contains contents of .git/shallow and can detect shallow repo
+    this.shallow = !this.repository.getObjectDatabase().newReader().getShallowCommits().isEmpty();
 
-    String rootDir = repository.getWorkTree().getAbsolutePath();
-    this.pathResolver = new GitPathResolver(rootDir);
+    this.pathResolver = new GitPathResolver(repository.getWorkTree().getAbsolutePath());
     this.dateSource = dateSource;
     switch (dateSource) {
       case COMMITER:
@@ -97,8 +97,6 @@ public class GitLookup {
         throw new IllegalStateException("Unexpected " + DateSource.class.getName() + " " + dateSource);
     }
     this.checkCommitsCount = checkCommitsCount;
-    String dotGitDir = rootDir + (rootDir.endsWith(File.separator) ? "" : File.separator) + ".git";
-    this.shallow = new File(dotGitDir + File.separator + "shallow").exists();
   }
 
   /**
