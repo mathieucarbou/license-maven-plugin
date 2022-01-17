@@ -15,21 +15,20 @@
  */
 package com.mycila.maven.plugin.license.util;
 
-import org.junit.Test;
-
 import java.io.File;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
-public final class FileUtilsTest {
+class FileUtilsTest {
+
   @Test
-  public void test_read_first_lines() throws Exception {
+  void test_read_first_lines() throws Exception {
     String s = FileUtils.readFirstLines(new File("src/test/data/compileCP/test2.txt"), 3, "ISO-8859-1");
-    assertTrue(s.contains("c"));
-    assertFalse(s.contains("d"));
+    Assertions.assertTrue(s.contains("c"));
+    Assertions.assertFalse(s.contains("d"));
   }
 }

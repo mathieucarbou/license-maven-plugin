@@ -15,18 +15,16 @@
  */
 package com.mycila.maven.plugin.license.git;
 
-import org.junit.Assert;
-import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author <a href="mailto:ppalaga@redhat.com">Peter Palaga</a>
  */
-public class GitPathResolverTest {
+class GitPathResolverTest {
+
   @Test
-  public void relativize() throws Exception {
+  void relativize() throws Exception {
     /* *nix-like */
     assertRelativized("/path/to/my/git/repo", '/', "/path/to/my/git/repo/dir/file.txt", "dir/file.txt");
     assertRelativized("/path/to/my/git/repo/", '/', "/path/to/my/git/repo/dir/file.txt", "dir/file.txt");
@@ -46,16 +44,16 @@ public class GitPathResolverTest {
   private void assertRelativized(String repoRoot, char nativePathSepartor, String absoluteNativePath, String expected) {
     GitPathResolver resolver = new GitPathResolver(repoRoot, nativePathSepartor);
     String actual = resolver.relativize(absoluteNativePath);
-    assertEquals(expected, actual);
+    Assertions.assertEquals(expected, actual);
   }
 
   private void assertFail(String repoRoot, char nativePathSepartor, String absoluteNativePath) {
     GitPathResolver resolver = new GitPathResolver(repoRoot, nativePathSepartor);
     try {
       resolver.relativize(absoluteNativePath);
-      Assert.fail("RuntimeException expected");
+      Assertions.fail("RuntimeException expected");
     } catch (RuntimeException e) {
-      assertTrue(e.getMessage().startsWith("Cannot relativize"));
+      Assertions.assertTrue(e.getMessage().startsWith("Cannot relativize"));
     }
   }
 

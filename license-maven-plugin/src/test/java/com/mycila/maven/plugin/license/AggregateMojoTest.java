@@ -17,21 +17,19 @@ package com.mycila.maven.plugin.license;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
-public final class AggregateMojoTest {
+class AggregateMojoTest {
   @Test
-  public void test_modules_ignored() throws Exception {
+  void test_modules_ignored() throws Exception {
     MavenProjectStub project = new MavenProjectStub() {
       @Override
       public List<String> getModules() {
@@ -47,7 +45,7 @@ public final class AggregateMojoTest {
   }
 
   @Test
-  public void test_modules_scanned() throws Exception {
+  void test_modules_scanned() throws Exception {
     MavenProjectStub project = new MavenProjectStub() {
       @Override
       public List<String> getModules() {
@@ -62,9 +60,9 @@ public final class AggregateMojoTest {
     check.strictCheck = true;
     try {
       check.execute();
-      fail();
+      Assertions.fail();
     } catch (MojoExecutionException e) {
-      assertEquals("Some files do not have the expected license header", e.getMessage());
+      Assertions.assertEquals("Some files do not have the expected license header", e.getMessage());
     }
   }
 }

@@ -17,16 +17,15 @@ package com.mycila.maven.plugin.license;
 
 import org.apache.maven.monitor.logging.DefaultLog;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 
-import static org.junit.Assert.assertTrue;
-
-public class LicenseSetTest {
+class LicenseSetTest {
 
   @Test
-  public void multipleLicenseSets() throws Exception {
+  void multipleLicenseSets() throws Exception {
     final LicenseSet licenseSet1 = new LicenseSet();
     licenseSet1.basedir = new File("src/test/resources/check/strict");
     licenseSet1.header = "src/test/resources/test-header1-diff.txt";
@@ -58,13 +57,13 @@ public class LicenseSetTest {
     final String fileFromSecondSet = new File("src/test/resources/check/issue76/after.xml").getCanonicalPath().replace('\\', '/');
     final String fileFromDefaultBaseDirSet = new File("src/test/resources/unknown/header.txt").getCanonicalPath().replace('\\', '/');
 
-    assertTrue(log.contains("Header OK in: " + fileFromFirstSet));
-    assertTrue(log.contains("Header OK in: " + fileFromSecondSet));
-    assertTrue(log.contains("Header OK in: " + fileFromDefaultBaseDirSet));
+    Assertions.assertTrue(log.contains("Header OK in: " + fileFromFirstSet));
+    Assertions.assertTrue(log.contains("Header OK in: " + fileFromSecondSet));
+    Assertions.assertTrue(log.contains("Header OK in: " + fileFromDefaultBaseDirSet));
   }
 
   @Test
-  public void multipleLicenseSetsWithRelativePaths() throws Exception {
+  void multipleLicenseSetsWithRelativePaths() throws Exception {
     final LicenseSet licenseSet1 = new LicenseSet();
     licenseSet1.basedir = new File("src/test/resources/check/def/../strict");
     licenseSet1.header = "src/test/resources/test-header1-diff.txt";
@@ -96,9 +95,9 @@ public class LicenseSetTest {
     final String fileFromSecondSet = new File("src/test/resources/check/issue76/after.xml").getCanonicalPath().replace('\\', '/');
     final String fileFromDefaultBaseDirSet = new File("src/test/resources/unknown/header.txt").getCanonicalPath().replace('\\', '/');
 
-    assertTrue(log.contains("Header OK in: " + fileFromFirstSet));
-    assertTrue(log.contains("Header OK in: " + fileFromSecondSet));
-    assertTrue(log.contains("Header OK in: " + fileFromDefaultBaseDirSet));
+    Assertions.assertTrue(log.contains("Header OK in: " + fileFromFirstSet));
+    Assertions.assertTrue(log.contains("Header OK in: " + fileFromSecondSet));
+    Assertions.assertTrue(log.contains("Header OK in: " + fileFromDefaultBaseDirSet));
   }
 
 

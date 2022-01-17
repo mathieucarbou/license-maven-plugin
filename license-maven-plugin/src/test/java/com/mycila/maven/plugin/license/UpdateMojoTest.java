@@ -20,7 +20,8 @@ import com.google.common.io.Files;
 import com.mycila.maven.plugin.license.util.FileUtils;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.nio.charset.Charset;
@@ -30,17 +31,16 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
-public final class UpdateMojoTest {
+class UpdateMojoTest {
+
   public static final String LS = "\n";
 
   @Test
-  public void test_update() throws Exception {
+  void test_update() throws Exception {
     File tmp = new File("target/test/update");
     tmp.mkdirs();
     FileUtils.copyFileToFolder(new File("src/test/resources/update/doc1.txt"), tmp);
@@ -53,12 +53,12 @@ public final class UpdateMojoTest {
     updater.defaultProperties = ImmutableMap.of("year", "2008");
     updater.execute();
 
-    assertEquals(FileUtils.read(new File(tmp, "doc1.txt"), System.getProperty("file.encoding")), "====\r\n    My @Copyright license 2 with my-custom-value and 2008 and doc1.txt\r\n====\r\n\r\nsome data\r\n");
-    assertEquals(FileUtils.read(new File(tmp, "doc2.txt"), System.getProperty("file.encoding")), "====\r\n    My @Copyright license 2 with my-custom-value and 2008 and doc2.txt\r\n====\r\n\r\nsome data\r\n");
+    Assertions.assertEquals(FileUtils.read(new File(tmp, "doc1.txt"), System.getProperty("file.encoding")), "====\r\n    My @Copyright license 2 with my-custom-value and 2008 and doc1.txt\r\n====\r\n\r\nsome data\r\n");
+    Assertions.assertEquals(FileUtils.read(new File(tmp, "doc2.txt"), System.getProperty("file.encoding")), "====\r\n    My @Copyright license 2 with my-custom-value and 2008 and doc2.txt\r\n====\r\n\r\nsome data\r\n");
   }
 
   @Test
-  public void test_update_inlineHeader() throws Exception {
+  void test_update_inlineHeader() throws Exception {
     File tmp = new File("target/test/update-inlineHeader");
     tmp.mkdirs();
     FileUtils.copyFileToFolder(new File("src/test/resources/update/doc1.txt"), tmp);
@@ -71,12 +71,12 @@ public final class UpdateMojoTest {
     updater.defaultProperties = ImmutableMap.of("year", "2008");
     updater.execute();
 
-    assertEquals(FileUtils.read(new File(tmp, "doc1.txt"), System.getProperty("file.encoding")), "====\r\n    My @Copyright license 2 with my-custom-value and 2008 and doc1.txt\r\n====\r\n\r\nsome data\r\n");
-    assertEquals(FileUtils.read(new File(tmp, "doc2.txt"), System.getProperty("file.encoding")), "====\r\n    My @Copyright license 2 with my-custom-value and 2008 and doc2.txt\r\n====\r\n\r\nsome data\r\n");
+    Assertions.assertEquals("====\r\n    My @Copyright license 2 with my-custom-value and 2008 and doc1.txt\r\n====\r\n\r\nsome data\r\n", FileUtils.read(new File(tmp, "doc1.txt"), System.getProperty("file.encoding")));
+    Assertions.assertEquals("====\r\n    My @Copyright license 2 with my-custom-value and 2008 and doc2.txt\r\n====\r\n\r\nsome data\r\n", FileUtils.read(new File(tmp, "doc2.txt"), System.getProperty("file.encoding")));
   }
 
   @Test
-  public void test_skipExistingHeaders() throws Exception {
+  void test_skipExistingHeaders() throws Exception {
     File tmp = new File("target/test/test_skipExistingHeaders");
     tmp.mkdirs();
     FileUtils.copyFileToFolder(new File("src/test/resources/update/doc1.txt"), tmp);
@@ -91,8 +91,8 @@ public final class UpdateMojoTest {
     updater.skipExistingHeaders = true;
     updater.execute();
 
-    assertEquals(FileUtils.read(new File(tmp, "doc1.txt"), System.getProperty("file.encoding")), "====\r\n    My @Copyright license 2 with my-custom-value and 2008 and doc1.txt\r\n====\r\n\r\nsome data\r\n");
-    assertEquals(FileUtils.read(new File(tmp, "doc2.txt"), System.getProperty("file.encoding")), "====\r\n    Copyright license\r\n====\r\n\r\nsome data\r\n");
+    Assertions.assertEquals("====\r\n    My @Copyright license 2 with my-custom-value and 2008 and doc1.txt\r\n====\r\n\r\nsome data\r\n", FileUtils.read(new File(tmp, "doc1.txt"), System.getProperty("file.encoding")));
+    Assertions.assertEquals("====\r\n    Copyright license\r\n====\r\n\r\nsome data\r\n", FileUtils.read(new File(tmp, "doc2.txt"), System.getProperty("file.encoding")));
 
     // expect unchanged header to fail check against new header
     LicenseCheckMojo check = new LicenseCheckMojo();
@@ -104,10 +104,10 @@ public final class UpdateMojoTest {
 
     try {
       check.execute();
-      fail();
+      Assertions.fail();
     } catch (MojoExecutionException e) {
-      assertEquals("Some files do not have the expected license header", e.getMessage());
-      assertEquals(1, check.missingHeaders.size());
+      Assertions.assertEquals("Some files do not have the expected license header", e.getMessage());
+      Assertions.assertEquals(1, check.missingHeaders.size());
     }
 
     // check again ignoring unchanged headers, should not fail
@@ -116,7 +116,7 @@ public final class UpdateMojoTest {
   }
 
   @Test
-  public void test_issue50() throws Exception {
+  void test_issue50() throws Exception {
     File tmp = new File("target/test/update/issue50");
     tmp.mkdirs();
     FileUtils.copyFileToFolder(new File("src/test/resources/update/issue50/test1.properties"), tmp);
@@ -137,12 +137,12 @@ public final class UpdateMojoTest {
     String test2 = FileUtils.read(new File(tmp, "test2.properties"), System.getProperty("file.encoding"));
     String test3 = FileUtils.read(new File(tmp, "test3.properties"), System.getProperty("file.encoding"));
 
-    assertEquals(test1, test2.replace("test2.properties", "test1.properties"));
-    assertEquals(test1, test3.replace("test3.properties", "test1.properties"));
+    Assertions.assertEquals(test1, test2.replace("test2.properties", "test1.properties"));
+    Assertions.assertEquals(test1, test3.replace("test3.properties", "test1.properties"));
   }
 
   @Test
-  public void test_issue48() throws Exception {
+  void test_issue48() throws Exception {
     File tmp = new File("target/test/update/issue48");
     tmp.mkdirs();
     FileUtils.copyFileToFolder(new File("src/test/resources/update/issue48/test1.php"), tmp);
@@ -158,7 +158,7 @@ public final class UpdateMojoTest {
     updater.project = new MavenProjectStub();
     updater.execute();
 
-    assertEquals(FileUtils.read(new File(tmp, "test1.php"), System.getProperty("file.encoding")), "\r\n" +
+    Assertions.assertEquals(FileUtils.read(new File(tmp, "test1.php"), System.getProperty("file.encoding")), "\r\n" +
         "\r\n" +
         "<?php\r\n" +
         "/*\r\n" +
@@ -168,7 +168,7 @@ public final class UpdateMojoTest {
         "class Conference extends Service {}\r\n" +
         "\r\n" +
         "?>\r\n");
-    assertEquals(FileUtils.read(new File(tmp, "test2.php"), System.getProperty("file.encoding")), "\r\n" +
+    Assertions.assertEquals(FileUtils.read(new File(tmp, "test2.php"), System.getProperty("file.encoding")), "\r\n" +
         "\r\n" +
         "<?php\r\n" +
         "/*\r\n" +
@@ -181,7 +181,7 @@ public final class UpdateMojoTest {
   }
 
   @Test
-  public void test_issue44() throws Exception {
+  void test_issue44() throws Exception {
     File tmp = new File("target/test/update/issue44");
     tmp.mkdirs();
     FileUtils.copyFileToFolder(new File("src/test/resources/update/issue44/issue44-3.rb"), tmp);
@@ -194,14 +194,14 @@ public final class UpdateMojoTest {
     updater.project = new MavenProjectStub();
     updater.execute();
 
-    assertEquals(FileUtils.read(new File(tmp, "issue44-3.rb"), System.getProperty("file.encoding")), "#" + LS + "" +
+    Assertions.assertEquals(FileUtils.read(new File(tmp, "issue44-3.rb"), System.getProperty("file.encoding")), "#" + LS + "" +
         "# My @Copyright license 2 with my-custom-value and 2008 and issue44-3.rb" + LS + "" +
         "#" + LS + "" +
         "" + LS + "" +
         "# code comment" + LS + "" +
         "ruby code here" + LS + "");
 
-    assertEquals(FileUtils.read(new File(tmp, "test.asp"), System.getProperty("file.encoding")), "<%\n" +
+    Assertions.assertEquals(FileUtils.read(new File(tmp, "test.asp"), System.getProperty("file.encoding")), "<%\n" +
         "' My @Copyright license 2 with my-custom-value and 2008 and test.asp\n" +
         "%>" +
         "\n" +
@@ -209,7 +209,7 @@ public final class UpdateMojoTest {
   }
 
   @Test
-  public void test_issue_14() throws Exception {
+  void test_issue_14() throws Exception {
     File tmp = new File("target/test/update/issue14");
     tmp.mkdirs();
     FileUtils.copyFileToFolder(new File("src/test/resources/update/issue14/test.properties"), tmp);
@@ -243,11 +243,11 @@ public final class UpdateMojoTest {
         "seq.namespaces=SELECT nextval('seq_namespaces')" + LS + "";
     final String readModifiedContent = FileUtils.read(new File(tmp, "test.properties"), System.getProperty("file.encoding"));
 
-    assertEquals(expectedString, readModifiedContent);
+    Assertions.assertEquals(expectedString, readModifiedContent);
   }
 
   @Test
-  public void test_issue71_canSkipSeveralLines() throws Exception {
+  void test_issue71_canSkipSeveralLines() throws Exception {
     File tmp = new File("target/test/update/issue71");
     tmp.mkdirs();
     FileUtils.copyFileToFolder(new File("src/test/resources/issues/issue-71/issue-71.txt.extended"), tmp);
@@ -270,7 +270,7 @@ public final class UpdateMojoTest {
   }
 
   @Test
-  public void test_issue37_RunningUpdaterTwiceMustNotChangeTheFile() throws Exception {
+  void test_issue37_RunningUpdaterTwiceMustNotChangeTheFile() throws Exception {
     File tmp = new File("target/test/update/issue37");
     tmp.mkdirs();
     FileUtils.copyFileToFolder(new File("src/test/resources/update/issue37/xwiki.xml"), tmp);
@@ -295,7 +295,7 @@ public final class UpdateMojoTest {
   }
 
   @Test
-  public void test_UpdateWorksHasExpectedOnAOneLineCommentFile_relatesTo_issue30() throws Exception {
+  void test_UpdateWorksHasExpectedOnAOneLineCommentFile_relatesTo_issue30() throws Exception {
     File tmp = new File("target/test/update/issue30");
     tmp.mkdirs();
     FileUtils.copyFileToFolder(new File("src/test/resources/update/issue30/one-line-comment.ftl"), tmp);
@@ -318,7 +318,7 @@ public final class UpdateMojoTest {
   /**
    * Checks that xml with --> on the same line does not become corrupted when license is already correct
    */
-  public void test_issue213() throws Exception {
+  void test_issue213() throws Exception {
     File tmp = new File("target/test/update/issue213");
     tmp.mkdirs();
     FileUtils.copyFileToFolder(new File("src/test/resources/update/issue213/test.xml"), tmp);
@@ -335,7 +335,7 @@ public final class UpdateMojoTest {
     updater.execute();
 
     // XML comment gets reformatted but document should still be valid:
-    assertEquals(
+    Assertions.assertEquals(
         "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
             "<!--\n" +
             "\n" +
@@ -351,7 +351,7 @@ public final class UpdateMojoTest {
   }
 
   @Test
-  public void test_issue71_underscore_in_package_name() throws Exception {
+  void test_issue71_underscore_in_package_name() throws Exception {
     File tmp = new File("target/test/update/issue-187");
     tmp.mkdirs();
     FileUtils.copyFileToFolder(new File("src/test/resources/update/issue-187/Main.java"), tmp);

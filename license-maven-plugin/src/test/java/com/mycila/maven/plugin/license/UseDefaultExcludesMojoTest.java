@@ -16,18 +16,18 @@
 package com.mycila.maven.plugin.license;
 
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
-public final class UseDefaultExcludesMojoTest {
+class UseDefaultExcludesMojoTest {
+
   @Test
-  public void test_include_and_fail() throws Exception {
+  void test_include_and_fail() throws Exception {
     try {
       LicenseCheckMojo check = new LicenseCheckMojo();
       check.defaultBasedir = new File("src/test/resources/check");
@@ -38,12 +38,12 @@ public final class UseDefaultExcludesMojoTest {
       check.strictCheck = true;
       check.execute();
     } catch (Exception e) {
-      assertEquals("Some files do not have the expected license header", e.getMessage());
+      Assertions.assertEquals("Some files do not have the expected license header", e.getMessage());
     }
   }
 
   @Test
-  public void check_defaultExcludes_exclude_Netbeans_Configuration() throws Exception {
+  void check_defaultExcludes_exclude_Netbeans_Configuration() throws Exception {
     LicenseCheckMojo check = new LicenseCheckMojo();
     check.defaultBasedir = new File("src/test/resources/excludes/issue-68");
     check.legacyConfigHeader = "header.txt";
@@ -54,7 +54,7 @@ public final class UseDefaultExcludesMojoTest {
   }
 
   @Test
-  public void check_withoutDefaultExcludes_Netbeans_Configuration_Is_Reported() {
+  void check_withoutDefaultExcludes_Netbeans_Configuration_Is_Reported() {
     try {
       LicenseCheckMojo check = new LicenseCheckMojo();
       check.defaultBasedir = new File("src/test/resources/excludes/issue-68");
@@ -64,7 +64,7 @@ public final class UseDefaultExcludesMojoTest {
       check.strictCheck = true;
       check.execute();
     } catch (Exception e) {
-      assertEquals("Some files do not have the expected license header", e.getMessage());
+      Assertions.assertEquals("Some files do not have the expected license header", e.getMessage());
     }
   }
 }

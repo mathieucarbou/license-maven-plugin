@@ -15,29 +15,28 @@
  */
 package com.mycila.maven.plugin.license.dependencies;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-
-public final class LicensePolicyTest {
+class LicensePolicyTest {
 
   @Test
-  public void test_toString() {
+  void test_toString() {
     final String description = "The printable toString of a LicensePolicy should be useful/legible.";
 
     final LicensePolicy policy = new LicensePolicy(LicensePolicy.Rule.APPROVE, LicensePolicy.Type.LICENSE_NAME, "example");
     final String expected = "LICENSE_NAME:APPROVE:example";
 
-    assertEquals(description, expected, policy.toString());
+    Assertions.assertEquals(expected, policy.toString(), description);
   }
 
   @Test
-  public void test_equals() {
+  void test_equals() {
     final String description = "Two policies with identical fields should be equal.";
 
     final LicensePolicy policyOne = new LicensePolicy(LicensePolicy.Rule.APPROVE, LicensePolicy.Type.LICENSE_NAME, "example");
     final LicensePolicy policyTwo = new LicensePolicy(LicensePolicy.Rule.APPROVE, LicensePolicy.Type.LICENSE_NAME, "example");
 
-    assertEquals(description, policyOne, policyTwo);
+    Assertions.assertEquals(policyOne, policyTwo, description);
   }
 }

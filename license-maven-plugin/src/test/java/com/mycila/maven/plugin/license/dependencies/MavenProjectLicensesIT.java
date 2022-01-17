@@ -18,10 +18,10 @@ package com.mycila.maven.plugin.license.dependencies;
 import com.google.common.io.Files;
 import org.apache.maven.it.VerificationException;
 import org.apache.maven.it.Verifier;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,7 +29,6 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
 
 /**
  * We use {@link Verifier} here for mvn executions, mainly so:
@@ -42,24 +41,24 @@ import static org.junit.Assert.assertEquals;
  * @author Royce Remer
  *
  */
-public final class MavenProjectLicensesIT {
+class MavenProjectLicensesIT {
 
   File source;
   String target;
   String phase;
   Map<String, String> env;
 
-  @Rule
-  public TemporaryFolder workspace = new TemporaryFolder();
+  @TempDir
+  File workspace;
   final String sourcePrefix = "src/test/resources/config/";
   final String resource = "/pom.xml";
 
-  @Before
+  @BeforeEach
   public void setUp() {
     // your maven may be on a different path, they'll append '/bin/mvn' to it
     System.setProperty("maven.home", "/usr/local");
 
-    this.target = workspace.getRoot().getAbsolutePath();
+    this.target = workspace.getAbsolutePath();
     this.env = Collections.singletonMap("LICENSE_PLUGIN_VERSION", this.getClass().getPackage().getImplementationVersion());
     this.phase = "verify";
   }
@@ -99,26 +98,26 @@ public final class MavenProjectLicensesIT {
   }
 
   @Test
-  public void test_null() throws IOException {
+  void test_null() throws IOException {
     final String description = "A project with enforcement enabled but nothing in scope should find zero dependencies";
     syncTarget("null");
 
-    assertEquals(description, true, hasLogLine(MavenProjectLicenses.INFO_DEPS_DISCOVERED + ": 1"));
+    Assertions.assertTrue(hasLogLine(LicenseMessage.INFO_DEPS_DISCOVERED + ": 1"), description);
   }
 
   @Test
-  public void test_deny() throws IOException {
+  void test_deny() throws IOException {
     final String description = "A project with enforcement enabled and dependencies in scope under default deny policy should fail.";
     syncTarget("deny");
 
-    assertEquals(description, true, hasLogLine(MavenProjectLicenses.WARN_POLICY_DENIED));
+    Assertions.assertTrue(hasLogLine(LicenseMessage.WARN_POLICY_DENIED), description);
   }
 
   @Test
-  public void test_approved() throws IOException {
+  void test_approved() throws IOException {
     final String description = "A project with allow policy and a single dependency should succeed.";
     syncTarget("approve");
 
-    assertEquals(description, true, hasLogLine(MavenProjectLicenses.INFO_DEPS_DISCOVERED + ": 1"));
+    Assertions.assertTrue(hasLogLine(LicenseMessage.INFO_DEPS_DISCOVERED + ": 1"), description);
   }
 }

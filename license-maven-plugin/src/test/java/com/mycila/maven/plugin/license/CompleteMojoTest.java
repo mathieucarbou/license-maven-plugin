@@ -16,15 +16,12 @@
 package com.mycila.maven.plugin.license;
 
 import com.mycila.maven.plugin.license.header.HeaderType;
-import com.mycila.maven.plugin.license.util.DebugLog;
 import com.mycila.maven.plugin.license.util.FileUtils;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
-
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import java.io.File;
 import java.util.Collections;
 import java.util.EnumSet;
@@ -71,17 +68,13 @@ import static java.util.stream.Collectors.toList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
-@RunWith(Parameterized.class)
-public final class CompleteMojoTest {
+class CompleteMojoTest {
 
-  @Parameters(name = "{index}: {0}")
-  public static Iterable<Object[]> parameters() {
+  private static Iterable<Object[]> parameters() {
     final List<Object[]> parameters = asList(new Object[][]{
         {ASCIIDOC_STYLE, "adoc"},
         {MVEL_STYLE, "mv"},
@@ -124,7 +117,7 @@ public final class CompleteMojoTest {
         .collect(toList())));
     set.remove(UNKNOWN);
     if (!set.isEmpty()) {
-      fail("Missing test cases: " + set);
+      Assertions.fail("Missing test cases: " + set);
     }
 
     return parameters;
@@ -138,8 +131,9 @@ public final class CompleteMojoTest {
     this.headerType = headerType;
   }
 
-  @Test
-  public void test_add() throws Exception {
+  @ParameterizedTest
+  @MethodSource("parameters")
+  void test_add(String name, HeaderType headerType) throws Exception {
     File tmp = new File("target/test/complete/" + headerType + "/test_add");
     FileUtils.copyFilesToFolder(new File("src/test/resources/complete/" + headerType), tmp);
 
@@ -157,8 +151,9 @@ public final class CompleteMojoTest {
     assertThat(processed, is(equalTo(expected)));
   }
 
-  @Test
-  public void test_update() throws Exception {
+  @ParameterizedTest
+  @MethodSource("parameters")
+  void test_update(String name) throws Exception {
     File tmp = new File("target/test/complete/" + headerType + "/test_update");
     FileUtils.copyFilesToFolder(new File("src/test/resources/complete/" + headerType), tmp);
 
@@ -185,8 +180,9 @@ public final class CompleteMojoTest {
     assertThat(processed, is(equalTo(expected)));
   }
 
-  @Test
-  public void test_remove() throws Exception {
+  @ParameterizedTest
+  @MethodSource("parameters")
+  void test_remove(String name) throws Exception {
     File tmp = new File("target/test/complete/" + headerType + "/test_remove");
     FileUtils.copyFilesToFolder(new File("src/test/resources/complete/" + headerType), tmp);
 
@@ -214,8 +210,9 @@ public final class CompleteMojoTest {
     assertThat(processed, is(equalTo(expected)));
   }
 
-  @Test
-  public void test_check_failed() throws Exception {
+  @ParameterizedTest
+  @MethodSource("parameters")
+  void test_check_failed(String name) throws Exception {
     File tmp = new File("target/test/complete/" + headerType + "/test_check_failed");
     FileUtils.copyFilesToFolder(new File("src/test/resources/complete/" + headerType), tmp);
 
@@ -229,14 +226,15 @@ public final class CompleteMojoTest {
 
     try {
       plugin.execute();
-      fail();
+      Assertions.fail();
     } catch (MojoExecutionException e) {
-      assertEquals("Some files do not have the expected license header", e.getMessage());
+      Assertions.assertEquals("Some files do not have the expected license header", e.getMessage());
     }
   }
 
-  @Test
-  public void test_check_success() throws Exception {
+  @ParameterizedTest
+  @MethodSource("parameters")
+  void test_check_success(String name) throws Exception {
     File tmp = new File("target/test/complete/" + headerType + "/test_check_success");
     FileUtils.copyFilesToFolder(new File("src/test/resources/complete/" + headerType), tmp);
 

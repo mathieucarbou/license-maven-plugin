@@ -2,66 +2,71 @@ package com.mycila.maven.plugin.license.header;
 
 import com.mycila.maven.plugin.license.Multi;
 import com.mycila.maven.plugin.license.util.resource.ResourceFinder;
-import org.junit.Assert;
-import org.junit.Test;
 
 import java.nio.file.Paths;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import static com.mycila.maven.plugin.license.Multi.DEFAULT_SEPARATOR;
 
-public class HeaderSourceTest {
+class HeaderSourceTest {
 
   private ResourceFinder finder = new ResourceFinder(Paths.get("src", "test", "resources"));
 
   @Test
-  public void testOfInline() {
+  void testOfInline() {
     HeaderSource actual = HeaderSource.of(null, "inline header", "single-line-header.txt", "utf-8", finder);
-    Assert.assertEquals("inline header", actual.getContent());
-    Assert.assertEquals(true, actual.isInline());
+    Assertions.assertEquals("inline header", actual.getContent());
+    Assertions.assertEquals(true, actual.isInline());
   }
 
   @Test
-  public void testOfInlineOnly() {
+  void testOfInlineOnly() {
     HeaderSource actual = HeaderSource.of(null, "inline header", null, null, null);
-    Assert.assertEquals("inline header", actual.getContent());
-    Assert.assertEquals(true, actual.isInline());
+    Assertions.assertEquals("inline header", actual.getContent());
+    Assertions.assertEquals(true, actual.isInline());
   }
 
   @Test
-  public void testOfUrl() {
+  void testOfUrl() {
     HeaderSource actual = HeaderSource.of(null, "", "single-line-header.txt", "utf-8", finder);
-    Assert.assertEquals("just a one line header file for copyright", actual.getContent());
-    Assert.assertEquals(false, actual.isInline());
+    Assertions.assertEquals("just a one line header file for copyright", actual.getContent());
+    Assertions.assertEquals(false, actual.isInline());
   }
 
   @Test
-  public void testOfUrlOnly() {
+  void testOfUrlOnly() {
     HeaderSource actual = HeaderSource.of(null, null, "single-line-header.txt", "utf-8", finder);
-    Assert.assertEquals("just a one line header file for copyright", actual.getContent());
-    Assert.assertEquals(false, actual.isInline());
-  }
-
-  @Test(expected = IllegalArgumentException.class)
-  public void testOfNulls() {
-    HeaderSource.of(null, null, null, "utf-8", finder);
-  }
-
-  @Test(expected = IllegalArgumentException.class)
-  public void testOfEmptyAndNull() {
-    HeaderSource.of(null, "", null, "utf-8", finder);
+    Assertions.assertEquals("just a one line header file for copyright", actual.getContent());
+    Assertions.assertEquals(false, actual.isInline());
   }
 
   @Test
-  public void testOfMultiInlineSingle() {
+  void testOfNulls() {
+    Assertions.assertThrows(IllegalArgumentException.class, () -> {
+      HeaderSource.of(null, null, null, "utf-8", finder);
+    });
+  }
+
+  @Test
+  void testOfEmptyAndNull() {
+    Assertions.assertThrows(IllegalArgumentException.class, () -> {
+      HeaderSource.of(null, "", null, "utf-8", finder);
+    });
+  }
+
+  @Test
+  void testOfMultiInlineSingle() {
     final Multi multi = new Multi();
     multi.setInlineHeaders(new String[]{"multi inline header 1"});
     final HeaderSource actual = HeaderSource.of(multi, "inline header", "single-line-header.txt", "utf-8", finder);
-    Assert.assertEquals("multi inline header 1", actual.getContent());
-    Assert.assertEquals(true, actual.isInline());
+    Assertions.assertEquals("multi inline header 1", actual.getContent());
+    Assertions.assertEquals(true, actual.isInline());
   }
 
   @Test
-  public void testOfMultiInlineDouble() {
+  void testOfMultiInlineDouble() {
     final Multi multi = new Multi();
     multi.setInlineHeaders(new String[]{"multi inline header 1", "multi inline header 2"});
     final HeaderSource actual = HeaderSource.of(multi, "inline header", "single-line-header.txt", "utf-8", finder);
@@ -69,12 +74,12 @@ public class HeaderSourceTest {
     final String expected = "multi inline header 1" + "\n\n"
         + DEFAULT_SEPARATOR + "\n\n" + "multi inline header 2";
 
-    Assert.assertEquals(expected, actual.getContent());
-    Assert.assertEquals(true, actual.isInline());
+    Assertions.assertEquals(expected, actual.getContent());
+    Assertions.assertEquals(true, actual.isInline());
   }
 
   @Test
-  public void testOfMultiInlineDoubleCustomSeparator() {
+  void testOfMultiInlineDoubleCustomSeparator() {
     final Multi multi = new Multi();
     multi.setInlineHeaders(new String[]{"multi inline header 1", "multi inline header 2"});
     multi.setSeparators(new String[]{"###"});
@@ -83,12 +88,12 @@ public class HeaderSourceTest {
     final String expected = "multi inline header 1" + "\n\n"
         + "###" + "\n\n" + "multi inline header 2";
 
-    Assert.assertEquals(expected, actual.getContent());
-    Assert.assertEquals(true, actual.isInline());
+    Assertions.assertEquals(expected, actual.getContent());
+    Assertions.assertEquals(true, actual.isInline());
   }
 
   @Test
-  public void testOfMultiInlineTriple() {
+  void testOfMultiInlineTriple() {
     final Multi multi = new Multi();
     multi.setInlineHeaders(new String[]{"multi inline header 1", "multi inline header 2", "multi inline header 3"});
     final HeaderSource actual = HeaderSource.of(multi, "inline header", "single-line-header.txt", "utf-8", finder);
@@ -97,12 +102,12 @@ public class HeaderSourceTest {
         + DEFAULT_SEPARATOR + "\n\n" + "multi inline header 2" + "\n\n"
         + DEFAULT_SEPARATOR + "\n\n" + "multi inline header 3";
 
-    Assert.assertEquals(expected, actual.getContent());
-    Assert.assertEquals(true, actual.isInline());
+    Assertions.assertEquals(expected, actual.getContent());
+    Assertions.assertEquals(true, actual.isInline());
   }
 
   @Test
-  public void testOfMultiInlineTripleCustomSeparator() {
+  void testOfMultiInlineTripleCustomSeparator() {
     final Multi multi = new Multi();
     multi.setInlineHeaders(new String[]{"multi inline header 1", "multi inline header 2", "multi inline header 3"});
     multi.setSeparators(new String[]{"###"});
@@ -112,12 +117,12 @@ public class HeaderSourceTest {
         + "###" + "\n\n" + "multi inline header 2" + "\n\n"
         + "###" + "\n\n" + "multi inline header 3";
 
-    Assert.assertEquals(expected, actual.getContent());
-    Assert.assertEquals(true, actual.isInline());
+    Assertions.assertEquals(expected, actual.getContent());
+    Assertions.assertEquals(true, actual.isInline());
   }
 
   @Test
-  public void testOfMultiInlineTripleCustomSeparators() {
+  void testOfMultiInlineTripleCustomSeparators() {
     final Multi multi = new Multi();
     multi.setInlineHeaders(new String[]{"multi inline header 1", "multi inline header 2", "multi inline header 3"});
     multi.setSeparators(new String[]{"###", "*****"});
@@ -127,21 +132,21 @@ public class HeaderSourceTest {
         + "###" + "\n\n" + "multi inline header 2" + "\n\n"
         + "*****" + "\n\n" + "multi inline header 3";
 
-    Assert.assertEquals(expected, actual.getContent());
-    Assert.assertEquals(true, actual.isInline());
+    Assertions.assertEquals(expected, actual.getContent());
+    Assertions.assertEquals(true, actual.isInline());
   }
 
   @Test
-  public void testOfMultiUrlSingle() {
+  void testOfMultiUrlSingle() {
     final Multi multi = new Multi();
     multi.setHeaders(new String[]{"single-line-header.txt"});
     final HeaderSource actual = HeaderSource.of(multi, null, null, "utf-8", finder);
-    Assert.assertEquals("just a one line header file for copyright", actual.getContent());
-    Assert.assertEquals(false, actual.isInline());
+    Assertions.assertEquals("just a one line header file for copyright", actual.getContent());
+    Assertions.assertEquals(false, actual.isInline());
   }
 
   @Test
-  public void testOfMultiUrlDouble() {
+  void testOfMultiUrlDouble() {
     final Multi multi = new Multi();
     multi.setHeaders(new String[]{"single-line-header.txt", "alternative-single-line-header.txt"});
     final HeaderSource actual = HeaderSource.of(multi, null, null, "utf-8", finder);
@@ -149,12 +154,12 @@ public class HeaderSourceTest {
     final String expected = "just a one line header file for copyright" + "\n\n"
         + DEFAULT_SEPARATOR + "\n\n" + "alternative one line header file for copyright";
 
-    Assert.assertEquals(expected, actual.getContent());
-    Assert.assertEquals(false, actual.isInline());
+    Assertions.assertEquals(expected, actual.getContent());
+    Assertions.assertEquals(false, actual.isInline());
   }
 
   @Test
-  public void testOfMultiUrlDoubleCustomSeparator() {
+  void testOfMultiUrlDoubleCustomSeparator() {
     final Multi multi = new Multi();
     multi.setHeaders(new String[]{"single-line-header.txt", "alternative-single-line-header.txt"});
     multi.setSeparators(new String[]{"###"});
@@ -163,12 +168,12 @@ public class HeaderSourceTest {
     final String expected = "just a one line header file for copyright" + "\n\n"
         + "###" + "\n\n" + "alternative one line header file for copyright";
 
-    Assert.assertEquals(expected, actual.getContent());
-    Assert.assertEquals(false, actual.isInline());
+    Assertions.assertEquals(expected, actual.getContent());
+    Assertions.assertEquals(false, actual.isInline());
   }
 
   @Test
-  public void testOfMultiUrlTriple() {
+  void testOfMultiUrlTriple() {
     final Multi multi = new Multi();
     multi.setHeaders(new String[]{"single-line-header.txt", "alternative-single-line-header.txt", "single-line-header.txt"});
     final HeaderSource actual = HeaderSource.of(multi, null, null, "utf-8", finder);
@@ -177,12 +182,12 @@ public class HeaderSourceTest {
         + DEFAULT_SEPARATOR + "\n\n" + "alternative one line header file for copyright" + "\n\n"
         + DEFAULT_SEPARATOR + "\n\n" + "just a one line header file for copyright";
 
-    Assert.assertEquals(expected, actual.getContent());
-    Assert.assertEquals(false, actual.isInline());
+    Assertions.assertEquals(expected, actual.getContent());
+    Assertions.assertEquals(false, actual.isInline());
   }
 
   @Test
-  public void testOfMultiUrlTripleCustomSeparator() {
+  void testOfMultiUrlTripleCustomSeparator() {
     final Multi multi = new Multi();
     multi.setHeaders(new String[]{"single-line-header.txt", "alternative-single-line-header.txt", "single-line-header.txt"});
     multi.setSeparators(new String[]{"###"});
@@ -192,12 +197,12 @@ public class HeaderSourceTest {
         + "###" + "\n\n" + "alternative one line header file for copyright" + "\n\n"
         + "###" + "\n\n" + "just a one line header file for copyright";
 
-    Assert.assertEquals(expected, actual.getContent());
-    Assert.assertEquals(false, actual.isInline());
+    Assertions.assertEquals(expected, actual.getContent());
+    Assertions.assertEquals(false, actual.isInline());
   }
 
   @Test
-  public void testOfMultiUrlTripleCustomSeparators() {
+  void testOfMultiUrlTripleCustomSeparators() {
     final Multi multi = new Multi();
     multi.setHeaders(new String[]{"single-line-header.txt", "alternative-single-line-header.txt", "single-line-header.txt"});
     multi.setSeparators(new String[]{"###", "*****"});
@@ -207,19 +212,23 @@ public class HeaderSourceTest {
         + "###" + "\n\n" + "alternative one line header file for copyright" + "\n\n"
         + "*****" + "\n\n" + "just a one line header file for copyright";
 
-    Assert.assertEquals(expected, actual.getContent());
-    Assert.assertEquals(false, actual.isInline());
+    Assertions.assertEquals(expected, actual.getContent());
+    Assertions.assertEquals(false, actual.isInline());
   }
 
-  @Test(expected = IllegalArgumentException.class)
-  public void testOfMultiNulls() {
-    HeaderSource.of(new Multi(), null, null, "utf-8", finder);
+  @Test
+  void testOfMultiNulls() {
+    Assertions.assertThrows(IllegalArgumentException.class, () -> {
+      HeaderSource.of(new Multi(), null, null, "utf-8", finder);
+    });
   }
 
-  @Test(expected = IllegalArgumentException.class)
-  public void testOfMultiEmptyAndNull() {
+  @Test
+  void testOfMultiEmptyAndNull() {
     final Multi multi = new Multi();
     multi.setInlineHeaders(new String[0]);
-    HeaderSource.of(multi, "", null, "utf-8", finder);
+    Assertions.assertThrows(IllegalArgumentException.class, () -> {
+      HeaderSource.of(multi, "", null, "utf-8", finder);
+    });
   }
 }
