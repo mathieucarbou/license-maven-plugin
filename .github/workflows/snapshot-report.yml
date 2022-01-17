@@ -9,6 +9,7 @@ on:
       - 'docs/**'
 jobs:
   generate-site:
+    if: github.repository_owner == 'mathieucarbou'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
