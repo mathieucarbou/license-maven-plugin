@@ -55,16 +55,13 @@ public class CopyrightAuthorProvider extends GitPropertiesProvider implements Pr
 
     try {
       Map<String, String> result = new HashMap<String, String>(3);
-      GitLookup gitLookup = getGitLookup(document.getFile(), properties);
-      
-      if (mojo.failIfShallow && gitLookup.isShallowRepository()) {
-        throw new RuntimeException("Shallow repository detected.");
-      }
+      GitLookup gitLookup = getGitLookup(mojo, document.getFile(), properties);
+
       result.put(COPYRIGHT_CREATION_AUTHOR_NAME_KEY, gitLookup.getAuthorNameOfCreation(document.getFile()));
       result.put(COPYRIGHT_CREATION_AUTHOR_EMAIL_KEY, gitLookup.getAuthorEmailOfCreation(document.getFile()));
       return Collections.unmodifiableMap(result);
     } catch (Exception e) {
-      throw new RuntimeException("Could not compute the author of first git commit for file "
+      throw new RuntimeException("Could not compute the year of the last git commit for file "
           + document.getFile().getAbsolutePath(), e);
     }
   }
