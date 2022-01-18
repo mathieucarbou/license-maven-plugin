@@ -180,6 +180,17 @@ public final class Header {
     return isMatchForText(expected, fileHeader, headerDefinition, unix);
   }
 
+  public boolean isMatchForTextKeepingFirstYear(Document d, HeaderDefinition headerDefinition, boolean unix, String encoding) throws IOException {
+    String fileHeader = readFirstLines(d.getFile(), getLineCount() + 10, encoding).replaceAll(" *\r?\n", "\n");
+    String existingCopyrightFirstYear = Document.getCopyrightFirstYear(fileHeader);
+    if (existingCopyrightFirstYear == null) {
+      return isMatchForText(d, headerDefinition, unix, encoding);
+    }
+    String expected = buildForDefinition(headerDefinition, unix);
+    expected = Document.replaceCopyrightFirstYear(d.mergeProperties(expected), existingCopyrightFirstYear);
+    return isMatchForText(expected, fileHeader, headerDefinition, unix);
+  }
+
   public String applyDefinitionAndSections(HeaderDefinition headerDefinition, boolean unix) {
 
     String expected = buildForDefinition(headerDefinition, unix);

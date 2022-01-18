@@ -356,6 +356,13 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
   public boolean skipExistingHeaders = false;
 
   /**
+   * Skip the formatting of files which already contain a detected header in which
+   * the only difference is the first year of the copyright.
+   */
+  @Parameter(property = "license.skipExistingCopyrightFirstYear", defaultValue = "false")
+  public boolean skipExistingCopyrightFirstYear;
+
+  /**
    * When enforcing licenses on dependencies, exclude all but these scopes.
    */
   @Parameter(property = "license.dependencies.scope", required = true, defaultValue = "runtime")
@@ -632,12 +639,12 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
             callback.onUnknownFile(document, h);
           } else if (document.is(h)) {
             debug("Skipping header file: %s", document.getFilePath());
-          } else if (document.hasHeader(h, strictCheck)) {
+          } else if (document.hasHeader(h, strictCheck, skipExistingCopyrightFirstYear)) {
             callback.onExistingHeader(document, h);
           } else {
             boolean headerFound = false;
             for (final Header validHeader : validHeaders) {
-              headerFound = document.hasHeader(validHeader, strictCheck);
+              headerFound = document.hasHeader(validHeader, strictCheck, skipExistingCopyrightFirstYear);
               if (headerFound) {
                 callback.onExistingHeader(document, h);
                 break;

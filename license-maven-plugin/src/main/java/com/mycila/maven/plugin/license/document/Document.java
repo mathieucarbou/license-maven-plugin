@@ -24,6 +24,8 @@ import com.mycila.maven.plugin.license.util.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.mycila.maven.plugin.license.util.FileUtils.readFirstLines;
 import static com.mycila.maven.plugin.license.util.FileUtils.remove;
@@ -32,6 +34,8 @@ import static com.mycila.maven.plugin.license.util.FileUtils.remove;
  * <b>Date:</b> 16-Feb-2008<br> <b>Author:</b> Mathieu Carbou (mathieu.carbou@gmail.com)
  */
 public final class Document {
+  private static final Pattern YEAR = Pattern.compile("\\\\d{4}");
+  
   private final File file;
   private final HeaderDefinition headerDefinition;
   private final String encoding;
@@ -70,21 +74,56 @@ public final class Document {
   }
 
   public boolean hasHeader(Header header, boolean strictCheck) {
+    return hasHeader(header, strictCheck, false);
+  }
+  
+  public boolean hasHeader(Header header, boolean strictCheck, boolean skipExistingCopyrightFirstYear) {
     if (!strictCheck) {
       try {
         String fileHeader = readFirstLines(file, header.getLineCount() + 10, encoding);
         String fileHeaderOneLine = remove(fileHeader, headerDefinition.getFirstLine().trim(), headerDefinition.getEndLine().trim(), headerDefinition.getBeforeEachLine().trim(), "\n", "\r", "\t", " ");
         String headerOnOnelIne = mergeProperties(header.asOneLineString());
+        if (skipExistingCopyrightFirstYear) {
+          String existingCopyrightFirstYear = getCopyrightFirstYear(fileHeaderOneLine);
+          if (existingCopyrightFirstYear != null) {
+            headerOnOnelIne = replaceCopyrightFirstYear(headerOnOnelIne, existingCopyrightFirstYear);
+          }
+        }
         return fileHeaderOneLine.contains(remove(headerOnOnelIne, headerDefinition.getFirstLine().trim(), headerDefinition.getEndLine().trim(), headerDefinition.getBeforeEachLine().trim()));
       } catch (IOException e) {
         throw new IllegalStateException("Cannot read file " + getFilePath() + ". Cause: " + e.getMessage(), e);
       }
     }
     try {
+      if (skipExistingCopyrightFirstYear) {
+        return header.isMatchForTextKeepingFirstYear(this, headerDefinition, true, encoding);        
+      }
       return header.isMatchForText(this, headerDefinition, true, encoding);
     } catch (IOException e) {
       throw new IllegalStateException("Cannot read file " + getFilePath() + ". Cause: " + e.getMessage(), e);
     }
+  }
+
+  public static String getCopyrightFirstYear(String header) {
+    int index = header.toLowerCase().indexOf("copyright");
+    if (index >= 0) {
+      Matcher m = YEAR.matcher(header);
+      if (m.find(index) && m.start() < index + 20) {        
+        return m.group();
+      }
+    }
+    return null;
+  }
+
+  public static String replaceCopyrightFirstYear(String header, String existingYear) {
+    int index = header.toLowerCase().indexOf("copyright");
+    if (index >= 0) {
+      Matcher m = YEAR.matcher(header);
+      if (m.find(index) && m.start() < index + 20) {      
+        return header.substring(0, m.start()) + existingYear + header.substring(m.end());
+      }
+    }
+    return header;
   }
 
   public void updateHeader(Header header) {
