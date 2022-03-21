@@ -18,21 +18,20 @@ package com.mycila.maven.plugin.license.document;
 import com.mycila.maven.plugin.license.header.Header;
 import com.mycila.maven.plugin.license.header.HeaderSource.UrlHeaderSource;
 import com.mycila.maven.plugin.license.util.FileUtils;
-import org.junit.BeforeClass;
-import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
-public final class DocumentTest {
+class DocumentTest {
 
   static Header header;
   static DocumentPropertiesLoader loader = new DocumentPropertiesLoader() {
@@ -44,63 +43,62 @@ public final class DocumentTest {
     }
   };
 
-  @BeforeClass
-  public static void setup() throws IOException {
-
+  @BeforeAll
+  static void setup() throws IOException {
     header = new Header(new UrlHeaderSource(new File("src/test/resources/test-header1.txt").toURI().toURL(), "UTF-8"), null);
   }
 
   @Test
-  public void test_create() throws Exception {
+  void test_create() throws Exception {
     Document doc = new Document(
         new File("src/test/resources/doc/doc1.txt"),
         DocumentType.TXT.getDefaultHeaderType().getDefinition(),
         System.getProperty("file.encoding"), new String[]{"copyright"},
         loader);
-    assertEquals(doc.getFile().getName(), "doc1.txt");
-    assertFalse(doc.isNotSupported());
+    Assertions.assertEquals("doc1.txt", doc.getFile().getName());
+    Assertions.assertFalse(doc.isNotSupported());
   }
 
   @Test
-  public void test_unsupported() throws Exception {
+  void test_unsupported() throws Exception {
     Document doc = new Document(
         new File("src/test/resources/doc/doc1.txt"),
         DocumentType.UNKNOWN.getDefaultHeaderType().getDefinition(),
         System.getProperty("file.encoding"), new String[]{"copyright"},
         loader);
-    assertEquals(doc.getFile().getName(), "doc1.txt");
-    assertTrue(doc.isNotSupported());
+    Assertions.assertEquals("doc1.txt", doc.getFile().getName());
+    Assertions.assertTrue(doc.isNotSupported());
   }
 
   @Test
-  public void test_hasHeader() throws Exception {
+  void test_hasHeader() throws Exception {
     Document doc = new Document(
         new File("src/test/resources/doc/doc1.txt"),
         DocumentType.TXT.getDefaultHeaderType().getDefinition(),
         System.getProperty("file.encoding"), new String[]{"copyright"},
         loader);
-    assertFalse(doc.hasHeader(header, true));
+    Assertions.assertFalse(doc.hasHeader(header, true));
   }
 
   @Test
-  public void test_isHeader() throws Exception {
+  void test_isHeader() throws Exception {
     Document doc = new Document(
         new File("src/test/resources/doc/doc1.txt"),
         DocumentType.TXT.getDefaultHeaderType().getDefinition(),
         System.getProperty("file.encoding"), new String[]{"copyright"},
         loader);
-    assertFalse(doc.is(header));
+    Assertions.assertFalse(doc.is(header));
 
     doc = new Document(
         new File("src/test/resources/test-header1.txt"),
         DocumentType.TXT.getDefaultHeaderType().getDefinition(),
         System.getProperty("file.encoding"), new String[]{"copyright"},
         loader);
-    assertTrue(doc.is(header));
+    Assertions.assertTrue(doc.is(header));
   }
 
   @Test
-  public void test_remove_header1() throws Exception {
+  void test_remove_header1() throws Exception {
     Document doc = new Document(
         new File("src/test/resources/doc/doc1.txt"),
         DocumentType.TXT.getDefaultHeaderType().getDefinition(),
@@ -108,12 +106,12 @@ public final class DocumentTest {
         loader);
     doc.parseHeader();
     doc.removeHeader();
-    assertEquals(doc.getContent(),
+    Assertions.assertEquals(doc.getContent(),
         FileUtils.read(new File("src/test/resources/doc/doc1.txt"), System.getProperty("file.encoding")));
   }
 
   @Test
-  public void test_remove_header2() throws Exception {
+  void test_remove_header2() throws Exception {
     Document doc = new Document(
         new File("src/test/resources/doc/doc2.txt"),
         DocumentType.TXT.getDefaultHeaderType().getDefinition(),
@@ -121,11 +119,11 @@ public final class DocumentTest {
         loader);
     doc.parseHeader();
     doc.removeHeader();
-    assertEquals(doc.getContent(), "some data\r\n");
+    Assertions.assertEquals("some data\r\n", doc.getContent());
   }
 
   @Test
-  public void test_remove_header3() throws Exception {
+  void test_remove_header3() throws Exception {
     Document doc = new Document(
         new File("src/test/resources/doc/doc3.txt"),
         DocumentType.TXT.getDefaultHeaderType().getDefinition(),
@@ -133,11 +131,11 @@ public final class DocumentTest {
         loader);
     doc.parseHeader();
     doc.removeHeader();
-    assertEquals(doc.getContent(), "some data\r\nand other data\r\n");
+    Assertions.assertEquals("some data\r\nand other data\r\n", doc.getContent());
   }
 
   @Test
-  public void test_remove_header_xml_1() throws Exception {
+  void test_remove_header_xml_1() throws Exception {
     Document doc = new Document(
         new File("src/test/resources/doc/doc4.xml"),
         DocumentType.XML.getDefaultHeaderType().getDefinition(),
@@ -145,11 +143,11 @@ public final class DocumentTest {
         loader);
     doc.parseHeader();
     doc.removeHeader();
-    assertEquals(doc.getContent(), "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\r\n<web-app/>\r\n");
+    Assertions.assertEquals("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\r\n<web-app/>\r\n", doc.getContent());
   }
 
   @Test
-  public void test_remove_header_xml_2() throws Exception {
+  void test_remove_header_xml_2() throws Exception {
     Document doc = new Document(
         new File("src/test/resources/doc/doc5.xml"),
         DocumentType.XML.getDefaultHeaderType().getDefinition(),
@@ -157,11 +155,11 @@ public final class DocumentTest {
         loader);
     doc.parseHeader();
     doc.removeHeader();
-    assertEquals(doc.getContent(), "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\r\n\r\n<web-app/>\r\n");
+    Assertions.assertEquals("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\r\n\r\n<web-app/>\r\n", doc.getContent());
   }
 
   @Test
-  public void test_remove_header_xml_3() throws Exception {
+  void test_remove_header_xml_3() throws Exception {
     Document doc = new Document(
         new File("src/test/resources/doc/doc6.xml"),
         DocumentType.XML.getDefaultHeaderType().getDefinition(),
@@ -169,11 +167,11 @@ public final class DocumentTest {
         loader);
     doc.parseHeader();
     doc.removeHeader();
-    assertEquals(doc.getContent(), "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\r\n<web-app/>\r\n");
+    Assertions.assertEquals("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\r\n<web-app/>\r\n", doc.getContent());
   }
 
   @Test
-  public void test_remove_header_xml_4() throws Exception {
+  void test_remove_header_xml_4() throws Exception {
     Document doc = new Document(
         new File("src/test/resources/doc/doc8.xml"),
         DocumentType.XML.getDefaultHeaderType().getDefinition(),
@@ -181,11 +179,11 @@ public final class DocumentTest {
         loader);
     doc.parseHeader();
     doc.removeHeader();
-    assertTrue(doc.getContent().contains("no key word"));
+    Assertions.assertTrue(doc.getContent().contains("no key word"));
   }
 
   @Test
-  public void test_remove_header_xml_5() throws Exception {
+  void test_remove_header_xml_5() throws Exception {
     Document doc = new Document(
         new File("src/test/resources/doc/doc9.xml"),
         DocumentType.XML.getDefaultHeaderType().getDefinition(),
@@ -193,7 +191,7 @@ public final class DocumentTest {
         loader);
     doc.parseHeader();
     doc.removeHeader();
-    assertEquals(doc.getContent(), "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\r\n\r\n\r\n\r\n" +
+    Assertions.assertEquals(doc.getContent(), "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\r\n\r\n\r\n\r\n" +
         "<web-app>\r\n" +
         "\r\n" +
         "</web-app>\r\n");

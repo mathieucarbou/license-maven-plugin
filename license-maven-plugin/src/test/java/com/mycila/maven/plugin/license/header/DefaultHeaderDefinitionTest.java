@@ -17,23 +17,23 @@ package com.mycila.maven.plugin.license.header;
 
 import com.mycila.maven.plugin.license.header.HeaderSource.UrlHeaderSource;
 import com.mycila.maven.plugin.license.util.FileUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 
 import static java.lang.String.format;
-import static org.junit.Assert.assertEquals;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
-public final class DefaultHeaderDefinitionTest {
+class DefaultHeaderDefinitionTest {
   @Test
-  public void test_styles() throws Exception {
+  void test_styles() throws Exception {
     Header header = new Header(new UrlHeaderSource(getClass().getResource("/test-header1.txt"), "UTF-8"), null);
     for (HeaderDefinition definition : HeaderType.defaultDefinitions().values()) {
       final String content = FileUtils.read(new File(format("src/test/resources/styles/%s.txt", definition.getType())), System.getProperty("file.encoding"));
-      assertEquals("Bad header for type: " + definition.getType(), content, header.buildForDefinition(definition, !containsWindowsLineEnding(content)));
+      Assertions.assertEquals("Bad header for type: " + definition.getType(), content, header.buildForDefinition(definition, !containsWindowsLineEnding(content)));
     }
   }
 

@@ -9,6 +9,7 @@ on:
       - 'docs/**'
 jobs:
   generate-site:
+    if: github.repository_owner == 'mathieucarbou'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -18,7 +19,7 @@ jobs:
           java-version: '8'
           cache: 'maven'
       - name: Build with Maven
-        run: ./mvnw clean install site -DperformRelease=true -Dgpg.skip=true -DskipTests -B -s settings.xml -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+        run: ./mvnw clean install site -DperformRelease=true -Dgpg.skip=true -DskipTests -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:

@@ -19,7 +19,8 @@ import com.mycila.maven.plugin.license.Default;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugin.logging.SystemStreamLog;
 import org.apache.maven.shared.utils.io.DirectoryScanner;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -32,43 +33,40 @@ import java.util.List;
 import java.util.UUID;
 
 import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
-public final class SelectionTest {
+class SelectionTest {
   private final Log log = new SystemStreamLog();
 
   @Test
-  public void test_default_select_all() {
+  void test_default_select_all() {
     Selection selection = new Selection(new File("."), new String[0], new String[0], false, log);
-    assertEquals(selection.getExcluded().length, 0);
-    assertEquals(selection.getIncluded().length, 1);
-    assertTrue(selection.getSelectedFiles().length > 0);
+    Assertions.assertEquals(0, selection.getExcluded().length);
+    Assertions.assertEquals(1, selection.getIncluded().length);
+    Assertions.assertTrue(selection.getSelectedFiles().length > 0);
   }
 
   @Test
-  public void test_limit_inclusion() {
+  void test_limit_inclusion() {
     Selection selection = new Selection(new File("."), new String[]{"toto"}, new String[]{"tata"}, false, log);
-    assertEquals(selection.getExcluded().length, 1);
-    assertEquals(selection.getIncluded().length, 1);
-    assertEquals(selection.getSelectedFiles().length, 0);
+    Assertions.assertEquals(1, selection.getExcluded().length);
+    Assertions.assertEquals(1, selection.getIncluded().length);
+    Assertions.assertEquals(0, selection.getSelectedFiles().length);
   }
 
   @Test
-  public void test_limit_inclusion_and_check_default_excludes() {
+  void test_limit_inclusion_and_check_default_excludes() {
     Selection selection = new Selection(new File("."), new String[]{"toto"}, new String[0], true, log);
-    assertEquals(selection.getExcluded().length, Default.EXCLUDES.length); // default exludes from Scanner and Selection + toto
-    assertEquals(selection.getIncluded().length, 1);
-    assertEquals(selection.getSelectedFiles().length, 0);
-    assertTrue(Arrays.asList(selection.getExcluded()).containsAll(Arrays.asList(Default.EXCLUDES)));
+    Assertions.assertEquals(selection.getExcluded().length, Default.EXCLUDES.length); // default excludes from Scanner and Selection + toto
+    Assertions.assertEquals(1, selection.getIncluded().length);
+    Assertions.assertEquals(0, selection.getSelectedFiles().length);
+    Assertions.assertTrue(Arrays.asList(selection.getExcluded()).containsAll(Arrays.asList(Default.EXCLUDES)));
   }
 
   @Test
-  public void test_exclusions_respect_with_fastScan() throws IOException {
+  void test_exclusions_respect_with_fastScan() throws IOException {
     SystemStreamLog log = new SystemStreamLog() {
       @Override
       public boolean isDebugEnabled() {
@@ -84,7 +82,7 @@ public final class SelectionTest {
     selection.getSelectedFiles(); // triggers scan and scanner build
     String debugMessage = buildDebugMessage(selection.getScanner());
     assertIncludedFilesInFakeProject(selection, debugMessage);
-    assertEquals(debugMessage, 0, selection.getScanner().getExcludedFiles().length);
+    Assertions.assertEquals(0, selection.getScanner().getExcludedFiles().length, debugMessage);
   }
 
   private String buildDebugMessage(DirectoryScanner scanner) {
@@ -112,7 +110,7 @@ public final class SelectionTest {
   private void assertIncludedFilesInFakeProject(Selection selection, String debugMessage) {
     List<String> selected = new ArrayList<String>(asList(selection.getSelectedFiles()));
     Collections.sort(selected);
-    assertEquals(debugMessage, asList("included.txt", "module" + File.separator + "src" + File.separator + "main" + File.separator + "java" + File.separator + "not-ignored.txt", "module" + File.separator + "sub" + File.separator + "subsub" + File.separator + "src" + File.separator + "main" + File.separator + "java" + File.separator + "not-ignored.txt"), selected);
+    Assertions.assertEquals(asList("included.txt", "module" + File.separator + "src" + File.separator + "main" + File.separator + "java" + File.separator + "not-ignored.txt", "module" + File.separator + "sub" + File.separator + "subsub" + File.separator + "src" + File.separator + "main" + File.separator + "java" + File.separator + "not-ignored.txt"), selected, debugMessage);
   }
 
   private File createAFakeProject(Log log) throws IOException {
@@ -129,13 +127,13 @@ public final class SelectionTest {
   private void touch(File newFile, Log log) throws IOException {
     final File parentFile = newFile.getParentFile();
     if (parentFile != null && !parentFile.isDirectory() && !parentFile.mkdirs()) {
-      fail("Can't create '" + parentFile + "'");
+      Assertions.fail("Can't create '" + parentFile + "'");
     }
     final FileWriter w = new FileWriter(newFile);
     w.write("touched");
     w.close();
     if (!newFile.exists()) {
-      fail("Can't create " + newFile);
+      Assertions.fail("Can't create " + newFile);
     }
     log.debug("Created '" + newFile.getAbsolutePath() + "'");
   }

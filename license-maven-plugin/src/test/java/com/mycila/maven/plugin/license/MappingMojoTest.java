@@ -19,24 +19,20 @@ import org.apache.maven.monitor.logging.DefaultLog;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.logging.SystemStreamLog;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
-public final class MappingMojoTest {
+class MappingMojoTest {
 
   @Test
-  public void test_mapping() throws Exception {
+  void test_mapping() throws Exception {
     LicenseCheckMojo check = new LicenseCheckMojo();
     MockedLog logger = new MockedLog();
     check.setLog(new DefaultLog(logger));
@@ -48,12 +44,12 @@ public final class MappingMojoTest {
 
     try {
       check.execute();
-      fail();
+      Assertions.fail();
     } catch (MojoExecutionException e) {
       e.printStackTrace(System.out);
       //assertFalse(logger.getContent().contains("header style: javadoc_style"));
       //assertTrue(logger.getContent().contains("header style: text"));
-      assertEquals("Some files do not have the expected license header", e.getMessage());
+      Assertions.assertEquals("Some files do not have the expected license header", e.getMessage());
     }
 
     logger.clear();
@@ -63,16 +59,16 @@ public final class MappingMojoTest {
 
     try {
       check.execute();
-      fail();
+      Assertions.fail();
     } catch (MojoExecutionException e) {
-      assertTrue(logger.getContent().contains("header style: javadoc_style"));
-      assertFalse(logger.getContent().contains("header style: text"));
-      assertEquals("Some files do not have the expected license header", e.getMessage());
+      Assertions.assertTrue(logger.getContent().contains("header style: javadoc_style"));
+      Assertions.assertFalse(logger.getContent().contains("header style: text"));
+      Assertions.assertEquals("Some files do not have the expected license header", e.getMessage());
     }
   }
 
   @Test
-  public void test_mapping_composed_extension() throws Exception {
+  void test_mapping_composed_extension() throws Exception {
     LicenseCheckMojo check = new LicenseCheckMojo();
     MockedLog logger = new MockedLog();
     check.setLog(new DefaultLog(logger));
@@ -87,11 +83,11 @@ public final class MappingMojoTest {
 
     try {
       check.execute();
-      fail();
+      Assertions.fail();
     } catch (MojoExecutionException e) {
       e.printStackTrace(System.out);
-      assertTrue(logger.getContent().contains("test.apt.vm [header style: sharpstar_style]"));
-      assertEquals("Some files do not have the expected license header", e.getMessage());
+      Assertions.assertTrue(logger.getContent().contains("test.apt.vm [header style: sharpstar_style]"));
+      Assertions.assertEquals("Some files do not have the expected license header", e.getMessage());
     }
 
     check.setLog(new SystemStreamLog());
@@ -103,7 +99,7 @@ public final class MappingMojoTest {
   }
 
   @Test
-  public void test_mapping_composed_extension_ordered() throws Exception {
+  void test_mapping_composed_extension_ordered() throws Exception {
     LicenseCheckMojo check = new LicenseCheckMojo();
     MockedLog logger = new MockedLog();
     check.setLog(new DefaultLog(logger));
@@ -129,7 +125,7 @@ public final class MappingMojoTest {
   }
 
   @Test
-  public void test_mapping_extension_less_file() throws Exception {
+  void test_mapping_extension_less_file() throws Exception {
     LicenseCheckMojo check = new LicenseCheckMojo();
     MockedLog logger = new MockedLog();
     check.setLog(new DefaultLog(logger));
@@ -144,7 +140,7 @@ public final class MappingMojoTest {
 
     /* Run with no mapping first */
     check.execute();
-    assertTrue(logger.getContent().contains("extensionless-file [header style: unknown]"));
+    Assertions.assertTrue(logger.getContent().contains("extensionless-file [header style: unknown]"));
 
     /* Add the mapping and expect the missing header */
     MockedLog mappedLogger = new MockedLog();
@@ -155,18 +151,18 @@ public final class MappingMojoTest {
 
     try {
       check.execute();
-      fail();
+      Assertions.fail();
     } catch (MojoExecutionException e) {
       e.printStackTrace(System.out);
-      assertTrue(mappedLogger.getContent().contains("extensionless-file [header style: script_style]"));
-      assertEquals("Some files do not have the expected license header", e.getMessage());
+      Assertions.assertTrue(mappedLogger.getContent().contains("extensionless-file [header style: script_style]"));
+      Assertions.assertEquals("Some files do not have the expected license header", e.getMessage());
     }
 
   }
 
 
   @Test
-  public void test_mapping_unknown_file() throws Exception {
+  void test_mapping_unknown_file() throws Exception {
     LicenseCheckMojo check = new LicenseCheckMojo();
     MockedLog logger = new MockedLog();
     check.setLog(new DefaultLog(logger));
@@ -183,11 +179,11 @@ public final class MappingMojoTest {
     /* Run with no mapping first */
     try {
       check.execute();
-      fail();
+      Assertions.fail();
     } catch (MojoExecutionException e) {
       String expected = "Unable to find a comment style definition for some "
           + "files. You may want to add a custom mapping for the relevant file extensions.";
-      assertEquals(expected, e.getMessage());
+      Assertions.assertEquals(expected, e.getMessage());
     }
 
   }

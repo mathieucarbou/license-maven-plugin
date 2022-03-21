@@ -18,35 +18,33 @@ package com.mycila.maven.plugin.license.header;
 import com.mycila.maven.plugin.license.HeaderSection;
 import com.mycila.maven.plugin.license.header.HeaderSource.UrlHeaderSource;
 import com.mycila.maven.plugin.license.util.FileUtils;
-import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
-public final class HeaderTest {
+class HeaderTest {
   @Test
-  public void test() throws Exception {
+  void test() throws Exception {
     Header header = new Header(new UrlHeaderSource(getClass().getResource("/test-header1.txt"), "UTF-8"), null);
-    assertEquals(header.getLineCount(), 13);
-    assertTrue(header.asOneLineString().contains("${year}"));
-    assertTrue(header.getLocation().isFromUrl(getClass().getResource("/test-header1.txt")));
+    Assertions.assertEquals(13, header.getLineCount());
+    Assertions.assertTrue(header.asOneLineString().contains("${year}"));
+    Assertions.assertTrue(header.getLocation().isFromUrl(getClass().getResource("/test-header1.txt")));
 
     //FileUtils.write(new File("src/test/resources/test-header2.txt"), header.buildForDefinition(HeaderType.ASP.getDefinition(), false));
 
     final File file = new File("src/test/resources/test-header2.txt");
     final String content = FileUtils.read(file, System.getProperty("file.encoding"));
-    assertEquals(content, header.buildForDefinition(HeaderType.ASP.getDefinition(), content.indexOf("\n") == -1));
+    Assertions.assertEquals(content, header.buildForDefinition(HeaderType.ASP.getDefinition(), content.indexOf("\n") == -1));
   }
 
   @Test
-  public void testHeaderSections() throws IOException {
+  void testHeaderSections() throws IOException {
 
     HeaderSection section = new HeaderSection();
     section.setKey("COPYRIGHT_SECTION");
@@ -65,7 +63,7 @@ public final class HeaderTest {
     h1.append(" *\n");
     h1.append(" * My License\n");
     h1.append(" */\n");
-    assertTrue(header.isMatchForText(h1.toString(), headerDefinition, true));
+    Assertions.assertTrue(header.isMatchForText(h1.toString(), headerDefinition, true));
 
     /**
      * This potential header should fail because the date is invalid
@@ -76,7 +74,7 @@ public final class HeaderTest {
     h2.append(" *\n");
     h2.append(" * My License\n");
     h2.append(" */\n");
-    assertFalse(header.isMatchForText(h2.toString(), headerDefinition, true));
+    Assertions.assertFalse(header.isMatchForText(h2.toString(), headerDefinition, true));
 
     /**
      * This potential header should match, even with multiple lines
@@ -88,7 +86,7 @@ public final class HeaderTest {
     h3.append(" *\n");
     h3.append(" * My License\n");
     h3.append(" */\n");
-    assertTrue(header.isMatchForText(h3.toString(), headerDefinition, true));
+    Assertions.assertTrue(header.isMatchForText(h3.toString(), headerDefinition, true));
 
     /**
      * Assert that the header, rendered with default values, looks correct
@@ -100,11 +98,11 @@ public final class HeaderTest {
     h4.append(" * My License\n");
     h4.append(" */\n");
     String headerText = header.applyDefinitionAndSections(headerDefinition, true);
-    assertEquals(headerText, h4.toString());
+    Assertions.assertEquals(headerText, h4.toString());
   }
 
   @Test
-  public void testHeaderSectionsWithAmbiguousSeparation() throws IOException {
+  void testHeaderSectionsWithAmbiguousSeparation() throws IOException {
 
     HeaderSection sectionA = new HeaderSection();
     sectionA.setKey("COPYRIGHT_SECTION");
@@ -135,7 +133,7 @@ public final class HeaderTest {
     h1.append(" *\n");
     h1.append(" * My License\n");
     h1.append(" */\n");
-    assertTrue(header.isMatchForText(h1.toString(), headerDefinition, true));
+    Assertions.assertTrue(header.isMatchForText(h1.toString(), headerDefinition, true));
 
     /**
      * This potential header should fail because there is no space in there to match
@@ -146,7 +144,7 @@ public final class HeaderTest {
     h2.append(" *\n");
     h2.append(" * My License\n");
     h2.append(" */\n");
-    assertFalse(header.isMatchForText(h2.toString(), headerDefinition, true));
+    Assertions.assertFalse(header.isMatchForText(h2.toString(), headerDefinition, true));
 
     /**
      * Assert that the header, rendered with default values, looks correct
@@ -158,11 +156,11 @@ public final class HeaderTest {
     h3.append(" * My License\n");
     h3.append(" */\n");
     String headerText = header.applyDefinitionAndSections(headerDefinition, true);
-    assertEquals(headerText, h3.toString());
+    Assertions.assertEquals(headerText, h3.toString());
   }
 
   @Test
-  public void testHeaderSectionsWithMultiLineMatch() throws IOException {
+  void testHeaderSectionsWithMultiLineMatch() throws IOException {
 
     HeaderSection section = new HeaderSection();
     section.setKey("COPYRIGHT_SECTION");
@@ -183,7 +181,7 @@ public final class HeaderTest {
     h1.append(" *\n");
     h1.append(" * My License\n");
     h1.append(" */\n");
-    assertTrue(header.isMatchForText(h1.toString(), headerDefinition, true));
+    Assertions.assertTrue(header.isMatchForText(h1.toString(), headerDefinition, true));
 
     /**
      * This potential header should fail because "Name" => "NamE"
@@ -195,7 +193,7 @@ public final class HeaderTest {
     h2.append(" *\n");
     h2.append(" * My License\n");
     h2.append(" */\n");
-    assertFalse(header.isMatchForText(h2.toString(), headerDefinition, true));
+    Assertions.assertFalse(header.isMatchForText(h2.toString(), headerDefinition, true));
 
     /**
      * Assert that the header, rendered with default values, looks correct
@@ -208,6 +206,6 @@ public final class HeaderTest {
     h3.append(" * My License\n");
     h3.append(" */\n");
     String headerText = header.applyDefinitionAndSections(headerDefinition, true);
-    assertEquals(headerText, h3.toString());
+    Assertions.assertEquals(headerText, h3.toString());
   }
 }

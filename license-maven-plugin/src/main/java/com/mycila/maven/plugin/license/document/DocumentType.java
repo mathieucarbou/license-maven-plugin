@@ -83,6 +83,7 @@ public enum DocumentType {
   SCAML("scaml", HeaderType.HAML_STYLE),
   SCSS("scss", HeaderType.JAVADOC_STYLE),
   SHELL("sh", HeaderType.SCRIPT_STYLE),
+  SPRING_FACTORIES("spring.factories", HeaderType.SCRIPT_STYLE),
   SQL("sql", HeaderType.DOUBLEDASHES_STYLE),
   TAGX("tagx", HeaderType.XML_STYLE),
   TEX_CLASS("cls", HeaderType.PERCENT_STYLE),

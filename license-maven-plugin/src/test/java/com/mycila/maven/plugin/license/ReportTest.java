@@ -20,8 +20,9 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugin.testing.stubs.ArtifactStub;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.time.Clock;
@@ -31,17 +32,16 @@ import java.time.ZoneId;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.fail;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
-public final class ReportTest {
+class ReportTest {
 
   MavenProjectStub mavenProjectStub = new MavenProjectStub();
 
-  @Before
-  public void setUp() {
+  @BeforeEach
+  void setUp() {
     ArtifactStub artifact = new ArtifactStub();
     mavenProjectStub.setArtifact(artifact);
     artifact.setGroupId("com.mycila");
@@ -50,7 +50,7 @@ public final class ReportTest {
   }
 
   @Test
-  public void test_check_xml() throws Exception {
+  void test_check_xml() throws Exception {
     File tmp = new File("target/test/issues/issue-122/test_check_xml");
     FileUtils.copyFilesToFolder(new File("src/test/resources/issues/issue-122"), tmp);
 
@@ -64,7 +64,7 @@ public final class ReportTest {
 
     try {
       plugin.execute();
-      fail();
+      Assertions.fail();
     } catch (MojoExecutionException | MojoFailureException e) {
     }
 
@@ -74,7 +74,7 @@ public final class ReportTest {
   }
 
   @Test
-  public void test_check_json() throws Exception {
+  void test_check_json() throws Exception {
     File tmp = new File("target/test/issues/issue-122/test_check_json");
     FileUtils.copyFilesToFolder(new File("src/test/resources/issues/issue-122"), tmp);
 
@@ -88,7 +88,7 @@ public final class ReportTest {
 
     try {
       plugin.execute();
-      fail();
+      Assertions.fail();
     } catch (MojoExecutionException | MojoFailureException e) {
     }
 
@@ -98,7 +98,7 @@ public final class ReportTest {
   }
 
   @Test
-  public void test_format_xml() throws Exception {
+  void test_format_xml() throws Exception {
     File tmp = new File("target/test/issues/issue-122/test_format_xml");
     FileUtils.copyFilesToFolder(new File("src/test/resources/issues/issue-122"), tmp);
 
@@ -118,7 +118,7 @@ public final class ReportTest {
   }
 
   @Test
-  public void test_format_json() throws Exception {
+  void test_format_json() throws Exception {
     File tmp = new File("target/test/issues/issue-122/test_format_json");
     FileUtils.copyFilesToFolder(new File("src/test/resources/issues/issue-122"), tmp);
 
@@ -138,7 +138,7 @@ public final class ReportTest {
   }
 
   @Test
-  public void test_remove_xml() throws Exception {
+  void test_remove_xml() throws Exception {
     File tmp = new File("target/test/issues/issue-122/test_remove_xml");
     FileUtils.copyFilesToFolder(new File("src/test/resources/issues/issue-122"), tmp);
 
@@ -158,7 +158,7 @@ public final class ReportTest {
   }
 
   @Test
-  public void test_remove_json() throws Exception {
+  void test_remove_json() throws Exception {
     File tmp = new File("target/test/issues/issue-122/test_remove_json");
     FileUtils.copyFilesToFolder(new File("src/test/resources/issues/issue-122"), tmp);
 

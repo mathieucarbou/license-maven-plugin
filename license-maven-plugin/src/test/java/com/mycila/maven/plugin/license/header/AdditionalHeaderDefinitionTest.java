@@ -19,19 +19,18 @@ import com.mycila.maven.plugin.license.header.HeaderSource.UrlHeaderSource;
 import com.mycila.maven.plugin.license.util.FileUtils;
 import com.mycila.xmltool.XMLDoc;
 import com.mycila.xmltool.XMLTag;
-import org.junit.Test;
 
 import java.io.File;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
-public final class AdditionalHeaderDefinitionTest {
+class AdditionalHeaderDefinitionTest {
   @Test
-  public void test_load_definitions() throws Exception {
+  void test_load_definitions() throws Exception {
     XMLTag def = XMLDoc.newDocument(true).addRoot("additionalHeaders")
         .addTag("xquery")
         .addTag("firstLine").addText("(:")
@@ -46,21 +45,21 @@ public final class AdditionalHeaderDefinitionTest {
 
     AdditionalHeaderDefinition loader = new AdditionalHeaderDefinition(def);
 
-    assertEquals(loader.getDefinitions().size(), 1);
-    assertEquals(loader.getDefinitions().get("xquery").getType(), "xquery");
-    assertNull(loader.getDefinitions().get("xquery").getSkipLinePattern());
+    Assertions.assertEquals(1, loader.getDefinitions().size());
+    Assertions.assertEquals("xquery", loader.getDefinitions().get("xquery").getType());
+    Assertions.assertNull(loader.getDefinitions().get("xquery").getSkipLinePattern());
 
     Header header = new Header(new UrlHeaderSource(getClass().getResource("/test-header1.txt"), "UTF-8"), null);
 
     //FileUtils.write(new File("src/test/resources/test-header3.txt"), header.buildForDefinition(loader.getDefinitions().get("xquery")));
 
     final String content = FileUtils.read(new File("src/test/resources/test-header3.txt"), System.getProperty("file.encoding"));
-    assertEquals(header.buildForDefinition(loader.getDefinitions().get("xquery"), content.indexOf("\n") == -1),
+    Assertions.assertEquals(header.buildForDefinition(loader.getDefinitions().get("xquery"), content.indexOf("\n") == -1),
         content);
   }
 
   @Test
-  public void test_load_definitions2() throws Exception {
+  void test_load_definitions2() throws Exception {
     XMLTag def = XMLDoc.newDocument(true).addRoot("additionalHeaders")
         .addTag("text")
         .addTag("firstLine").addText(":(")
@@ -81,7 +80,7 @@ public final class AdditionalHeaderDefinitionTest {
   }
 
   @Test
-  public void test_advanced_definitions() throws Exception {
+  void test_advanced_definitions() throws Exception {
     XMLTag def = XMLDoc.newDocument(true).addRoot("additionalHeaders")
         .addTag("csregion")
         .addTag("firstLine").addText("#region LicenseEOL/**")
@@ -99,7 +98,7 @@ public final class AdditionalHeaderDefinitionTest {
     //FileUtils.write(new File("src/test/resources/test-header4.txt"), header.buildForDefinition(loader.getDefinitions().get("csregion"), false), System.getProperty("file.encoding"));
 
     final String content = FileUtils.read(new File("src/test/resources/test-header4.txt"), System.getProperty("file.encoding"));
-    assertEquals(header.buildForDefinition(loader.getDefinitions().get("csregion"), content.indexOf("\n") == -1),
+    Assertions.assertEquals(header.buildForDefinition(loader.getDefinitions().get("csregion"), content.indexOf("\n") == -1),
         content);
   }
 }

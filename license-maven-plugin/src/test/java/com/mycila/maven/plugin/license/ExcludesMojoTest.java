@@ -17,28 +17,31 @@ package com.mycila.maven.plugin.license;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
-public final class ExcludesMojoTest {
+class ExcludesMojoTest {
 
-  @Test(expected = MojoExecutionException.class)
-  public void test_no_exclusions() throws Exception {
+  @Test
+  void test_no_exclusions() throws Exception {
     LicenseCheckMojo check = new LicenseCheckMojo();
     check.defaultBasedir = new File("src/test/resources/check");
     check.legacyConfigHeader = "header.txt";
     check.project = new MavenProjectStub();
     check.legacyConfigExcludes = new String[0];
     check.strictCheck = true;
-    check.execute();
+    Assertions.assertThrows(MojoExecutionException.class, () -> {
+      check.execute();
+    });
   }
 
   @Test
-  public void test_exclusions() throws Exception {
+  void test_exclusions() throws Exception {
     LicenseCheckMojo check = new LicenseCheckMojo();
     check.defaultBasedir = new File("src/test/resources/check");
     check.legacyConfigHeader = "header.txt";

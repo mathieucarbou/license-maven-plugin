@@ -59,8 +59,9 @@ public final class FileContent {
   }
 
   public String nextLine() {
-    if (endReached())
+    if (endReached()) {
       return null;
+    }
     int lf = fileContent.indexOf("\n", position);
     int eol = lf == -1 || lf == 0 ? fileContent.length() : fileContent.charAt(lf - 1) == '\r' ? lf - 1 : lf;
     String str = fileContent.substring(position, eol);

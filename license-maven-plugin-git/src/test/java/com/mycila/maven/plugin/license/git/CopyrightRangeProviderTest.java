@@ -17,26 +17,31 @@ package com.mycila.maven.plugin.license.git;
 
 import com.mycila.maven.plugin.license.LicenseCheckMojo;
 import com.mycila.maven.plugin.license.document.Document;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 /**
  * @author <a href="mailto:ppalaga@redhat.com">Peter Palaga</a>
  */
 public class CopyrightRangeProviderTest {
 
-  private static File gitRepoRoot;
-  private static TemporaryFolder tempFolder;
+  private static Path gitRepoRoot;
+
+  @TempDir
+  static File tempFolder;
 
   @Test
   public void copyrightRange() {
@@ -74,31 +79,23 @@ public class CopyrightRangeProviderTest {
     expected.put(CopyrightRangeProvider.COPYRIGHT_LAST_YEAR_KEY, copyrightEnd);
     expected.put(CopyrightRangeProvider.COPYRIGHT_YEARS_KEY, copyrightRange);
     expected.put(CopyrightRangeProvider.COPYRIGHT_EXISTENCE_YEARS_KEY, copyrightExistence);
-    Assert.assertEquals("for file '" + path + "': ", expected, actual);
+    Assertions.assertEquals(expected, actual, "for file '" + path + "': ");
 
   }
 
   private static Document newDocument(String relativePath) {
-    File file = new File(gitRepoRoot.getAbsolutePath() + File.separatorChar
+    Path path = Paths.get(gitRepoRoot.toAbsolutePath() + File.separator
         + relativePath.replace('/', File.separatorChar));
-    return new Document(file, null, "utf-8", new String[0], null);
+    return new Document(path.toFile(), null, "utf-8", new String[0], null);
   }
 
-  @BeforeClass
+  @BeforeAll
   public static void beforeClass() throws IOException {
-    tempFolder = new TemporaryFolder();
-    tempFolder.create();
-
     URL url = GitLookupTest.class.getResource("git-test-repo.zip");
-    File unzipDestination = tempFolder.getRoot();
-    gitRepoRoot = new File(unzipDestination, "git-test-repo");
+    Path unzipDestination = tempFolder.toPath();
+    gitRepoRoot = Files.createDirectory(unzipDestination);
 
     GitLookupTest.unzip(url, unzipDestination);
-  }
-
-  @AfterClass
-  public static void afterClass() {
-    tempFolder.delete();
   }
 
 }

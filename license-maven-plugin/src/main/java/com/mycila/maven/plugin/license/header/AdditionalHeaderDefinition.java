@@ -108,8 +108,8 @@ public final class AdditionalHeaderDefinition {
     @Override
     public void execute(XMLTag xmlDocument) {
       String value = xmlDocument.getText();
-      if ("".equals(value)) // value can't be null
-      {
+      // value can't be null
+      if ("".equals(value)) {
         value = xmlDocument.getCDATA();
       }
       definition.setPropertyFromString(xmlDocument.getCurrentTagName(), value);

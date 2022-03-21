@@ -18,24 +18,23 @@ package com.mycila.maven.plugin.license;
 import com.google.common.io.Files;
 import com.mycila.maven.plugin.license.util.FileUtils;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.nio.charset.Charset;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
-public final class RemoveMojoTest {
+final class RemoveMojoTest {
   public static final String LS = "\n";
 
   @Test
-  public void test_remove() throws Exception {
+  void test_remove() throws Exception {
     File tmp = new File("target/test/remove/txt");
     tmp.mkdirs();
     FileUtils.copyFileToFolder(new File("src/test/resources/remove/doc1.txt"), tmp);
@@ -47,12 +46,12 @@ public final class RemoveMojoTest {
     remove.project = new MavenProjectStub();
     remove.execute();
 
-    assertEquals(FileUtils.read(new File(tmp, "doc1.txt"), System.getProperty("file.encoding")), "some data\r\nand other data\r\n");
-    assertEquals(FileUtils.read(new File(tmp, "doc2.txt"), System.getProperty("file.encoding")), "some data\r\nand other data\r\n");
+    Assertions.assertEquals("some data\r\nand other data\r\n", FileUtils.read(new File(tmp, "doc1.txt"), System.getProperty("file.encoding")));
+    Assertions.assertEquals("some data\r\nand other data\r\n", FileUtils.read(new File(tmp, "doc2.txt"), System.getProperty("file.encoding")));
   }
 
   @Test
-  public void test_remove_xml_txt() throws Exception {
+  void test_remove_xml_txt() throws Exception {
     File tmp = new File("target/test/remove/other");
     tmp.mkdirs();
     FileUtils.copyFileToFolder(new File("src/test/resources/doc/doc9.xml"), tmp);
@@ -64,18 +63,18 @@ public final class RemoveMojoTest {
     remove.project = new MavenProjectStub();
     remove.execute();
 
-    assertEquals(FileUtils.read(new File(tmp, "doc9.xml"), System.getProperty("file.encoding")), "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\r\n" +
+    Assertions.assertEquals(FileUtils.read(new File(tmp, "doc9.xml"), System.getProperty("file.encoding")), "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\r\n" +
         "\r\n" +
         "\r\n" +
         "\r\n" +
         "<web-app>\r\n" +
         "\r\n" +
         "</web-app>\r\n");
-    assertEquals(FileUtils.read(new File(tmp, "doc3.txt"), System.getProperty("file.encoding")), "some data\r\nand other data\r\n");
+    Assertions.assertEquals("some data\r\nand other data\r\n", FileUtils.read(new File(tmp, "doc3.txt"), System.getProperty("file.encoding")));
   }
 
   @Test
-  public void test_remove_script_style() throws Exception {
+  void test_remove_script_style() throws Exception {
     File tmp = new File("target/test/remove/issue44");
     tmp.mkdirs();
     FileUtils.copyFileToFolder(new File("src/test/resources/remove/issue44.rb"), tmp);
@@ -88,13 +87,13 @@ public final class RemoveMojoTest {
     remove.project = new MavenProjectStub();
     remove.execute();
 
-    assertEquals(FileUtils.read(new File(tmp, "issue44.rb"), System.getProperty("file.encoding")), "ruby code here" + LS + "and other data" + LS + "");
-    assertEquals(FileUtils.read(new File(tmp, "issue44-2.rb"), System.getProperty("file.encoding")), "# code comment" + LS + "ruby code here" + LS + "and other data" + LS + "");
-    assertEquals(FileUtils.read(new File(tmp, "issue44-3.rb"), System.getProperty("file.encoding")), "# code comment" + LS + "ruby code here" + LS + "and other data" + LS + "");
+    Assertions.assertEquals(FileUtils.read(new File(tmp, "issue44.rb"), System.getProperty("file.encoding")), "ruby code here" + LS + "and other data" + LS + "");
+    Assertions.assertEquals(FileUtils.read(new File(tmp, "issue44-2.rb"), System.getProperty("file.encoding")), "# code comment" + LS + "ruby code here" + LS + "and other data" + LS + "");
+    Assertions.assertEquals(FileUtils.read(new File(tmp, "issue44-3.rb"), System.getProperty("file.encoding")), "# code comment" + LS + "ruby code here" + LS + "and other data" + LS + "");
   }
 
   @Test
-  public void test_remove_multiline() throws Exception {
+  void test_remove_multiline() throws Exception {
     File tmp = new File("target/test/remove/multi");
     tmp.mkdirs();
     FileUtils.copyFileToFolder(new File("src/test/resources/remove/test.xml"), tmp);
@@ -105,13 +104,13 @@ public final class RemoveMojoTest {
     remove.project = new MavenProjectStub();
     remove.execute();
 
-    assertEquals(FileUtils.read(new File(tmp, "test.xml"), System.getProperty("file.encoding")), "<assembly>" + LS + "" +
+    Assertions.assertEquals(FileUtils.read(new File(tmp, "test.xml"), System.getProperty("file.encoding")), "<assembly>" + LS + "" +
         "  <id>project</id>" + LS + "" +
         "</assembly>" + LS + "");
   }
 
   @Test
-  public void test_js_1() throws Exception {
+  void test_js_1() throws Exception {
     File tmp = new File("target/test/remove/js");
     tmp.mkdirs();
     FileUtils.copyFileToFolder(new File("src/test/resources/remove/test1.js"), tmp);
@@ -122,7 +121,7 @@ public final class RemoveMojoTest {
     remove.project = new MavenProjectStub();
     remove.execute();
 
-    assertEquals(FileUtils.read(new File(tmp, "test1.js"), System.getProperty("file.encoding")), "/**" + LS + "" +
+    Assertions.assertEquals(FileUtils.read(new File(tmp, "test1.js"), System.getProperty("file.encoding")), "/**" + LS + "" +
         " * jrunscript JavaScript built-in functions and objects." + LS + "" +
         " */" + LS + "" +
         "" + LS + "" +
@@ -130,7 +129,7 @@ public final class RemoveMojoTest {
   }
 
   @Test
-  public void test_js_2() throws Exception {
+  void test_js_2() throws Exception {
     File tmp = new File("target/test/remove/js");
     tmp.mkdirs();
     FileUtils.copyFileToFolder(new File("src/test/resources/remove/test2.js"), tmp);
@@ -141,7 +140,7 @@ public final class RemoveMojoTest {
     remove.project = new MavenProjectStub();
     remove.execute();
 
-    assertEquals(FileUtils.read(new File(tmp, "test2.js"), System.getProperty("file.encoding")), "/**" + LS + "" +
+    Assertions.assertEquals(FileUtils.read(new File(tmp, "test2.js"), System.getProperty("file.encoding")), "/**" + LS + "" +
         " * jrunscript JavaScript built-in functions and objects." + LS + "" +
         " */" + LS + "" +
         "" + LS + "" +
@@ -149,7 +148,7 @@ public final class RemoveMojoTest {
   }
 
   @Test
-  public void test_issue30_RemoveSucceedsOnAOneLineCommentFile() throws Exception {
+  void test_issue30_RemoveSucceedsOnAOneLineCommentFile() throws Exception {
     File tmp = new File("target/test/remove/issue30");
     tmp.mkdirs();
     FileUtils.copyFileToFolder(new File("src/test/resources/remove/issue-30/one-line-comment.java"), tmp);
@@ -165,14 +164,14 @@ public final class RemoveMojoTest {
   }
 
   @Test
-  public void test_issue41_cannotRemoveEmptyHeader() throws Exception {
+  void test_issue41_cannotRemoveEmptyHeader() throws Exception {
     File tmp = new File("target/test/remove/issue41");
     tmp.mkdirs();
     FileUtils.copyFileToFolder(new File("src/test/resources/remove/issue-41/ASimpleClass.java"), tmp);
     final File destFile = new File(tmp, "ASimpleClass.java");
 
     List<String> initialLines = Files.readLines(destFile, Charset.forName("UTF-8"));
-    assertThat(initialLines.size(), is(2));
+    org.assertj.core.api.Assertions.assertThat(initialLines.size()).isEqualTo(2);
 
     // Let's apply the licene
     LicenseFormatMojo format = new LicenseFormatMojo();
@@ -190,6 +189,6 @@ public final class RemoveMojoTest {
     remove.execute();
 
     List<String> linesAfterRemove = Files.readLines(destFile, Charset.forName("UTF-8"));
-    assertThat(linesAfterRemove.size(), is(2));
+    org.assertj.core.api.Assertions.assertThat(linesAfterRemove.size()).isEqualTo(2);
   }
 }

@@ -18,26 +18,25 @@ package com.mycila.maven.plugin.license;
 import com.mycila.maven.plugin.license.util.FileUtils;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
-public final class CheckTest {
+class CheckTest {
 
   @Test
-  public void test_defaultStubProject() throws Exception {
+  void test_defaultStubProject() throws Exception {
     LicenseCheckMojo check = new LicenseCheckMojo();
     check.project = new MavenProjectStub();
     check.execute();
   }
 
   @Test
-  public void test_line_wrapping() throws Exception {
+  void test_line_wrapping() throws Exception {
     MavenProjectStub project = new MavenProjectStub();
 
     LicenseCheckMojo check = new LicenseCheckMojo();
@@ -54,7 +53,7 @@ public final class CheckTest {
       check.strictCheck = true;
       check.execute();
     } catch (MojoExecutionException e) {
-      assertEquals("Some files do not have the expected license header", e.getMessage());
+      Assertions.assertEquals("Some files do not have the expected license header", e.getMessage());
     }
 
     // prepare to reformat the file

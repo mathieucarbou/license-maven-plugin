@@ -47,6 +47,7 @@ public final class FileUtils {
   private FileUtils() {
   }
 
+  @SuppressWarnings("resource")
   public static void write(File file, String content, String encoding) throws IOException {
     try (FileChannel channel = new FileOutputStream(file).getChannel()) {
       channel.write(ByteBuffer.wrap(content.getBytes(encoding)));
@@ -68,16 +69,14 @@ public final class FileUtils {
   public static String[] read(final URL[] locations, final String encoding) throws IOException {
     final String[] results = new String[locations.length];
     for (int i = 0; i < locations.length; i++) {
-      final Reader reader = new BufferedReader(new InputStreamReader(locations[i].openStream(), encoding));
-      try {
+      try (Reader reader = new BufferedReader(new InputStreamReader(locations[i].openStream(), encoding))) {
         results[i] = IOUtil.toString(reader);
-      } finally {
-        reader.close();
       }
     }
     return results;
   }
 
+  @SuppressWarnings("resource")
   public static String read(File file, String encoding) throws IOException {
     try (FileChannel in = new FileInputStream(file).getChannel()) {
       ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -105,6 +104,7 @@ public final class FileUtils {
     return str;
   }
 
+  @SuppressWarnings("resource")
   public static void copyFileToFolder(File file, File folder) throws IOException {
     File dest = new File(folder, file.getName());
     try (FileChannel inChannel = new FileInputStream(file).getChannel();

@@ -15,45 +15,45 @@
  */
 package com.mycila.maven.plugin.license.util;
 
-import org.junit.Test;
-
 import java.io.File;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
-public final class FileContentTest {
+class FileContentTest {
+
   @Test
-  public void test_states() throws Exception {
+  void test_states() throws Exception {
     FileContent c = new FileContent(new File("src/test/data/compileCP/test2.txt"), System.getProperty("file.encoding"));
-    assertEquals(c.nextLine(), "a");
-    assertEquals(c.getPosition(), 3);
+    Assertions.assertEquals("a", c.nextLine());
+    Assertions.assertEquals(3, c.getPosition());
   }
 
   @Test
-  public void test_delete() throws Exception {
+  void test_delete() throws Exception {
     FileContent c = new FileContent(new File("src/test/data/compileCP/test2.txt"), System.getProperty("file.encoding"));
     c.delete(2, 8);
-    assertEquals(c.getContent(), "a\r\nd\r\ne\r\nf\r\ng\r\nh\r\ni\r\n");
+    Assertions.assertEquals("a\r\nd\r\ne\r\nf\r\ng\r\nh\r\ni\r\n", c.getContent());
   }
 
   @Test
-  public void test_insert() throws Exception {
+  void test_insert() throws Exception {
     FileContent c = new FileContent(new File("src/test/data/compileCP/test2.txt"), System.getProperty("file.encoding"));
     c.insert(4, "hello");
-    assertEquals(c.getContent(), "a\r\nbhello\r\nc\r\nd\r\ne\r\nf\r\ng\r\nh\r\ni\r\n");
+    Assertions.assertEquals("a\r\nbhello\r\nc\r\nd\r\ne\r\nf\r\ng\r\nh\r\ni\r\n", c.getContent());
   }
 
   @Test
-  public void test_removeDupliatedEmptyEndLines() throws Exception {
+  void test_removeDupliatedEmptyEndLines() throws Exception {
     FileContent c = new FileContent(new File("src/test/data/compileCP/test3.txt"), System.getProperty("file.encoding"));
     c.removeDuplicatedEmptyEndLines();
-    assertEquals(c.getContent(), "a\r\nb\r\n");
+    Assertions.assertEquals("a\r\nb\r\n", c.getContent());
 
     c = new FileContent(new File("src/test/data/compileCP/test4.txt"), System.getProperty("file.encoding"));
     c.removeDuplicatedEmptyEndLines();
-    assertEquals(c.getContent(), "\r\n");
+    Assertions.assertEquals("\r\n", c.getContent());
   }
 }
