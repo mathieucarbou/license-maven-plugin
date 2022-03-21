@@ -20,10 +20,12 @@ import com.mycila.maven.plugin.license.Credentials;
 import com.mycila.maven.plugin.license.PropertiesProvider;
 import com.mycila.maven.plugin.license.document.Document;
 import org.tmatesoft.svn.core.ISVNLogEntryHandler;
+import org.tmatesoft.svn.core.SVNDepth;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNLogEntry;
 import org.tmatesoft.svn.core.internal.wc.DefaultSVNOptions;
 import org.tmatesoft.svn.core.wc.SVNClientManager;
+import org.tmatesoft.svn.core.wc.SVNInfo;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 
 import java.io.File;
@@ -57,6 +59,8 @@ public class SVNPropertiesProvider implements PropertiesProvider {
   public static final String INCEPTION_YEAR_KEY = "project.inceptionYear";
 
   public static final String SVN_SERVER_ID_PLUGIN_KEY = "license.svn.serverId";
+
+  private volatile boolean initialized = false;
 
   /**
    * Provides information on the given document. The information is put in the
@@ -104,6 +108,20 @@ public class SVNPropertiesProvider implements PropertiesProvider {
     };
 
     try {
+      if (!this.initialized) {
+        synchronized (this) {
+          if (!this.initialized) {
+            this.initialized = true;
+            // One-time warning for shallow repo
+            if (mojo.warnIfShallow) {
+              SVNInfo info = clientManager.getWCClient().doInfo(documentFile, SVNRevision.HEAD);
+              if (info.getDepth() != SVNDepth.INFINITY) {
+                mojo.warn("Sparse svn repository detected. Year and author property values may not be accurate.");
+              }
+            }
+          }
+        }
+      }
       clientManager.getLogClient().doLog(new File[]{documentFile}, SVNRevision.HEAD, SVNRevision.create(0), true, true, 1, lastChangeDateLogEntryHandler);
     } catch (SVNException ex) {
       IllegalStateException ise = new IllegalStateException("cannot query SVN latest date information for file: " + documentFile, ex);

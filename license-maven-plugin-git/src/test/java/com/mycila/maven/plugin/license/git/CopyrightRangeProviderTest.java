@@ -15,6 +15,7 @@
  */
 package com.mycila.maven.plugin.license.git;
 
+import com.mycila.maven.plugin.license.LicenseCheckMojo;
 import com.mycila.maven.plugin.license.document.Document;
 
 import java.io.File;
@@ -71,7 +72,7 @@ public class CopyrightRangeProviderTest {
     props.put(CopyrightRangeProvider.INCEPTION_YEAR_KEY, inceptionYear);
 
     Document document = newDocument(path);
-    Map<String, String> actual = provider.getAdditionalProperties(null, props, document);
+    Map<String, String> actual = provider.getAdditionalProperties(new LicenseCheckMojo(), props, document);
 
     HashMap<String, String> expected = new HashMap<String, String>();
     expected.put(CopyrightRangeProvider.COPYRIGHT_CREATION_YEAR_KEY, copyrightStart);

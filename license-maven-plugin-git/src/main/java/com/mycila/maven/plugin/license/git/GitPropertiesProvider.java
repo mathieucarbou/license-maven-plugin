@@ -21,6 +21,8 @@ import java.util.Locale;
 import java.util.Properties;
 import java.util.TimeZone;
 
+import com.mycila.maven.plugin.license.AbstractLicenseMojo;
+
 /**
  * @author <a href="mailto:ppalaga@redhat.com">Peter Palaga</a>
  */
@@ -43,7 +45,7 @@ public class GitPropertiesProvider {
    * @return
    * @throws IOException
    */
-  GitLookup getGitLookup(File file, Properties props) throws IOException {
+  GitLookup getGitLookup(AbstractLicenseMojo mojo, File file, Properties props) throws IOException {
     if (gitLookup == null) {
       synchronized (this) {
         if (gitLookup == null) {
@@ -74,6 +76,10 @@ public class GitPropertiesProvider {
               throw new IllegalStateException("Unexpected " + GitLookup.DateSource.class.getName() + " " + dateSource);
           }
           gitLookup = new GitLookup(file, dateSource, timeZone, checkCommitsCount);
+          // One-time warning for shallow repo
+          if (mojo.warnIfShallow && gitLookup.isShallowRepository()) {
+            mojo.warn("Shallow git repository detected. Year and author property values may not be accurate.");
+          }
         }
       }
     }

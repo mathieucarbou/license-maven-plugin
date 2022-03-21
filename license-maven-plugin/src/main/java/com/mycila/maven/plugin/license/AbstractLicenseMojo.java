@@ -296,6 +296,16 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
   public boolean skip = false;
 
   /**
+   * Determination of the year and author of the first commit and last change year
+   * of a file requires a full git or svn history. By default the plugin will log
+   * warning when using these properties on a shallow or sparse repository. If you
+   * are certain the repository depth will permit accurate determination of these
+   * values, you can disable this check.
+   */
+  @Parameter(property = "license.warnIfShallow", defaultValue = "true")
+  public boolean warnIfShallow = true;
+  
+  /**
    * If you do not want to see the list of file having a missing header, you
    * can add the quiet flag that will shorten the output
    */

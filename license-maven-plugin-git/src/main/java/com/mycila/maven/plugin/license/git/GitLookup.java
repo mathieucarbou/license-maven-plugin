@@ -59,6 +59,7 @@ public class GitLookup {
   private final GitPathResolver pathResolver;
   private final Repository repository;
   private final TimeZone timeZone;
+  private final boolean shallow;
 
   /**
    * Creates a new {@link GitLookup} for a repository that is detected from the supplied {@code anyFile}.
@@ -76,7 +77,8 @@ public class GitLookup {
     super();
     this.repository = new FileRepositoryBuilder().findGitDir(anyFile).build();
     /* A workaround for  https://bugs.eclipse.org/bugs/show_bug.cgi?id=457961 */
-    this.repository.getObjectDatabase().newReader().getShallowCommits();
+    // Also contains contents of .git/shallow and can detect shallow repo
+    this.shallow = !this.repository.getObjectDatabase().newReader().getShallowCommits().isEmpty();
 
     this.pathResolver = new GitPathResolver(repository.getWorkTree().getAbsolutePath());
     this.dateSource = dateSource;
@@ -183,6 +185,10 @@ public class GitLookup {
     }
     walk.dispose();
     return authorEmail;
+  }
+  
+  boolean isShallowRepository() {
+    return this.shallow;
   }
 
   private boolean isFileModifiedOrUnstaged(String repoRelativePath) throws GitAPIException {
