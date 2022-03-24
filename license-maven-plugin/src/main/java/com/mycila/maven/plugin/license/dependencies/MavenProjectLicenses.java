@@ -157,7 +157,7 @@ public class MavenProjectLicenses implements LicenseMap, LicenseMessage {
     getLog().debug(String.format("Building dependency graphs for %d projects", getProjects().size()));
     getProjects().parallelStream().forEach(project -> {
       try {
-        dependencies.addAll(getGraph().buildDependencyGraph(project, getFilter()).getChildren());
+        dependencies.addAll(getGraph().buildDependencyGraph(buildingRequest, getFilter()).getChildren());
       } catch (DependencyGraphBuilderException ex) {
         getLog().warn(
             String.format("Could not get children from project %s, it's dependencies will not be checked!",
