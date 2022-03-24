@@ -53,7 +53,7 @@ public class GitPropertiesProvider {
               GitLookup.DateSource.AUTHOR.name());
           GitLookup.DateSource dateSource = GitLookup.DateSource.valueOf(dateSourceString.toUpperCase(Locale.US));
           String checkCommitsCountString = props.getProperty(COPYRIGHT_LAST_YEAR_MAX_COMMITS_LOOKUP_KEY);
-          int checkCommitsCount = GitLookup.DEFAULT_COMMITS_COUNT;
+          int checkCommitsCount = Integer.MAX_VALUE;
           if (checkCommitsCountString != null) {
             checkCommitsCountString = checkCommitsCountString.trim();
             checkCommitsCount = Integer.parseInt(checkCommitsCountString);
