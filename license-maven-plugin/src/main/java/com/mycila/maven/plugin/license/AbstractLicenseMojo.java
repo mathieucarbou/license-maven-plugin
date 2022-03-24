@@ -756,7 +756,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
     List<String> ex = new ArrayList<>();
     ex.addAll(asList(licenseSet.excludes));
     if (project != null && project.getModules() != null && !aggregate) {
-      for (String module : (List<String>) project.getModules()) {
+      for (String module : project.getModules()) {
         ex.add(module + "/**");
       }
     }
