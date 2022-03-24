@@ -43,7 +43,7 @@ import java.util.Properties;
  */
 public class SVNPropertiesProvider implements PropertiesProvider {
   ThreadLocal<SVNClientManager> svnClientThreadLocal = new ThreadLocal<>();
-  ThreadLocal<SimpleDateFormat> sdfTimestampThreadLocal = new ThreadLocal<>() {
+  ThreadLocal<SimpleDateFormat> sdfTimestampThreadLocal = new ThreadLocal<SimpleDateFormat>() {
     @Override
     protected SimpleDateFormat initialValue() {
       return new SimpleDateFormat("yyyyMMdd-HH:mm:ss");
