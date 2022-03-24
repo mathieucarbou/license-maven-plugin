@@ -243,7 +243,7 @@ public abstract class HeaderSource {
   protected final String content;
   private final boolean inline;
 
-  public HeaderSource(String content, boolean inline) {
+  protected HeaderSource(String content, boolean inline) {
     super();
     this.content = content;
     this.inline = inline;
