@@ -459,7 +459,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
     /**
      * Related to {@link #failIfUnknown}.
      */
-    private final Collection<File> unknownFiles = new ConcurrentLinkedQueue<File>();
+    private final Collection<File> unknownFiles = new ConcurrentLinkedQueue<>();
 
     @Override
     public void onUnknownFile(Document document, Header header) {
@@ -753,7 +753,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
   }
 
   private String[] buildExcludes(final LicenseSet licenseSet) {
-    List<String> ex = new ArrayList<String>();
+    List<String> ex = new ArrayList<>();
     ex.addAll(asList(licenseSet.excludes));
     if (project != null && project.getModules() != null && !aggregate) {
       for (String module : (List<String>) project.getModules()) {
@@ -782,7 +782,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
   }
 
   private Map<String, String> buildMapping() {
-    Map<String, String> extensionMapping = new LinkedHashMap<String, String>();
+    Map<String, String> extensionMapping = new LinkedHashMap<>();
     // force inclusion of unknown item to manage unknown files
     extensionMapping.put(DocumentType.UNKNOWN.getExtension(), DocumentType.UNKNOWN.getDefaultHeaderTypeName());
     for (Map.Entry<String, String> entry : mapping.entrySet()) {
@@ -800,7 +800,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
 
   private Map<String, HeaderDefinition> buildHeaderDefinitions(final LicenseSet licenseSet, final ResourceFinder finder) throws MojoFailureException {
     // like mappings, first get default definitions
-    final Map<String, HeaderDefinition> headers = new HashMap<String, HeaderDefinition>(HeaderType.defaultDefinitions());
+    final Map<String, HeaderDefinition> headers = new HashMap<>(HeaderType.defaultDefinitions());
 
     // and then override them with those provided in base config
     for (final String headerDefiniton : defaultHeaderDefinitions) {

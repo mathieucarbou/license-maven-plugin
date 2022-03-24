@@ -97,7 +97,7 @@ public class LicenseSet {
    * command line, in the POM and in system environment.
    */
   @Parameter
-  public Map<String, String> properties = new HashMap<String, String>();
+  public Map<String, String> properties = new HashMap<>();
 
   /**
    * Specifies files, which are included in the check. By default, all files

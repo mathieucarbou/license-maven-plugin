@@ -87,7 +87,7 @@ public class AggregateLicensePolicyEnforcer {
    */
   @SuppressWarnings("unchecked")
   private Map<Artifact, LicensePolicyEnforcerResult> apply(final License license, final Set<Artifact> artifacts, final LicensePolicyEnforcer enforcer) {
-    final Map<Artifact, LicensePolicyEnforcerResult> results = new HashMap<Artifact, LicensePolicyEnforcerResult>();
+    final Map<Artifact, LicensePolicyEnforcerResult> results = new HashMap<>();
 
     final LicensePolicy.Rule filter = enforcer.getPolicy().getRule();
 
@@ -115,7 +115,7 @@ public class AggregateLicensePolicyEnforcer {
    * @return
    */
   private Map<Artifact, LicensePolicyEnforcerResult> apply(final Map<License, Set<Artifact>> licenseMap, final LicensePolicyEnforcer enforcer) {
-    final Map<Artifact, LicensePolicyEnforcerResult> results = new HashMap<Artifact, LicensePolicyEnforcerResult>();
+    final Map<Artifact, LicensePolicyEnforcerResult> results = new HashMap<>();
 
     licenseMap.forEach((license, artifactSet) -> {
       results.putAll(apply(license, artifactSet, enforcer));
@@ -134,7 +134,7 @@ public class AggregateLicensePolicyEnforcer {
    */
   @SuppressWarnings("unchecked")
   public Map<Artifact, LicensePolicyEnforcerResult> apply(final Map<License, Set<Artifact>> licenseMap) {
-    final Map<Artifact, LicensePolicyEnforcerResult> results = new HashMap<Artifact, LicensePolicyEnforcerResult>();
+    final Map<Artifact, LicensePolicyEnforcerResult> results = new HashMap<>();
 
     // apply the default policy to all artifacts, populating the map
     licenseMap.entrySet().stream().forEach(entry -> {

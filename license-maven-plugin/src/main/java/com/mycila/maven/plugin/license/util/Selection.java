@@ -105,7 +105,7 @@ public final class Selection {
   }
 
   private String[] findFolderExcludes() { // less we keep, less overhead we get so we only use user excludes there
-    final List<String> excludes = new ArrayList<String>(excluded.length / 2 /*estimate*/);
+    final List<String> excludes = new ArrayList<>(excluded.length / 2 /*estimate*/);
     for (final String exclude : (userExcluded != null ? userExcluded : excluded)) {
       if (isFolderExclusion(exclude)) {
         excludes.add(exclude);
@@ -120,7 +120,7 @@ public final class Selection {
   }
 
   private static String[] buildExclusions(boolean useDefaultExcludes, String[] excludes, String[] overrides) {
-    List<String> exclusions = new ArrayList<String>();
+    List<String> exclusions = new ArrayList<>();
     if (useDefaultExcludes) {
       exclusions.addAll(asList(Default.EXCLUDES));
     }
@@ -136,7 +136,7 @@ public final class Selection {
 
   private static String[] buildInclusions(String[] includes, String[] overrides) {
     // if we use the default exclusion list, we just remove
-    List<String> inclusions = new ArrayList<String>(asList(includes != null && includes.length > 0 ? includes : Default.INCLUDE));
+    List<String> inclusions = new ArrayList<>(asList(includes != null && includes.length > 0 ? includes : Default.INCLUDE));
     inclusions.removeAll(asList(overrides));
     if (inclusions.isEmpty()) {
       inclusions.addAll(asList(Default.INCLUDE));
@@ -149,7 +149,7 @@ public final class Selection {
     if (!useDefaultExcludes || includes == null || includes.length == 0) {
       return new String[0];
     }
-    List<String> overrides = new ArrayList<String>(asList(Default.EXCLUDES));
+    List<String> overrides = new ArrayList<>(asList(Default.EXCLUDES));
     overrides.retainAll(asList(includes));
     return overrides.toArray(new String[0]);
   }

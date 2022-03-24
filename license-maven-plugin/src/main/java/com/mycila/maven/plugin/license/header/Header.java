@@ -169,7 +169,7 @@ public final class Header {
       return potentialFileHeader.contains(expected);
 
     List<String> textBetweenSections = buildExpectedTextBetweenSections(expected, sectionsByIndex);
-    List<HeaderSection> sectionsInOrder = new ArrayList<HeaderSection>(sectionsByIndex.values());
+    List<HeaderSection> sectionsInOrder = new ArrayList<>(sectionsByIndex.values());
     return recursivelyFindMatch(potentialFileHeader, headerDefinition, textBetweenSections, sectionsInOrder, 0, 0);
   }
 
@@ -190,7 +190,7 @@ public final class Header {
       return expected;
 
     List<String> textBetweenSections = buildExpectedTextBetweenSections(expected, sectionsByIndex);
-    List<HeaderSection> sectionsInOrder = new ArrayList<HeaderSection>(sectionsByIndex.values());
+    List<HeaderSection> sectionsInOrder = new ArrayList<>(sectionsByIndex.values());
 
     StringBuilder b = new StringBuilder();
     for (int i = 0; i < textBetweenSections.size(); ++i) {
@@ -236,7 +236,7 @@ public final class Header {
    */
   private SortedMap<Integer, HeaderSection> computeSectionsByIndex(String expectedHeaderText) {
 
-    SortedMap<Integer, HeaderSection> sectionsByIndex = new TreeMap<Integer, HeaderSection>();
+    SortedMap<Integer, HeaderSection> sectionsByIndex = new TreeMap<>();
 
     if (sections == null)
       return sectionsByIndex;
@@ -300,7 +300,7 @@ public final class Header {
   private List<String> buildExpectedTextBetweenSections(String expectedHeaderText,
                                                         SortedMap<Integer, HeaderSection> sectionsByIndex) {
 
-    List<String> textBetweenSections = new ArrayList<String>();
+    List<String> textBetweenSections = new ArrayList<>();
     int currentIndex = 0;
 
     for (Map.Entry<Integer, HeaderSection> entry : sectionsByIndex.entrySet()) {

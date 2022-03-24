@@ -106,7 +106,7 @@ public class MavenProjectLicenses implements LicenseMap, LicenseMessage {
    * Return a set of licenses attributed to a single artifact.
    */
   protected Set<License> getLicensesFromArtifact(final Artifact artifact) {
-    Set<License> licenses = new HashSet<License>();
+    Set<License> licenses = new HashSet<>();
     try {
       MavenProject project = getProjectBuilder().build(artifact, getBuildingRequest()).getProject();
       licenses.addAll(project.getLicenses());
@@ -125,13 +125,13 @@ public class MavenProjectLicenses implements LicenseMap, LicenseMessage {
    * License.
    */
   protected Map<License, Set<Artifact>> getLicenseMapFromArtifacts(final Set<Artifact> dependencies) {
-    final ConcurrentMap<License, Set<Artifact>> map = new ConcurrentHashMap<License, Set<Artifact>>();
+    final ConcurrentMap<License, Set<Artifact>> map = new ConcurrentHashMap<>();
 
     // license:artifact is a many-to-many relationship.
     // Each artifact may have several licenses.
     // Each artifact may appear multiple times in the map.
     dependencies.parallelStream().forEach(artifact -> getLicensesFromArtifact(artifact).forEach(license -> {
-      map.putIfAbsent(license, new HashSet<Artifact>());
+      map.putIfAbsent(license, new HashSet<>());
       Set<Artifact> artifacts = map.get(license);
       artifacts.add(artifact);
       map.put(license, artifacts);
@@ -149,8 +149,8 @@ public class MavenProjectLicenses implements LicenseMap, LicenseMessage {
    * Return the Set of all direct and transitive Artifact dependencies.
    */
   private Set<Artifact> getDependencies() {
-    final Set<Artifact> artifacts = new HashSet<Artifact>();
-    final Set<DependencyNode> dependencies = new HashSet<DependencyNode>();
+    final Set<Artifact> artifacts = new HashSet<>();
+    final Set<DependencyNode> dependencies = new HashSet<>();
 
     // build the set of maven dependencies for each module in the reactor (might
     // only be the single one) and all its transitives
@@ -190,7 +190,7 @@ public class MavenProjectLicenses implements LicenseMap, LicenseMessage {
   }
 
   protected void setProjects(final Set<MavenProject> projects) {
-    this.projects = Optional.ofNullable(projects).orElse(new HashSet<MavenProject>());
+    this.projects = Optional.ofNullable(projects).orElse(new HashSet<>());
   }
 
   private DependencyGraphBuilder getGraph() {
