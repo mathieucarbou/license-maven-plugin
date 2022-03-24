@@ -50,7 +50,6 @@ import java.util.concurrent.ConcurrentMap;
 public class MavenProjectLicenses implements LicenseMap, LicenseMessage {
 
   private Set<MavenProject> projects;
-  private MavenSession session;
   private DependencyGraphBuilder graph;
   private ProjectBuilder projectBuilder;
   private ProjectBuildingRequest buildingRequest;
@@ -175,14 +174,6 @@ public class MavenProjectLicenses implements LicenseMap, LicenseMessage {
     // tempting, but does not resolve dependencies after the scope in which this
     // plugin is invoked
     // return project.getArtifacts();
-  }
-
-  private MavenSession getSession() {
-    return session;
-  }
-
-  private void setSession(MavenSession session) {
-    this.session = session;
   }
 
   protected Set<MavenProject> getProjects() {
