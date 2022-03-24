@@ -61,7 +61,7 @@ import java.util.Map;
  * @author Cedric Pronzato
  */
 public final class AdditionalHeaderDefinition {
-  private final Map<String, HeaderDefinition> definitions = new HashMap<String, HeaderDefinition>();
+  private final Map<String, HeaderDefinition> definitions = new HashMap<>();
 
   /**
    * Construct an <code>AdditionalHeaderDefinition</code> object using the given XML document as header definitions

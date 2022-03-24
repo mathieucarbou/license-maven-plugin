@@ -109,7 +109,7 @@ public enum DocumentType {
 
   ////////////////////////////////////
 
-  private static final Map<String, String> MAPPING = new LinkedHashMap<String, String>(values().length);
+  private static final Map<String, String> MAPPING = new LinkedHashMap<>(values().length);
 
   static {
     for (DocumentType type : values()) {
