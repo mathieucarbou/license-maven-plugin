@@ -42,8 +42,8 @@ import java.util.Properties;
  * @author Matthieu Brouillard
  */
 public class SVNPropertiesProvider implements PropertiesProvider {
-  ThreadLocal<SVNClientManager> svnClientThreadLocal = new ThreadLocal<SVNClientManager>();
-  ThreadLocal<SimpleDateFormat> sdfTimestampThreadLocal = new ThreadLocal<SimpleDateFormat>() {
+  ThreadLocal<SVNClientManager> svnClientThreadLocal = new ThreadLocal<>();
+  ThreadLocal<SimpleDateFormat> sdfTimestampThreadLocal = new ThreadLocal<>() {
     @Override
     protected SimpleDateFormat initialValue() {
       return new SimpleDateFormat("yyyyMMdd-HH:mm:ss");
@@ -74,7 +74,7 @@ public class SVNPropertiesProvider implements PropertiesProvider {
    */
   @Override
   public Map<String, String> getAdditionalProperties(final AbstractLicenseMojo mojo, Properties currentProperties, Document document) {
-    final Map<String, String> newProperties = new HashMap<String, String>();
+    final Map<String, String> newProperties = new HashMap<>();
     final File documentFile = document.getFile();
 
     initThreadLocalObjects(mojo, currentProperties.getProperty(SVN_SERVER_ID_PLUGIN_KEY));
