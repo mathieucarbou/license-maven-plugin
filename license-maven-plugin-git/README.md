@@ -6,14 +6,21 @@ It is quite common that legal departments require updating of copyright years in
 What is license-maven-plugin-git?
 ---------------------------------
 
-* `license-maven-plugin-git` can optionaly be used with `license-maven-plugin` to bring in properties (esp. the year of the last change) from git.
+* `license-maven-plugin-git` can optionally be used with `license-maven-plugin` to bring in properties (esp. the year of the last change) from git.
 * The properties added by `license-maven-plugin-git` can be used in file header templates used by `license-maven-plugin`
 
 Which properties is license-maven-plugin-git adding?
 ----------------------------------------------------
 
 * `license.git.copyrightLastYear` - the year of the last change of the present file as seen in git history
-* `license.git.copyrightYears` - the combination of `project.inceptionYear` and `license.git.copyrightLastYear` delimited by a dash (`-`), or just `project.inceptionYear` if `project.inceptionYear` is eqal to `license.git.copyrightLastYear`
+* `license.git.copyrightYears` - the combination of `project.inceptionYear` and `license.git.copyrightLastYear` delimited by a dash (`-`), or just `project.inceptionYear` if `project.inceptionYear` is equal to `license.git.copyrightLastYear`
+* `license.git.CreationAuthorName` and `license.git.CreationAuthorEmail` - the name and email of the author of the first commit of the present file as seen in git history.
+* `license.git.copyrightCreationYear` - the year of the first commit of the present file as seen in git history
+* `license.git.copyrightExistenceYears` - Similar to `license.git.copyrightYears` but using `license.git.copyrightCreationYear` for the first year
+
+The full git history for a file is required for accurate determination of the first commit (for the creation author name/email, creation year, or existence years). The plugin will warn if it detects a shallow git repository. If you are certain your shallow depth will still permit determination of these values you may suppress the warning by setting the parameter `license.warnIfShallow` to false.
+
+If you are using properties requiring the year of the last commit of a file but not using the "creation" properties requiring the first commit, you can improve performance by limiting the git history for each file using the property `license.git.maxCommitsLookup`. A value of 1 would provide the best performance but could be impacted if the last commit year is earlier than the year of previous commits.
 
 How to use license-maven-plugin-git
 -----------------------------------
@@ -75,8 +82,8 @@ Noteworthy
 There are situations when `license-maven-plugin-git` produces results you might find counter-intuitive:
 
 * If you have new files or uncommitted changes in your project, `license-maven-plugin-git` assumes that you will commit all available changes and new files in the current year.
-    * This condition is not fulfilled if you commit in such a way that the author date in the commit differs from the date of the last run of `mvn license:format`, e.g.
-        * comitting with `--amend`
+    * This condition is not fulfilled if you commit in such a way that the author date in the commit differs from the date of the last run of `mvn license:format`, e.g.,
+        * committing with `--amend`
         * or indeed committing in another year
     * In such situations, `mvn license:check` may fail or `mvn license:format` may introduce new changes.
     * Generally, if you feel that `license:check` and/or `license:format` are doing something inconsistent, commit all your changes, run `mvn license:format` and compare the work tree with the HEAD.

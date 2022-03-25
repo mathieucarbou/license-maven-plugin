@@ -47,7 +47,6 @@ import java.util.TimeZone;
  */
 public class GitLookup {
   public static final TimeZone DEFAULT_ZONE = TimeZone.getTimeZone("GMT");
-  public static final int DEFAULT_COMMITS_COUNT = 10;
 
   public enum DateSource {
     AUTHOR, COMMITER
