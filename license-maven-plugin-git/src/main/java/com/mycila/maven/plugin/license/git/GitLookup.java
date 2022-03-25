@@ -18,7 +18,6 @@ package com.mycila.maven.plugin.license.git;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.Status;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.api.errors.NoHeadException;
 import org.eclipse.jgit.diff.DiffConfig;
 import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.PersonIdent;
@@ -108,11 +107,10 @@ public class GitLookup {
    *
    * @param file for which the year should be retrieved
    * @return year of last modification of the file
-   * @throws NoHeadException if unable to retrieve the head of the git history
    * @throws IOException     if unable to read the file
    * @throws GitAPIException if unable to process the git history
    */
-  int getYearOfLastChange(File file) throws NoHeadException, GitAPIException, IOException {
+  int getYearOfLastChange(File file) throws GitAPIException, IOException {
     String repoRelativePath = pathResolver.relativize(file);
 
     if (isFileModifiedOrUnstaged(repoRelativePath)) {
@@ -161,7 +159,7 @@ public class GitLookup {
     return commitYear;
   }
 
-  String getAuthorNameOfCreation(File file) throws IOException, GitAPIException {
+  String getAuthorNameOfCreation(File file) throws IOException {
     String repoRelativePath = pathResolver.relativize(file);
     String authorName = "";
     RevWalk walk = getGitRevWalk(repoRelativePath, true);
@@ -174,7 +172,7 @@ public class GitLookup {
     return authorName;
   }
 
-  String getAuthorEmailOfCreation(File file) throws IOException, GitAPIException {
+  String getAuthorEmailOfCreation(File file) throws IOException {
     String repoRelativePath = pathResolver.relativize(file);
     String authorEmail = "";
     RevWalk walk = getGitRevWalk(repoRelativePath, true);

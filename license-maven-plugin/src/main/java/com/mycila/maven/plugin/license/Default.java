@@ -21,6 +21,10 @@ package com.mycila.maven.plugin.license;
  */
 public final class Default {
 
+  private Default() {
+    // Prevent Instantiation
+  }
+
   public static final String[] INCLUDE = new String[]{"**"};
 
   public static final String[] EXCLUDES = {
