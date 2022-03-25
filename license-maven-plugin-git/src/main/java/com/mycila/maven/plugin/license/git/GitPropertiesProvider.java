@@ -29,7 +29,9 @@ import com.mycila.maven.plugin.license.AbstractLicenseMojo;
 public class GitPropertiesProvider {
 
   private GitLookup gitLookup;
-  public static final String COPYRIGHT_LAST_YEAR_MAX_COMMITS_LOOKUP_KEY = "license.git.copyrightLastYearMaxCommitsLookup";
+  public static final String MAX_COMMITS_LOOKUP_KEY = "license.git.maxCommitsLookup";
+  // keep for compatibility
+  private static final String COPYRIGHT_LAST_YEAR_MAX_COMMITS_LOOKUP_KEY = "license.git.copyrightLastYearMaxCommitsLookup";
   public static final String COPYRIGHT_LAST_YEAR_SOURCE_KEY = "license.git.copyrightLastYearSource";
   public static final String COPYRIGHT_LAST_YEAR_TIME_ZONE_KEY = "license.git.copyrightLastYearTimeZone";
 
@@ -52,7 +54,11 @@ public class GitPropertiesProvider {
           String dateSourceString = props.getProperty(COPYRIGHT_LAST_YEAR_SOURCE_KEY,
               GitLookup.DateSource.AUTHOR.name());
           GitLookup.DateSource dateSource = GitLookup.DateSource.valueOf(dateSourceString.toUpperCase(Locale.US));
-          String checkCommitsCountString = props.getProperty(COPYRIGHT_LAST_YEAR_MAX_COMMITS_LOOKUP_KEY);
+          String checkCommitsCountString = props.getProperty(MAX_COMMITS_LOOKUP_KEY);
+          // Backwads compatibility
+          if (checkCommitsCountString == null) {
+              checkCommitsCountString = props.getProperty(COPYRIGHT_LAST_YEAR_MAX_COMMITS_LOOKUP_KEY);              
+          }
           int checkCommitsCount = Integer.MAX_VALUE;
           if (checkCommitsCountString != null) {
             checkCommitsCountString = checkCommitsCountString.trim();

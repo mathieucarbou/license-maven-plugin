@@ -20,7 +20,7 @@ Which properties is license-maven-plugin-git adding?
 
 The full git history for a file is required for accurate determination of the first commit (for the creation author name/email, creation year, or existence years). The plugin will warn if it detects a shallow git repository. If you are certain your shallow depth will still permit determination of these values you may suppress the warning by setting the parameter `license.warnIfShallow` to false.
 
-If you are not using the properties based on the first commit, you can slightly improve performance by limiting the git history for each file using the property `license.git.copyrightLastYearMaxCommitsLookup`.
+If you are using properties requiring the year of the last commit of a file but not using the "creation" properties requiring the first commit, you can improve performance by limiting the git history for each file using the property `license.git.maxCommitsLookup`. A value of 1 would provide the best performance but could be impacted if the last commit year is earlier than the year of previous commits.
 
 How to use license-maven-plugin-git
 -----------------------------------
