@@ -396,7 +396,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
   /**
    * Maven settings.
    */
-  @Component
+  @Parameter(defaultValue = "${settings}", readonly = true)
   private Settings settings;
   /**
    * The decrypter for passwords.
