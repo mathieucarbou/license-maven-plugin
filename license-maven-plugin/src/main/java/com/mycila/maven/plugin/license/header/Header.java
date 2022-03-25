@@ -165,8 +165,9 @@ public final class Header {
 
     SortedMap<Integer, HeaderSection> sectionsByIndex = computeSectionsByIndex(expected);
 
-    if (sectionsByIndex.isEmpty())
+    if (sectionsByIndex.isEmpty()) {
       return potentialFileHeader.contains(expected);
+    }
 
     List<String> textBetweenSections = buildExpectedTextBetweenSections(expected, sectionsByIndex);
     List<HeaderSection> sectionsInOrder = new ArrayList<>(sectionsByIndex.values());
@@ -186,8 +187,9 @@ public final class Header {
 
     SortedMap<Integer, HeaderSection> sectionsByIndex = computeSectionsByIndex(expected);
 
-    if (sectionsByIndex.isEmpty())
+    if (sectionsByIndex.isEmpty()) {
       return expected;
+    }
 
     List<String> textBetweenSections = buildExpectedTextBetweenSections(expected, sectionsByIndex);
     List<HeaderSection> sectionsInOrder = new ArrayList<>(sectionsByIndex.values());
@@ -262,10 +264,11 @@ public final class Header {
         HeaderSection existingSection = entry.getValue();
         int existingIndexEnd = existingIndexStart + existingSection.getKey().length();
 
-        if (existingIndexStart < indexEnd && index < existingIndexEnd)
+        if (existingIndexStart < indexEnd && index < existingIndexEnd) {
           throw new IllegalArgumentException(String.format(
               "Existing section '%1$s' overlaps with new section '%2$s'", existingSection.getKey(),
               section.getKey()));
+        }
 
         sectionsByIndex.put(index, section);
       }
@@ -350,27 +353,31 @@ public final class Header {
                                        List<String> expectedTextBetweenSections, List<HeaderSection> sectionsInOrder, int currentTextSegmentIndex,
                                        int currentPotentialFileHeaderIndex) {
 
-    if (currentTextSegmentIndex == expectedTextBetweenSections.size())
+    if (currentTextSegmentIndex == expectedTextBetweenSections.size()) {
       return true;
+    }
 
     int currentSearchFromIndex = currentPotentialFileHeaderIndex;
 
     while (true) {
       String expectedText = expectedTextBetweenSections.get(currentTextSegmentIndex);
       int index = potentialFileHeader.indexOf(expectedText, currentSearchFromIndex);
-      if (index == -1)
+      if (index == -1) {
         return false;
+      }
 
       if (currentTextSegmentIndex > 0) {
         HeaderSection section = sectionsInOrder.get(currentTextSegmentIndex - 1);
         String sectionValue = potentialFileHeader.substring(currentPotentialFileHeaderIndex, index);
-        if (!ensureSectionMatch(headerDefinition, section, sectionValue))
+        if (!ensureSectionMatch(headerDefinition, section, sectionValue)) {
           return false;
+        }
       }
 
       if (recursivelyFindMatch(potentialFileHeader, headerDefinition, expectedTextBetweenSections,
-          sectionsInOrder, currentTextSegmentIndex + 1, index + expectedText.length()))
+          sectionsInOrder, currentTextSegmentIndex + 1, index + expectedText.length())) {
         return true;
+      }
 
       currentSearchFromIndex = index + 1;
     }
@@ -389,8 +396,9 @@ public final class Header {
   private boolean ensureSectionMatch(HeaderDefinition headerDefinition, HeaderSection section, String sectionValue) {
 
     String match = section.getEnsureMatch();
-    if (!notEmpty(match))
+    if (!notEmpty(match)) {
       return true;
+    }
 
     String[] lines = sectionValue.split("\n");
 
@@ -402,8 +410,9 @@ public final class Header {
     if (notEmpty(before)) {
       for (int i = 0; i < lines.length; ++i) {
         String line = lines[i];
-        if (line.startsWith(before))
+        if (line.startsWith(before)) {
           lines[i] = line.substring(before.length());
+        }
       }
     }
 
@@ -415,8 +424,9 @@ public final class Header {
     if (section.isMultiLineMatch()) {
       StringBuilder b = new StringBuilder();
       for (int i = 0; i < lines.length; ++i) {
-        if (i > 0)
+        if (i > 0) {
           b.append('\n');
+        }
         b.append(lines[i]);
       }
       String multiLineValue = b.toString();
@@ -424,8 +434,9 @@ public final class Header {
     }
 
     for (String line : lines) {
-      if (!line.matches(match))
+      if (!line.matches(match)) {
         return false;
+      }
     }
 
     return true;
