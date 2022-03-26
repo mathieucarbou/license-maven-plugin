@@ -366,6 +366,12 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
   public boolean skipExistingHeaders = false;
 
   /**
+   * Skip the formatting of files in which the header matches other than text on the copyright line.
+   */
+  @Parameter(property = "license.skipExistingCopyrightLine", defaultValue = "false")
+  public boolean skipExistingCopyrightLine = false;
+
+  /**
    * When enforcing licenses on dependencies, exclude all but these scopes.
    */
   @Parameter(property = "license.dependencies.scope", required = true, defaultValue = "runtime")
@@ -642,12 +648,12 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
             callback.onUnknownFile(document, h);
           } else if (document.is(h)) {
             debug("Skipping header file: %s", document.getFilePath());
-          } else if (document.hasHeader(h, strictCheck)) {
+          } else if (document.hasHeader(h, strictCheck, skipExistingCopyrightLine)) {
             callback.onExistingHeader(document, h);
           } else {
             boolean headerFound = false;
             for (final Header validHeader : validHeaders) {
-              headerFound = document.hasHeader(validHeader, strictCheck);
+              headerFound = document.hasHeader(validHeader, strictCheck, skipExistingCopyrightLine);
               if (headerFound) {
                 callback.onExistingHeader(document, h);
                 break;

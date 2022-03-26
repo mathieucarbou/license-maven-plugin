@@ -70,21 +70,53 @@ public final class Document {
   }
 
   public boolean hasHeader(Header header, boolean strictCheck) {
+    return hasHeader(header, strictCheck, false);
+  }
+  
+  public boolean hasHeader(Header header, boolean strictCheck, boolean skipExistingCopyrightLine) {
     if (!strictCheck) {
       try {
         String fileHeader = readFirstLines(file, header.getLineCount() + 10, encoding);
         String fileHeaderOneLine = remove(fileHeader, headerDefinition.getFirstLine().trim(), headerDefinition.getEndLine().trim(), headerDefinition.getBeforeEachLine().trim(), "\n", "\r", "\t", " ");
         String headerOnOnelIne = mergeProperties(header.asOneLineString());
+        if (skipExistingCopyrightLine) {
+          // extract the copyright line from the file and put it in the header
+          String existingCopyrightLine = getCopyrightLine(fileHeader);
+          String headerCopyrightLine = getCopyrightLine(header.asString());
+          if (existingCopyrightLine != null) {
+            headerOnOnelIne = headerOnOnelIne.replace(headerCopyrightLine, existingCopyrightLine);
+          }
+        }
         return fileHeaderOneLine.contains(remove(headerOnOnelIne, headerDefinition.getFirstLine().trim(), headerDefinition.getEndLine().trim(), headerDefinition.getBeforeEachLine().trim()));
       } catch (IOException e) {
         throw new IllegalStateException("Cannot read file " + getFilePath() + ". Cause: " + e.getMessage(), e);
       }
     }
     try {
+      if (skipExistingCopyrightLine) {
+        return header.isMatchForTextKeepingCopyrightLine(this, headerDefinition, true, encoding);        
+      }
       return header.isMatchForText(this, headerDefinition, true, encoding);
     } catch (IOException e) {
       throw new IllegalStateException("Cannot read file " + getFilePath() + ". Cause: " + e.getMessage(), e);
     }
+  }
+
+  public static String getCopyrightLine(String header) {
+    int index = header.toLowerCase().indexOf("copyright");
+    if (index < 0) {
+      return null;
+    }
+    String c = header.substring(index);
+    index = c.indexOf('\r');
+    if (index > 0) {
+      c = c.substring(0, index);
+    }
+    index = c.indexOf('\n');
+    if (index > 0) {
+      c = c.substring(0, index);
+    }
+    return c.trim();
   }
 
   public void updateHeader(Header header) {

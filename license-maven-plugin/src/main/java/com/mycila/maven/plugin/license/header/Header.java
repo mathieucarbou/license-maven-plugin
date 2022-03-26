@@ -180,6 +180,18 @@ public final class Header {
     return isMatchForText(expected, fileHeader, headerDefinition, unix);
   }
 
+  public boolean isMatchForTextKeepingCopyrightLine(Document d, HeaderDefinition headerDefinition, boolean unix, String encoding) throws IOException {
+    String fileHeader = readFirstLines(d.getFile(), getLineCount() + 10, encoding).replaceAll(" *\r?\n", "\n");
+    String existingCopyrightLine = Document.getCopyrightLine(fileHeader);
+    if (existingCopyrightLine == null) {
+      return isMatchForText(d, headerDefinition, unix, encoding);
+    }
+    String headerCopyrightLine = Document.getCopyrightLine(headerContent);
+    String expected = buildForDefinition(headerDefinition, unix);
+    expected = d.mergeProperties(expected).replace(headerCopyrightLine, existingCopyrightLine);
+    return isMatchForText(expected, fileHeader, headerDefinition, unix);
+  }
+
   public String applyDefinitionAndSections(HeaderDefinition headerDefinition, boolean unix) {
 
     String expected = buildForDefinition(headerDefinition, unix);
