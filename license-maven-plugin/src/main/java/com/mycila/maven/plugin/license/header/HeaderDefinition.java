@@ -72,7 +72,9 @@ public final class HeaderDefinition {
     this.allowBlankLines = allowBlankLines;
     this.multiLine = multiLine;
     this.padLines = padLines;
-    if (!"unknown".equals(type)) validate();
+    if (!"unknown".equals(type)) {
+      validate();
+    }
     if (allowBlankLines && !multiLine) {
       throw new IllegalArgumentException("Header style " + type + " is configured to allow blank lines, so it should be set as a multi-line header style");
     }
@@ -174,27 +176,27 @@ public final class HeaderDefinition {
     if (isEmpty(value)) {
       throw new IllegalArgumentException("The value cannot be empty for XML tag " + property + " for type " + type);
     }
-    if ("firstLine".equalsIgnoreCase(property))
+    if ("firstLine".equalsIgnoreCase(property)) {
       firstLine = value;
-    else if ("allowBlankLines".equalsIgnoreCase(property))
+    } else if ("allowBlankLines".equalsIgnoreCase(property)) {
       allowBlankLines = Boolean.valueOf(value);
-    else if ("multiLine".equalsIgnoreCase(property) || "isMultiline".equalsIgnoreCase(property))
+    } else if ("multiLine".equalsIgnoreCase(property) || "isMultiline".equalsIgnoreCase(property)) {
       multiLine = Boolean.valueOf(value);
-    else if ("beforeEachLine".equalsIgnoreCase(property))
+    } else if ("beforeEachLine".equalsIgnoreCase(property)) {
       beforeEachLine = value;
-    else if ("endLine".equalsIgnoreCase(property))
+    } else if ("endLine".equalsIgnoreCase(property)) {
       endLine = value;
-    else if ("afterEachLine".equalsIgnoreCase(property))
+    } else if ("afterEachLine".equalsIgnoreCase(property)) {
       afterEachLine = value;
-    else if ("skipLine".equalsIgnoreCase(property))
+    } else if ("skipLine".equalsIgnoreCase(property)) {
       skipLinePattern = compile(value);
-    else if ("padLines".equalsIgnoreCase(property))
+    } else if ("padLines".equalsIgnoreCase(property)) {
       padLines = Boolean.parseBoolean(value);
-    else if ("firstLineDetectionPattern".equalsIgnoreCase(property))
+    } else if ("firstLineDetectionPattern".equalsIgnoreCase(property)) {
       firstLineDetectionPattern = compile(value);
-    else if ("lastLineDetectionPattern".equalsIgnoreCase(property))
+    } else if ("lastLineDetectionPattern".equalsIgnoreCase(property)) {
       lastLineDetectionPattern = compile(value);
-
+    }
   }
 
   /**
@@ -239,8 +241,12 @@ public final class HeaderDefinition {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
     HeaderDefinition that = (HeaderDefinition) o;
     return !(type != null ? !type.equals(that.type) : that.type != null);
   }
