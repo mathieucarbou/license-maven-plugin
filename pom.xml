@@ -35,6 +35,16 @@
   <inceptionYear>2008</inceptionYear>
   <url>https://mycila.carbou.me/license-maven-plugin/reports/${project.version}</url>
 
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/mathieucarbou/${mycila.github.name}/issues</url>
+  </issueManagement>
+
+  <ciManagement>
+    <system>GitHub</system>
+    <url>https://github.com/mathieucarbou/${mycila.github.name}/actions</url>
+  </ciManagement>
+
   <properties>
     <jdk.version>8</jdk.version>
     <source.encoding>UTF-8</source.encoding>
