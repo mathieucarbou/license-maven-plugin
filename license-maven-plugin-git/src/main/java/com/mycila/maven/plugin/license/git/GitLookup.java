@@ -21,6 +21,7 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.diff.DiffConfig;
 import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.lib.ObjectReader;
 import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.FollowFilter;
@@ -146,7 +147,9 @@ public class GitLookup implements Closeable {
       // avoid concurrent modifications during RevWalk
       // Closing the repository will close the FileObjectDatabase.
       // Here the newReader() is a WindowCursor which delegates the getShallowCommits() to the FileObjectDatabase.
-      this.shallow = !this.repository.getObjectDatabase().newReader().getShallowCommits().isEmpty();
+      try (ObjectReader objectReader = this.repository.getObjectDatabase().newReader()) {
+        this.shallow = !objectReader.getShallowCommits().isEmpty();
+      }
       this.pathResolver = new GitPathResolver(repository.getWorkTree().getAbsolutePath());
       this.dateSource = dateSource;
       this.timeZone = timeZone;
@@ -247,8 +250,10 @@ public class GitLookup implements Closeable {
   }
 
   private boolean isFileModifiedOrUnstaged(String repoRelativePath) throws GitAPIException {
-    @SuppressWarnings("resource")
-    Status status = new Git(repository).status().addPath(repoRelativePath).call();
+    Status status = null;
+    try (Git git = new Git(repository)) {
+      status = git.status().addPath(repoRelativePath).call();
+    }
     return !status.isClean();
   }
 
