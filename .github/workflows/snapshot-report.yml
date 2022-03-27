@@ -28,3 +28,4 @@ jobs:
           body: 'This is an auto-generated PR to update the snapshot report.'
           labels: 'in:doc'
           branch: generate-site
+          delete-branch: true
