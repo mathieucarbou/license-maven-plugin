@@ -33,7 +33,7 @@ class DefaultHeaderDefinitionTest {
     Header header = new Header(new UrlHeaderSource(getClass().getResource("/test-header1.txt"), "UTF-8"), null);
     for (HeaderDefinition definition : HeaderType.defaultDefinitions().values()) {
       final String content = FileUtils.read(new File(format("src/test/resources/styles/%s.txt", definition.getType())), System.getProperty("file.encoding"));
-      Assertions.assertEquals("Bad header for type: " + definition.getType(), content, header.buildForDefinition(definition, !containsWindowsLineEnding(content)));
+      Assertions.assertEquals(content, header.buildForDefinition(definition, !containsWindowsLineEnding(content)), "Bad header for type: " + definition.getType());
     }
   }
 
