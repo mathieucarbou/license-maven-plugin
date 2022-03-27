@@ -167,7 +167,7 @@ more license configurations in a single execution of the plugin. In simple terms
 wraps the previous configuration options for a license. The previous
 configuration syntax is still supported but deprecated, and may be removed in future.
 
-- [4.2-SNAPSHOT](https://mycila.carbou.me/license-maven-plugin/reports/4.2-SNAPSHOT/license-maven-plugin/plugin-info.html)
+- [4.2-SNAPSHOT](https://mycila.carbou.me/license-maven-plugin/reports/4.2-SNAPSHOT/)
 - [4.2.rc2](https://mycila.carbou.me/license-maven-plugin/reports/4.2.rc2/license-maven-plugin/plugin-info.html)
 - [4.1](https://mycila.carbou.me/license-maven-plugin/reports/4.1/license-maven-plugin/plugin-info.html)
 - [4.0](https://mycila.carbou.me/license-maven-plugin/reports/4.0/license-maven-plugin/plugin-info.html)
