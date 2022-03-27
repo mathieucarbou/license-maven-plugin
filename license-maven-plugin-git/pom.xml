@@ -40,7 +40,7 @@
   </distributionManagement>
 
   <properties>
-    <jacoco.minimum.coverage>0.81</jacoco.minimum.coverage>
+    <jacoco.minimum.coverage>0.80</jacoco.minimum.coverage>
   </properties>
 
   <dependencies>
