@@ -20,6 +20,7 @@ import org.eclipse.jgit.api.Status;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.diff.DiffConfig;
 import org.eclipse.jgit.lib.Constants;
+import org.eclipse.jgit.lib.ObjectReader;
 import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.FollowFilter;
@@ -76,8 +77,9 @@ public class GitLookup {
     this.repository = new FileRepositoryBuilder().findGitDir(anyFile).build();
     /* A workaround for  https://bugs.eclipse.org/bugs/show_bug.cgi?id=457961 */
     // Also contains contents of .git/shallow and can detect shallow repo
-    this.shallow = !this.repository.getObjectDatabase().newReader().getShallowCommits().isEmpty();
-
+    try (ObjectReader objectReader = this.repository.getObjectDatabase().newReader()) {
+      this.shallow = !objectReader.getShallowCommits().isEmpty();
+    }
     this.pathResolver = new GitPathResolver(repository.getWorkTree().getAbsolutePath());
     this.dateSource = dateSource;
     switch (dateSource) {
