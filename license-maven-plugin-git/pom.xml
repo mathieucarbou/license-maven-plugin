@@ -45,6 +45,13 @@
 
   <dependencies>
     <dependency>
+      <groupId>org.apache.maven.plugin-tools</groupId>
+      <artifactId>maven-plugin-annotations</artifactId>
+      <scope>provided</scope>
+      <optional>true</optional>
+    </dependency>
+
+    <dependency>
       <groupId>com.mycila</groupId>
       <artifactId>license-maven-plugin</artifactId>
       <version>${project.version}</version>
