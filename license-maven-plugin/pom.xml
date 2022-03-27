@@ -40,6 +40,10 @@
     <tag>HEAD</tag>
   </scm>
 
+  <properties>
+    <jacoco.minimum.coverage>0.77</jacoco.minimum.coverage>
+  </properties>
+
   <build>
     <plugins>
       <plugin>
