@@ -26,6 +26,7 @@ import java.io.File;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static com.mycila.maven.plugin.license.header.HeaderType.APOSTROPHE_STYLE;
 import static com.mycila.maven.plugin.license.header.HeaderType.ASCIIDOC_STYLE;
@@ -74,7 +75,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
  */
 class CompleteMojoTest {
 
-  private static Iterable<Object[]> parameters() {
+  private static Stream<Object[]> parameters() {
     final List<Object[]> parameters = asList(new Object[][]{
         {ASCIIDOC_STYLE, "adoc"},
         {MVEL_STYLE, "mv"},
@@ -120,20 +121,12 @@ class CompleteMojoTest {
       Assertions.fail("Missing test cases: " + set);
     }
 
-    return parameters;
-  }
-
-  private final String extension;
-  private final HeaderType headerType;
-
-  public CompleteMojoTest(HeaderType headerType, String extension) {
-    this.extension = extension;
-    this.headerType = headerType;
+    return parameters.stream();
   }
 
   @ParameterizedTest
   @MethodSource("parameters")
-  void test_add(String name, HeaderType headerType) throws Exception {
+  void test_add(HeaderType headerType, String extension) throws Exception {
     File tmp = new File("target/test/complete/" + headerType + "/test_add");
     FileUtils.copyFilesToFolder(new File("src/test/resources/complete/" + headerType), tmp);
 
@@ -153,7 +146,7 @@ class CompleteMojoTest {
 
   @ParameterizedTest
   @MethodSource("parameters")
-  void test_update(String name) throws Exception {
+  void test_update(HeaderType headerType, String extension) throws Exception {
     File tmp = new File("target/test/complete/" + headerType + "/test_update");
     FileUtils.copyFilesToFolder(new File("src/test/resources/complete/" + headerType), tmp);
 
@@ -182,7 +175,7 @@ class CompleteMojoTest {
 
   @ParameterizedTest
   @MethodSource("parameters")
-  void test_remove(String name) throws Exception {
+  void test_remove(HeaderType headerType, String extension) throws Exception {
     File tmp = new File("target/test/complete/" + headerType + "/test_remove");
     FileUtils.copyFilesToFolder(new File("src/test/resources/complete/" + headerType), tmp);
 
@@ -212,7 +205,7 @@ class CompleteMojoTest {
 
   @ParameterizedTest
   @MethodSource("parameters")
-  void test_check_failed(String name) throws Exception {
+  void test_check_failed(HeaderType headerType, String extension) throws Exception {
     File tmp = new File("target/test/complete/" + headerType + "/test_check_failed");
     FileUtils.copyFilesToFolder(new File("src/test/resources/complete/" + headerType), tmp);
 
@@ -234,7 +227,7 @@ class CompleteMojoTest {
 
   @ParameterizedTest
   @MethodSource("parameters")
-  void test_check_success(String name) throws Exception {
+  void test_check_success(HeaderType headerType, String extension) throws Exception {
     File tmp = new File("target/test/complete/" + headerType + "/test_check_success");
     FileUtils.copyFilesToFolder(new File("src/test/resources/complete/" + headerType), tmp);
 

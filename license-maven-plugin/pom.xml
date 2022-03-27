@@ -40,6 +40,10 @@
     <tag>HEAD</tag>
   </scm>
 
+  <properties>
+    <jacoco.minimum.coverage>0.76</jacoco.minimum.coverage>
+  </properties>
+
   <build>
     <plugins>
       <plugin>
@@ -194,6 +198,13 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.junit.vintage</groupId>
+      <artifactId>junit-vintage-engine</artifactId>
+      <version>5.8.2</version>
       <scope>test</scope>
     </dependency>
 

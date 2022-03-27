@@ -21,7 +21,6 @@ import com.mycila.maven.plugin.license.document.Document;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -36,7 +35,7 @@ import org.junit.jupiter.api.io.TempDir;
 /**
  * @author <a href="mailto:ppalaga@redhat.com">Peter Palaga</a>
  */
-public class CopyrightRangeProviderTest {
+class CopyrightRangeProviderTest {
 
   private static Path gitRepoRoot;
 
@@ -44,7 +43,7 @@ public class CopyrightRangeProviderTest {
   static File tempFolder;
 
   @Test
-  public void copyrightRange() {
+  void copyrightRange() {
     CopyrightRangeProvider provider = new CopyrightRangeProvider();
 
     assertRange(provider, "dir1/file1.txt", "2000", "2006", "1999-2006", "2000-2006");
@@ -84,18 +83,17 @@ public class CopyrightRangeProviderTest {
   }
 
   private static Document newDocument(String relativePath) {
-    Path path = Paths.get(gitRepoRoot.toAbsolutePath() + File.separator
+    Path path = Paths.get(gitRepoRoot + File.separator
         + relativePath.replace('/', File.separatorChar));
     return new Document(path.toFile(), null, "utf-8", new String[0], null);
   }
 
   @BeforeAll
-  public static void beforeClass() throws IOException {
+  static void beforeClass() throws IOException {
     URL url = GitLookupTest.class.getResource("git-test-repo.zip");
-    Path unzipDestination = tempFolder.toPath();
-    gitRepoRoot = Files.createDirectory(unzipDestination);
+    gitRepoRoot = Paths.get(tempFolder.toPath() + File.separator + "git-test-repo");
 
-    GitLookupTest.unzip(url, unzipDestination);
+    GitLookupTest.unzip(url, tempFolder.toPath());
   }
 
 }

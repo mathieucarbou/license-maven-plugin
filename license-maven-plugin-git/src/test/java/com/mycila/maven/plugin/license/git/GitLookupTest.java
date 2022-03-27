@@ -29,7 +29,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URL;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Calendar;
@@ -40,7 +39,7 @@ import java.util.zip.ZipInputStream;
 /**
  * @author <a href="mailto:ppalaga@redhat.com">Peter Palaga</a>
  */
-public class GitLookupTest {
+class GitLookupTest {
 
   private static Path gitRepoRoot;
 
@@ -48,12 +47,10 @@ public class GitLookupTest {
   static File tempFolder;
 
   @BeforeAll
-  public static void beforeClass() throws IOException {
+  static void beforeClass() throws IOException {
     URL url = GitLookupTest.class.getResource("git-test-repo.zip");
-    Path unzipDestination = tempFolder.toPath();
-    gitRepoRoot = Files.createDirectory(unzipDestination);
-
-    unzip(url, unzipDestination);
+    gitRepoRoot = Paths.get(tempFolder.toPath() + File.separator + "git-test-repo");
+    unzip(url, tempFolder.toPath());
   }
 
   static void unzip(URL url, Path unzipDestination) throws IOException {
@@ -92,7 +89,7 @@ public class GitLookupTest {
   }
 
   @Test
-  public void modified() throws GitAPIException, IOException {
+  void modified() throws GitAPIException, IOException {
     assertLastChange(newAuthorLookup(), "dir1/file1.txt", 2006);
     assertLastChange(newCommitterLookup(), "dir1/file1.txt", 2006);
 
@@ -101,7 +98,7 @@ public class GitLookupTest {
   }
 
   @Test
-  public void justCreated() throws GitAPIException, IOException {
+  void justCreated() throws GitAPIException, IOException {
     assertLastChange(newAuthorLookup(), "dir2/file2.txt", 2007);
     assertLastChange(newCommitterLookup(), "dir2/file2.txt", 2007);
 
@@ -110,7 +107,7 @@ public class GitLookupTest {
   }
 
   @Test
-  public void moved() throws GitAPIException, IOException {
+  void moved() throws GitAPIException, IOException {
     assertLastChange(newAuthorLookup(), "dir1/file3.txt", 2009);
     assertLastChange(newCommitterLookup(), "dir1/file3.txt", 2010);
 
@@ -120,7 +117,7 @@ public class GitLookupTest {
   }
 
   @Test
-  public void newUnstaged() throws GitAPIException, IOException {
+  void newUnstaged() throws GitAPIException, IOException {
     int currentYear = getCurrentGmtYear();
     assertLastChange(newAuthorLookup(), "dir1/file5.txt", currentYear);
     assertLastChange(newCommitterLookup(), "dir1/file5.txt", currentYear);
@@ -130,7 +127,7 @@ public class GitLookupTest {
   }
 
   @Test
-  public void newStaged() throws GitAPIException, IOException {
+  void newStaged() throws GitAPIException, IOException {
     int currentYear = getCurrentGmtYear();
     assertLastChange(newAuthorLookup(), "dir1/file6.txt", currentYear);
     assertLastChange(newCommitterLookup(), "dir1/file6.txt", currentYear);
@@ -149,7 +146,7 @@ public class GitLookupTest {
   }
 
   @Test
-  public void reuseProvider() throws GitAPIException, IOException {
+  void reuseProvider() throws GitAPIException, IOException {
     GitLookup provider = newAuthorLookup();
     assertLastChange(provider, "dir1/file1.txt", 2006);
     assertLastChange(provider, "dir2/file2.txt", 2007);
@@ -157,7 +154,7 @@ public class GitLookupTest {
   }
 
   @Test
-  public void timezone() throws GitAPIException, IOException {
+  void timezone() throws GitAPIException, IOException {
     try {
       new GitLookup(gitRepoRoot.toFile(), DateSource.AUTHOR, TimeZone.getTimeZone("GMT"), 10);
       Assertions.fail("RuntimeException expected");
@@ -196,14 +193,14 @@ public class GitLookupTest {
 
   private void assertLastChange(GitLookup provider, String relativePath, int expected) throws
       GitAPIException, IOException {
-    int actual = provider.getYearOfLastChange(Paths.get(gitRepoRoot.toAbsolutePath() + File.separator
+    int actual = provider.getYearOfLastChange(Paths.get(gitRepoRoot + File.separator
         + relativePath.replace('/', File.separatorChar)).toFile());
     Assertions.assertEquals(expected, actual);
   }
 
   private void assertCreation(GitLookup provider, String relativePath, int expected) throws
       GitAPIException, IOException {
-    int actual = provider.getYearOfCreation(Paths.get(gitRepoRoot.toAbsolutePath() + File.separator
+    int actual = provider.getYearOfCreation(Paths.get(gitRepoRoot + File.separator
         + relativePath.replace('/', File.separatorChar)).toFile());
     Assertions.assertEquals(expected, actual);
   }

@@ -37,6 +37,10 @@
     </site>
   </distributionManagement>
 
+  <properties>
+    <jacoco.minimum.coverage>0.00</jacoco.minimum.coverage>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.mycila</groupId>

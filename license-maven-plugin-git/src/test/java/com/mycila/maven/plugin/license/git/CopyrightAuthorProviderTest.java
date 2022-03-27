@@ -21,7 +21,6 @@ import com.mycila.maven.plugin.license.document.Document;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -64,7 +63,7 @@ class CopyrightAuthorProviderTest {
   }
 
   private static Document newDocument(String relativePath) {
-    Path path = Paths.get(gitRepoRoot.toAbsolutePath() + File.separator
+    Path path = Paths.get(gitRepoRoot + File.separator
         + relativePath.replace('/', File.separatorChar));
     return new Document(path.toFile(), null, "utf-8", new String[0], null);
   }
@@ -72,10 +71,9 @@ class CopyrightAuthorProviderTest {
   @BeforeAll
   static void beforeClass() throws IOException {
     URL url = GitLookupTest.class.getResource("git-test-repo.zip");
-    Path unzipDestination = tempFolder.toPath();
-    gitRepoRoot = Files.createDirectory(unzipDestination);
+    gitRepoRoot = Paths.get(tempFolder.toPath() + File.separator + "git-test-repo");
 
-    GitLookupTest.unzip(url, unzipDestination);
+    GitLookupTest.unzip(url, tempFolder.toPath());
   }
 
 }
