@@ -36,7 +36,7 @@
   <url>https://mycila.carbou.me/license-maven-plugin/reports/${project.version}</url>
 
   <properties>
-    <jdk.version>1.8</jdk.version>
+    <jdk.version>8</jdk.version>
     <source.encoding>UTF-8</source.encoding>
     <mycila.github.name>license-maven-plugin</mycila.github.name>
     <junit.version>5.8.2</junit.version>
