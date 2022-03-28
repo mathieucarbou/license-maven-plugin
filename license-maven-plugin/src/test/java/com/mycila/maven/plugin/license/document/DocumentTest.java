@@ -24,8 +24,17 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
@@ -133,40 +142,26 @@ class DocumentTest {
     Assertions.assertEquals("some data\r\nand other data\r\n", doc.getContent());
   }
 
-  @Test
-  void test_remove_header_xml_1() throws Exception {
+  @ParameterizedTest
+  @MethodSource("parameters")
+  void test_remove_header_xml(String document, String content) throws Exception {
     Document doc = new Document(
-        new File("src/test/resources/doc/doc4.xml"),
+        new File(document),
         DocumentType.XML.getDefaultHeaderType().getDefinition(),
         System.getProperty("file.encoding"), new String[]{"copyright"},
         loader);
     doc.parseHeader();
     doc.removeHeader();
-    Assertions.assertEquals("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\r\n<web-app/>\r\n", doc.getContent());
+    Assertions.assertEquals(content, doc.getContent());
   }
 
-  @Test
-  void test_remove_header_xml_2() throws Exception {
-    Document doc = new Document(
-        new File("src/test/resources/doc/doc5.xml"),
-        DocumentType.XML.getDefaultHeaderType().getDefinition(),
-        System.getProperty("file.encoding"), new String[]{"copyright"},
-        loader);
-    doc.parseHeader();
-    doc.removeHeader();
-    Assertions.assertEquals("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\r\n\r\n<web-app/>\r\n", doc.getContent());
-  }
-
-  @Test
-  void test_remove_header_xml_3() throws Exception {
-    Document doc = new Document(
-        new File("src/test/resources/doc/doc6.xml"),
-        DocumentType.XML.getDefaultHeaderType().getDefinition(),
-        System.getProperty("file.encoding"), new String[]{"copyright"},
-        loader);
-    doc.parseHeader();
-    doc.removeHeader();
-    Assertions.assertEquals("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\r\n<web-app/>\r\n", doc.getContent());
+  private static Stream<Object[]> parameters() {
+    final List<Object[]> parameters = Arrays.asList(new Object[][] {
+      {"src/test/resources/doc/doc4.xml", "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\r\n<web-app/>\r\n"},
+      {"src/test/resources/doc/doc5.xml", "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\r\n\r\n<web-app/>\r\n"},
+      {"src/test/resources/doc/doc6.xml", "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\r\n<web-app/>\r\n"}
+    });
+    return parameters.stream();
   }
 
   @Test
