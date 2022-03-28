@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LicenseRemoveMojo.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">license-maven-plugin</a> &gt; <a href="index.source.html" class="el_package">com.mycila.maven.plugin.license</a> &gt; <span class="el_source">LicenseRemoveMojo.java</span></div><h1>LicenseRemoveMojo.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2008-2022 Mycila (mathieu.carbou@gmail.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.mycila.maven.plugin.license;
+
+import com.mycila.maven.plugin.license.document.Document;
+import com.mycila.maven.plugin.license.header.Header;
+import java.io.File;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Mojo;
+
+/**
+ * Remove the specified header from source files
+ *
+ * @author Mathieu Carbou (mathieu.carbou@gmail.com)
+ */
+@Mojo(name = &quot;remove&quot;, threadSafe = true)
+<span class="fc" id="L31">public final class LicenseRemoveMojo extends AbstractLicenseMojo {</span>
+
+  @Override
+  public void execute() throws MojoExecutionException, MojoFailureException {
+<span class="fc" id="L35">    report = new Report(reportFormat, Report.Action.REMOVE, project, clock, reportSkipped);</span>
+
+<span class="pc bpc" id="L37" title="1 of 2 branches missed.">    if (!skip) {</span>
+<span class="fc" id="L38">      getLog().info(&quot;Removing license headers...&quot;);</span>
+    }
+
+<span class="fc" id="L41">    AbstractCallback callback = new AbstractCallback() {</span>
+
+      @Override
+      public void onHeaderNotFound(Document document, Header header) {
+<span class="fc" id="L45">        debug(&quot;Header was not found in: %s (But keep trying to find another header to remove)&quot;, document.getFile());</span>
+<span class="fc" id="L46">        remove(document);</span>
+<span class="fc" id="L47">      }</span>
+
+      @Override
+      public void onExistingHeader(Document document, Header header) {
+<span class="fc" id="L51">        info(&quot;Removing license header from: %s&quot;, document.getFile());</span>
+<span class="fc" id="L52">        remove(document);</span>
+<span class="fc" id="L53">      }</span>
+
+    };
+
+<span class="fc" id="L57">    execute(callback);</span>
+
+<span class="fc" id="L59">    callback.checkUnknown();</span>
+<span class="fc" id="L60">  }</span>
+
+  private void remove(Document document) {
+<span class="fc" id="L63">    document.parseHeader();</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">    if (document.headerDetected()) {</span>
+<span class="fc" id="L65">      document.removeHeader();</span>
+<span class="pc bpc" id="L66" title="1 of 2 branches missed.">      if (!dryRun) {</span>
+<span class="fc" id="L67">        document.save();</span>
+      } else {
+<span class="nc" id="L69">        String name = document.getFile().getName() + &quot;.licensed&quot;;</span>
+<span class="nc" id="L70">        File copy = new File(document.getFile().getParentFile(), name);</span>
+<span class="nc" id="L71">        info(&quot;Result saved to: %s&quot;, copy);</span>
+<span class="nc" id="L72">        document.saveTo(copy);</span>
+      }
+<span class="fc" id="L74">      report.add(document.getFile(), Report.Result.REMOVED);</span>
+    } else {
+<span class="fc" id="L76">      report.add(document.getFile(), Report.Result.NOOP);</span>
+    }
+<span class="fc" id="L78">  }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
