@@ -16,10 +16,16 @@
 package com.mycila.maven.plugin.license.header;
 
 import com.mycila.maven.plugin.license.util.FileContent;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Stream;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
@@ -51,30 +57,28 @@ class HeaderParserTest {
     Assertions.assertEquals(49, parser.getEndPosition());
   }
 
-  @Test
-  void test_parsing_xml1() throws Exception {
-    HeaderParser parser = new HeaderParser(new FileContent(new File("src/test/resources/doc/doc4.xml"), System.getProperty("file.encoding")),
+  @ParameterizedTest
+  @MethodSource("parameters")
+  void test_parsing_xml(String document, int endPosition) throws Exception {
+    HeaderParser parser = new HeaderParser(new FileContent(new File(document), System.getProperty("file.encoding")),
         HeaderType.XML_STYLE.getDefinition(), new String[]{"copyright"});
-    Assertions.assertTrue(parser.gotAnyHeader());
+    if (document == "src/test/resources/doc/doc6.xml") {
+      Assertions.assertFalse(parser.gotAnyHeader());
+    } else {
+      Assertions.assertTrue(parser.gotAnyHeader());
+    }
     Assertions.assertEquals(45, parser.getBeginPosition());
-    Assertions.assertEquals(862, parser.getEndPosition());
+    Assertions.assertEquals(endPosition, parser.getEndPosition());
   }
 
-  @Test
-  void test_parsing_xml2() throws Exception {
-    HeaderParser parser = new HeaderParser(new FileContent(new File("src/test/resources/doc/doc5.xml"), System.getProperty("file.encoding")),
-        HeaderType.XML_STYLE.getDefinition(), new String[]{"copyright"});
-    Assertions.assertTrue(parser.gotAnyHeader());
-    Assertions.assertEquals(45, parser.getBeginPosition());
-    Assertions.assertEquals(864, parser.getEndPosition());
-  }
-
-  @Test
-  void test_parsing_xml3() throws Exception {
-    HeaderParser parser = new HeaderParser(new FileContent(new File("src/test/resources/doc/doc6.xml"), System.getProperty("file.encoding")),
-        HeaderType.XML_STYLE.getDefinition(), new String[]{"copyright"});
-    Assertions.assertFalse(parser.gotAnyHeader());
-  }
+  private static Stream<Object[]> parameters() {
+      final List<Object[]> parameters = Arrays.asList(new Object[][] {
+        {"src/test/resources/doc/doc4.xml", 862},
+        {"src/test/resources/doc/doc5.xml", 864},
+        {"src/test/resources/doc/doc6.xml", -1}
+      });
+      return parameters.stream();
+    }
 
   @Test
   void test_parsing_xml4() throws Exception {
