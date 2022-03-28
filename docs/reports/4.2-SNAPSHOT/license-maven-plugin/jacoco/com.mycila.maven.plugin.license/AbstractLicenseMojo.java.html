@@ -698,7 +698,7 @@ import org.xml.sax.InputSource;
 
   private int getNumberOfExecutorThreads() {
 <span class="pc bpc" id="L700" title="1 of 2 branches missed.">    return nThreads &gt; 0 ?</span>
-<span class="nc" id="L701">        nThreads :</span>
+        nThreads :
 <span class="fc" id="L702">        Math.max(1, (int) (Runtime.getRuntime().availableProcessors() * concurrencyFactor));</span>
   }
 
