@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<licensePluginReport goal="CHECK" timestamp="1648380342383">
+<licensePluginReport goal="FORMAT" timestamp="1648480928665">
     <module artifactId="license-maven-plugin-parent" groupId="com.mycila" version="4.2-SNAPSHOT"/>
     <files>
-        <file path="pom.xml" result="PRESENT"/>
+        <file path="pom.xml" result="REPLACED"/>
     </files>
 </licensePluginReport>
