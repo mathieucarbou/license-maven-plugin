@@ -15,13 +15,12 @@
  */
 package com.mycila.maven.plugin.license.git;
 
+import com.mycila.maven.plugin.license.AbstractLicenseMojo;
 import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.TimeZone;
-
-import com.mycila.maven.plugin.license.AbstractLicenseMojo;
 
 /**
  * @author <a href="mailto:ppalaga@redhat.com">Peter Palaga</a>

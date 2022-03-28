@@ -15,16 +15,15 @@
  */
 package com.mycila.maven.plugin.license;
 
+import java.io.File;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import org.apache.maven.monitor.logging.DefaultLog;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.logging.SystemStreamLog;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.io.File;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)

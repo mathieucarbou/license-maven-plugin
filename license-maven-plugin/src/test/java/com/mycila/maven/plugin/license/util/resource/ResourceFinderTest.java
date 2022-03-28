@@ -15,16 +15,15 @@
  */
 package com.mycila.maven.plugin.license.util.resource;
 
-import org.apache.maven.plugin.MojoFailureException;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import org.apache.maven.plugin.MojoFailureException;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)

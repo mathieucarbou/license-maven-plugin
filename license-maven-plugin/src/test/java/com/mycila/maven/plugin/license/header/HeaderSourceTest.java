@@ -1,14 +1,12 @@
 package com.mycila.maven.plugin.license.header;
 
+import static com.mycila.maven.plugin.license.Multi.DEFAULT_SEPARATOR;
+
 import com.mycila.maven.plugin.license.Multi;
 import com.mycila.maven.plugin.license.util.resource.ResourceFinder;
-
 import java.nio.file.Paths;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import static com.mycila.maven.plugin.license.Multi.DEFAULT_SEPARATOR;
 
 class HeaderSourceTest {
 

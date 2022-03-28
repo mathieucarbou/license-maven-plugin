@@ -17,7 +17,6 @@ package com.mycila.maven.plugin.license.git;
 
 import com.mycila.maven.plugin.license.LicenseCheckMojo;
 import com.mycila.maven.plugin.license.document.Document;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -26,7 +25,6 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

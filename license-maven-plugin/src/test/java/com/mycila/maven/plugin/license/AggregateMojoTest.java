@@ -15,14 +15,13 @@
  */
 package com.mycila.maven.plugin.license;
 
+import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.io.File;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)

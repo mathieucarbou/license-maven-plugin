@@ -16,7 +16,6 @@
 package com.mycila.maven.plugin.license;
 
 import com.mycila.maven.plugin.license.document.Document;
-
 import java.util.Map;
 import java.util.Properties;
 

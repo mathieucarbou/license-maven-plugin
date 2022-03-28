@@ -17,11 +17,10 @@ package com.mycila.maven.plugin.license;
 
 import com.mycila.maven.plugin.license.document.Document;
 import com.mycila.maven.plugin.license.header.Header;
+import java.io.File;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
-
-import java.io.File;
 
 /**
  * Reformat files with a missing header to add it

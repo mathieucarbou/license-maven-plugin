@@ -15,14 +15,13 @@
  */
 package com.mycila.maven.plugin.license.dependencies;
 
-import org.apache.maven.artifact.Artifact;
-import org.apache.maven.model.License;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.model.License;
 
 /**
  * Aggregate license policy enforcement with default enforcer bindings based on {@link LicensePolicy.Type}.

@@ -17,7 +17,6 @@ package com.mycila.maven.plugin.license.header;
 
 import com.mycila.xmltool.CallBack;
 import com.mycila.xmltool.XMLTag;
-
 import java.util.HashMap;
 import java.util.Map;
 

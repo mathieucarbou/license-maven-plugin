@@ -15,17 +15,16 @@
  */
 package com.mycila.maven.plugin.license.dependencies;
 
-import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.DefaultArtifact;
-import org.apache.maven.artifact.handler.DefaultArtifactHandler;
-import org.apache.maven.model.License;
-
 import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.DefaultArtifact;
+import org.apache.maven.artifact.handler.DefaultArtifactHandler;
+import org.apache.maven.model.License;
 
 /**
  * Utility class for test setup methods related to this package.
