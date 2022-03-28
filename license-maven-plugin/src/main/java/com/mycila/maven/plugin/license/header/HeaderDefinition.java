@@ -37,7 +37,7 @@ public final class HeaderDefinition {
   private Pattern lastLineDetectionPattern;
   private Boolean multiLine;
 
-  private boolean padLines = false;
+  private boolean padLines;
 
   /**
    * Constructs a new <code>HeaderDefinition</code> object with every header definition properties.

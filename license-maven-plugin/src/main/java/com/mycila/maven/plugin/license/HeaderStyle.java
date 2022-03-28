@@ -70,7 +70,7 @@ public class HeaderStyle {
    * Defaulted to false because most of the time, a header has some characters on each line ({@link #beforeEachLine})
    */
   @Parameter
-  public boolean allowBlankLines = false;
+  public boolean allowBlankLines;
 
   /**
    * Only for non multi-line comments: specify if some spaces should be added after the header line and before the {@link #afterEachLine} characters so that all the lines are aligned.
@@ -78,7 +78,7 @@ public class HeaderStyle {
    * Default to false.
    */
   @Parameter
-  public boolean padLines = false;
+  public boolean padLines;
 
   /**
    * A regex to define a first line in a file that should be skipped and kept untouched, like the XML declaration at the top of XML documents
