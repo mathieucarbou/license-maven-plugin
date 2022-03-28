@@ -610,8 +610,8 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
     }
 
     final List<PropertiesProvider> propertiesProviders = new LinkedList<>();
-    int nThreads = getNumberOfExecutorThreads();
-    ExecutorService executorService = Executors.newFixedThreadPool(nThreads);
+    int threads = getNumberOfExecutorThreads();
+    ExecutorService executorService = Executors.newFixedThreadPool(threads);
 
     try {
 
@@ -666,7 +666,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
 
       CompletionService<?> completionService = new ExecutorCompletionService<>(executorService);
       int count = 0;
-      debug("Number of execution threads: %s", nThreads);
+      debug("Number of execution threads: %s", threads);
 
       for (final String file : listSelectedFiles(licenseSet)) {
         completionService.submit(() -> {
