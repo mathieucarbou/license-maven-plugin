@@ -90,7 +90,7 @@ public final class LicenseCheckMojo extends AbstractLicenseMojo {
           .filter(result -> result.getRuling().equals(LicensePolicy.Rule.DENY))
           .collect(Collectors.toSet());
 
-      if (deniedLicenseResult.size() != 0) {
+      if (!deniedLicenseResult.isEmpty()) {
         final StringBuilder licenseExceptionMsg = new StringBuilder(dependencyExceptionMessage);
         deniedLicenseResult.stream().forEach(result -> {
           licenseExceptionMsg.append(System.lineSeparator());
