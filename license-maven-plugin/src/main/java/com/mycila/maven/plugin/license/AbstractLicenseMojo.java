@@ -260,7 +260,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
    * support, and the value is the name of the comment type to use.
    */
   @Parameter
-  public Map<String, String> mapping = new LinkedHashMap<String, String>();
+  public Map<String, String> mapping = new LinkedHashMap<>();
 
   /**
    * Whether to use the default mapping between file extensions and comment
@@ -585,7 +585,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
     if (licenseSet.validHeaders == null) {
       licenseSet.validHeaders = new String[0];
     }
-    final List<Header> validHeaders = new ArrayList<Header>(licenseSet.validHeaders.length);
+    final List<Header> validHeaders = new ArrayList<>(licenseSet.validHeaders.length);
     for (final String validHeader : licenseSet.validHeaders) {
       final HeaderSource validHeaderSource = HeaderSource.of(null, null, validHeader, this.encoding,
           finder);
