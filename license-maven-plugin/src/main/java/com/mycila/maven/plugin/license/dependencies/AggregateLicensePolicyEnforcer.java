@@ -43,7 +43,7 @@ public class AggregateLicensePolicyEnforcer {
   public AggregateLicensePolicyEnforcer(final Set<LicensePolicy> policies) {
     this.policies = policies;
     this.defaultPolicy = new DefaultLicensePolicyEnforcer();
-    this.enforcers = policies.stream().map(policy -> initPolicyEnforcer(policy)).collect(Collectors.toSet());
+    this.enforcers = policies.stream().map(AggregateLicensePolicyEnforcer::initPolicyEnforcer).collect(Collectors.toSet());
   }
 
   /**
@@ -112,9 +112,7 @@ public class AggregateLicensePolicyEnforcer {
   private Map<Artifact, LicensePolicyEnforcerResult> apply(final Map<License, Set<Artifact>> licenseMap, final LicensePolicyEnforcer enforcer) {
     final Map<Artifact, LicensePolicyEnforcerResult> results = new HashMap<>();
 
-    licenseMap.forEach((license, artifactSet) -> {
-      results.putAll(apply(license, artifactSet, enforcer));
-    });
+    licenseMap.forEach((license, artifactSet) -> results.putAll(apply(license, artifactSet, enforcer)));
     return results;
   }
 
@@ -140,14 +138,10 @@ public class AggregateLicensePolicyEnforcer {
     });
 
     // apply approval rules, updating the map
-    getEnforcers(LicensePolicy.Rule.APPROVE).forEach(enforcer -> {
-      results.putAll(apply(licenseMap, enforcer));
-    });
+    getEnforcers(LicensePolicy.Rule.APPROVE).forEach(enforcer -> results.putAll(apply(licenseMap, enforcer)));
 
     // apply deny rules, updating the map
-    getEnforcers(LicensePolicy.Rule.DENY).forEach(enforcer -> {
-      results.putAll(apply(licenseMap, enforcer));
-    });
+    getEnforcers(LicensePolicy.Rule.DENY).forEach(enforcer -> results.putAll(apply(licenseMap, enforcer)));
 
     return results;
   }
