@@ -47,7 +47,7 @@ public final class LicenseCheckMojo extends AbstractLicenseMojo {
   @Parameter(property = "license.errorMessage", defaultValue = "Some files do not have the expected license header")
   public String errorMessage = "Some files do not have the expected license header";
 
-  public final Collection<File> missingHeaders = new ConcurrentLinkedQueue<File>();
+  public final Collection<File> missingHeaders = new ConcurrentLinkedQueue<>();
 
   @Override
   public void execute() throws MojoExecutionException, MojoFailureException {
