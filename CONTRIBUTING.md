@@ -1,0 +1,4 @@
+- [ ] Optionally create an issue
+- [ ] Submit a PR
+- [ ] Write tests
+- [ ] Make sure your code is formatted correctly (we are using Google style format)
