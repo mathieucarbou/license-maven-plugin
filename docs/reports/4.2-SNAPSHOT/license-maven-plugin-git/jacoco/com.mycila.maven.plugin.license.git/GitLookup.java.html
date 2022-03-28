@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GitLookup.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">license-maven-plugin-git</a> &gt; <a href="index.source.html" class="el_package">com.mycila.maven.plugin.license.git</a> &gt; <span class="el_source">GitLookup.java</span></div><h1>GitLookup.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2008-2022 Mycila (mathieu.carbou@gmail.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.mycila.maven.plugin.license.git;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.TimeZone;
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.Status;
+import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.diff.DiffConfig;
+import org.eclipse.jgit.lib.Constants;
+import org.eclipse.jgit.lib.PersonIdent;
+import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.revwalk.FollowFilter;
+import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.revwalk.RevSort;
+import org.eclipse.jgit.revwalk.RevWalk;
+import org.eclipse.jgit.revwalk.filter.MaxCountRevFilter;
+import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
+import org.eclipse.jgit.treewalk.filter.AndTreeFilter;
+import org.eclipse.jgit.treewalk.filter.PathFilter;
+import org.eclipse.jgit.treewalk.filter.TreeFilter;
+
+/**
+ * A jGit library wrapper to query the date of the last commit.
+ *
+ * @author &lt;a href=&quot;mailto:ppalaga@redhat.com&quot;&gt;Peter Palaga&lt;/a&gt;
+ */
+public class GitLookup {
+<span class="fc" id="L48">  public static final TimeZone DEFAULT_ZONE = TimeZone.getTimeZone(&quot;GMT&quot;);</span>
+
+<span class="fc" id="L50">  public enum DateSource {</span>
+<span class="fc" id="L51">    AUTHOR, COMMITER</span>
+  }
+
+  private final int checkCommitsCount;
+  private final DateSource dateSource;
+  private final GitPathResolver pathResolver;
+  private final Repository repository;
+  private final TimeZone timeZone;
+  private final boolean shallow;
+
+  /**
+   * Creates a new {@link GitLookup} for a repository that is detected from the supplied {@code anyFile}.
+   * &lt;p&gt;
+   * Note on time zones:
+   *
+   * @param anyFile           - any path from the working tree of the git repository to consider in all subsequent calls to
+   *                          {@link #getYearOfLastChange(File)}
+   * @param dateSource        where to read the commit dates from - committer date or author date
+   * @param timeZone          the time zone if {@code dateSource} is {@link DateSource#COMMITER}; otherwise must be {@code null}.
+   * @param checkCommitsCount
+   * @throws IOException
+   */
+  public GitLookup(File anyFile, DateSource dateSource, TimeZone timeZone, int checkCommitsCount) throws IOException {
+<span class="fc" id="L74">    super();</span>
+<span class="fc" id="L75">    this.repository = new FileRepositoryBuilder().findGitDir(anyFile).build();</span>
+    /* A workaround for  https://bugs.eclipse.org/bugs/show_bug.cgi?id=457961 */
+    // Also contains contents of .git/shallow and can detect shallow repo
+<span class="pc bpc" id="L78" title="1 of 2 branches missed.">    this.shallow = !this.repository.getObjectDatabase().newReader().getShallowCommits().isEmpty();</span>
+
+<span class="fc" id="L80">    this.pathResolver = new GitPathResolver(repository.getWorkTree().getAbsolutePath());</span>
+<span class="fc" id="L81">    this.dateSource = dateSource;</span>
+<span class="pc bpc" id="L82" title="1 of 3 branches missed.">    switch (dateSource) {</span>
+      case COMMITER:
+<span class="fc bfc" id="L84" title="All 2 branches covered.">        this.timeZone = timeZone == null ? DEFAULT_ZONE : timeZone;</span>
+<span class="fc" id="L85">        break;</span>
+      case AUTHOR:
+<span class="fc bfc" id="L87" title="All 2 branches covered.">        if (timeZone != null) {</span>
+<span class="fc" id="L88">          throw new IllegalArgumentException(&quot;Time zone must be null with dateSource &quot; + DateSource.AUTHOR.name()</span>
+              + &quot; because git author name already contrains time zone information.&quot;);
+        }
+<span class="fc" id="L91">        this.timeZone = null;</span>
+<span class="fc" id="L92">        break;</span>
+      default:
+<span class="nc" id="L94">        throw new IllegalStateException(&quot;Unexpected &quot; + DateSource.class.getName() + &quot; &quot; + dateSource);</span>
+    }
+<span class="fc" id="L96">    this.checkCommitsCount = checkCommitsCount;</span>
+<span class="fc" id="L97">  }</span>
+
+  /**
+   * Returns the year of the last change of the given {@code file} based on the history of the present git branch. The
+   * year is taken either from the committer date or from the author identity depending on how {@link #dateSource} was
+   * initialized.
+   * &lt;p&gt;
+   * See also the note on time zones in {@link #GitLookup(File, DateSource, TimeZone, int)}.
+   *
+   * @param file for which the year should be retrieved
+   * @return year of last modification of the file
+   * @throws IOException     if unable to read the file
+   * @throws GitAPIException if unable to process the git history
+   */
+  int getYearOfLastChange(File file) throws GitAPIException, IOException {
+<span class="fc" id="L112">    String repoRelativePath = pathResolver.relativize(file);</span>
+
+<span class="fc bfc" id="L114" title="All 2 branches covered.">    if (isFileModifiedOrUnstaged(repoRelativePath)) {</span>
+<span class="fc" id="L115">      return getCurrentYear();</span>
+    }
+
+<span class="fc" id="L118">    int commitYear = 0;</span>
+<span class="fc" id="L119">    RevWalk walk = getGitRevWalk(repoRelativePath, false);</span>
+<span class="fc bfc" id="L120" title="All 2 branches covered.">    for (RevCommit commit : walk) {</span>
+<span class="fc" id="L121">      int y = getYearFromCommit(commit);</span>
+<span class="fc bfc" id="L122" title="All 2 branches covered.">      if (y &gt; commitYear) {</span>
+<span class="fc" id="L123">        commitYear = y;</span>
+      }
+<span class="fc" id="L125">    }</span>
+<span class="fc" id="L126">    walk.dispose();</span>
+<span class="fc" id="L127">    return commitYear;</span>
+  }
+
+  /**
+   * Returns the year of creation for the given {@code file) based on the history of the present git branch. The
+   * year is taken either from the committer date or from the author identity depending on how {@link #dateSource} was
+   * initialized.
+   *
+   * @param file for which the year should be retrieved
+   * @return year of creation of the file
+   * @throws IOException     if unable to read the file
+   * @throws GitAPIException if unable to process the git history
+   */
+  int getYearOfCreation(File file) throws IOException, GitAPIException {
+<span class="fc" id="L141">    String repoRelativePath = pathResolver.relativize(file);</span>
+
+<span class="fc" id="L143">    int commitYear = 0;</span>
+<span class="fc" id="L144">    RevWalk walk = getGitRevWalk(repoRelativePath, true);</span>
+<span class="fc" id="L145">    Iterator&lt;RevCommit&gt; iterator = walk.iterator();</span>
+<span class="fc bfc" id="L146" title="All 2 branches covered.">    if (iterator.hasNext()) {</span>
+<span class="fc" id="L147">      RevCommit commit = iterator.next();</span>
+<span class="fc" id="L148">      commitYear = getYearFromCommit(commit);</span>
+    }
+<span class="fc" id="L150">    walk.dispose();</span>
+    
+    // If we couldn't find a creation year from Git assume newly created file
+<span class="fc bfc" id="L153" title="All 2 branches covered.">    if (commitYear == 0) {</span>
+<span class="fc" id="L154">        return getCurrentYear();</span>
+      }
+    
+<span class="fc" id="L157">    return commitYear;</span>
+  }
+
+  String getAuthorNameOfCreation(File file) throws IOException {
+<span class="fc" id="L161">    String repoRelativePath = pathResolver.relativize(file);</span>
+<span class="fc" id="L162">    String authorName = &quot;&quot;;</span>
+<span class="fc" id="L163">    RevWalk walk = getGitRevWalk(repoRelativePath, true);</span>
+<span class="fc" id="L164">    Iterator&lt;RevCommit&gt; iterator = walk.iterator();</span>
+<span class="pc bpc" id="L165" title="1 of 2 branches missed.">    if (iterator.hasNext()) {</span>
+<span class="fc" id="L166">      RevCommit commit = iterator.next();</span>
+<span class="fc" id="L167">      authorName = getAuthorNameFromCommit(commit);</span>
+    }
+<span class="fc" id="L169">    walk.dispose();</span>
+<span class="fc" id="L170">    return authorName;</span>
+  }
+
+  String getAuthorEmailOfCreation(File file) throws IOException {
+<span class="fc" id="L174">    String repoRelativePath = pathResolver.relativize(file);</span>
+<span class="fc" id="L175">    String authorEmail = &quot;&quot;;</span>
+<span class="fc" id="L176">    RevWalk walk = getGitRevWalk(repoRelativePath, true);</span>
+<span class="fc" id="L177">    Iterator&lt;RevCommit&gt; iterator = walk.iterator();</span>
+<span class="pc bpc" id="L178" title="1 of 2 branches missed.">    if (iterator.hasNext()) {</span>
+<span class="fc" id="L179">      RevCommit commit = iterator.next();</span>
+<span class="fc" id="L180">      authorEmail = getAuthorEmailFromCommit(commit);</span>
+    }
+<span class="fc" id="L182">    walk.dispose();</span>
+<span class="fc" id="L183">    return authorEmail;</span>
+  }
+  
+  boolean isShallowRepository() {
+<span class="fc" id="L187">    return this.shallow;</span>
+  }
+
+  private boolean isFileModifiedOrUnstaged(String repoRelativePath) throws GitAPIException {
+    @SuppressWarnings(&quot;resource&quot;)
+<span class="fc" id="L192">    Status status = new Git(repository).status().addPath(repoRelativePath).call();</span>
+<span class="fc bfc" id="L193" title="All 2 branches covered.">    return !status.isClean();</span>
+  }
+
+  private RevWalk getGitRevWalk(String repoRelativePath, boolean oldestCommitsFirst) throws IOException {
+<span class="fc" id="L197">    DiffConfig diffConfig = repository.getConfig().get(DiffConfig.KEY);</span>
+
+<span class="fc" id="L199">    RevWalk walk = new RevWalk(repository);</span>
+<span class="fc" id="L200">    walk.markStart(walk.parseCommit(repository.resolve(Constants.HEAD)));</span>
+<span class="fc" id="L201">    walk.setTreeFilter(AndTreeFilter.create(Arrays.asList(</span>
+<span class="fc" id="L202">        PathFilter.create(repoRelativePath),</span>
+<span class="fc" id="L203">        FollowFilter.create(repoRelativePath, diffConfig), // Allows us to follow files as they move or are renamed</span>
+        TreeFilter.ANY_DIFF)
+    ));
+<span class="fc" id="L206">    walk.setRevFilter(MaxCountRevFilter.create(checkCommitsCount));</span>
+<span class="fc" id="L207">    walk.setRetainBody(false);</span>
+<span class="fc bfc" id="L208" title="All 2 branches covered.">    if (oldestCommitsFirst) {</span>
+<span class="fc" id="L209">      walk.sort(RevSort.REVERSE);</span>
+    }
+
+<span class="fc" id="L212">    return walk;</span>
+  }
+
+  private int getCurrentYear() {
+<span class="fc bfc" id="L216" title="All 2 branches covered.">    return toYear(System.currentTimeMillis(), timeZone != null ? timeZone : DEFAULT_ZONE);</span>
+  }
+
+  private int getYearFromCommit(RevCommit commit) {
+<span class="pc bpc" id="L220" title="1 of 3 branches missed.">    switch (dateSource) {</span>
+      case COMMITER:
+<span class="fc" id="L222">        int epochSeconds = commit.getCommitTime();</span>
+<span class="fc" id="L223">        return toYear(epochSeconds * 1000L, timeZone);</span>
+      case AUTHOR:
+<span class="fc" id="L225">        PersonIdent id = commit.getAuthorIdent();</span>
+<span class="fc" id="L226">        Date date = id.getWhen();</span>
+<span class="fc" id="L227">        return toYear(date.getTime(), id.getTimeZone());</span>
+      default:
+<span class="nc" id="L229">        throw new IllegalStateException(&quot;Unexpected &quot; + DateSource.class.getName() + &quot; &quot; + dateSource);</span>
+    }
+  }
+
+  private static int toYear(long epochMilliseconds, TimeZone timeZone) {
+<span class="fc" id="L234">    Calendar result = Calendar.getInstance(timeZone);</span>
+<span class="fc" id="L235">    result.setTimeInMillis(epochMilliseconds);</span>
+<span class="fc" id="L236">    return result.get(Calendar.YEAR);</span>
+  }
+
+  private String getAuthorNameFromCommit(RevCommit commit) {
+<span class="fc" id="L240">    PersonIdent id = commit.getAuthorIdent();</span>
+<span class="fc" id="L241">    return id.getName();</span>
+  }
+
+  private String getAuthorEmailFromCommit(RevCommit commit) {
+<span class="fc" id="L245">    PersonIdent id = commit.getAuthorIdent();</span>
+<span class="fc" id="L246">    return id.getEmailAddress();</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

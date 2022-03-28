@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AdditionalHeaderDefinition.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">license-maven-plugin</a> &gt; <a href="index.source.html" class="el_package">com.mycila.maven.plugin.license.header</a> &gt; <span class="el_source">AdditionalHeaderDefinition.java</span></div><h1>AdditionalHeaderDefinition.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2008-2022 Mycila (mathieu.carbou@gmail.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.mycila.maven.plugin.license.header;
+
+import com.mycila.xmltool.CallBack;
+import com.mycila.xmltool.XMLTag;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * The class &lt;code&gt;AdditionalHeaderDefinition&lt;/code&gt; is used to collect header definitions declared in an &quot;external&quot; XML
+ * document configuration.
+ * &lt;p&gt;
+ * The XML document must respect the following XML schema: &lt;pre&gt;
+ * &amp;lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&amp;gt;
+ * &amp;lt;xs:schema attributeFormDefault=&quot;unqualified&quot; elementFormDefault=&quot;qualified&quot;
+ *          xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot;&amp;gt;
+ *   &amp;lt;xs:element name=&quot;additionalHeaders&quot; type=&quot;additionalHeadersType&quot;/&amp;gt;
+ *   &amp;lt;xs:complexType name=&quot;additionalHeadersType&quot;&amp;gt;
+ *       &amp;lt;xs:sequence&amp;gt;
+ *           &amp;lt;xs:annotation&amp;gt;
+ *               &amp;lt;xs:documentation&amp;gt;
+ *               Replace typeName tag name with the name of the type of header definition you are defining.
+ *               &amp;lt;/xs:documentation&amp;gt;
+ *           &amp;lt;/xs:annotation&amp;gt;
+ *           &amp;lt;xs:element type=&quot;textType&quot; name=&quot;typeName&quot;/&amp;gt;
+ *       &amp;lt;/xs:sequence&amp;gt;
+ *   &amp;lt;/xs:complexType&amp;gt;
+ *   &amp;lt;xs:complexType name=&quot;textType&quot;&amp;gt;
+ *       &amp;lt;xs:sequence&amp;gt;
+ *          &amp;lt;xs:annotation&amp;gt;
+ *              &amp;lt;xs:documentation&amp;gt;
+ *               Do not forget that you can use CDATA format as element value.
+ *              &amp;lt;/xs:documentation&amp;gt;
+ *           &amp;lt;/xs:annotation&amp;gt;
+ *           &amp;lt;xs:element type=&quot;xs:string&quot; name=&quot;firstLine&quot; minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;/&amp;gt;
+ *           &amp;lt;xs:element type=&quot;xs:string&quot; name=&quot;beforeEachLine&quot; minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;/&amp;gt;
+ *           &amp;lt;xs:element type=&quot;xs:string&quot; name=&quot;endLine&quot; minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;/&amp;gt;
+ *           &amp;lt;xs:element type=&quot;xs:string&quot; name=&quot;skipLine&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;1&quot;/&amp;gt;
+ *           &amp;lt;xs:element type=&quot;xs:string&quot; name=&quot;firstLineDetectionPattern&quot; minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;/&amp;gt;
+ *           &amp;lt;xs:element type=&quot;xs:string&quot; name=&quot;lastLineDetectionPattern&quot; minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;/&amp;gt;
+ *       &amp;lt;/xs:sequence&amp;gt;
+ *   &amp;lt;/xs:complexType&amp;gt;
+ *  &amp;lt;/xs:schema&amp;gt;
+ * &lt;/pre&gt;
+ *
+ * @author Cedric Pronzato
+ */
+public final class AdditionalHeaderDefinition {
+<span class="fc" id="L63">  private final Map&lt;String, HeaderDefinition&gt; definitions = new HashMap&lt;&gt;();</span>
+
+  /**
+   * Construct an &lt;code&gt;AdditionalHeaderDefinition&lt;/code&gt; object using the given XML document as header definitions
+   * input.
+   *
+   * @param doc The XML definition to read.
+   */
+<span class="fc" id="L71">  public AdditionalHeaderDefinition(XMLTag doc) {</span>
+<span class="pc bpc" id="L72" title="1 of 2 branches missed.">    if (doc == null) {</span>
+<span class="nc" id="L73">      throw new IllegalArgumentException(&quot;The header definition XML document cannot be null&quot;);</span>
+    }
+<span class="fc" id="L75">    doc.gotoRoot().forEachChild(new CallBack() {</span>
+      @Override
+      public void execute(XMLTag doc) {
+<span class="fc" id="L78">        final String type = doc.getCurrentTagName().toLowerCase();</span>
+<span class="fc" id="L79">        HeaderDefinition definition = definitions.get(type);</span>
+<span class="pc bpc" id="L80" title="1 of 2 branches missed.">        if (definition == null) {</span>
+<span class="fc" id="L81">          definition = new HeaderDefinition(type);</span>
+<span class="fc" id="L82">          definitions.put(type, definition);</span>
+        }
+<span class="fc" id="L84">        doc.forEachChild(new FeedProperty(definition));</span>
+<span class="fc" id="L85">        definition.validate();</span>
+<span class="fc" id="L86">      }</span>
+    });
+<span class="fc" id="L88">  }</span>
+
+  /**
+   * Returns the header definitions declared by the external header definition as a map using the header type name as
+   * key.
+   *
+   * @return The header definitions declared.
+   */
+  public Map&lt;String, HeaderDefinition&gt; getDefinitions() {
+<span class="fc" id="L97">    return definitions;</span>
+  }
+
+  private static final class FeedProperty implements CallBack {
+    private final HeaderDefinition definition;
+
+<span class="fc" id="L103">    private FeedProperty(HeaderDefinition definition) {</span>
+<span class="fc" id="L104">      this.definition = definition;</span>
+<span class="fc" id="L105">    }</span>
+
+    @Override
+    public void execute(XMLTag xmlDocument) {
+<span class="fc" id="L109">      String value = xmlDocument.getText();</span>
+      // value can't be null
+<span class="pc bpc" id="L111" title="1 of 2 branches missed.">      if (&quot;&quot;.equals(value)) {</span>
+<span class="nc" id="L112">        value = xmlDocument.getCDATA();</span>
+      }
+<span class="fc" id="L114">      definition.setPropertyFromString(xmlDocument.getCurrentTagName(), value);</span>
+<span class="fc" id="L115">    }</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,0 +1,888 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractLicenseMojo.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">license-maven-plugin</a> &gt; <a href="index.source.html" class="el_package">com.mycila.maven.plugin.license</a> &gt; <span class="el_source">AbstractLicenseMojo.java</span></div><h1>AbstractLicenseMojo.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2008-2022 Mycila (mathieu.carbou@gmail.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.mycila.maven.plugin.license;
+
+import static com.mycila.maven.plugin.license.document.DocumentType.defaultMapping;
+import static com.mycila.maven.plugin.license.util.FileUtils.asPath;
+import static java.lang.String.format;
+import static java.util.Arrays.asList;
+import static java.util.Arrays.deepToString;
+
+import com.mycila.maven.plugin.license.dependencies.LicenseMessage;
+import com.mycila.maven.plugin.license.dependencies.LicensePolicy;
+import com.mycila.maven.plugin.license.document.Document;
+import com.mycila.maven.plugin.license.document.DocumentFactory;
+import com.mycila.maven.plugin.license.document.DocumentPropertiesLoader;
+import com.mycila.maven.plugin.license.document.DocumentType;
+import com.mycila.maven.plugin.license.header.AdditionalHeaderDefinition;
+import com.mycila.maven.plugin.license.header.Header;
+import com.mycila.maven.plugin.license.header.HeaderDefinition;
+import com.mycila.maven.plugin.license.header.HeaderSource;
+import com.mycila.maven.plugin.license.header.HeaderType;
+import com.mycila.maven.plugin.license.util.Selection;
+import com.mycila.maven.plugin.license.util.resource.ResourceFinder;
+import com.mycila.xmltool.XMLDoc;
+import java.io.File;
+import java.io.IOException;
+import java.time.Clock;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.ServiceLoader;
+import java.util.Set;
+import java.util.concurrent.CompletionService;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorCompletionService;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import org.apache.maven.artifact.DependencyResolutionRequiredException;
+import org.apache.maven.execution.MavenSession;
+import org.apache.maven.model.Organization;
+import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Component;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.project.MavenProject;
+import org.apache.maven.project.ProjectBuilder;
+import org.apache.maven.settings.Server;
+import org.apache.maven.settings.Settings;
+import org.apache.maven.settings.crypto.DefaultSettingsDecryptionRequest;
+import org.apache.maven.settings.crypto.SettingsDecrypter;
+import org.apache.maven.settings.crypto.SettingsDecryptionRequest;
+import org.apache.maven.settings.crypto.SettingsDecryptionResult;
+import org.apache.maven.shared.dependency.graph.DependencyGraphBuilder;
+import org.xml.sax.InputSource;
+
+/**
+ * &lt;b&gt;Date:&lt;/b&gt; 18-Feb-2008&lt;br&gt; &lt;b&gt;Author:&lt;/b&gt; Mathieu Carbou
+ * (mathieu.carbou@gmail.com)
+ */
+<span class="fc" id="L81">public abstract class AbstractLicenseMojo extends AbstractMojo {</span>
+
+  @Parameter
+  public LicenseSet[] licenseSets;
+
+  /**
+   * The base directory, in which to search for project files.
+   * &lt;p&gt;
+   * This is named `defaultBaseDirectory` as it will be used as the default
+   * value for the base directory. This default value can be overridden
+   * in each LicenseSet by setting {@link LicenseSet#basedir}.
+   */
+  @Parameter(property = &quot;license.basedir&quot;, defaultValue = &quot;${project.basedir}&quot;, alias = &quot;basedir&quot;, required = true)
+  public File defaultBasedir;
+
+  /**
+   * Location of the header. It can be a relative path, absolute path,
+   * classpath resource, any URL. The plugin first check if the name specified
+   * is a relative file, then an absolute file, then in the classpath. If not
+   * found, it tries to construct a URL from the location.
+   *
+   * @deprecated use {@link LicenseSet#header}
+   */
+  @Deprecated
+  @Parameter(property = &quot;license.header&quot;, alias = &quot;header&quot;)
+  public String legacyConfigHeader;
+
+  /**
+   * Header, as text, directly in pom file. Using a CDATA section is strongly recommended.
+   *
+   * @deprecated use {@link LicenseSet#inlineHeader}
+   */
+  @Deprecated
+  @Parameter(property = &quot;license.inlineHeader&quot;, alias = &quot;inlineHeader&quot;)
+  public String legacyConfigInlineHeader;
+
+  /**
+   * Specifies additional header files to use when checking for the presence
+   * of a valid header in your sources.
+   * &lt;br&gt;
+   * When using format goal, this property will be used to detect all valid
+   * headers that don't need formatting.
+   * &lt;br&gt;
+   * When using remove goal, this property will be used to detect all valid
+   * headers that also must be removed.
+   *
+   * @deprecated use {@link LicenseSet#validHeaders}
+   */
+<span class="fc" id="L129">  @Deprecated</span>
+  @Parameter(alias = &quot;validHeaders&quot;)
+  public String[] legacyConfigValidHeaders = new String[0];
+
+  /**
+   * Alternative to `header`, `inlineHeader`, or `validHeaders`
+   * for use when code is multi-licensed.
+   * Whilst you could create a concatenated header yourself,
+   * a cleaner approach may be to specify more than one header
+   * and have them concatenated together by the plugin. This
+   * allows you to maintain each distinct license header in
+   * its own file and combined them in different ways.
+   *
+   * @deprecated use {@link LicenseSet#multi}
+   */
+  @Deprecated
+  @Parameter
+  public Multi legacyConfigMulti;
+
+  /**
+   * Allows the use of external header definitions files. These files are
+   * properties like files.
+   * &lt;p&gt;
+   * This is named `defaultHeaderDefinitions` as it will be used as the default
+   * value for the header definitions. This default value can be overridden
+   * in each LicenseSet by setting {@link LicenseSet#headerDefinitions}  or
+   * {@link LicenseSet#inlineHeaderStyles} and is overridden by {@link #defaultInlineHeaderStyles}.
+   */
+<span class="fc" id="L157">  @Parameter(alias = &quot;headerDefinitions&quot;)</span>
+  public String[] defaultHeaderDefinitions = new String[0];
+
+  /**
+   * Allows the use of inline header definitions.
+   * &lt;p&gt;
+   * This is named `defaultInlineHeaderStyles` as it will be used as the default
+   * value for the header definitions.
+   * &lt;p&gt;
+   * This default value can be overridden
+   * in each LicenseSet by setting {@link LicenseSet#headerDefinitions} or {@link LicenseSet#inlineHeaderStyles}.
+   * &lt;p&gt;
+   * Inline styles overrides those read from file
+   */
+<span class="fc" id="L171">  @Parameter</span>
+  public HeaderStyle[] defaultInlineHeaderStyles = new HeaderStyle[0];
+
+  /**
+   * HeadSections define special regions of a header that allow for dynamic
+   * substitution and validation
+   *
+   * @deprecated use {@link LicenseSet#headerSections}
+   */
+<span class="fc" id="L180">  @Deprecated</span>
+  @Parameter(alias = &quot;headerSections&quot;)
+  public HeaderSection[] legacyConfigHeaderSections = new HeaderSection[0];
+
+  /**
+   * You can set here some properties that you want to use when reading the
+   * header file. You can use in your header file some properties like
+   * ${year}, ${owner} or whatever you want for the name. They will be
+   * replaced when the header file is read by those you specified in the
+   * command line, in the POM and in system environment.
+   * &lt;p&gt;
+   * This is named `defaultProperties` as it will be used as the default
+   * value for the properties. This default value can be overridden
+   * in each LicenseSet by setting {@link LicenseSet#properties}.
+   */
+<span class="fc" id="L195">  @Parameter(alias = &quot;properties&quot;)</span>
+  public Map&lt;String, String&gt; defaultProperties = new HashMap&lt;String, String&gt;();
+
+  /**
+   * Specifies files, which are included in the check. By default, all files
+   * are included.
+   *
+   * @deprecated use {@link LicenseSet#includes}
+   */
+<span class="fc" id="L204">  @Deprecated</span>
+  @Parameter(alias = &quot;includes&quot;, property = &quot;license.includes&quot;)
+  public String[] legacyConfigIncludes = new String[0];
+
+  /**
+   * Specifies files, which are excluded in the check. By default, only the
+   * files matching the default exclude patterns are excluded.
+   *
+   * @deprecated use {@link LicenseSet#excludes}
+   */
+<span class="fc" id="L214">  @Deprecated</span>
+  @Parameter(alias = &quot;excludes&quot;, property = &quot;license.excludes&quot;)
+  public String[] legacyConfigExcludes = new String[0];
+
+  /**
+   * Specify the list of keywords to use to detect a header. A header must
+   * include all keywords to be valid. By default, the word 'copyright' is
+   * used. Detection is done case insensitive.
+   *
+   * @deprecated use {@link LicenseSet#keywords}
+   */
+<span class="fc" id="L225">  @Deprecated</span>
+  @Parameter(alias = &quot;keywords&quot;)
+  public String[] legacyConfigKeywords = new String[]{&quot;copyright&quot;};
+
+  /**
+   * Specify if you want to use default exclusions besides the files you have
+   * excluded. Default exclusions exclude CVS and SVN folders, IDE descriptors
+   * and so on.
+   * &lt;p&gt;
+   * This is named `defaultUseDefaultExcludes` as it will be used as the default
+   * value for whether to use default excludes. This default value can be overridden
+   * in each LicenseSet by setting {@link LicenseSet#useDefaultExcludes}.
+   */
+<span class="fc" id="L238">  @Parameter(property = &quot;license.useDefaultExcludes&quot;, defaultValue = &quot;true&quot;, alias = &quot;useDefaultExcludes&quot;)</span>
+  public boolean defaultUseDefaultExcludes = true;
+
+  /**
+   * You can set this flag to true if you want to check the headers for all
+   * modules of your project. Only used for multi-modules projects, to check
+   * for example the header licenses from the parent module for all sub
+   * modules.
+   */
+<span class="fc" id="L247">  @Parameter(property = &quot;license.aggregate&quot;, defaultValue = &quot;false&quot;)</span>
+  public boolean aggregate = false;
+
+  /**
+   * Set mapping between document mapping and a supported type to use. This
+   * section is very useful when you want to customize the supported
+   * extensions. If your project is using file extensions not supported by
+   * default by this plugin, you can add a mapping to attach the extension to
+   * an existing type of comment. The tag name is the new extension name to
+   * support, and the value is the name of the comment type to use.
+   */
+<span class="fc" id="L258">  @Parameter</span>
+  public Map&lt;String, String&gt; mapping = new LinkedHashMap&lt;String, String&gt;();
+
+  /**
+   * Whether to use the default mapping between file extensions and comment
+   * types, or only the one your provide.
+   */
+<span class="fc" id="L265">  @Parameter(property = &quot;license.useDefaultMapping&quot;, defaultValue = &quot;true&quot;)</span>
+  public boolean useDefaultMapping = true;
+
+  /**
+   * Maven license plugin uses concurrency to check license headers. This
+   * factor is used to control the number of threads used to check. The rule
+   * is:
+   * &lt;br&gt; {@code &lt;nThreads&gt; = &lt;number of cores&gt; *  concurrencyFactor}
+   * &lt;br&gt;
+   * The default is 1.5.
+   */
+<span class="fc" id="L276">  @Parameter(property = &quot;license.concurrencyFactor&quot;, defaultValue = &quot;1.5&quot;)</span>
+  public float concurrencyFactor = 1.5f;
+
+
+  /**
+   * Maven license plugin uses concurrency to check license headers. With this
+   * option the number of threads used to check can be specified. If given
+   * it take precedence over &lt;code&gt;concurrencyFactor&lt;/code&gt;
+   * &lt;p&gt;
+   * The default is 0 which implies that the default for &lt;code&gt;concurrencyFactor&lt;/code&gt;
+   * is used.
+   */
+  @Parameter(property = &quot;license.nThreads&quot;, defaultValue = &quot;0&quot;)
+  public int nThreads;
+
+  /**
+   * Whether to skip the plugin execution
+   */
+<span class="fc" id="L294">  @Parameter(property = &quot;license.skip&quot;, defaultValue = &quot;false&quot;)</span>
+  public boolean skip = false;
+
+  /**
+   * Determination of the year and author of the first commit and last change year
+   * of a file requires a full git or svn history. By default the plugin will log
+   * warning when using these properties on a shallow or sparse repository. If you
+   * are certain the repository depth will permit accurate determination of these
+   * values, you can disable this check.
+   */
+<span class="fc" id="L304">  @Parameter(property = &quot;license.warnIfShallow&quot;, defaultValue = &quot;true&quot;)</span>
+  public boolean warnIfShallow = true;
+  
+  /**
+   * If you do not want to see the list of file having a missing header, you
+   * can add the quiet flag that will shorten the output
+   */
+<span class="fc" id="L311">  @Parameter(property = &quot;license.quiet&quot;, defaultValue = &quot;false&quot;)</span>
+  public boolean quiet = false;
+
+  /**
+   * Set to true if you need a strict check against the headers. By default,
+   * the existence of a header is verified by taking the top portion of a file
+   * and checking if it contains the headers text, not considering special
+   * characters (spaces, tabs, ...).
+   * &lt;br&gt;
+   * We highly recommend to keep this option set to {@code true}.
+   */
+<span class="fc" id="L322">  @Parameter(property = &quot;license.strictCheck&quot;, defaultValue = &quot;true&quot;)</span>
+  public boolean strictCheck = true;
+
+  /**
+   * Specify the encoding of your files. Default to the project source
+   * encoding property (project.build.sourceEncoding).
+   */
+<span class="fc" id="L329">  @Parameter(property = &quot;license.encoding&quot;, defaultValue = &quot;${project.build.sourceEncoding}&quot;)</span>
+  public String encoding = &quot;UTF-8&quot;;
+
+  /**
+   * You can set this flag to false if you do not want the build to fail when
+   * some headers are missing.
+   */
+<span class="fc" id="L336">  @Parameter(property = &quot;license.failIfMissing&quot;, defaultValue = &quot;true&quot;)</span>
+  public boolean failIfMissing = true;
+
+  /**
+   * You can leave this flag on {@code false} if you do not want the build to
+   * fail for files that do not have an implicit or explicit comment style
+   * definition. Setting this explicitly to {@code true} is a safe way to make
+   * sure that the effective file type mappings cover all files included from
+   * your project.
+   * &lt;p&gt;
+   * Default is {@code false} for backwards compatibility reasons.
+   *
+   * @since 2.8
+   */
+<span class="fc" id="L350">  @Parameter(property = &quot;license.failIfUnknown&quot;, defaultValue = &quot;false&quot;)</span>
+  public boolean failIfUnknown = false;
+
+  /**
+   * If dryRun is enabled, calls to license:format and license:remove will not
+   * overwrite the existing file but instead write the result to a new file
+   * with the same name but ending with `.licensed`.
+   */
+<span class="fc" id="L358">  @Parameter(property = &quot;license.dryRun&quot;, defaultValue = &quot;false&quot;)</span>
+  public boolean dryRun = false;
+
+  /**
+   * Skip the formatting of files which already contain a detected header.
+   */
+<span class="fc" id="L364">  @Parameter(property = &quot;license.skipExistingHeaders&quot;, defaultValue = &quot;false&quot;)</span>
+  public boolean skipExistingHeaders = false;
+
+  /**
+   * When enforcing licenses on dependencies, exclude all but these scopes.
+   */
+  @Parameter(property = &quot;license.dependencies.scope&quot;, required = true, defaultValue = &quot;runtime&quot;)
+  protected List&lt;String&gt; dependencyScopes;
+
+  /**
+   * Whether to enforce license.dependencies.allow list.
+   */
+  @Parameter(property = &quot;license.dependencies.enforce&quot;, required = true, defaultValue = &quot;false&quot;)
+  protected boolean dependencyEnforce;
+
+  /**
+   * Block of {@link LicensePolicy} configuration for enforcing license adherence in dependencies.
+   */
+  @Parameter(property = &quot;license.dependencies.policies&quot;)
+  protected Set&lt;LicensePolicy&gt; dependencyPolicies;
+
+  /**
+   * Exception message prefix to display when an artifact is denied by one of the license policies.
+   */
+  @Parameter(property = &quot;license.dependencies.exceptionMessage&quot;, required = true, defaultValue = LicenseMessage.WARN_POLICY_DENIED)
+  protected String dependencyExceptionMessage;
+
+
+  @Parameter(defaultValue = &quot;${project}&quot;, required = true)
+  protected MavenProject project;
+
+  /**
+   * Maven settings.
+   */
+  @Parameter(defaultValue = &quot;${settings}&quot;, readonly = true)
+  private Settings settings;
+  /**
+   * The decrypter for passwords.
+   */
+  @Component
+  private SettingsDecrypter settingsDecrypter;
+
+  @Component(hint = &quot;default&quot;)
+  protected DependencyGraphBuilder dependencyGraphBuilder;
+
+  @Component
+  protected ProjectBuilder projectBuilder;
+
+  @Parameter(defaultValue = &quot;${session}&quot;)
+  public MavenSession session;
+
+  /**
+   * The location where to write the report of the plugin execution (file processed, action taken, etc).
+   * &lt;p&gt;
+   * &quot;PRESENT&quot; means the file has a header (check goal)
+   * &lt;p&gt;
+   * &quot;MISSING&quot; means the header is missing (check goal)
+   * &lt;p&gt;
+   * &quot;NOOP&quot; means no action were performed (remove or format goal)
+   * &lt;p&gt;
+   * &quot;ADDED&quot; means a header was added (format goal)
+   * &lt;p&gt;
+   * &quot;REPLACED&quot; means a header was replaced (format goal)
+   * &lt;p&gt;
+   * &quot;REMOVED&quot; means a header was removed (format goal)
+   * &lt;p&gt;
+   * &quot;UNKNOWN&quot; means that the file extension is unknown
+   * &lt;p&gt;
+   * Activated by default.
+   */
+  @Parameter(property = &quot;license.report.location&quot;, defaultValue = &quot;${project.reporting.outputDirectory}/license-plugin-report.xml&quot;)
+  public File reportLocation;
+
+  /**
+   * Format of the report.
+   * &lt;p&gt;
+   * Can be (case-insensitive): 'xml', 'json'.
+   * &lt;p&gt;
+   * Default is XML.
+   */
+  @Parameter(property = &quot;license.report.format&quot;)
+  public String reportFormat;
+
+  /**
+   * Skip the report generation. Default: false
+   */
+<span class="fc" id="L450">  @Parameter(property = &quot;license.report.skip&quot;, defaultValue = &quot;false&quot;)</span>
+  public boolean reportSkipped = false;
+
+<span class="fc" id="L453">  protected Clock clock = Clock.systemUTC();</span>
+  protected Report report;
+
+<span class="fc" id="L456">  protected abstract class AbstractCallback implements Callback {</span>
+
+    /**
+     * Related to {@link #failIfUnknown}.
+     */
+<span class="fc" id="L461">    private final Collection&lt;File&gt; unknownFiles = new ConcurrentLinkedQueue&lt;&gt;();</span>
+
+    @Override
+    public void onUnknownFile(Document document, Header header) {
+<span class="fc" id="L465">      warn(&quot;Unknown file extension: %s&quot;, document.getFilePath());</span>
+<span class="fc" id="L466">      unknownFiles.add(document.getFile());</span>
+<span class="fc" id="L467">      report.add(document.getFile(), Report.Result.UNKNOWN);</span>
+<span class="fc" id="L468">    }</span>
+
+    public void checkUnknown() throws MojoExecutionException {
+<span class="fc bfc" id="L471" title="All 2 branches covered.">      if (!unknownFiles.isEmpty()) {</span>
+<span class="fc" id="L472">        String msg = &quot;Unable to find a comment style definition for some &quot;</span>
+            + &quot;files. You may want to add a custom mapping for the relevant file extensions.&quot;;
+<span class="fc bfc" id="L474" title="All 2 branches covered.">        if (failIfUnknown) {</span>
+<span class="fc" id="L475">          throw new MojoExecutionException(msg);</span>
+        }
+<span class="fc" id="L477">        getLog().warn(msg);</span>
+      }
+<span class="fc" id="L479">    }</span>
+
+  }
+
+  @SuppressWarnings({&quot;unchecked&quot;})
+  protected final void execute(final Callback callback) throws MojoExecutionException, MojoFailureException {
+<span class="pc bpc" id="L485" title="1 of 2 branches missed.">    if (!skip) {</span>
+
+      // make default base dir canonical
+<span class="fc" id="L488">      this.defaultBasedir = this.getCanonicalFile(this.defaultBasedir, &quot;license.basedir&quot;);</span>
+
+      // collect all the license sets together
+      final LicenseSet[] allLicenseSets;
+
+      // if we abandon the legacy config this contiguous block can be removed
+<span class="fc" id="L494">      final LicenseSet legacyLicenseSet = convertLegacyConfigToLicenseSet();</span>
+<span class="fc bfc" id="L495" title="All 2 branches covered.">      if (legacyLicenseSet != null) {</span>
+<span class="pc bpc" id="L496" title="1 of 2 branches missed.">        if (licenseSets == null) {</span>
+<span class="fc" id="L497">          allLicenseSets = new LicenseSet[]{legacyLicenseSet};</span>
+        } else {
+<span class="nc" id="L499">          allLicenseSets = Arrays.copyOf(licenseSets, licenseSets.length + 1);</span>
+<span class="nc" id="L500">          allLicenseSets[licenseSets.length] = legacyLicenseSet;</span>
+        }
+      } else {
+<span class="fc" id="L503">        allLicenseSets = licenseSets;</span>
+      }
+
+      // execute
+<span class="fc" id="L507">      executeForLicenseSets(allLicenseSets, callback);</span>
+
+<span class="fc" id="L509">      report.exportTo(reportLocation);</span>
+    }
+<span class="fc" id="L511">  }</span>
+
+  private File getCanonicalFile(final File file, final String description) throws MojoFailureException {
+<span class="fc bfc" id="L514" title="All 2 branches covered.">    if (file == null) {</span>
+<span class="fc" id="L515">      return null;</span>
+    }
+    try {
+<span class="fc" id="L518">      return file.getCanonicalFile();</span>
+<span class="nc" id="L519">    } catch (final IOException e) {</span>
+<span class="nc" id="L520">      throw new MojoFailureException(&quot;Could not get canonical path of &quot; + description, e);</span>
+    }
+  }
+
+  private void executeForLicenseSets(final LicenseSet[] licenseSets, final Callback callback) throws MojoFailureException, MojoExecutionException {
+<span class="pc bpc" id="L525" title="1 of 4 branches missed.">    if (licenseSets == null || licenseSets.length == 0) {</span>
+<span class="fc" id="L526">      warn(&quot;At least one licenseSet must be specified&quot;);</span>
+<span class="fc" id="L527">      return;</span>
+    }
+
+    // need to perform validation first
+<span class="fc bfc" id="L531" title="All 2 branches covered.">    for (int i = 0; i &lt; licenseSets.length; i++) {</span>
+<span class="fc" id="L532">      final LicenseSet licenseSet = licenseSets[i];</span>
+<span class="pc bpc" id="L533" title="1 of 2 branches missed.">      if (!hasHeader(licenseSet)) {</span>
+<span class="nc" id="L534">        warn(&quot;No header file specified to check for license in licenseSet: &quot; + i);</span>
+<span class="nc" id="L535">        return;</span>
+      }
+      // make licenseSet baseDir canonical
+<span class="fc" id="L538">      licenseSet.basedir = this.getCanonicalFile(licenseSet.basedir, &quot;licenseSet[&quot; + i + &quot;].basedir&quot;);</span>
+    }
+<span class="fc bfc" id="L540" title="All 2 branches covered.">    if (!strictCheck) {</span>
+<span class="fc" id="L541">      warn(&quot;Property 'strictCheck' is not enabled. Please consider adding &lt;strictCheck&gt;true&lt;/strictCheck&gt; in your pom.xml file.&quot;);</span>
+<span class="fc" id="L542">      warn(&quot;See https://mycila.carbou.me/license-maven-plugin for more information.&quot;);</span>
+    }
+
+    // then execute each license set
+<span class="fc bfc" id="L546" title="All 2 branches covered.">    for (final LicenseSet licenseSet : licenseSets) {</span>
+<span class="fc" id="L547">      executeForLicenseSet(licenseSet, callback);</span>
+    }
+<span class="fc" id="L549">  }</span>
+
+  private LicenseSet convertLegacyConfigToLicenseSet() {
+<span class="pc bpc" id="L552" title="1 of 6 branches missed.">    if (legacyConfigHeader == null &amp;&amp; (this.legacyConfigInlineHeader == null || this.legacyConfigInlineHeader.isEmpty())) {</span>
+<span class="fc" id="L553">      return null;</span>
+    }
+
+<span class="fc" id="L556">    final LicenseSet legacyLicenseSet = new LicenseSet();</span>
+<span class="fc" id="L557">    legacyLicenseSet.header = legacyConfigHeader;</span>
+<span class="fc" id="L558">    legacyLicenseSet.inlineHeader = legacyConfigInlineHeader;</span>
+<span class="fc" id="L559">    legacyLicenseSet.validHeaders = legacyConfigValidHeaders;</span>
+<span class="fc" id="L560">    legacyLicenseSet.multi = legacyConfigMulti;</span>
+<span class="fc" id="L561">    legacyLicenseSet.headerSections = legacyConfigHeaderSections;</span>
+<span class="fc" id="L562">    legacyLicenseSet.includes = legacyConfigIncludes;</span>
+<span class="fc" id="L563">    legacyLicenseSet.excludes = legacyConfigExcludes;</span>
+<span class="fc" id="L564">    legacyLicenseSet.keywords = legacyConfigKeywords;</span>
+<span class="fc" id="L565">    return legacyLicenseSet;</span>
+  }
+
+  private void executeForLicenseSet(final LicenseSet licenseSet, final Callback callback) throws MojoExecutionException, MojoFailureException {
+<span class="fc" id="L569">    final ResourceFinder finder = new ResourceFinder(firstNonNull(asPath(licenseSet.basedir), asPath(defaultBasedir)));</span>
+    try {
+<span class="fc" id="L571">      finder.setCompileClassPath(project.getCompileClasspathElements());</span>
+<span class="nc" id="L572">    } catch (DependencyResolutionRequiredException e) {</span>
+<span class="nc" id="L573">      throw new MojoExecutionException(e.getMessage(), e);</span>
+<span class="fc" id="L574">    }</span>
+<span class="fc" id="L575">    finder.setPluginClassPath(getClass().getClassLoader());</span>
+
+<span class="fc" id="L577">    final HeaderSource headerSource = HeaderSource.of(licenseSet.multi, licenseSet.inlineHeader, licenseSet.header, this.encoding, finder);</span>
+<span class="fc" id="L578">    final Header h = new Header(headerSource, licenseSet.headerSections);</span>
+<span class="fc" id="L579">    debug(&quot;Header: %s&quot;, h.getLocation());</span>
+
+<span class="pc bpc" id="L581" title="1 of 2 branches missed.">    if (licenseSet.validHeaders == null) {</span>
+<span class="nc" id="L582">      licenseSet.validHeaders = new String[0];</span>
+    }
+<span class="fc" id="L584">    final List&lt;Header&gt; validHeaders = new ArrayList&lt;Header&gt;(licenseSet.validHeaders.length);</span>
+<span class="fc bfc" id="L585" title="All 2 branches covered.">    for (final String validHeader : licenseSet.validHeaders) {</span>
+<span class="fc" id="L586">      final HeaderSource validHeaderSource = HeaderSource.of(null, null, validHeader, this.encoding, finder);</span>
+<span class="fc" id="L587">      validHeaders.add(new Header(validHeaderSource, licenseSet.headerSections));</span>
+    }
+
+<span class="fc" id="L590">    final List&lt;PropertiesProvider&gt; propertiesProviders = new LinkedList&lt;PropertiesProvider&gt;();</span>
+<span class="fc bfc" id="L591" title="All 2 branches covered.">    for (final PropertiesProvider provider : ServiceLoader.load(PropertiesProvider.class, Thread.currentThread().getContextClassLoader())) {</span>
+<span class="fc" id="L592">      propertiesProviders.add(provider);</span>
+<span class="fc" id="L593">    }</span>
+<span class="fc" id="L594">    final DocumentPropertiesLoader propertiesLoader = new DocumentPropertiesLoader() {</span>
+      @Override
+      public Properties load(final Document document) {
+<span class="fc" id="L597">        final Properties props = new Properties();</span>
+
+<span class="fc bfc" id="L599" title="All 2 branches covered.">        for (final Map.Entry&lt;String, String&gt; entry : mergeProperties(licenseSet, document).entrySet()) {</span>
+<span class="fc bfc" id="L600" title="All 2 branches covered.">          if (entry.getValue() != null) {</span>
+<span class="fc" id="L601">            props.setProperty(entry.getKey(), entry.getValue());</span>
+          } else {
+<span class="fc" id="L603">            props.remove(entry.getKey());</span>
+          }
+<span class="fc" id="L605">        }</span>
+<span class="fc bfc" id="L606" title="All 2 branches covered.">        for (final PropertiesProvider provider : propertiesProviders) {</span>
+          try {
+<span class="fc" id="L608">            final Map&lt;String, String&gt; providerProperties = provider.getAdditionalProperties(AbstractLicenseMojo.this, props, document);</span>
+<span class="fc bfc" id="L609" title="All 2 branches covered.">            if (getLog().isDebugEnabled()) {</span>
+<span class="fc" id="L610">              getLog().debug(&quot;provider: &quot; + provider.getClass() + &quot; brought new properties\n&quot; + providerProperties);</span>
+            }
+<span class="fc bfc" id="L612" title="All 2 branches covered.">            for (Map.Entry&lt;String, String&gt; entry : providerProperties.entrySet()) {</span>
+<span class="pc bpc" id="L613" title="1 of 2 branches missed.">              if (entry.getValue() != null) {</span>
+<span class="fc" id="L614">                props.setProperty(entry.getKey(), entry.getValue());</span>
+              } else {
+<span class="nc" id="L616">                props.remove(entry.getKey());</span>
+              }
+<span class="fc" id="L618">            }</span>
+<span class="nc" id="L619">          } catch (Exception e) {</span>
+<span class="nc" id="L620">            getLog().warn(&quot;failure occurred while calling &quot; + provider.getClass(), e);</span>
+<span class="fc" id="L621">          }</span>
+<span class="fc" id="L622">        }</span>
+<span class="fc" id="L623">        return props;</span>
+      }
+    };
+
+<span class="fc" id="L627">    final DocumentFactory documentFactory = new DocumentFactory(firstNonNull(licenseSet.basedir, defaultBasedir), buildMapping(), buildHeaderDefinitions(licenseSet, finder), encoding, licenseSet.keywords, propertiesLoader);</span>
+
+<span class="fc" id="L629">    int nThreads = getNumberOfExecutorThreads();</span>
+<span class="fc" id="L630">    ExecutorService executorService = Executors.newFixedThreadPool(nThreads);</span>
+<span class="fc" id="L631">    CompletionService&lt;?&gt; completionService = new ExecutorCompletionService&lt;&gt;(executorService);</span>
+<span class="fc" id="L632">    int count = 0;</span>
+<span class="fc" id="L633">    debug(&quot;Number of execution threads: %s&quot;, nThreads);</span>
+
+    try {
+<span class="fc bfc" id="L636" title="All 2 branches covered.">      for (final String file : listSelectedFiles(licenseSet)) {</span>
+<span class="fc" id="L637">        completionService.submit(() -&gt; {</span>
+<span class="fc" id="L638">          Document document = documentFactory.createDocuments(file);</span>
+<span class="fc" id="L639">          debug(&quot;Selected file: %s [header style: %s]&quot;, document.getFilePath(), document.getHeaderDefinition());</span>
+<span class="fc bfc" id="L640" title="All 2 branches covered.">          if (document.isNotSupported()) {</span>
+<span class="fc" id="L641">            callback.onUnknownFile(document, h);</span>
+<span class="fc bfc" id="L642" title="All 2 branches covered.">          } else if (document.is(h)) {</span>
+<span class="fc" id="L643">            debug(&quot;Skipping header file: %s&quot;, document.getFilePath());</span>
+<span class="fc bfc" id="L644" title="All 2 branches covered.">          } else if (document.hasHeader(h, strictCheck)) {</span>
+<span class="fc" id="L645">            callback.onExistingHeader(document, h);</span>
+          } else {
+<span class="fc" id="L647">            boolean headerFound = false;</span>
+<span class="fc bfc" id="L648" title="All 2 branches covered.">            for (final Header validHeader : validHeaders) {</span>
+<span class="fc" id="L649">              headerFound = document.hasHeader(validHeader, strictCheck);</span>
+<span class="pc bpc" id="L650" title="1 of 2 branches missed.">              if (headerFound) {</span>
+<span class="fc" id="L651">                callback.onExistingHeader(document, h);</span>
+<span class="fc" id="L652">                break;</span>
+              }
+<span class="nc" id="L654">            }</span>
+<span class="fc bfc" id="L655" title="All 2 branches covered.">            if (!headerFound) {</span>
+<span class="fc" id="L656">              callback.onHeaderNotFound(document, h);</span>
+            }
+          }
+<span class="fc" id="L659">        }, null);</span>
+<span class="fc" id="L660">        count++;</span>
+      }
+
+<span class="fc bfc" id="L663" title="All 2 branches covered.">      while (count-- &gt; 0) {</span>
+        try {
+<span class="fc" id="L665">          completionService.take().get();</span>
+<span class="nc" id="L666">        } catch (InterruptedException e) {</span>
+<span class="nc" id="L667">          Thread.currentThread().interrupt();</span>
+<span class="nc" id="L668">        } catch (ExecutionException e) {</span>
+<span class="nc" id="L669">          Throwable cause = e.getCause();</span>
+<span class="nc bnc" id="L670" title="All 2 branches missed.">          if (cause instanceof Error) {</span>
+<span class="nc" id="L671">            throw (Error) cause;</span>
+          }
+<span class="nc bnc" id="L673" title="All 2 branches missed.">          if (cause instanceof MojoExecutionException) {</span>
+<span class="nc" id="L674">            throw (MojoExecutionException) cause;</span>
+          }
+<span class="nc bnc" id="L676" title="All 2 branches missed.">          if (cause instanceof MojoFailureException) {</span>
+<span class="nc" id="L677">            throw (MojoFailureException) cause;</span>
+          }
+<span class="nc bnc" id="L679" title="All 2 branches missed.">          if (cause instanceof RuntimeException) {</span>
+<span class="nc" id="L680">            throw (RuntimeException) cause;</span>
+          }
+<span class="nc" id="L682">          throw new RuntimeException(cause.getMessage(), cause);</span>
+<span class="pc" id="L683">        }</span>
+      }
+
+    } finally {
+<span class="fc" id="L687">      executorService.shutdownNow();</span>
+    }
+<span class="fc" id="L689">  }</span>
+
+  private boolean hasHeader(final LicenseSet licenseSet) {
+<span class="pc bpc" id="L692" title="9 of 10 branches missed.">    return</span>
+        (licenseSet.multi != null
+            &amp;&amp; ((licenseSet.multi.headers != null &amp;&amp; licenseSet.multi.headers.length &gt; 0)
+<span class="pc bpc" id="L695" title="3 of 6 branches missed.">            || (licenseSet.multi.inlineHeaders != null &amp;&amp; licenseSet.multi.inlineHeaders.length &gt; 0 &amp;&amp; !licenseSet.multi.inlineHeaders[0].isEmpty()))</span>
+<span class="pc bpc" id="L696" title="1 of 2 branches missed.">        ) || (licenseSet.header != null || (licenseSet.inlineHeader != null &amp;&amp; !licenseSet.inlineHeader.isEmpty()));</span>
+  }
+
+  private int getNumberOfExecutorThreads() {
+<span class="pc bpc" id="L700" title="1 of 2 branches missed.">    return nThreads &gt; 0 ?</span>
+<span class="nc" id="L701">        nThreads :</span>
+<span class="fc" id="L702">        Math.max(1, (int) (Runtime.getRuntime().availableProcessors() * concurrencyFactor));</span>
+  }
+
+  private Map&lt;String, String&gt; mergeProperties(final LicenseSet licenseSet, final Document document) {
+    // first put system environment
+<span class="fc" id="L707">    Map&lt;String, String&gt; props = new LinkedHashMap&lt;String, String&gt;(System.getenv());</span>
+    // then add ${project.XYZ} properties
+<span class="fc" id="L709">    props.put(&quot;project.groupId&quot;, project.getGroupId());</span>
+<span class="fc" id="L710">    props.put(&quot;project.artifactId&quot;, project.getArtifactId());</span>
+<span class="fc" id="L711">    props.put(&quot;project.version&quot;, project.getVersion());</span>
+<span class="fc" id="L712">    props.put(&quot;project.name&quot;, project.getName());</span>
+<span class="fc" id="L713">    props.put(&quot;project.description&quot;, project.getDescription());</span>
+<span class="fc" id="L714">    props.put(&quot;project.inceptionYear&quot;, project.getInceptionYear());</span>
+<span class="fc" id="L715">    props.put(&quot;year&quot;, project.getInceptionYear()); // maintains backward compatibility</span>
+<span class="fc" id="L716">    props.put(&quot;project.url&quot;, project.getUrl());</span>
+<span class="fc" id="L717">    Organization org = project.getOrganization();</span>
+<span class="pc bpc" id="L718" title="1 of 2 branches missed.">    if (org != null) {</span>
+<span class="nc" id="L719">      props.put(&quot;owner&quot;, org.getName()); // maintains backward compatibility</span>
+<span class="nc" id="L720">      props.put(&quot;project.organization.name&quot;, org.getName());</span>
+<span class="nc" id="L721">      props.put(&quot;project.organization.url&quot;, org.getUrl());</span>
+    }
+    // then add per document properties
+<span class="fc" id="L724">    props.put(&quot;file.name&quot;, document.getFile().getName());</span>
+
+    // we override by properties in the POM
+<span class="pc bpc" id="L727" title="1 of 2 branches missed.">    if (this.defaultProperties != null) {</span>
+<span class="fc" id="L728">      props.putAll(this.defaultProperties);</span>
+    }
+
+    // we override by properties in the licenseSet
+<span class="pc bpc" id="L732" title="1 of 2 branches missed.">    if (licenseSet.properties != null) {</span>
+<span class="fc" id="L733">      props.putAll(licenseSet.properties);</span>
+    }
+
+    // then we override by java system properties (command-line -D...)
+<span class="fc bfc" id="L737" title="All 2 branches covered.">    for (String key : System.getProperties().stringPropertyNames()) {</span>
+<span class="fc" id="L738">      props.put(key, System.getProperty(key));</span>
+<span class="fc" id="L739">    }</span>
+<span class="fc" id="L740">    return props;</span>
+  }
+
+  private String[] listSelectedFiles(final LicenseSet licenseSet) {
+<span class="pc bpc" id="L744" title="1 of 2 branches missed.">    final boolean useDefaultExcludes = (licenseSet.useDefaultExcludes != null ? licenseSet.useDefaultExcludes : defaultUseDefaultExcludes);</span>
+<span class="fc" id="L745">    final Selection selection = new Selection(</span>
+<span class="fc" id="L746">        firstNonNull(licenseSet.basedir, defaultBasedir), licenseSet.includes, buildExcludes(licenseSet), useDefaultExcludes,</span>
+<span class="fc" id="L747">        getLog());</span>
+<span class="fc" id="L748">    debug(&quot;From: %s&quot;, firstNonNull(licenseSet.basedir, defaultBasedir));</span>
+<span class="fc" id="L749">    debug(&quot;Including: %s&quot;, deepToString(selection.getIncluded()));</span>
+<span class="fc" id="L750">    debug(&quot;Excluding: %s&quot;, deepToString(selection.getExcluded()));</span>
+<span class="fc" id="L751">    return selection.getSelectedFiles();</span>
+  }
+
+  private String[] buildExcludes(final LicenseSet licenseSet) {
+<span class="fc" id="L755">    List&lt;String&gt; ex = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L756">    ex.addAll(asList(licenseSet.excludes));</span>
+<span class="pc bpc" id="L757" title="2 of 6 branches missed.">    if (project != null &amp;&amp; project.getModules() != null &amp;&amp; !aggregate) {</span>
+<span class="fc bfc" id="L758" title="All 2 branches covered.">      for (String module : project.getModules()) {</span>
+<span class="fc" id="L759">        ex.add(module + &quot;/**&quot;);</span>
+<span class="fc" id="L760">      }</span>
+    }
+<span class="fc" id="L762">    return ex.toArray(new String[ex.size()]);</span>
+  }
+
+  public final void info(String format, Object... params) {
+<span class="pc bpc" id="L766" title="1 of 2 branches missed.">    if (!quiet) {</span>
+<span class="fc" id="L767">      getLog().info(format(format, params));</span>
+    }
+<span class="fc" id="L769">  }</span>
+
+  public final void debug(String format, Object... params) {
+<span class="fc bfc" id="L772" title="All 2 branches covered.">    if (!quiet) {</span>
+<span class="fc" id="L773">      getLog().debug(format(format, params));</span>
+    }
+<span class="fc" id="L775">  }</span>
+
+  public final void warn(String format, Object... params) {
+<span class="fc bfc" id="L778" title="All 2 branches covered.">    if (!quiet) {</span>
+<span class="fc" id="L779">      getLog().warn(format(format, params));</span>
+    }
+<span class="fc" id="L781">  }</span>
+
+  private Map&lt;String, String&gt; buildMapping() {
+<span class="fc" id="L784">    Map&lt;String, String&gt; extensionMapping = new LinkedHashMap&lt;&gt;();</span>
+    // force inclusion of unknown item to manage unknown files
+<span class="fc" id="L786">    extensionMapping.put(DocumentType.UNKNOWN.getExtension(), DocumentType.UNKNOWN.getDefaultHeaderTypeName());</span>
+<span class="fc bfc" id="L787" title="All 2 branches covered.">    for (Map.Entry&lt;String, String&gt; entry : mapping.entrySet()) {</span>
+<span class="fc" id="L788">      extensionMapping.put(entry.getKey().toLowerCase(), entry.getValue().toLowerCase());</span>
+<span class="fc" id="L789">    }</span>
+<span class="fc bfc" id="L790" title="All 2 branches covered.">    if (useDefaultMapping) {</span>
+<span class="fc bfc" id="L791" title="All 2 branches covered.">      for (Map.Entry&lt;String, String&gt; entry : defaultMapping().entrySet()) {</span>
+<span class="fc bfc" id="L792" title="All 2 branches covered.">        if (!extensionMapping.containsKey(entry.getKey())) {</span>
+<span class="fc" id="L793">          extensionMapping.put(entry.getKey(), entry.getValue());</span>
+        }
+<span class="fc" id="L795">      }</span>
+    }
+<span class="fc" id="L797">    return extensionMapping;</span>
+  }
+
+  private Map&lt;String, HeaderDefinition&gt; buildHeaderDefinitions(final LicenseSet licenseSet, final ResourceFinder finder) throws MojoFailureException {
+    // like mappings, first get default definitions
+<span class="fc" id="L802">    final Map&lt;String, HeaderDefinition&gt; headers = new HashMap&lt;&gt;(HeaderType.defaultDefinitions());</span>
+
+    // and then override them with those provided in base config
+<span class="fc bfc" id="L805" title="All 2 branches covered.">    for (final String headerDefiniton : defaultHeaderDefinitions) {</span>
+<span class="fc" id="L806">      headers.putAll(loadHeaderDefinition(headerDefiniton, finder));</span>
+    }
+
+    // then override by inline default styles
+<span class="fc bfc" id="L810" title="All 2 branches covered.">    for (HeaderStyle defaultInlineHeaderStyle : defaultInlineHeaderStyles) {</span>
+<span class="fc" id="L811">      headers.put(defaultInlineHeaderStyle.name, defaultInlineHeaderStyle.toHeaderDefinition());</span>
+    }
+
+    // and then override them with those provided in licenseSet config
+<span class="pc bpc" id="L815" title="1 of 2 branches missed.">    for (final String headerDefiniton : licenseSet.headerDefinitions) {</span>
+<span class="nc" id="L816">      headers.putAll(loadHeaderDefinition(headerDefiniton, finder));</span>
+    }
+
+<span class="pc bpc" id="L819" title="1 of 2 branches missed.">    for (HeaderStyle inlineHeaderStyle : licenseSet.inlineHeaderStyles) {</span>
+<span class="nc" id="L820">      headers.put(inlineHeaderStyle.name, inlineHeaderStyle.toHeaderDefinition());</span>
+    }
+
+    // force inclusion of unknown item to manage unknown files
+<span class="fc" id="L824">    headers.put(HeaderType.UNKNOWN.getDefinition().getType(), HeaderType.UNKNOWN.getDefinition());</span>
+<span class="fc" id="L825">    return headers;</span>
+  }
+
+  private Map&lt;String, HeaderDefinition&gt; loadHeaderDefinition(final String headerDefinition, final ResourceFinder finder) throws MojoFailureException {
+    try {
+<span class="fc" id="L830">      final InputSource source = new InputSource(finder.findResource(headerDefinition).openStream());</span>
+<span class="fc" id="L831">      source.setEncoding(encoding);</span>
+<span class="fc" id="L832">      final AdditionalHeaderDefinition fileDefinitions = new AdditionalHeaderDefinition(XMLDoc.from(source, true));</span>
+<span class="fc" id="L833">      final Map&lt;String, HeaderDefinition&gt; map = fileDefinitions.getDefinitions();</span>
+<span class="fc" id="L834">      debug(&quot;%d header definitions loaded from '%s'&quot;, map.size(), headerDefinition);</span>
+<span class="fc" id="L835">      return map;</span>
+<span class="nc" id="L836">    } catch (final IOException ex) {</span>
+<span class="nc" id="L837">      throw new MojoFailureException(&quot;Error reading header definition: &quot; + headerDefinition, ex);</span>
+    }
+  }
+
+  /**
+   * Returns the list of servers with decrypted passwords.
+   *
+   * @return list of servers with decrypted passwords.
+   */
+  List&lt;Server&gt; getDecryptedServers() {
+<span class="nc" id="L847">    final SettingsDecryptionRequest settingsDecryptionRequest = new DefaultSettingsDecryptionRequest();</span>
+<span class="nc" id="L848">    settingsDecryptionRequest.setServers(settings.getServers());</span>
+<span class="nc" id="L849">    final SettingsDecryptionResult decrypt = settingsDecrypter.decrypt(settingsDecryptionRequest);</span>
+<span class="nc" id="L850">    return decrypt.getServers();</span>
+  }
+
+  /**
+   * Retrieves the credentials for the given server or null if none could be
+   * found
+   *
+   * @param serverID
+   * @return
+   */
+  public Credentials findCredentials(String serverID) {
+<span class="nc" id="L861">    List&lt;Server&gt; decryptedServers = getDecryptedServers();</span>
+
+<span class="nc bnc" id="L863" title="All 2 branches missed.">    for (Server ds : decryptedServers) {</span>
+<span class="nc bnc" id="L864" title="All 2 branches missed.">      if (ds.getId().equals(serverID)) {</span>
+<span class="nc" id="L865">        getLog().debug(&quot;credentials have been found for server: &quot; + serverID + &quot;, login:&quot; + ds.getUsername() + &quot;, password:&quot; + starEncrypt(ds.getPassword()));</span>
+<span class="nc" id="L866">        return new Credentials(ds.getUsername(), ds.getPassword());</span>
+      }
+<span class="nc" id="L868">    }</span>
+
+<span class="nc" id="L870">    getLog().debug(&quot;no credentials found for server: &quot; + serverID);</span>
+<span class="nc" id="L871">    return null;</span>
+  }
+
+  static String starEncrypt(String str) {
+<span class="fc bfc" id="L875" title="All 2 branches covered.">    if (str == null) {</span>
+<span class="fc" id="L876">      return null;</span>
+    }
+<span class="fc" id="L878">    return str.replaceAll(&quot;.&quot;, &quot;*&quot;);</span>
+  }
+
+  private static &lt;T&gt; T firstNonNull(final T t1, final T t2) {
+<span class="fc bfc" id="L882" title="All 2 branches covered.">    if (t1 != null) {</span>
+<span class="fc" id="L883">      return t1;</span>
+    }
+<span class="fc" id="L885">    return t2;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

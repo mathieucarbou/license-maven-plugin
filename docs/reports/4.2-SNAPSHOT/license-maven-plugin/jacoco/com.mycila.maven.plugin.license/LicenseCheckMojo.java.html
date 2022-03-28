@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LicenseCheckMojo.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">license-maven-plugin</a> &gt; <a href="index.source.html" class="el_package">com.mycila.maven.plugin.license</a> &gt; <span class="el_source">LicenseCheckMojo.java</span></div><h1>LicenseCheckMojo.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2008-2022 Mycila (mathieu.carbou@gmail.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.mycila.maven.plugin.license;
+
+import com.mycila.maven.plugin.license.dependencies.AggregateLicensePolicyEnforcer;
+import com.mycila.maven.plugin.license.dependencies.LicenseMap;
+import com.mycila.maven.plugin.license.dependencies.LicensePolicy;
+import com.mycila.maven.plugin.license.dependencies.LicensePolicyEnforcerResult;
+import com.mycila.maven.plugin.license.dependencies.MavenProjectLicenses;
+import com.mycila.maven.plugin.license.document.Document;
+import com.mycila.maven.plugin.license.header.Header;
+import java.io.File;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.stream.Collectors;
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+
+/**
+ * Check if the source files of the project have a valid license header
+ *
+ * @author Mathieu Carbou (mathieu.carbou@gmail.com)
+ */
+@Mojo(name = &quot;check&quot;, defaultPhase = LifecyclePhase.VERIFY, threadSafe = true)
+<span class="fc" id="L44">public final class LicenseCheckMojo extends AbstractLicenseMojo {</span>
+
+<span class="fc" id="L46">  @Parameter(property = &quot;license.errorMessage&quot;, defaultValue = &quot;Some files do not have the expected license header&quot;)</span>
+  public String errorMessage = &quot;Some files do not have the expected license header&quot;;
+
+<span class="fc" id="L49">  public final Collection&lt;File&gt; missingHeaders = new ConcurrentLinkedQueue&lt;File&gt;();</span>
+
+  @Override
+  public void execute() throws MojoExecutionException, MojoFailureException {
+<span class="fc" id="L53">    report = new Report(reportFormat, Report.Action.CHECK, project, clock, reportSkipped);</span>
+
+<span class="pc bpc" id="L55" title="1 of 2 branches missed.">    if (!skip) {</span>
+<span class="fc" id="L56">      getLog().info(&quot;Checking licenses...&quot;);</span>
+    }
+<span class="fc" id="L58">    missingHeaders.clear();</span>
+
+<span class="fc" id="L60">    AbstractCallback callback = new AbstractCallback() {</span>
+      @Override
+      public void onHeaderNotFound(Document document, Header header) {
+<span class="fc bfc" id="L63" title="All 2 branches covered.">        if (skipExistingHeaders) {</span>
+<span class="fc" id="L64">          document.parseHeader();</span>
+<span class="pc bpc" id="L65" title="1 of 2 branches missed.">          if (document.headerDetected()) {</span>
+<span class="fc" id="L66">            debug(&quot;Existing header in: %s&quot;, document.getFilePath());</span>
+<span class="fc" id="L67">            report.add(document.getFile(), Report.Result.PRESENT);</span>
+<span class="fc" id="L68">            return;</span>
+          }
+        }
+<span class="fc" id="L71">        warn(&quot;Missing header in: %s&quot;, document.getFilePath());</span>
+<span class="fc" id="L72">        missingHeaders.add(document.getFile());</span>
+<span class="fc" id="L73">        report.add(document.getFile(), Report.Result.MISSING);</span>
+<span class="fc" id="L74">      }</span>
+
+      @Override
+      public void onExistingHeader(Document document, Header header) {
+<span class="fc" id="L78">        debug(&quot;Header OK in: %s&quot;, document.getFilePath());</span>
+<span class="fc" id="L79">        report.add(document.getFile(), Report.Result.PRESENT);</span>
+<span class="fc" id="L80">      }</span>
+    };
+
+<span class="pc bpc" id="L83" title="1 of 2 branches missed.">    if (dependencyEnforce) {</span>
+      //TODO(rremer) config-driven factory of the LicenseMap implementation
+<span class="nc" id="L85">      final LicenseMap licenseMap = new MavenProjectLicenses(session, project, dependencyGraphBuilder, projectBuilder, dependencyScopes, getLog());</span>
+<span class="nc" id="L86">      final AggregateLicensePolicyEnforcer enforcer = new AggregateLicensePolicyEnforcer(dependencyPolicies);</span>
+<span class="nc" id="L87">      final Map&lt;Artifact, LicensePolicyEnforcerResult&gt; licenseResult = enforcer.apply(licenseMap);</span>
+<span class="nc" id="L88">      final Set&lt;LicensePolicyEnforcerResult&gt; deniedLicenseResult = licenseResult.values().stream()</span>
+<span class="nc" id="L89">          .filter(result -&gt; result.getRuling().equals(LicensePolicy.Rule.DENY))</span>
+<span class="nc" id="L90">          .collect(Collectors.toSet());</span>
+
+<span class="nc bnc" id="L92" title="All 2 branches missed.">      if (deniedLicenseResult.size() != 0) {</span>
+<span class="nc" id="L93">        final StringBuilder licenseExceptionMsg = new StringBuilder(dependencyExceptionMessage);</span>
+<span class="nc" id="L94">        deniedLicenseResult.stream().forEach(result -&gt; {</span>
+<span class="nc" id="L95">          licenseExceptionMsg.append(System.lineSeparator());</span>
+<span class="nc" id="L96">          licenseExceptionMsg.append(result);</span>
+<span class="nc" id="L97">        });</span>
+<span class="nc" id="L98">        throw new MojoExecutionException(licenseExceptionMsg.toString());</span>
+      }
+    }
+
+<span class="fc" id="L102">    execute(callback);</span>
+
+<span class="fc bfc" id="L104" title="All 2 branches covered.">    if (!missingHeaders.isEmpty()) {</span>
+<span class="fc bfc" id="L105" title="All 2 branches covered.">      if (failIfMissing) {</span>
+<span class="fc" id="L106">        throw new MojoExecutionException(errorMessage);</span>
+      }
+<span class="fc" id="L108">      getLog().warn(errorMessage);</span>
+    }
+
+<span class="fc" id="L111">    callback.checkUnknown();</span>
+<span class="fc" id="L112">  }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

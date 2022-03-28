@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<licensePluginReport goal="FORMAT" timestamp="1648480929229">
+<licensePluginReport goal="CHECK" timestamp="1648486791416">
     <module artifactId="license-maven-plugin-svn" groupId="com.mycila" version="4.2-SNAPSHOT"/>
     <files>
         <file path="README.MD" result="UNKNOWN"/>
-        <file path="pom.xml" result="REPLACED"/>
-        <file path="src/main/java/com/mycila/maven/plugin/license/svn/SVNPropertiesProvider.java" result="REPLACED"/>
+        <file path="pom.xml" result="PRESENT"/>
+        <file path="src/main/java/com/mycila/maven/plugin/license/svn/SVNPropertiesProvider.java" result="PRESENT"/>
     </files>
 </licensePluginReport>
