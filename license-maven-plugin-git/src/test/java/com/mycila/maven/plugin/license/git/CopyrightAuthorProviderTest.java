@@ -24,7 +24,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -44,19 +43,31 @@ class CopyrightAuthorProviderTest {
   void copyrightAuthor() {
     CopyrightAuthorProvider provider = new CopyrightAuthorProvider();
 
-    assertAuthor(provider, "dir1/file1.txt", "Peter Palaga", "ppalaga@redhat.com");
+    Map<String, String> props = new HashMap<>();
+    final LicenseCheckMojo mojo = new LicenseCheckMojo();
+    mojo.defaultBasedir = gitRepoRoot.toFile();
+
+    try {
+      provider.init(mojo, props);
+
+      String path = "dir1/file1.txt";
+
+      Document document = newDocument(path);
+      Map<String, String> actual = provider.adjustProperties(mojo, props, document);
+
+      HashMap<String, String> expected = new HashMap<String, String>();
+      expected.put(CopyrightAuthorProvider.COPYRIGHT_CREATION_AUTHOR_NAME_KEY, "Peter Palaga");
+      expected.put(CopyrightAuthorProvider.COPYRIGHT_CREATION_AUTHOR_EMAIL_KEY,
+          "ppalaga@redhat.com");
+      Assertions.assertEquals(expected, actual, "for file '" + path + "': ");
+
+    } finally {
+      provider.close();
+    }
   }
 
-  private void assertAuthor(CopyrightAuthorProvider provider, String path, String copyrightAuthorName, String copyrightAuthorEmail) {
-    Properties props = new Properties();
-
-    Document document = newDocument(path);
-    Map<String, String> actual = provider.getAdditionalProperties(new LicenseCheckMojo(), props, document);
-
-    HashMap<String, String> expected = new HashMap<String, String>();
-    expected.put(CopyrightAuthorProvider.COPYRIGHT_CREATION_AUTHOR_NAME_KEY, copyrightAuthorName);
-    expected.put(CopyrightAuthorProvider.COPYRIGHT_CREATION_AUTHOR_EMAIL_KEY, copyrightAuthorEmail);
-    Assertions.assertEquals(expected, actual, "for file '" + path + "': ");
+  private void assertAuthor(CopyrightAuthorProvider provider, String path,
+      String copyrightAuthorName, String copyrightAuthorEmail) {
 
   }
 

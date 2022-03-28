@@ -18,19 +18,20 @@ package com.mycila.maven.plugin.license.git;
 import com.mycila.maven.plugin.license.AbstractLicenseMojo;
 import com.mycila.maven.plugin.license.PropertiesProvider;
 import com.mycila.maven.plugin.license.document.Document;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
+import org.eclipse.jgit.api.errors.GitAPIException;
 
 /**
  * An implementation of {@link PropertiesProvider} that adds {@value #COPYRIGHT_LAST_YEAR_KEY} and
- * {@value #COPYRIGHT_YEARS_KEY} values - see
- * {@link #getAdditionalProperties(AbstractLicenseMojo, Properties, Document)}.
+ * {@value #COPYRIGHT_YEARS_KEY} values - see {@link #adjustProperties(AbstractLicenseMojo, Map,
+ * Document)}.
  *
  * @author <a href="mailto:ppalaga@redhat.com">Peter Palaga</a>
  */
-public class CopyrightRangeProvider extends GitPropertiesProvider implements PropertiesProvider {
+public class CopyrightRangeProvider implements PropertiesProvider {
 
   public static final String COPYRIGHT_LAST_YEAR_KEY = "license.git.copyrightLastYear";
   public static final String COPYRIGHT_CREATION_YEAR_KEY = "license.git.copyrightCreationYear";
@@ -38,9 +39,23 @@ public class CopyrightRangeProvider extends GitPropertiesProvider implements Pro
   public static final String COPYRIGHT_YEARS_KEY = "license.git.copyrightYears";
   public static final String INCEPTION_YEAR_KEY = "project.inceptionYear";
 
+  private GitLookup gitLookup;
 
-  public CopyrightRangeProvider() {
-    super();
+  @Override
+  public void init(AbstractLicenseMojo mojo, Map<String, String> currentProperties) {
+    gitLookup = GitLookup.create(mojo.defaultBasedir, currentProperties);
+
+    // One-time warning for shallow repo
+    if (mojo.warnIfShallow && gitLookup.isShallowRepository()) {
+      mojo.warn("Shallow git repository detected. Year property values may not be accurate.");
+    }
+  }
+
+  @Override
+  public void close() {
+    if (gitLookup != null) {
+      gitLookup.close();
+    }
   }
 
   /**
@@ -54,16 +69,17 @@ public class CopyrightRangeProvider extends GitPropertiesProvider implements Pro
    * returned; otherwise, the two values are combined using dash, so that the result is e.g. {@code "2000-2010"}.</li>
    * <li>{@value #COPYRIGHT_CREATION_YEAR_KEY} key stores the year from the committer date of the first git commit for
    * the supplied {@code document}.</li>
-   * <li>{@value #COPYRIGHT_EXISTENCE_YEARS_KEY} key stores the range from {@value #COPYRIGHT_CREATION_YEAR_KEY} value to 
+   * <li>{@value #COPYRIGHT_EXISTENCE_YEARS_KEY} key stores the range from {@value #COPYRIGHT_CREATION_YEAR_KEY} value to
    * {@value #COPYRIGHT_LAST_YEAR_KEY} value.  If both values are equal only the {@value #COPYRIGHT_CREATION_YEAR_KEY} is returned;
    * otherwise, the two values are combined using dash, so that the result is e.g. {@code "2005-2010"}.</li>
    * </ul>
    * The {@value #INCEPTION_YEAR_KEY} value is read from the supplied properties and it must available. Otherwise a
    * {@link RuntimeException} is thrown.
    */
-  public Map<String, String> getAdditionalProperties(AbstractLicenseMojo mojo, Properties properties,
-                                                     Document document) {
-    String inceptionYear = properties.getProperty(INCEPTION_YEAR_KEY);
+  @Override
+  public Map<String, String> adjustProperties(AbstractLicenseMojo mojo,
+      Map<String, String> properties, Document document) {
+    String inceptionYear = properties.get(INCEPTION_YEAR_KEY);
     if (inceptionYear == null) {
       throw new RuntimeException("'" + INCEPTION_YEAR_KEY + "' must have a value for file "
           + document.getFile().getAbsolutePath());
@@ -72,12 +88,13 @@ public class CopyrightRangeProvider extends GitPropertiesProvider implements Pro
     try {
       inceptionYearInt = Integer.parseInt(inceptionYear);
     } catch (NumberFormatException e1) {
-      throw new RuntimeException("'" + INCEPTION_YEAR_KEY + "' must be an integer ; found = " + inceptionYear + " file: "
-          + document.getFile().getAbsolutePath());
+      throw new RuntimeException(
+          "'" + INCEPTION_YEAR_KEY + "' must be an integer ; found = " + inceptionYear + " file: "
+              + document.getFile().getAbsolutePath());
     }
     try {
       Map<String, String> result = new HashMap<>(4);
-      GitLookup gitLookup = getGitLookup(mojo, document.getFile(), properties);
+
       int copyrightEnd = gitLookup.getYearOfLastChange(document.getFile());
       result.put(COPYRIGHT_LAST_YEAR_KEY, Integer.toString(copyrightEnd));
       final String copyrightYears;
@@ -90,19 +107,20 @@ public class CopyrightRangeProvider extends GitPropertiesProvider implements Pro
 
       int copyrightStart = gitLookup.getYearOfCreation(document.getFile());
       result.put(COPYRIGHT_CREATION_YEAR_KEY, Integer.toString(copyrightStart));
-      
+
       final String copyrightExistenceYears;
       if (copyrightStart >= copyrightEnd) {
-          copyrightExistenceYears = Integer.toString(copyrightStart);
+        copyrightExistenceYears = Integer.toString(copyrightStart);
       } else {
-          copyrightExistenceYears = copyrightStart + "-" + copyrightEnd;
+        copyrightExistenceYears = copyrightStart + "-" + copyrightEnd;
       }
       result.put(COPYRIGHT_EXISTENCE_YEARS_KEY, copyrightExistenceYears);
-      
+
       return Collections.unmodifiableMap(result);
-    } catch (Exception e) {
-      throw new RuntimeException("Could not compute the year of the last git commit for file "
-          + document.getFile().getAbsolutePath(), e);
+    } catch (IOException | GitAPIException e) {
+      throw new RuntimeException(
+          "CopyrightRangeProvider error on file: " + document.getFile().getAbsolutePath() + ": "
+              + e.getMessage(), e);
     }
   }
 }

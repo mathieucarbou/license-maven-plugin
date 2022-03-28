@@ -15,12 +15,13 @@
  */
 package com.mycila.maven.plugin.license.document;
 
-import java.util.Properties;
+import java.util.Map;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  * 2013-08-27
  */
 public interface DocumentPropertiesLoader {
-  Properties load(Document d);
+
+  Map<String, String> load(Document d);
 }
