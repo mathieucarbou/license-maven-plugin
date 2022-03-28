@@ -15,9 +15,8 @@
  */
 package com.mycila.maven.plugin.license.dependencies;
 
-import org.apache.maven.plugins.annotations.Parameter;
-
 import java.util.Optional;
+import org.apache.maven.plugins.annotations.Parameter;
 
 /**
  * A policy decision based on some matcher/value and type. Different policy

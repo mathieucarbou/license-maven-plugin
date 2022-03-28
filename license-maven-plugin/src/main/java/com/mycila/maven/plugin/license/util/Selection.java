@@ -15,18 +15,17 @@
  */
 package com.mycila.maven.plugin.license.util;
 
-import com.mycila.maven.plugin.license.Default;
-import org.apache.maven.plugin.logging.Log;
-import org.apache.maven.shared.utils.io.DirectoryScanner;
-import org.apache.maven.shared.utils.io.MatchPatterns;
-import org.apache.maven.shared.utils.io.ScanConductor;
+import static java.util.Arrays.asList;
 
+import com.mycila.maven.plugin.license.Default;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import static java.util.Arrays.asList;
+import org.apache.maven.plugin.logging.Log;
+import org.apache.maven.shared.utils.io.DirectoryScanner;
+import org.apache.maven.shared.utils.io.MatchPatterns;
+import org.apache.maven.shared.utils.io.ScanConductor;
 
 /**
  * <b>Date:</b> 16-Feb-2008<br>

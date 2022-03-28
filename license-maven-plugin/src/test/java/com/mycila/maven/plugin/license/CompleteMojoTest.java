@@ -15,19 +15,6 @@
  */
 package com.mycila.maven.plugin.license;
 
-import com.mycila.maven.plugin.license.header.HeaderType;
-import com.mycila.maven.plugin.license.util.FileUtils;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
-import java.io.File;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.stream.Stream;
-
 import static com.mycila.maven.plugin.license.header.HeaderType.APOSTROPHE_STYLE;
 import static com.mycila.maven.plugin.license.header.HeaderType.ASCIIDOC_STYLE;
 import static com.mycila.maven.plugin.license.header.HeaderType.ASP;
@@ -69,6 +56,19 @@ import static java.util.stream.Collectors.toList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+
+import com.mycila.maven.plugin.license.header.HeaderType;
+import com.mycila.maven.plugin.license.util.FileUtils;
+import java.io.File;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.stream.Stream;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)

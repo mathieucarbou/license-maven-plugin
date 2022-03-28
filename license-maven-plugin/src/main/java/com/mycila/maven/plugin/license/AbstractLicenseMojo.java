@@ -15,6 +15,12 @@
  */
 package com.mycila.maven.plugin.license;
 
+import static com.mycila.maven.plugin.license.document.DocumentType.defaultMapping;
+import static com.mycila.maven.plugin.license.util.FileUtils.asPath;
+import static java.lang.String.format;
+import static java.util.Arrays.asList;
+import static java.util.Arrays.deepToString;
+
 import com.mycila.maven.plugin.license.dependencies.LicenseMessage;
 import com.mycila.maven.plugin.license.dependencies.LicensePolicy;
 import com.mycila.maven.plugin.license.document.Document;
@@ -29,25 +35,6 @@ import com.mycila.maven.plugin.license.header.HeaderType;
 import com.mycila.maven.plugin.license.util.Selection;
 import com.mycila.maven.plugin.license.util.resource.ResourceFinder;
 import com.mycila.xmltool.XMLDoc;
-import org.apache.maven.artifact.DependencyResolutionRequiredException;
-import org.apache.maven.execution.MavenSession;
-import org.apache.maven.model.Organization;
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.Component;
-import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.project.MavenProject;
-import org.apache.maven.project.ProjectBuilder;
-import org.apache.maven.settings.Server;
-import org.apache.maven.settings.Settings;
-import org.apache.maven.settings.crypto.DefaultSettingsDecryptionRequest;
-import org.apache.maven.settings.crypto.SettingsDecrypter;
-import org.apache.maven.settings.crypto.SettingsDecryptionRequest;
-import org.apache.maven.settings.crypto.SettingsDecryptionResult;
-import org.apache.maven.shared.dependency.graph.DependencyGraphBuilder;
-import org.xml.sax.InputSource;
-
 import java.io.File;
 import java.io.IOException;
 import java.time.Clock;
@@ -68,12 +55,24 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import static com.mycila.maven.plugin.license.document.DocumentType.defaultMapping;
-import static com.mycila.maven.plugin.license.util.FileUtils.asPath;
-import static java.lang.String.format;
-import static java.util.Arrays.asList;
-import static java.util.Arrays.deepToString;
+import org.apache.maven.artifact.DependencyResolutionRequiredException;
+import org.apache.maven.execution.MavenSession;
+import org.apache.maven.model.Organization;
+import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Component;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.project.MavenProject;
+import org.apache.maven.project.ProjectBuilder;
+import org.apache.maven.settings.Server;
+import org.apache.maven.settings.Settings;
+import org.apache.maven.settings.crypto.DefaultSettingsDecryptionRequest;
+import org.apache.maven.settings.crypto.SettingsDecrypter;
+import org.apache.maven.settings.crypto.SettingsDecryptionRequest;
+import org.apache.maven.settings.crypto.SettingsDecryptionResult;
+import org.apache.maven.shared.dependency.graph.DependencyGraphBuilder;
+import org.xml.sax.InputSource;
 
 /**
  * <b>Date:</b> 18-Feb-2008<br> <b>Author:</b> Mathieu Carbou

@@ -15,10 +15,10 @@
  */
 package com.mycila.maven.plugin.license.util;
 
+import static com.mycila.maven.plugin.license.util.FileUtils.read;
+
 import java.io.File;
 import java.io.IOException;
-
-import static com.mycila.maven.plugin.license.util.FileUtils.read;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)

@@ -15,11 +15,10 @@
  */
 package com.mycila.maven.plugin.license.dependencies;
 
+import java.util.Collections;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
 import org.apache.maven.shared.artifact.filter.StrictPatternIncludesArtifactFilter;
-
-import java.util.Collections;
 
 /**
  * Make policy decisions on a {@link Artifact} based on an {@link ArtifactFilter}.

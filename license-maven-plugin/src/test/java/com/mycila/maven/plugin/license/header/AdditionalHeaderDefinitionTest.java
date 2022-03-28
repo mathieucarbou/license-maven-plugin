@@ -19,9 +19,7 @@ import com.mycila.maven.plugin.license.header.HeaderSource.UrlHeaderSource;
 import com.mycila.maven.plugin.license.util.FileUtils;
 import com.mycila.xmltool.XMLDoc;
 import com.mycila.xmltool.XMLTag;
-
 import java.io.File;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

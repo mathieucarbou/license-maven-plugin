@@ -15,14 +15,13 @@
  */
 package com.mycila.maven.plugin.license.dependencies;
 
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import org.apache.maven.artifact.Artifact;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 
 class AggregateLicensePolicyEnforcerTest extends ArtifactLicensePolicyEnforcerTestBase {
   LicenseMapData data;

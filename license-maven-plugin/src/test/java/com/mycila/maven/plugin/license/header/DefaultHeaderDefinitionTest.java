@@ -15,14 +15,13 @@
  */
 package com.mycila.maven.plugin.license.header;
 
+import static java.lang.String.format;
+
 import com.mycila.maven.plugin.license.header.HeaderSource.UrlHeaderSource;
 import com.mycila.maven.plugin.license.util.FileUtils;
+import java.io.File;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.io.File;
-
-import static java.lang.String.format;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)

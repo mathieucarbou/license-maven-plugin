@@ -15,9 +15,8 @@
  */
 package com.mycila.maven.plugin.license;
 
-import org.apache.maven.plugins.annotations.Parameter;
-
 import java.util.Arrays;
+import org.apache.maven.plugins.annotations.Parameter;
 
 public class Multi {
 

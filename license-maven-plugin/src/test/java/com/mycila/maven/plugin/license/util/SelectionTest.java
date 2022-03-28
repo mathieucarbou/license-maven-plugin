@@ -15,13 +15,9 @@
  */
 package com.mycila.maven.plugin.license.util;
 
-import com.mycila.maven.plugin.license.Default;
-import org.apache.maven.plugin.logging.Log;
-import org.apache.maven.plugin.logging.SystemStreamLog;
-import org.apache.maven.shared.utils.io.DirectoryScanner;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import static java.util.Arrays.asList;
 
+import com.mycila.maven.plugin.license.Default;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -31,8 +27,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
-
-import static java.util.Arrays.asList;
+import org.apache.maven.plugin.logging.Log;
+import org.apache.maven.plugin.logging.SystemStreamLog;
+import org.apache.maven.shared.utils.io.DirectoryScanner;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)

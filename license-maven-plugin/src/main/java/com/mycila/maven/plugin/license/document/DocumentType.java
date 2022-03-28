@@ -16,7 +16,6 @@
 package com.mycila.maven.plugin.license.document;
 
 import com.mycila.maven.plugin.license.header.HeaderType;
-
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
