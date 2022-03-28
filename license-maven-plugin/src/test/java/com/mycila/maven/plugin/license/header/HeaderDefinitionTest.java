@@ -66,14 +66,14 @@ class HeaderDefinitionTest {
   @Test
   void test_missing_firstDetect() throws Exception {
     Assertions.assertThrows(IllegalStateException.class, () -> {
-      HeaderDefinition def = new HeaderDefinition("aa", "firstLine", "before", "end", "", null, "", "lastDetect", false, false, false);
+      new HeaderDefinition("aa", "firstLine", "before", "end", "", null, "", "lastDetect", false, false, false);
     });
   }
 
   @Test
   void test_missing_lastDetect() throws Exception {
     Assertions.assertThrows(IllegalStateException.class, () -> {
-      HeaderDefinition def = new HeaderDefinition("aa", "firstLine", "before", "end", "", null, "firstDetect", "", false, false, false);
+      new HeaderDefinition("aa", "firstLine", "before", "end", "", null, "firstDetect", "", false, false, false);
     });
   }
 }
