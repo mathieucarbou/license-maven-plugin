@@ -51,16 +51,10 @@ public class LicensePolicy {
      * Simple policy decision based on whether a matcher succeeded.
      *
      * @param matched - boolean result of some matching operation.
-     * @return
+     * @return true, if is allowed
      */
     public boolean isAllowed(final boolean matched) {
-      if (matched && allowed) {
-        return true;
-      } else if (!matched && !allowed) {
-        return true;
-      } else {
-        return false;
-      }
+      return (matched && allowed) || (!matched && !allowed);
     }
 
     public static Rule valueOf(final boolean allowed) {
