@@ -15,12 +15,16 @@
  */
 package com.mycila.maven.plugin.license.git;
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.Status;
@@ -44,8 +48,15 @@ import org.eclipse.jgit.treewalk.filter.TreeFilter;
  *
  * @author <a href="mailto:ppalaga@redhat.com">Peter Palaga</a>
  */
-public class GitLookup {
+public class GitLookup implements Closeable {
+
   public static final TimeZone DEFAULT_ZONE = TimeZone.getTimeZone("GMT");
+
+  public static final String MAX_COMMITS_LOOKUP_KEY = "license.git.maxCommitsLookup";
+  // keep for compatibility
+  private static final String COPYRIGHT_LAST_YEAR_MAX_COMMITS_LOOKUP_KEY = "license.git.copyrightLastYearMaxCommitsLookup";
+  public static final String COPYRIGHT_LAST_YEAR_SOURCE_KEY = "license.git.copyrightLastYearSource";
+  public static final String COPYRIGHT_LAST_YEAR_TIME_ZONE_KEY = "license.git.copyrightLastYearTimeZone";
 
   public enum DateSource {
     AUTHOR, COMMITER
@@ -59,41 +70,94 @@ public class GitLookup {
   private final boolean shallow;
 
   /**
-   * Creates a new {@link GitLookup} for a repository that is detected from the supplied {@code anyFile}.
+   * Lazily initializes #gitLookup assuming that all subsequent calls to this method will be related
+   * to the same git repository.
+   */
+  public static GitLookup create(File file, Map<String, String> props) {
+    String dateSourceString = props.get(COPYRIGHT_LAST_YEAR_SOURCE_KEY);
+    if (dateSourceString == null) {
+      dateSourceString = GitLookup.DateSource.AUTHOR.name();
+    }
+    GitLookup.DateSource dateSource = GitLookup.DateSource.valueOf(
+        dateSourceString.toUpperCase(Locale.US));
+    String checkCommitsCountString = props.get(MAX_COMMITS_LOOKUP_KEY);
+    // Backwads compatibility
+    if (checkCommitsCountString == null) {
+      checkCommitsCountString = props.get(COPYRIGHT_LAST_YEAR_MAX_COMMITS_LOOKUP_KEY);
+    }
+    int checkCommitsCount = Integer.MAX_VALUE;
+    if (checkCommitsCountString != null) {
+      checkCommitsCountString = checkCommitsCountString.trim();
+      checkCommitsCount = Integer.parseInt(checkCommitsCountString);
+    }
+    final TimeZone timeZone;
+    String tzString = props.get(COPYRIGHT_LAST_YEAR_TIME_ZONE_KEY);
+    switch (dateSource) {
+      case COMMITER:
+        timeZone = tzString == null ? GitLookup.DEFAULT_ZONE : TimeZone.getTimeZone(tzString);
+        break;
+      case AUTHOR:
+        if (tzString != null) {
+          throw new RuntimeException(COPYRIGHT_LAST_YEAR_TIME_ZONE_KEY + " must not be set with "
+              + COPYRIGHT_LAST_YEAR_SOURCE_KEY + " = " + GitLookup.DateSource.AUTHOR.name()
+              + " because git author name already contains time zone information.");
+        }
+        timeZone = null;
+        break;
+      default:
+        throw new IllegalStateException(
+            "Unexpected " + GitLookup.DateSource.class.getName() + " " + dateSource);
+    }
+    return new GitLookup(file, dateSource, timeZone, checkCommitsCount);
+  }
+
+  /**
+   * Creates a new {@link GitLookup} for a repository that is detected from the supplied {@code
+   * anyFile}.
    * <p>
    * Note on time zones:
    *
-   * @param anyFile           - any path from the working tree of the git repository to consider in all subsequent calls to
-   *                          {@link #getYearOfLastChange(File)}
+   * @param anyFile           - any path from the working tree of the git repository to consider in
+   *                          all subsequent calls to {@link #getYearOfLastChange(File)}
    * @param dateSource        where to read the commit dates from - committer date or author date
-   * @param timeZone          the time zone if {@code dateSource} is {@link DateSource#COMMITER}; otherwise must be {@code null}.
+   * @param timeZone          the time zone if {@code dateSource} is {@link DateSource#COMMITER};
+   *                          otherwise must be {@code null}.
    * @param checkCommitsCount
    * @throws IOException
    */
-  public GitLookup(File anyFile, DateSource dateSource, TimeZone timeZone, int checkCommitsCount) throws IOException {
-    super();
-    this.repository = new FileRepositoryBuilder().findGitDir(anyFile).build();
-    /* A workaround for  https://bugs.eclipse.org/bugs/show_bug.cgi?id=457961 */
-    // Also contains contents of .git/shallow and can detect shallow repo
-    this.shallow = !this.repository.getObjectDatabase().newReader().getShallowCommits().isEmpty();
+  private GitLookup(File anyFile, DateSource dateSource, TimeZone timeZone, int checkCommitsCount) {
+    try {
+      this.repository = new FileRepositoryBuilder().findGitDir(anyFile).build();
+      /* A workaround for  https://bugs.eclipse.org/bugs/show_bug.cgi?id=457961 */
+      // Also contains contents of .git/shallow and can detect shallow repo
+      // the line below reads and caches the entries in the FileObjectDatabase of the repository to
+      // avoid concurrent modifications during RevWalk
+      // Closing the repository will close the FileObjectDatabase.
+      // Here the newReader() is a WindowCursor which delegates the getShallowCommits() to the FileObjectDatabase.
+      this.shallow = !this.repository.getObjectDatabase().newReader().getShallowCommits().isEmpty();
 
-    this.pathResolver = new GitPathResolver(repository.getWorkTree().getAbsolutePath());
-    this.dateSource = dateSource;
-    switch (dateSource) {
-      case COMMITER:
-        this.timeZone = timeZone == null ? DEFAULT_ZONE : timeZone;
-        break;
-      case AUTHOR:
-        if (timeZone != null) {
-          throw new IllegalArgumentException("Time zone must be null with dateSource " + DateSource.AUTHOR.name()
-              + " because git author name already contrains time zone information.");
-        }
-        this.timeZone = null;
-        break;
-      default:
-        throw new IllegalStateException("Unexpected " + DateSource.class.getName() + " " + dateSource);
+      this.pathResolver = new GitPathResolver(repository.getWorkTree().getAbsolutePath());
+      this.dateSource = dateSource;
+      switch (dateSource) {
+        case COMMITER:
+          this.timeZone = timeZone == null ? DEFAULT_ZONE : timeZone;
+          break;
+        case AUTHOR:
+          if (timeZone != null) {
+            throw new IllegalArgumentException(
+                "Time zone must be null with dateSource " + DateSource.AUTHOR.name()
+                    + " because git author name already contains time zone information.");
+          }
+          this.timeZone = null;
+          break;
+        default:
+          throw new IllegalStateException(
+              "Unexpected " + DateSource.class.getName() + " " + dateSource);
+      }
+      this.checkCommitsCount = checkCommitsCount;
+    } catch (IOException e) {
+      throw new UncheckedIOException(e);
     }
-    this.checkCommitsCount = checkCommitsCount;
   }
 
   /**
@@ -148,12 +212,12 @@ public class GitLookup {
       commitYear = getYearFromCommit(commit);
     }
     walk.dispose();
-    
+
     // If we couldn't find a creation year from Git assume newly created file
     if (commitYear == 0) {
-        return getCurrentYear();
-      }
-    
+      return getCurrentYear();
+    }
+
     return commitYear;
   }
 
@@ -182,7 +246,7 @@ public class GitLookup {
     walk.dispose();
     return authorEmail;
   }
-  
+
   boolean isShallowRepository() {
     return this.shallow;
   }
@@ -244,5 +308,10 @@ public class GitLookup {
   private String getAuthorEmailFromCommit(RevCommit commit) {
     PersonIdent id = commit.getAuthorIdent();
     return id.getEmailAddress();
+  }
+
+  @Override
+  public void close() {
+    repository.close();
   }
 }

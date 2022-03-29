@@ -26,6 +26,8 @@ import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.TimeZone;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -155,10 +157,11 @@ class GitLookupTest {
   @Test
   void timezone() throws GitAPIException, IOException {
     try {
-      new GitLookup(gitRepoRoot.toFile(), DateSource.AUTHOR, TimeZone.getTimeZone("GMT"), 10);
+      GitLookup.create(gitRepoRoot.toFile(), buildProps(DateSource.AUTHOR, "GMT", "10"));
       Assertions.fail("RuntimeException expected");
     } catch (RuntimeException e) {
-      if (e.getMessage().startsWith("Time zone must be null with dateSource " + DateSource.AUTHOR.name() + "")) {
+      if (e.getMessage().contains(
+          "license.git.copyrightLastYearTimeZone must not be set with license.git.copyrightLastYearSource = AUTHOR because git author name already contains time zone information.")) {
         /* expected */
       } else {
         throw e;
@@ -166,28 +169,45 @@ class GitLookupTest {
     }
 
     /* null is GMT */
-    GitLookup nullTzLookup = new GitLookup(gitRepoRoot.toFile(), DateSource.COMMITER, null, 10);
+    GitLookup nullTzLookup = GitLookup.create(gitRepoRoot.toFile(),
+        buildProps(DateSource.COMMITER, null, "10"));
     assertLastChange(nullTzLookup, "dir1/file3.txt", 2010);
 
     /* explicit GMT */
-    GitLookup gmtLookup = new GitLookup(gitRepoRoot.toFile(), DateSource.COMMITER, TimeZone.getTimeZone("GMT"), 10);
+    GitLookup gmtLookup = GitLookup.create(gitRepoRoot.toFile(),
+        buildProps(DateSource.COMMITER, "GMT", "10"));
     assertLastChange(gmtLookup, "dir1/file3.txt", 2010);
 
     /*
      * explicit non-GMT zome. Note that the relevant commit's (GMT) time stamp is 2010-12-31T23:30:00 which yealds
      * 2011 in the CET (+01:00) time zone
      */
-    GitLookup cetLookup = new GitLookup(gitRepoRoot.toFile(), DateSource.COMMITER, TimeZone.getTimeZone("CET"), 10);
+    GitLookup cetLookup = GitLookup.create(gitRepoRoot.toFile(),
+        buildProps(DateSource.COMMITER, "CET", "10"));
     assertLastChange(cetLookup, "dir1/file3.txt", 2011);
 
   }
 
-  private GitLookup newAuthorLookup() throws IOException {
-    return new GitLookup(gitRepoRoot.toFile(), DateSource.AUTHOR, null, 10);
+  private Map<String, String> buildProps(DateSource ds, String tz, String history) {
+    Map<String, String> props = new HashMap<>();
+    if (history != null) {
+      props.put(GitLookup.MAX_COMMITS_LOOKUP_KEY, history);
+    }
+    if (tz != null) {
+      props.put(GitLookup.COPYRIGHT_LAST_YEAR_TIME_ZONE_KEY, tz);
+    }
+    if (ds != null) {
+      props.put(GitLookup.COPYRIGHT_LAST_YEAR_SOURCE_KEY, ds.name());
+    }
+    return props;
   }
 
-  private GitLookup newCommitterLookup() throws IOException {
-    return new GitLookup(gitRepoRoot.toFile(), DateSource.COMMITER, null, 10);
+  private GitLookup newAuthorLookup() {
+    return GitLookup.create(gitRepoRoot.toFile(), buildProps(DateSource.AUTHOR, null, "10"));
+  }
+
+  private GitLookup newCommitterLookup() {
+    return GitLookup.create(gitRepoRoot.toFile(), buildProps(DateSource.COMMITER, null, "10"));
   }
 
   private void assertLastChange(GitLookup provider, String relativePath, int expected) throws

@@ -24,7 +24,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -44,19 +43,28 @@ class CopyrightRangeProviderTest {
   void copyrightRange() {
     CopyrightRangeProvider provider = new CopyrightRangeProvider();
 
-    assertRange(provider, "dir1/file1.txt", "2000", "2006", "1999-2006", "2000-2006");
-    assertRange(provider, "dir2/file2.txt", "2007", "2007", "1999-2007", "2007");
-    assertRange(provider, "dir1/file3.txt", "2009", "2009", "1999-2009", "2009");
-    assertRange(provider, "dir2/file4.txt", "1999", "1999", "1999", "1999");
+    Map<String, String> props = new HashMap<>();
+    final LicenseCheckMojo mojo = new LicenseCheckMojo();
+    mojo.defaultBasedir = gitRepoRoot.toFile();
+    try {
+      provider.init(mojo, props);
 
-    /* The last change of file4.txt in git history is in 1999
-     * but the inception year is 2000
-     * and we do not want the range to go back (2000-1999)
-     * so in this case we expect just 2000
-     * However for existence years always report the actual year regardless
-     * of the inception year so expect 1999 for that */
-    assertRange(provider, "dir2/file4.txt", "2000", "1999", "1999", "2000", "1999");
+      assertRange(provider, "dir1/file1.txt", "2000", "2006", "1999-2006", "2000-2006");
+      assertRange(provider, "dir2/file2.txt", "2007", "2007", "1999-2007", "2007");
+      assertRange(provider, "dir1/file3.txt", "2009", "2009", "1999-2009", "2009");
+      assertRange(provider, "dir2/file4.txt", "1999", "1999", "1999", "1999");
 
+      /* The last change of file4.txt in git history is in 1999
+       * but the inception year is 2000
+       * and we do not want the range to go back (2000-1999)
+       * so in this case we expect just 2000
+       * However for existence years always report the actual year regardless
+       * of the inception year so expect 1999 for that */
+      assertRange(provider, "dir2/file4.txt", "2000", "1999", "1999", "2000", "1999");
+
+    } finally {
+      provider.close();
+    }
   }
 
   private void assertRange(CopyrightRangeProvider provider, String path, String copyrightStart, String copyrightEnd, String copyrightRange, String copyrightExistence) {
@@ -65,11 +73,11 @@ class CopyrightRangeProviderTest {
 
   private void assertRange(CopyrightRangeProvider provider, String path, String inceptionYear,
                            String copyrightStart, String copyrightEnd, String copyrightRange, String copyrightExistence) {
-    Properties props = new Properties();
+    Map<String, String> props = new HashMap<>();
     props.put(CopyrightRangeProvider.INCEPTION_YEAR_KEY, inceptionYear);
 
     Document document = newDocument(path);
-    Map<String, String> actual = provider.getAdditionalProperties(new LicenseCheckMojo(), props, document);
+    Map<String, String> actual = provider.adjustProperties(new LicenseCheckMojo(), props, document);
 
     HashMap<String, String> expected = new HashMap<String, String>();
     expected.put(CopyrightRangeProvider.COPYRIGHT_CREATION_YEAR_KEY, copyrightStart);

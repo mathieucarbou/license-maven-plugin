@@ -16,6 +16,7 @@
 package com.mycila.maven.plugin.license.document;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.function.Function;
@@ -38,15 +39,16 @@ class PropertyPlaceholderResolver {
   private final String placeholderPrefix = "${";
   private final String placeholderSuffix = "}";
 
-  public String replacePlaceholders(String value, final Properties properties) {
-    return replacePlaceholders(value, properties::getProperty);
+  public String replacePlaceholders(String value, final Map<String, String> properties) {
+    return replacePlaceholders(value, properties::get);
   }
 
   private String replacePlaceholders(String value, Function<String, String> placeholderResolver) {
     return parseStringValue(value, placeholderResolver, new HashSet<>());
   }
 
-  private String parseStringValue(String value, Function<String, String> placeholderResolver, Set<String> visitedPlaceholders) {
+  private String parseStringValue(String value, Function<String, String> placeholderResolver,
+      Set<String> visitedPlaceholders) {
     StringBuilder result = new StringBuilder(value);
     int startIndex = value.indexOf(this.placeholderPrefix);
     while (startIndex != -1) {

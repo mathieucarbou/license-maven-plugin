@@ -18,26 +18,41 @@ package com.mycila.maven.plugin.license.git;
 import com.mycila.maven.plugin.license.AbstractLicenseMojo;
 import com.mycila.maven.plugin.license.PropertiesProvider;
 import com.mycila.maven.plugin.license.document.Document;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 /**
- * An implementation of {@link PropertiesProvider} that adds {@value #COPYRIGHT_CREATION_AUTHOR_NAME_KEY} and
- * {@value #COPYRIGHT_CREATION_AUTHOR_EMAIL_KEY} values - see
- * {@link #getAdditionalProperties(AbstractLicenseMojo, Properties, Document)}.
+ * An implementation of {@link PropertiesProvider} that adds {@value
+ * #COPYRIGHT_CREATION_AUTHOR_NAME_KEY} and {@value #COPYRIGHT_CREATION_AUTHOR_EMAIL_KEY} values -
+ * see {@link #adjustProperties(AbstractLicenseMojo, Map, Document)}.
  *
  * @author masakimu
  */
-public class CopyrightAuthorProvider extends GitPropertiesProvider implements PropertiesProvider {
+public class CopyrightAuthorProvider implements PropertiesProvider {
 
   public static final String COPYRIGHT_CREATION_AUTHOR_NAME_KEY = "license.git.CreationAuthorName";
   public static final String COPYRIGHT_CREATION_AUTHOR_EMAIL_KEY = "license.git.CreationAuthorEmail";
 
+  private GitLookup gitLookup;
 
-  public CopyrightAuthorProvider() {
-    super();
+  @Override
+  public void init(AbstractLicenseMojo mojo, Map<String, String> currentProperties) {
+    gitLookup = GitLookup.create(mojo.defaultBasedir, currentProperties);
+
+    // One-time warning for shallow repo
+    if (mojo.warnIfShallow && gitLookup.isShallowRepository()) {
+      mojo.warn("Shallow git repository detected. Author property values may not be accurate.");
+    }
+  }
+
+  @Override
+  public void close() {
+    if (gitLookup != null) {
+      gitLookup.close();
+    }
   }
 
   /**
@@ -49,21 +64,20 @@ public class CopyrightAuthorProvider extends GitPropertiesProvider implements Pr
    * <li>{@value #COPYRIGHT_CREATION_AUTHOR_EMAIL_KEY} key stores the author's email address of the first git commit.
    * </ul>
    */
-  public Map<String, String> getAdditionalProperties(AbstractLicenseMojo mojo, Properties properties,
-                                                     Document document) {
-
+  @Override
+  public Map<String, String> adjustProperties(AbstractLicenseMojo mojo,
+      Map<String, String> properties, Document document) {
     try {
       Map<String, String> result = new HashMap<>(3);
-      GitLookup gitLookup = getGitLookup(mojo, document.getFile(), properties);
-
-      result.put(COPYRIGHT_CREATION_AUTHOR_NAME_KEY, gitLookup.getAuthorNameOfCreation(document.getFile()));
-      result.put(COPYRIGHT_CREATION_AUTHOR_EMAIL_KEY, gitLookup.getAuthorEmailOfCreation(document.getFile()));
+      result.put(COPYRIGHT_CREATION_AUTHOR_NAME_KEY,
+          gitLookup.getAuthorNameOfCreation(document.getFile()));
+      result.put(COPYRIGHT_CREATION_AUTHOR_EMAIL_KEY,
+          gitLookup.getAuthorEmailOfCreation(document.getFile()));
       return Collections.unmodifiableMap(result);
-    } catch (Exception e) {
-      throw new RuntimeException("Could not compute the year of the last git commit for file "
-          + document.getFile().getAbsolutePath(), e);
+    } catch (IOException e) {
+      throw new UncheckedIOException(
+          "CopyrightAuthorProvider error on file: " + document.getFile().getAbsolutePath() + ": "
+              + e.getMessage(), e);
     }
   }
-
-
 }

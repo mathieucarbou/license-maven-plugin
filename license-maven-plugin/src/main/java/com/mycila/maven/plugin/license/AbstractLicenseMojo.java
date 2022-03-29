@@ -41,20 +41,23 @@ import java.time.Clock;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
+import java.util.Objects;
 import java.util.ServiceLoader;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Organization;
@@ -303,7 +306,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
    */
   @Parameter(property = "license.warnIfShallow", defaultValue = "true")
   public boolean warnIfShallow = true;
-  
+
   /**
    * If you do not want to see the list of file having a missing header, you
    * can add the quiet flag that will shorten the output
@@ -583,60 +586,92 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
     }
     final List<Header> validHeaders = new ArrayList<Header>(licenseSet.validHeaders.length);
     for (final String validHeader : licenseSet.validHeaders) {
-      final HeaderSource validHeaderSource = HeaderSource.of(null, null, validHeader, this.encoding, finder);
+      final HeaderSource validHeaderSource = HeaderSource.of(null, null, validHeader, this.encoding,
+          finder);
       validHeaders.add(new Header(validHeaderSource, licenseSet.headerSections));
     }
 
-    final List<PropertiesProvider> propertiesProviders = new LinkedList<PropertiesProvider>();
-    for (final PropertiesProvider provider : ServiceLoader.load(PropertiesProvider.class, Thread.currentThread().getContextClassLoader())) {
-      propertiesProviders.add(provider);
-    }
-    final DocumentPropertiesLoader propertiesLoader = new DocumentPropertiesLoader() {
-      @Override
-      public Properties load(final Document document) {
-        final Properties props = new Properties();
+    Map<String, String> globalProperties = getDefaultProperties();
 
-        for (final Map.Entry<String, String> entry : mergeProperties(licenseSet, document).entrySet()) {
-          if (entry.getValue() != null) {
-            props.setProperty(entry.getKey(), entry.getValue());
-          } else {
-            props.remove(entry.getKey());
-          }
+    // we override by properties in the licenseSet
+    if (licenseSet.properties != null) {
+      for (Map.Entry<String, String> entry : licenseSet.properties.entrySet()) {
+        if (!System.getProperties().contains(entry.getKey())) {
+          globalProperties.put(entry.getKey(), entry.getValue());
         }
-        for (final PropertiesProvider provider : propertiesProviders) {
-          try {
-            final Map<String, String> providerProperties = provider.getAdditionalProperties(AbstractLicenseMojo.this, props, document);
-            if (getLog().isDebugEnabled()) {
-              getLog().debug("provider: " + provider.getClass() + " brought new properties\n" + providerProperties);
-            }
-            for (Map.Entry<String, String> entry : providerProperties.entrySet()) {
-              if (entry.getValue() != null) {
-                props.setProperty(entry.getKey(), entry.getValue());
-              } else {
-                props.remove(entry.getKey());
-              }
-            }
-          } catch (Exception e) {
-            getLog().warn("failure occurred while calling " + provider.getClass(), e);
-          }
-        }
-        return props;
       }
-    };
+    }
 
-    final DocumentFactory documentFactory = new DocumentFactory(firstNonNull(licenseSet.basedir, defaultBasedir), buildMapping(), buildHeaderDefinitions(licenseSet, finder), encoding, licenseSet.keywords, propertiesLoader);
+    if (getLog().isDebugEnabled()) {
+      getLog().debug(
+          "global properties:\n - " + globalProperties.entrySet().stream().map(Objects::toString)
+              .collect(Collectors.joining("\n - ")));
+    }
 
+    final List<PropertiesProvider> propertiesProviders = new LinkedList<>();
     int nThreads = getNumberOfExecutorThreads();
     ExecutorService executorService = Executors.newFixedThreadPool(nThreads);
-    CompletionService<?> completionService = new ExecutorCompletionService<>(executorService);
-    int count = 0;
-    debug("Number of execution threads: %s", nThreads);
 
     try {
+
+      for (final PropertiesProvider provider : ServiceLoader.load(PropertiesProvider.class,
+          Thread.currentThread().getContextClassLoader())) {
+        provider.init(this, globalProperties);
+        propertiesProviders.add(provider);
+      }
+
+      final DocumentPropertiesLoader perDocumentProperties = new DocumentPropertiesLoader() {
+        @Override
+        public Map<String, String> load(final Document document) {
+          // then add per document properties
+          Map<String, String> perDoc = new LinkedHashMap<>(globalProperties);
+          perDoc.put("file.name", document.getFile().getName());
+
+          Map<String, String> readOnly = Collections.unmodifiableMap(perDoc);
+
+          for (final PropertiesProvider provider : propertiesProviders) {
+            try {
+              final Map<String, String> adjustments = provider.adjustProperties(
+                  AbstractLicenseMojo.this, readOnly, document);
+              if (getLog().isDebugEnabled()) {
+                getLog().debug("provider: " + provider.getClass() + " adjusted these properties:\n"
+                    + adjustments);
+              }
+              for (Map.Entry<String, String> entry : adjustments.entrySet()) {
+                if (entry.getValue() != null) {
+                  perDoc.put(entry.getKey(), entry.getValue());
+                } else {
+                  perDoc.remove(entry.getKey());
+                }
+              }
+            } catch (Exception e) {
+              getLog().warn("failure occurred while calling " + provider.getClass(), e);
+            }
+          }
+
+          if (getLog().isDebugEnabled()) {
+            getLog().debug("properties for " + document + ":\n - " + perDoc.entrySet().stream()
+                .map(Objects::toString).collect(Collectors.joining("\n - ")));
+          }
+
+          return perDoc;
+        }
+      };
+
+      final DocumentFactory documentFactory = new DocumentFactory(
+          firstNonNull(licenseSet.basedir, defaultBasedir), buildMapping(),
+          buildHeaderDefinitions(licenseSet, finder), encoding, licenseSet.keywords,
+          perDocumentProperties);
+
+      CompletionService<?> completionService = new ExecutorCompletionService<>(executorService);
+      int count = 0;
+      debug("Number of execution threads: %s", nThreads);
+
       for (final String file : listSelectedFiles(licenseSet)) {
         completionService.submit(() -> {
           Document document = documentFactory.createDocuments(file);
-          debug("Selected file: %s [header style: %s]", document.getFilePath(), document.getHeaderDefinition());
+          debug("Selected file: %s [header style: %s]", document.getFilePath(),
+              document.getHeaderDefinition());
           if (document.isNotSupported()) {
             callback.onUnknownFile(document, h);
           } else if (document.is(h)) {
@@ -685,6 +720,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
 
     } finally {
       executorService.shutdownNow();
+      propertiesProviders.forEach(PropertiesProvider::close);
     }
   }
 
@@ -702,9 +738,10 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
         Math.max(1, (int) (Runtime.getRuntime().availableProcessors() * concurrencyFactor));
   }
 
-  private Map<String, String> mergeProperties(final LicenseSet licenseSet, final Document document) {
+  private Map<String, String> getDefaultProperties() {
     // first put system environment
-    Map<String, String> props = new LinkedHashMap<String, String>(System.getenv());
+    Map<String, String> props = new TreeMap<>(
+        System.getenv()); // treemap just to have nice debug logs
     // then add ${project.XYZ} properties
     props.put("project.groupId", project.getGroupId());
     props.put("project.artifactId", project.getArtifactId());
@@ -720,23 +757,17 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
       props.put("project.organization.name", org.getName());
       props.put("project.organization.url", org.getUrl());
     }
-    // then add per document properties
-    props.put("file.name", document.getFile().getName());
 
     // we override by properties in the POM
     if (this.defaultProperties != null) {
       props.putAll(this.defaultProperties);
     }
 
-    // we override by properties in the licenseSet
-    if (licenseSet.properties != null) {
-      props.putAll(licenseSet.properties);
-    }
-
     // then we override by java system properties (command-line -D...)
     for (String key : System.getProperties().stringPropertyNames()) {
       props.put(key, System.getProperty(key));
     }
+
     return props;
   }
 
@@ -858,11 +889,17 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
    * @return
    */
   public Credentials findCredentials(String serverID) {
+    if (serverID == null) {
+      return null;
+    }
+
     List<Server> decryptedServers = getDecryptedServers();
 
     for (Server ds : decryptedServers) {
       if (ds.getId().equals(serverID)) {
-        getLog().debug("credentials have been found for server: " + serverID + ", login:" + ds.getUsername() + ", password:" + starEncrypt(ds.getPassword()));
+        getLog().debug(
+            "credentials have been found for server: " + serverID + ", login:" + ds.getUsername()
+                + ", password:" + starEncrypt(ds.getPassword()));
         return new Credentials(ds.getUsername(), ds.getPassword());
       }
     }
