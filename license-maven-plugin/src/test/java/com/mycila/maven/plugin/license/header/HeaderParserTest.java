@@ -16,9 +16,10 @@
 package com.mycila.maven.plugin.license.header;
 
 import com.mycila.maven.plugin.license.util.FileContent;
-import java.io.File;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.io.File;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
@@ -38,7 +39,7 @@ class HeaderParserTest {
         HeaderType.TEXT.getDefinition(), new String[]{"copyright"});
     Assertions.assertTrue(parser.gotAnyHeader());
     Assertions.assertEquals(0, parser.getBeginPosition());
-    Assertions.assertEquals(43,  parser.getEndPosition());
+    Assertions.assertEquals(43, parser.getEndPosition());
   }
 
   @Test

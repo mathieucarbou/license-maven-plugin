@@ -15,8 +15,9 @@
  */
 package com.mycila.maven.plugin.license.dependencies;
 
-import java.util.Optional;
 import org.apache.maven.plugins.annotations.Parameter;
+
+import java.util.Optional;
 
 /**
  * A policy decision based on some matcher/value and type. Different policy
@@ -79,7 +80,8 @@ public class LicensePolicy {
   private String value;
 
   // only here for plexus container injection by maven
-  public LicensePolicy() {}
+  public LicensePolicy() {
+  }
 
   public LicensePolicy(final Rule rule, final Type type, final String value) {
     this.setRule(rule);

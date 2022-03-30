@@ -16,9 +16,10 @@
 package com.mycila.maven.plugin.license;
 
 import com.mycila.maven.plugin.license.util.FileUtils;
-import java.io.File;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
 import org.junit.jupiter.api.Test;
+
+import java.io.File;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)

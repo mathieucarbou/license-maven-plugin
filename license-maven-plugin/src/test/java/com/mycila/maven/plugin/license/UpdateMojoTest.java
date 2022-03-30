@@ -15,21 +15,22 @@
  */
 package com.mycila.maven.plugin.license;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-
 import com.google.common.collect.ImmutableMap;
 import com.google.common.io.Files;
 import com.mycila.maven.plugin.license.util.FileUtils;
-import java.io.File;
-import java.nio.charset.Charset;
-import java.util.LinkedHashMap;
-import java.util.List;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.io.File;
+import java.nio.charset.Charset;
+import java.util.LinkedHashMap;
+import java.util.List;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)

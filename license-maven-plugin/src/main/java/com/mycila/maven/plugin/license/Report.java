@@ -15,15 +15,11 @@
  */
 package com.mycila.maven.plugin.license;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
+import com.google.gson.*;
 import com.mycila.xmltool.XMLDoc;
 import com.mycila.xmltool.XMLTag;
+import org.apache.maven.project.MavenProject;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -33,7 +29,8 @@ import java.time.Clock;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import org.apache.maven.project.MavenProject;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * @author Mathieu Carbou

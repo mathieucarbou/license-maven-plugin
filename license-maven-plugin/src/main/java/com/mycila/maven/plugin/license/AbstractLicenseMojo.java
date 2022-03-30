@@ -15,49 +15,16 @@
  */
 package com.mycila.maven.plugin.license;
 
-import static com.mycila.maven.plugin.license.document.DocumentType.defaultMapping;
-import static com.mycila.maven.plugin.license.util.FileUtils.asPath;
-import static java.lang.String.format;
-import static java.util.Arrays.asList;
-import static java.util.Arrays.deepToString;
-
 import com.mycila.maven.plugin.license.dependencies.LicenseMessage;
 import com.mycila.maven.plugin.license.dependencies.LicensePolicy;
 import com.mycila.maven.plugin.license.document.Document;
 import com.mycila.maven.plugin.license.document.DocumentFactory;
 import com.mycila.maven.plugin.license.document.DocumentPropertiesLoader;
 import com.mycila.maven.plugin.license.document.DocumentType;
-import com.mycila.maven.plugin.license.header.AdditionalHeaderDefinition;
-import com.mycila.maven.plugin.license.header.Header;
-import com.mycila.maven.plugin.license.header.HeaderDefinition;
-import com.mycila.maven.plugin.license.header.HeaderSource;
-import com.mycila.maven.plugin.license.header.HeaderType;
+import com.mycila.maven.plugin.license.header.*;
 import com.mycila.maven.plugin.license.util.Selection;
 import com.mycila.maven.plugin.license.util.resource.ResourceFinder;
 import com.mycila.xmltool.XMLDoc;
-import java.io.File;
-import java.io.IOException;
-import java.time.Clock;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.ServiceLoader;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.concurrent.CompletionService;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorCompletionService;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Organization;
@@ -76,6 +43,19 @@ import org.apache.maven.settings.crypto.SettingsDecryptionRequest;
 import org.apache.maven.settings.crypto.SettingsDecryptionResult;
 import org.apache.maven.shared.dependency.graph.DependencyGraphBuilder;
 import org.xml.sax.InputSource;
+
+import java.io.File;
+import java.io.IOException;
+import java.time.Clock;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.stream.Collectors;
+
+import static com.mycila.maven.plugin.license.document.DocumentType.defaultMapping;
+import static com.mycila.maven.plugin.license.util.FileUtils.asPath;
+import static java.lang.String.format;
+import static java.util.Arrays.asList;
+import static java.util.Arrays.deepToString;
 
 /**
  * <b>Date:</b> 18-Feb-2008<br> <b>Author:</b> Mathieu Carbou

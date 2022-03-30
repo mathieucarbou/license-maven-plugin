@@ -18,6 +18,7 @@ package com.mycila.maven.plugin.license.git;
 import com.mycila.maven.plugin.license.AbstractLicenseMojo;
 import com.mycila.maven.plugin.license.PropertiesProvider;
 import com.mycila.maven.plugin.license.document.Document;
+
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.Collections;
@@ -66,7 +67,7 @@ public class CopyrightAuthorProvider implements PropertiesProvider {
    */
   @Override
   public Map<String, String> adjustProperties(AbstractLicenseMojo mojo,
-      Map<String, String> properties, Document document) {
+                                              Map<String, String> properties, Document document) {
     try {
       Map<String, String> result = new HashMap<>(3);
       result.put(COPYRIGHT_CREATION_AUTHOR_NAME_KEY,

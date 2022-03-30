@@ -15,6 +15,8 @@
  */
 package com.mycila.maven.plugin.license.util.resource;
 
+import org.apache.maven.plugin.MojoFailureException;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -22,7 +24,6 @@ import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import org.apache.maven.plugin.MojoFailureException;
 
 /**
  * <b>Date:</b> 26-Feb-2008<br>

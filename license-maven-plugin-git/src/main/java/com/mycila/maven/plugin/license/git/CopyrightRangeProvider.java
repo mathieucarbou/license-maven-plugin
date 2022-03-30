@@ -18,11 +18,12 @@ package com.mycila.maven.plugin.license.git;
 import com.mycila.maven.plugin.license.AbstractLicenseMojo;
 import com.mycila.maven.plugin.license.PropertiesProvider;
 import com.mycila.maven.plugin.license.document.Document;
+import org.eclipse.jgit.api.errors.GitAPIException;
+
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import org.eclipse.jgit.api.errors.GitAPIException;
 
 /**
  * An implementation of {@link PropertiesProvider} that adds {@value #COPYRIGHT_LAST_YEAR_KEY} and
@@ -78,7 +79,7 @@ public class CopyrightRangeProvider implements PropertiesProvider {
    */
   @Override
   public Map<String, String> adjustProperties(AbstractLicenseMojo mojo,
-      Map<String, String> properties, Document document) {
+                                              Map<String, String> properties, Document document) {
     String inceptionYear = properties.get(INCEPTION_YEAR_KEY);
     if (inceptionYear == null) {
       throw new RuntimeException("'" + INCEPTION_YEAR_KEY + "' must have a value for file "

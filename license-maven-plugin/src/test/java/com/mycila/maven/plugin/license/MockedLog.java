@@ -15,10 +15,11 @@
  */
 package com.mycila.maven.plugin.license;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import org.codehaus.plexus.logging.AbstractLogger;
 import org.codehaus.plexus.logging.Logger;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)

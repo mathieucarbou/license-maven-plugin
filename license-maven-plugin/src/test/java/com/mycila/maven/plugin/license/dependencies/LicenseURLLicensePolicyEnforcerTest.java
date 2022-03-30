@@ -15,11 +15,12 @@
  */
 package com.mycila.maven.plugin.license.dependencies;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import org.apache.maven.model.License;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 class LicenseURLLicensePolicyEnforcerTest extends ArtifactLicensePolicyEnforcerTestBase {
   License license;

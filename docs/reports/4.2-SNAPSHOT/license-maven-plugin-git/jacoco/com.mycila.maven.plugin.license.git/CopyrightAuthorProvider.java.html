@@ -18,27 +18,42 @@ package com.mycila.maven.plugin.license.git;
 import com.mycila.maven.plugin.license.AbstractLicenseMojo;
 import com.mycila.maven.plugin.license.PropertiesProvider;
 import com.mycila.maven.plugin.license.document.Document;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 /**
- * An implementation of {@link PropertiesProvider} that adds {@value #COPYRIGHT_CREATION_AUTHOR_NAME_KEY} and
- * {@value #COPYRIGHT_CREATION_AUTHOR_EMAIL_KEY} values - see
- * {@link #getAdditionalProperties(AbstractLicenseMojo, Properties, Document)}.
+ * An implementation of {@link PropertiesProvider} that adds {@value
+ * #COPYRIGHT_CREATION_AUTHOR_NAME_KEY} and {@value #COPYRIGHT_CREATION_AUTHOR_EMAIL_KEY} values -
+ * see {@link #adjustProperties(AbstractLicenseMojo, Map, Document)}.
  *
  * @author masakimu
  */
-public class CopyrightAuthorProvider extends GitPropertiesProvider implements PropertiesProvider {
+<span class="fc" id="L34">public class CopyrightAuthorProvider implements PropertiesProvider {</span>
 
   public static final String COPYRIGHT_CREATION_AUTHOR_NAME_KEY = &quot;license.git.CreationAuthorName&quot;;
   public static final String COPYRIGHT_CREATION_AUTHOR_EMAIL_KEY = &quot;license.git.CreationAuthorEmail&quot;;
 
+  private GitLookup gitLookup;
 
-  public CopyrightAuthorProvider() {
-<span class="fc" id="L40">    super();</span>
-<span class="fc" id="L41">  }</span>
+  @Override
+  public void init(AbstractLicenseMojo mojo, Map&lt;String, String&gt; currentProperties) {
+<span class="fc" id="L43">    gitLookup = GitLookup.create(mojo.defaultBasedir, currentProperties);</span>
+
+    // One-time warning for shallow repo
+<span class="pc bpc" id="L46" title="2 of 4 branches missed.">    if (mojo.warnIfShallow &amp;&amp; gitLookup.isShallowRepository()) {</span>
+<span class="nc" id="L47">      mojo.warn(&quot;Shallow git repository detected. Author property values may not be accurate.&quot;);</span>
+    }
+<span class="fc" id="L49">  }</span>
+
+  @Override
+  public void close() {
+<span class="pc bpc" id="L53" title="1 of 2 branches missed.">    if (gitLookup != null) {</span>
+<span class="fc" id="L54">      gitLookup.close();</span>
+    }
+<span class="fc" id="L56">  }</span>
 
   /**
    * Returns an unmodifiable map containing the two entries {@value #COPYRIGHT_CREATION_AUTHOR_NAME_KEY} and {@value #COPYRIGHT_CREATION_AUTHOR_EMAIL_KEY},
@@ -49,22 +64,21 @@ public class CopyrightAuthorProvider extends GitPropertiesProvider implements Pr
    * &lt;li&gt;{@value #COPYRIGHT_CREATION_AUTHOR_EMAIL_KEY} key stores the author's email address of the first git commit.
    * &lt;/ul&gt;
    */
-  public Map&lt;String, String&gt; getAdditionalProperties(AbstractLicenseMojo mojo, Properties properties,
-                                                     Document document) {
-
+  @Override
+  public Map&lt;String, String&gt; adjustProperties(AbstractLicenseMojo mojo,
+      Map&lt;String, String&gt; properties, Document document) {
     try {
-<span class="fc" id="L56">      Map&lt;String, String&gt; result = new HashMap&lt;&gt;(3);</span>
-<span class="fc" id="L57">      GitLookup gitLookup = getGitLookup(mojo, document.getFile(), properties);</span>
-
-<span class="fc" id="L59">      result.put(COPYRIGHT_CREATION_AUTHOR_NAME_KEY, gitLookup.getAuthorNameOfCreation(document.getFile()));</span>
-<span class="fc" id="L60">      result.put(COPYRIGHT_CREATION_AUTHOR_EMAIL_KEY, gitLookup.getAuthorEmailOfCreation(document.getFile()));</span>
-<span class="fc" id="L61">      return Collections.unmodifiableMap(result);</span>
-<span class="nc" id="L62">    } catch (Exception e) {</span>
-<span class="nc" id="L63">      throw new RuntimeException(&quot;Could not compute the year of the last git commit for file &quot;</span>
-<span class="nc" id="L64">          + document.getFile().getAbsolutePath(), e);</span>
+<span class="fc" id="L71">      Map&lt;String, String&gt; result = new HashMap&lt;&gt;(3);</span>
+<span class="fc" id="L72">      result.put(COPYRIGHT_CREATION_AUTHOR_NAME_KEY,</span>
+<span class="fc" id="L73">          gitLookup.getAuthorNameOfCreation(document.getFile()));</span>
+<span class="fc" id="L74">      result.put(COPYRIGHT_CREATION_AUTHOR_EMAIL_KEY,</span>
+<span class="fc" id="L75">          gitLookup.getAuthorEmailOfCreation(document.getFile()));</span>
+<span class="fc" id="L76">      return Collections.unmodifiableMap(result);</span>
+<span class="nc" id="L77">    } catch (IOException e) {</span>
+<span class="nc" id="L78">      throw new UncheckedIOException(</span>
+<span class="nc" id="L79">          &quot;CopyrightAuthorProvider error on file: &quot; + document.getFile().getAbsolutePath() + &quot;: &quot;</span>
+<span class="nc" id="L80">              + e.getMessage(), e);</span>
     }
   }
-
-
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
