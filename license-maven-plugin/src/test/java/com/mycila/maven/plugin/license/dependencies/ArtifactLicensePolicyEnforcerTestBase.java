@@ -27,12 +27,12 @@ import java.util.*;
  * Utility class for test setup methods related to this package.
  *
  * @author Royce Remer
- *
  */
 class ArtifactLicensePolicyEnforcerTestBase {
 
   /**
    * Helper method for easy {@link Artifact} generation.
+   *
    * @param gav - String with at least two separators of groupId:artifactId:type:artifactVersion.
    * @return
    */
@@ -73,7 +73,6 @@ class ArtifactLicensePolicyEnforcerTestBase {
    * Helper class for tracking test data related to license enforcement.
    *
    * @author Royce Remer
-   *
    */
   protected class LicenseMapData implements LicenseMap {
     Map<Artifact, LicensePolicyEnforcerResult> expected;

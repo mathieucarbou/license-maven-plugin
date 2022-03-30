@@ -67,7 +67,7 @@ public class CopyrightAuthorProvider implements PropertiesProvider {
    */
   @Override
   public Map<String, String> adjustProperties(AbstractLicenseMojo mojo,
-      Map<String, String> properties, Document document) {
+                                              Map<String, String> properties, Document document) {
     try {
       Map<String, String> result = new HashMap<>(3);
       result.put(COPYRIGHT_CREATION_AUTHOR_NAME_KEY,

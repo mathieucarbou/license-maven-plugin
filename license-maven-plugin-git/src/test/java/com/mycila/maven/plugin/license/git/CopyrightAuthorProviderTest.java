@@ -68,7 +68,7 @@ class CopyrightAuthorProviderTest {
   }
 
   private void assertAuthor(CopyrightAuthorProvider provider, String path,
-      String copyrightAuthorName, String copyrightAuthorEmail) {
+                            String copyrightAuthorName, String copyrightAuthorEmail) {
 
   }
 

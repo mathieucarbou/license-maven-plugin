@@ -20,7 +20,7 @@ public final class MyPropertiesProvider implements PropertiesProvider {
 
   @Override
   public Map<String, String> adjustProperties(AbstractLicenseMojo mojo,
-      Map<String, String> currentProperties, Document document) {
+                                              Map<String, String> currentProperties, Document document) {
     Map<String, String> map = new HashMap<String, String>();
     map.put("my-custom-property", "my-custom-value");
     return map;

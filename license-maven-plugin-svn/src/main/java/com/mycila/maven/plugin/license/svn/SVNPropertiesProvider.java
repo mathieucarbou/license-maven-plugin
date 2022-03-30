@@ -94,7 +94,7 @@ public class SVNPropertiesProvider implements PropertiesProvider {
    */
   @Override
   public Map<String, String> adjustProperties(final AbstractLicenseMojo mojo,
-      Map<String, String> currentProperties, Document document) {
+                                              Map<String, String> currentProperties, Document document) {
     final Map<String, String> newProperties = new HashMap<>();
     final File documentFile = document.getFile();
     final SVNClientManager svnClientManager = svnClientThreadLocal.get();

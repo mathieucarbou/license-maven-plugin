@@ -31,7 +31,7 @@ public interface PropertiesProvider extends Closeable {
   }
 
   default Map<String, String> adjustProperties(AbstractLicenseMojo mojo,
-      Map<String, String> currentProperties, Document document) {
+                                               Map<String, String> currentProperties, Document document) {
     Properties properties = new Properties();
     properties.putAll(currentProperties);
     return getAdditionalProperties(mojo, properties, document);
@@ -42,7 +42,7 @@ public interface PropertiesProvider extends Closeable {
    */
   @Deprecated
   default Map<String, String> getAdditionalProperties(AbstractLicenseMojo mojo,
-      Properties currentProperties, Document document) {
+                                                      Properties currentProperties, Document document) {
     return Collections.emptyMap();
   }
 

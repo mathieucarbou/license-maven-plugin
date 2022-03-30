@@ -219,8 +219,8 @@ class GitLookupTest {
   }
 
   private GitLookup newCommitterLookup(String... commitsToIgnore) throws IOException {
-      String commitsToIgnoreCSV = String.join(",", commitsToIgnore);
-      return GitLookup.create(gitRepoRoot.toFile(), buildProps(DateSource.COMMITER, null, "10", commitsToIgnoreCSV));
+    String commitsToIgnoreCSV = String.join(",", commitsToIgnore);
+    return GitLookup.create(gitRepoRoot.toFile(), buildProps(DateSource.COMMITER, null, "10", commitsToIgnoreCSV));
   }
 
   private void assertLastChange(GitLookup provider, String relativePath, int expected) throws

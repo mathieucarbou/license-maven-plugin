@@ -39,7 +39,7 @@ class HeaderParserTest {
         HeaderType.TEXT.getDefinition(), new String[]{"copyright"});
     Assertions.assertTrue(parser.gotAnyHeader());
     Assertions.assertEquals(0, parser.getBeginPosition());
-    Assertions.assertEquals(43,  parser.getEndPosition());
+    Assertions.assertEquals(43, parser.getEndPosition());
   }
 
   @Test

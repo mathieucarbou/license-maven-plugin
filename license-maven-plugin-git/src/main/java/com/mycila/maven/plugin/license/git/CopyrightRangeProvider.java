@@ -79,7 +79,7 @@ public class CopyrightRangeProvider implements PropertiesProvider {
    */
   @Override
   public Map<String, String> adjustProperties(AbstractLicenseMojo mojo,
-      Map<String, String> properties, Document document) {
+                                              Map<String, String> properties, Document document) {
     String inceptionYear = properties.get(INCEPTION_YEAR_KEY);
     if (inceptionYear == null) {
       throw new RuntimeException("'" + INCEPTION_YEAR_KEY + "' must have a value for file "

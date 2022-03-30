@@ -80,7 +80,8 @@ public class LicensePolicy {
   private String value;
 
   // only here for plexus container injection by maven
-  public LicensePolicy() {}
+  public LicensePolicy() {
+  }
 
   public LicensePolicy(final Rule rule, final Type type, final String value) {
     this.setRule(rule);

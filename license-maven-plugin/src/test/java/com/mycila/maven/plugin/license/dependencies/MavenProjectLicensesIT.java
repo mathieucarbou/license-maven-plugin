@@ -33,12 +33,11 @@ import java.util.Optional;
  * We use {@link Verifier} here for mvn executions, mainly so:
  * a) we can verify a few cases that the invoker method make really difficult (I'd like to step-through with my IDE)
  * b) the test harness method requires creating a custom Artifact resolver, as the dependencGraphBuilder Component will
- *    not provide a usable bean, and we would need extensive mocking to override data for specific cases
+ * not provide a usable bean, and we would need extensive mocking to override data for specific cases
  * c) it's a lot faster than maven-invoker-plugin
  * ... good overview of similar woes {@link https://khmarbaise.github.io/maven-it-extension/itf-documentation/background/background.html}
  *
  * @author Royce Remer
- *
  */
 class MavenProjectLicensesIT {
 
@@ -78,7 +77,8 @@ class MavenProjectLicensesIT {
       try {
         verifier.get().verifyTextInLog(logline);
         return true;
-      } catch (VerificationException e1) {}
+      } catch (VerificationException e1) {
+      }
     }
 
     // legit test failure
@@ -87,6 +87,7 @@ class MavenProjectLicensesIT {
 
   /**
    * Helper method to sync test resources to a temporary folder for execution.
+   *
    * @param dir - String relative path to {@link sourcePrefix} to copy from.
    * @throws IOException
    */

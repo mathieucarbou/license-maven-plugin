@@ -48,7 +48,7 @@ class PropertyPlaceholderResolver {
   }
 
   private String parseStringValue(String value, Function<String, String> placeholderResolver,
-      Set<String> visitedPlaceholders) {
+                                  Set<String> visitedPlaceholders) {
     StringBuilder result = new StringBuilder(value);
     int startIndex = value.indexOf(this.placeholderPrefix);
     while (startIndex != -1) {
