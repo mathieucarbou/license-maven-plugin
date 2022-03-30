@@ -15,10 +15,11 @@
  */
 package com.mycila.maven.plugin.license.dependencies;
 
-import java.util.Collections;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
 import org.apache.maven.shared.artifact.filter.StrictPatternIncludesArtifactFilter;
+
+import java.util.Collections;
 
 /**
  * Make policy decisions on a {@link Artifact} based on an {@link ArtifactFilter}.
@@ -29,24 +30,24 @@ public class ArtifactLicensePolicyEnforcer extends AbstractLicensePolicyEnforcer
   private ArtifactFilter filter;
 
   public ArtifactLicensePolicyEnforcer(final LicensePolicy policy, final ArtifactFilter filter) {
-<span class="nc" id="L32">    super(policy);</span>
-<span class="nc" id="L33">    this.filter = filter;</span>
-<span class="nc" id="L34">  }</span>
+<span class="nc" id="L33">    super(policy);</span>
+<span class="nc" id="L34">    this.filter = filter;</span>
+<span class="nc" id="L35">  }</span>
 
   public ArtifactLicensePolicyEnforcer(final LicensePolicy policy) {
-<span class="fc" id="L37">    super(policy);</span>
-<span class="fc" id="L38">    this.filter = new StrictPatternIncludesArtifactFilter(Collections.singletonList(policy.getValue()));</span>
-<span class="fc" id="L39">  }</span>
+<span class="fc" id="L38">    super(policy);</span>
+<span class="fc" id="L39">    this.filter = new StrictPatternIncludesArtifactFilter(Collections.singletonList(policy.getValue()));</span>
+<span class="fc" id="L40">  }</span>
 
   @Override
   public boolean apply(final Artifact target) {
-<span class="fc" id="L43">    final boolean matches = filter.include(target);</span>
-<span class="fc" id="L44">    return getPolicy().getRule().isAllowed(matches);</span>
+<span class="fc" id="L44">    final boolean matches = filter.include(target);</span>
+<span class="fc" id="L45">    return getPolicy().getRule().isAllowed(matches);</span>
   }
 
   @Override
   public Class&lt;?&gt; getType() {
-<span class="fc" id="L49">    return Artifact.class;</span>
+<span class="fc" id="L50">    return Artifact.class;</span>
   }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

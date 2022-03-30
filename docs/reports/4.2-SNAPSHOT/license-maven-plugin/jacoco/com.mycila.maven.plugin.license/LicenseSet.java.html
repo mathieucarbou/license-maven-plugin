@@ -15,12 +15,13 @@
  */
 package com.mycila.maven.plugin.license;
 
+import org.apache.maven.plugins.annotations.Parameter;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.maven.plugins.annotations.Parameter;
 
-<span class="fc" id="L23">public class LicenseSet {</span>
+<span class="fc" id="L24">public class LicenseSet {</span>
 
   /**
    * The base directory, in which to search for project files.
@@ -53,7 +54,7 @@ import org.apache.maven.plugins.annotations.Parameter;
    * When using remove goal, this property will be used to detect all valid
    * headers that also must be removed.
    */
-<span class="fc" id="L56">  @Parameter</span>
+<span class="fc" id="L57">  @Parameter</span>
   public String[] validHeaders = new String[0];
 
   /**
@@ -72,20 +73,20 @@ import org.apache.maven.plugins.annotations.Parameter;
    * Allows the use of external header definitions files. These files are
    * properties like files.
    */
-<span class="fc" id="L75">  @Parameter</span>
+<span class="fc" id="L76">  @Parameter</span>
   public String[] headerDefinitions = new String[0];
 
   /**
    * Allows the use of inline header definitions within the POM.
    */
-<span class="fc" id="L81">  @Parameter</span>
+<span class="fc" id="L82">  @Parameter</span>
   public HeaderStyle[] inlineHeaderStyles = new HeaderStyle[0];
 
   /**
    * HeadSections define special regions of a header that allow for dynamic
    * substitution and validation
    */
-<span class="fc" id="L88">  @Parameter</span>
+<span class="fc" id="L89">  @Parameter</span>
   public HeaderSection[] headerSections = new HeaderSection[0];
 
   /**
@@ -95,21 +96,21 @@ import org.apache.maven.plugins.annotations.Parameter;
    * replaced when the header file is read by those you specified in the
    * command line, in the POM and in system environment.
    */
-<span class="fc" id="L98">  @Parameter</span>
+<span class="fc" id="L99">  @Parameter</span>
   public Map&lt;String, String&gt; properties = new HashMap&lt;&gt;();
 
   /**
    * Specifies files, which are included in the check. By default, all files
    * are included.
    */
-<span class="fc" id="L105">  @Parameter</span>
+<span class="fc" id="L106">  @Parameter</span>
   public String[] includes = new String[0];
 
   /**
    * Specifies files, which are excluded in the check. By default, only the
    * files matching the default exclude patterns are excluded.
    */
-<span class="fc" id="L112">  @Parameter</span>
+<span class="fc" id="L113">  @Parameter</span>
   public String[] excludes = new String[0];
 
   /**
@@ -117,7 +118,7 @@ import org.apache.maven.plugins.annotations.Parameter;
    * include all keywords to be valid. By default, the word 'copyright' is
    * used. Detection is done case insensitive.
    */
-<span class="fc" id="L120">  @Parameter</span>
+<span class="fc" id="L121">  @Parameter</span>
   public String[] keywords = new String[]{&quot;copyright&quot;};
 
   /**

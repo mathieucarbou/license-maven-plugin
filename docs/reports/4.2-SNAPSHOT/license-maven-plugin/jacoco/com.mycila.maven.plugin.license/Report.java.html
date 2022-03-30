@@ -15,15 +15,11 @@
  */
 package com.mycila.maven.plugin.license;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
+import com.google.gson.*;
 import com.mycila.xmltool.XMLDoc;
 import com.mycila.xmltool.XMLTag;
+import org.apache.maven.project.MavenProject;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -33,50 +29,51 @@ import java.time.Clock;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import org.apache.maven.project.MavenProject;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * @author Mathieu Carbou
  */
 public class Report {
 
-<span class="fc" id="L43">  enum Action {CHECK, FORMAT, REMOVE}</span>
+<span class="fc" id="L40">  enum Action {CHECK, FORMAT, REMOVE}</span>
 
-<span class="fc" id="L45">  enum Result {</span>
+<span class="fc" id="L42">  enum Result {</span>
     /**
      * For check: header is OK
      */
-<span class="fc" id="L49">    PRESENT,</span>
+<span class="fc" id="L46">    PRESENT,</span>
 
     /**
      * For check: means the file does not contain a header
      */
-<span class="fc" id="L54">    MISSING,</span>
+<span class="fc" id="L51">    MISSING,</span>
 
     /**
      * For format or remove when no operation were done
      */
-<span class="fc" id="L59">    NOOP,</span>
+<span class="fc" id="L56">    NOOP,</span>
 
     /**
      * For format, when header is added
      */
-<span class="fc" id="L64">    ADDED,</span>
+<span class="fc" id="L61">    ADDED,</span>
 
     /**
      * For format, when header is replaced
      */
-<span class="fc" id="L69">    REPLACED,</span>
+<span class="fc" id="L66">    REPLACED,</span>
 
     /**
      * For remove, when header is removed
      */
-<span class="fc" id="L74">    REMOVED,</span>
+<span class="fc" id="L71">    REMOVED,</span>
 
     /**
      * For any actions: means the file extension is unknown
      */
-<span class="fc" id="L79">    UNKNOWN,</span>
+<span class="fc" id="L76">    UNKNOWN,</span>
   }
 
   private final long timestamp;
@@ -84,107 +81,107 @@ public class Report {
   private final String format;
   private final Action action;
   private final boolean skipped;
-<span class="fc" id="L87">  private final Map&lt;String, Result&gt; results = new ConcurrentHashMap&lt;&gt;();</span>
+<span class="fc" id="L84">  private final Map&lt;String, Result&gt; results = new ConcurrentHashMap&lt;&gt;();</span>
   private final Path basePath;
 
-<span class="fc" id="L90">  public Report(String format, Action action, MavenProject project, Clock clock, boolean skip) {</span>
-<span class="fc" id="L91">    this.format = format;</span>
-<span class="fc" id="L92">    this.action = action;</span>
-<span class="fc" id="L93">    this.project = project;</span>
-<span class="fc" id="L94">    this.skipped = skip;</span>
-<span class="fc" id="L95">    this.basePath = project.getBasedir().toPath().toAbsolutePath();</span>
-<span class="fc" id="L96">    this.timestamp = clock.millis();</span>
-<span class="fc" id="L97">  }</span>
+<span class="fc" id="L87">  public Report(String format, Action action, MavenProject project, Clock clock, boolean skip) {</span>
+<span class="fc" id="L88">    this.format = format;</span>
+<span class="fc" id="L89">    this.action = action;</span>
+<span class="fc" id="L90">    this.project = project;</span>
+<span class="fc" id="L91">    this.skipped = skip;</span>
+<span class="fc" id="L92">    this.basePath = project.getBasedir().toPath().toAbsolutePath();</span>
+<span class="fc" id="L93">    this.timestamp = clock.millis();</span>
+<span class="fc" id="L94">  }</span>
 
   void add(File file, Result result) {
-<span class="pc bpc" id="L100" title="1 of 2 branches missed.">    if (!skipped) {</span>
-<span class="fc" id="L101">      results.put(basePath.relativize(file.getAbsoluteFile().toPath()).toString(), result);</span>
+<span class="pc bpc" id="L97" title="1 of 2 branches missed.">    if (!skipped) {</span>
+<span class="fc" id="L98">      results.put(basePath.relativize(file.getAbsoluteFile().toPath()).toString(), result);</span>
     }
-<span class="fc" id="L103">  }</span>
+<span class="fc" id="L100">  }</span>
 
   public void exportTo(File reportLocation) {
-<span class="pc bpc" id="L106" title="1 of 4 branches missed.">    if (!skipped &amp;&amp; reportLocation != null) {</span>
+<span class="pc bpc" id="L103" title="1 of 4 branches missed.">    if (!skipped &amp;&amp; reportLocation != null) {</span>
 
       //noinspection ResultOfMethodCallIgnored
-<span class="fc" id="L109">      reportLocation.getParentFile().mkdirs();</span>
+<span class="fc" id="L106">      reportLocation.getParentFile().mkdirs();</span>
 
-<span class="fc" id="L111">      String format = this.format;</span>
-<span class="pc bpc" id="L112" title="1 of 2 branches missed.">      if (format == null) {</span>
-<span class="fc" id="L113">        final int p = reportLocation.getName().lastIndexOf('.');</span>
-<span class="pc bpc" id="L114" title="1 of 2 branches missed.">        format = p &gt;= 0 ? reportLocation.getName().substring(p + 1) : null;</span>
-<span class="pc bpc" id="L115" title="1 of 2 branches missed.">        if (format == null) {</span>
-<span class="nc" id="L116">          throw new IllegalStateException(&quot;Report format ('xml' or 'json') needs to be specified in the plugin configuration because it cannot be determined from the report extension&quot;);</span>
+<span class="fc" id="L108">      String format = this.format;</span>
+<span class="pc bpc" id="L109" title="1 of 2 branches missed.">      if (format == null) {</span>
+<span class="fc" id="L110">        final int p = reportLocation.getName().lastIndexOf('.');</span>
+<span class="pc bpc" id="L111" title="1 of 2 branches missed.">        format = p &gt;= 0 ? reportLocation.getName().substring(p + 1) : null;</span>
+<span class="pc bpc" id="L112" title="1 of 2 branches missed.">        if (format == null) {</span>
+<span class="nc" id="L113">          throw new IllegalStateException(&quot;Report format ('xml' or 'json') needs to be specified in the plugin configuration because it cannot be determined from the report extension&quot;);</span>
         }
       }
-<span class="fc" id="L119">      format = format.toLowerCase(Locale.ROOT);</span>
+<span class="fc" id="L116">      format = format.toLowerCase(Locale.ROOT);</span>
 
-<span class="pc bpc" id="L121" title="1 of 3 branches missed.">      switch (format) {</span>
+<span class="pc bpc" id="L118" title="1 of 3 branches missed.">      switch (format) {</span>
 
         case &quot;xml&quot;: {
-<span class="fc" id="L124">          XMLTag files = XMLDoc.newDocument(true)</span>
+<span class="fc" id="L121">          XMLTag files = XMLDoc.newDocument(true)</span>
 
-<span class="fc" id="L126">              .addRoot(&quot;licensePluginReport&quot;)</span>
-<span class="fc" id="L127">              .addAttribute(&quot;timestamp&quot;, Long.toString(timestamp))</span>
-<span class="fc" id="L128">              .addAttribute(&quot;goal&quot;, action.name())</span>
+<span class="fc" id="L123">              .addRoot(&quot;licensePluginReport&quot;)</span>
+<span class="fc" id="L124">              .addAttribute(&quot;timestamp&quot;, Long.toString(timestamp))</span>
+<span class="fc" id="L125">              .addAttribute(&quot;goal&quot;, action.name())</span>
 
-<span class="fc" id="L130">              .addTag(&quot;module&quot;)</span>
-<span class="pc bpc" id="L131" title="1 of 2 branches missed.">              .addAttribute(&quot;groupId&quot;, project == null ? &quot;unknown&quot; : project.getArtifact().getGroupId())</span>
-<span class="pc bpc" id="L132" title="1 of 2 branches missed.">              .addAttribute(&quot;artifactId&quot;, project == null ? &quot;unknown&quot; : project.getArtifact().getArtifactId())</span>
-<span class="pc bpc" id="L133" title="1 of 2 branches missed.">              .addAttribute(&quot;version&quot;, project == null ? &quot;unknown&quot; : project.getArtifact().getVersion())</span>
-<span class="fc" id="L134">              .gotoRoot()</span>
+<span class="pc bpc" id="L127" title="1 of 2 branches missed.">              .addTag(&quot;module&quot;)</span>
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">              .addAttribute(&quot;groupId&quot;, project == null ? &quot;unknown&quot; : project.getArtifact().getGroupId())</span>
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">              .addAttribute(&quot;artifactId&quot;, project == null ? &quot;unknown&quot; : project.getArtifact().getArtifactId())</span>
+<span class="fc" id="L130">              .addAttribute(&quot;version&quot;, project == null ? &quot;unknown&quot; : project.getArtifact().getVersion())</span>
+<span class="fc" id="L131">              .gotoRoot()</span>
 
-<span class="fc" id="L136">              .addTag(&quot;files&quot;);</span>
+<span class="fc" id="L133">              .addTag(&quot;files&quot;);</span>
 
-<span class="fc" id="L138">          results.entrySet().stream().sorted(Map.Entry.comparingByKey()).forEach(e -&gt; files.addTag(&quot;file&quot;)</span>
-<span class="fc" id="L139">              .addAttribute(&quot;path&quot;, e.getKey())</span>
-<span class="fc" id="L140">              .addAttribute(&quot;result&quot;, e.getValue().name())</span>
-<span class="fc" id="L141">              .gotoParent());</span>
+<span class="fc" id="L135">          results.entrySet().stream().sorted(Map.Entry.comparingByKey()).forEach(e -&gt; files.addTag(&quot;file&quot;)</span>
+<span class="fc" id="L136">              .addAttribute(&quot;path&quot;, e.getKey())</span>
+<span class="fc" id="L137">              .addAttribute(&quot;result&quot;, e.getValue().name())</span>
+<span class="fc" id="L138">              .gotoParent());</span>
 
           try {
-<span class="fc" id="L144">            Files.write(reportLocation.toPath(), files.gotoRoot().toBytes(&quot;UTF-8&quot;));</span>
-<span class="nc" id="L145">          } catch (IOException e) {</span>
-<span class="nc" id="L146">            throw new UncheckedIOException(e);</span>
-<span class="fc" id="L147">          }</span>
+<span class="fc" id="L141">            Files.write(reportLocation.toPath(), files.gotoRoot().toBytes(&quot;UTF-8&quot;));</span>
+<span class="nc" id="L142">          } catch (IOException e) {</span>
+<span class="nc" id="L143">            throw new UncheckedIOException(e);</span>
+<span class="fc" id="L144">          }</span>
           break;
         }
         case &quot;json&quot;: {
-<span class="fc" id="L151">          JsonObject module = new JsonObject();</span>
-<span class="pc bpc" id="L152" title="1 of 2 branches missed.">          module.add(&quot;groupId&quot;, new JsonPrimitive(project == null ? &quot;unknown&quot; : project.getArtifact().getGroupId()));</span>
-<span class="pc bpc" id="L153" title="1 of 2 branches missed.">          module.add(&quot;artifactId&quot;, new JsonPrimitive(project == null ? &quot;unknown&quot; : project.getArtifact().getArtifactId()));</span>
-<span class="pc bpc" id="L154" title="1 of 2 branches missed.">          module.add(&quot;version&quot;, new JsonPrimitive(project == null ? &quot;unknown&quot; : project.getArtifact().getVersion()));</span>
+<span class="fc" id="L148">          JsonObject module = new JsonObject();</span>
+<span class="pc bpc" id="L149" title="1 of 2 branches missed.">          module.add(&quot;groupId&quot;, new JsonPrimitive(project == null ? &quot;unknown&quot; : project.getArtifact().getGroupId()));</span>
+<span class="pc bpc" id="L150" title="1 of 2 branches missed.">          module.add(&quot;artifactId&quot;, new JsonPrimitive(project == null ? &quot;unknown&quot; : project.getArtifact().getArtifactId()));</span>
+<span class="pc bpc" id="L151" title="1 of 2 branches missed.">          module.add(&quot;version&quot;, new JsonPrimitive(project == null ? &quot;unknown&quot; : project.getArtifact().getVersion()));</span>
 
-<span class="fc" id="L156">          JsonObject root = new JsonObject();</span>
-<span class="fc" id="L157">          root.add(&quot;timestamp&quot;, new JsonPrimitive(Long.toString(timestamp)));</span>
-<span class="fc" id="L158">          root.add(&quot;goal&quot;, new JsonPrimitive(action.name()));</span>
-<span class="fc" id="L159">          root.add(&quot;module&quot;, module);</span>
-<span class="fc" id="L160">          root.add(&quot;files&quot;, results.entrySet().stream().sorted(Map.Entry.comparingByKey()).map(e -&gt; {</span>
-<span class="fc" id="L161">            JsonObject file = new JsonObject();</span>
-<span class="fc" id="L162">            file.add(&quot;path&quot;, new JsonPrimitive(e.getKey()));</span>
-<span class="fc" id="L163">            file.add(&quot;result&quot;, new JsonPrimitive(e.getValue().name()));</span>
-<span class="fc" id="L164">            return file;</span>
-<span class="fc" id="L165">          }).reduce(new JsonArray(), (files, file) -&gt; {</span>
-<span class="fc" id="L166">            files.add(file);</span>
-<span class="fc" id="L167">            return files;</span>
+<span class="fc" id="L153">          JsonObject root = new JsonObject();</span>
+<span class="fc" id="L154">          root.add(&quot;timestamp&quot;, new JsonPrimitive(Long.toString(timestamp)));</span>
+<span class="fc" id="L155">          root.add(&quot;goal&quot;, new JsonPrimitive(action.name()));</span>
+<span class="fc" id="L156">          root.add(&quot;module&quot;, module);</span>
+<span class="fc" id="L157">          root.add(&quot;files&quot;, results.entrySet().stream().sorted(Map.Entry.comparingByKey()).map(e -&gt; {</span>
+<span class="fc" id="L158">            JsonObject file = new JsonObject();</span>
+<span class="fc" id="L159">            file.add(&quot;path&quot;, new JsonPrimitive(e.getKey()));</span>
+<span class="fc" id="L160">            file.add(&quot;result&quot;, new JsonPrimitive(e.getValue().name()));</span>
+<span class="fc" id="L161">            return file;</span>
+<span class="fc" id="L162">          }).reduce(new JsonArray(), (files, file) -&gt; {</span>
+<span class="fc" id="L163">            files.add(file);</span>
+<span class="fc" id="L164">            return files;</span>
           }, (files1, files2) -&gt; {
-<span class="nc" id="L169">            files1.addAll(files2);</span>
-<span class="nc" id="L170">            return files1;</span>
+<span class="nc" id="L166">            files1.addAll(files2);</span>
+<span class="nc" id="L167">            return files1;</span>
           }));
 
           try {
-<span class="fc" id="L174">            final Gson gson = new GsonBuilder()</span>
-<span class="fc" id="L175">                .setPrettyPrinting()</span>
-<span class="fc" id="L176">                .create();</span>
-<span class="fc" id="L177">            Files.write(reportLocation.toPath(), gson.toJson(root).getBytes(UTF_8));</span>
-<span class="nc" id="L178">          } catch (IOException e) {</span>
-<span class="nc" id="L179">            throw new UncheckedIOException(e);</span>
-<span class="fc" id="L180">          }</span>
+<span class="fc" id="L171">            final Gson gson = new GsonBuilder()</span>
+<span class="fc" id="L172">                .setPrettyPrinting()</span>
+<span class="fc" id="L173">                .create();</span>
+<span class="fc" id="L174">            Files.write(reportLocation.toPath(), gson.toJson(root).getBytes(UTF_8));</span>
+<span class="nc" id="L175">          } catch (IOException e) {</span>
+<span class="nc" id="L176">            throw new UncheckedIOException(e);</span>
+<span class="fc" id="L177">          }</span>
           break;
         }
 
         default:
-<span class="nc" id="L185">          throw new IllegalArgumentException(&quot;Invalid report format: '&quot; + format + &quot;'&quot;);</span>
+<span class="nc" id="L182">          throw new IllegalArgumentException(&quot;Invalid report format: '&quot; + format + &quot;'&quot;);</span>
       }
     }
-<span class="fc" id="L188">  }</span>
+<span class="fc" id="L185">  }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -48,7 +48,7 @@ import java.util.function.Function;
   }
 
   private String parseStringValue(String value, Function&lt;String, String&gt; placeholderResolver,
-      Set&lt;String&gt; visitedPlaceholders) {
+                                  Set&lt;String&gt; visitedPlaceholders) {
 <span class="fc" id="L52">    StringBuilder result = new StringBuilder(value);</span>
 <span class="fc" id="L53">    int startIndex = value.indexOf(this.placeholderPrefix);</span>
 <span class="fc bfc" id="L54" title="All 2 branches covered.">    while (startIndex != -1) {</span>
