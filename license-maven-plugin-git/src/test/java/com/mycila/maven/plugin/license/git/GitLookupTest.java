@@ -156,26 +156,18 @@ class GitLookupTest {
 
   @Test
   void timezone() throws GitAPIException, IOException {
-    try {
-      GitLookup.create(gitRepoRoot.toFile(), buildProps(DateSource.AUTHOR, "GMT", "10"));
-      Assertions.fail("RuntimeException expected");
-    } catch (RuntimeException e) {
-      if (e.getMessage().contains(
-          "license.git.copyrightLastYearTimeZone must not be set with license.git.copyrightLastYearSource = AUTHOR because git author name already contains time zone information.")) {
-        /* expected */
-      } else {
-        throw e;
-      }
-    }
+    // do not fail if a tz is./mv  set, it will just be unused
+    // it allows parent poms to pre-defined properties and let sub modules use them if needed
+    GitLookup.create(gitRepoRoot.toFile(), buildProps(DateSource.AUTHOR, "GMT", "10", null));
 
     /* null is GMT */
     GitLookup nullTzLookup = GitLookup.create(gitRepoRoot.toFile(),
-        buildProps(DateSource.COMMITER, null, "10"));
+        buildProps(DateSource.COMMITER, null, "10", null));
     assertLastChange(nullTzLookup, "dir1/file3.txt", 2010);
 
     /* explicit GMT */
     GitLookup gmtLookup = GitLookup.create(gitRepoRoot.toFile(),
-        buildProps(DateSource.COMMITER, "GMT", "10"));
+        buildProps(DateSource.COMMITER, "GMT", "10", null));
     assertLastChange(gmtLookup, "dir1/file3.txt", 2010);
 
     /*
@@ -183,12 +175,12 @@ class GitLookupTest {
      * 2011 in the CET (+01:00) time zone
      */
     GitLookup cetLookup = GitLookup.create(gitRepoRoot.toFile(),
-        buildProps(DateSource.COMMITER, "CET", "10"));
+        buildProps(DateSource.COMMITER, "CET", "10", null));
     assertLastChange(cetLookup, "dir1/file3.txt", 2011);
 
   }
 
-  private Map<String, String> buildProps(DateSource ds, String tz, String history) {
+  private Map<String, String> buildProps(DateSource ds, String tz, String history, String commitsToIgnoreCSV) {
     Map<String, String> props = new HashMap<>();
     if (history != null) {
       props.put(GitLookup.MAX_COMMITS_LOOKUP_KEY, history);
@@ -199,15 +191,40 @@ class GitLookupTest {
     if (ds != null) {
       props.put(GitLookup.COPYRIGHT_LAST_YEAR_SOURCE_KEY, ds.name());
     }
+    if (commitsToIgnoreCSV != null) {
+      props.put(GitLookup.COMMITS_TO_IGNORE_KEY, commitsToIgnoreCSV);
+    }
     return props;
   }
 
   private GitLookup newAuthorLookup() {
-    return GitLookup.create(gitRepoRoot.toFile(), buildProps(DateSource.AUTHOR, null, "10"));
+    return GitLookup.create(gitRepoRoot.toFile(), buildProps(DateSource.AUTHOR, null, "10", null));
   }
 
   private GitLookup newCommitterLookup() {
-    return GitLookup.create(gitRepoRoot.toFile(), buildProps(DateSource.COMMITER, null, "10"));
+    return GitLookup.create(gitRepoRoot.toFile(), buildProps(DateSource.COMMITER, null, "10", null));
+  }
+
+  @Test
+  public void ignoreCommitsInLastChange() throws GitAPIException, IOException {
+    assertLastChange(newAuthorLookup("95d52919cbe340dc271cf1f5ec68cf36705bd3a3"), "dir1/file1.txt", 2004);
+    assertLastChange(newCommitterLookup("95d52919cbe340dc271cf1f5ec68cf36705bd3a3"), "dir1/file1.txt", 2004);
+  }
+
+  @Test
+  public void doNotIgnoreCommitsInCreation() throws GitAPIException, IOException {
+    assertCreation(newAuthorLookup("53b44baedc5a378f9b665da12f298e1003793219"), "dir1/file1.txt", 2000);
+    assertCreation(newCommitterLookup("53b44baedc5a378f9b665da12f298e1003793219"), "dir1/file1.txt", 2000);
+  }
+
+  private GitLookup newAuthorLookup(String... commitsToIgnore) throws IOException {
+    String commitsToIgnoreCSV = String.join(",", commitsToIgnore);
+    return GitLookup.create(gitRepoRoot.toFile(), buildProps(DateSource.AUTHOR, null, "10", commitsToIgnoreCSV));
+  }
+
+  private GitLookup newCommitterLookup(String... commitsToIgnore) throws IOException {
+      String commitsToIgnoreCSV = String.join(",", commitsToIgnore);
+      return GitLookup.create(gitRepoRoot.toFile(), buildProps(DateSource.COMMITER, null, "10", commitsToIgnoreCSV));
   }
 
   private void assertLastChange(GitLookup provider, String relativePath, int expected) throws

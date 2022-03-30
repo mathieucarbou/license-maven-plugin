@@ -15,6 +15,8 @@
  */
 package com.mycila.maven.plugin.license.git;
 
+import static java.util.Objects.requireNonNull;
+
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
@@ -23,14 +25,19 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 import java.util.TimeZone;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.Status;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.diff.DiffConfig;
 import org.eclipse.jgit.lib.Constants;
+import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.FollowFilter;
@@ -57,6 +64,7 @@ public class GitLookup implements Closeable {
   private static final String COPYRIGHT_LAST_YEAR_MAX_COMMITS_LOOKUP_KEY = "license.git.copyrightLastYearMaxCommitsLookup";
   public static final String COPYRIGHT_LAST_YEAR_SOURCE_KEY = "license.git.copyrightLastYearSource";
   public static final String COPYRIGHT_LAST_YEAR_TIME_ZONE_KEY = "license.git.copyrightLastYearTimeZone";
+  public static final String COMMITS_TO_IGNORE_KEY = "license.git.commitsToIgnore";
 
   public enum DateSource {
     AUTHOR, COMMITER
@@ -68,47 +76,44 @@ public class GitLookup implements Closeable {
   private final Repository repository;
   private final TimeZone timeZone;
   private final boolean shallow;
+  private final Set<ObjectId> commitsToIgnore;
 
   /**
    * Lazily initializes #gitLookup assuming that all subsequent calls to this method will be related
    * to the same git repository.
    */
   public static GitLookup create(File file, Map<String, String> props) {
-    String dateSourceString = props.get(COPYRIGHT_LAST_YEAR_SOURCE_KEY);
-    if (dateSourceString == null) {
-      dateSourceString = GitLookup.DateSource.AUTHOR.name();
-    }
-    GitLookup.DateSource dateSource = GitLookup.DateSource.valueOf(
-        dateSourceString.toUpperCase(Locale.US));
-    String checkCommitsCountString = props.get(MAX_COMMITS_LOOKUP_KEY);
-    // Backwads compatibility
-    if (checkCommitsCountString == null) {
-      checkCommitsCountString = props.get(COPYRIGHT_LAST_YEAR_MAX_COMMITS_LOOKUP_KEY);
-    }
-    int checkCommitsCount = Integer.MAX_VALUE;
-    if (checkCommitsCountString != null) {
-      checkCommitsCountString = checkCommitsCountString.trim();
-      checkCommitsCount = Integer.parseInt(checkCommitsCountString);
-    }
-    final TimeZone timeZone;
-    String tzString = props.get(COPYRIGHT_LAST_YEAR_TIME_ZONE_KEY);
-    switch (dateSource) {
-      case COMMITER:
-        timeZone = tzString == null ? GitLookup.DEFAULT_ZONE : TimeZone.getTimeZone(tzString);
-        break;
-      case AUTHOR:
-        if (tzString != null) {
-          throw new RuntimeException(COPYRIGHT_LAST_YEAR_TIME_ZONE_KEY + " must not be set with "
-              + COPYRIGHT_LAST_YEAR_SOURCE_KEY + " = " + GitLookup.DateSource.AUTHOR.name()
-              + " because git author name already contains time zone information.");
-        }
-        timeZone = null;
-        break;
-      default:
-        throw new IllegalStateException(
-            "Unexpected " + GitLookup.DateSource.class.getName() + " " + dateSource);
-    }
-    return new GitLookup(file, dateSource, timeZone, checkCommitsCount);
+    final GitLookup.DateSource dateSource = Optional.ofNullable(props.get(COPYRIGHT_LAST_YEAR_SOURCE_KEY))
+        .map(String::trim)
+        .map(String::toUpperCase)
+        .map(GitLookup.DateSource::valueOf)
+        .orElse(GitLookup.DateSource.AUTHOR);
+
+    final int checkCommitsCount = Stream.of(
+            MAX_COMMITS_LOOKUP_KEY,
+            COPYRIGHT_LAST_YEAR_MAX_COMMITS_LOOKUP_KEY) // Backwards compatibility
+        .map(props::get)
+        .filter(Objects::nonNull)
+        .map(String::trim)
+        .map(Integer::parseInt)
+        .findFirst()
+        .orElse(Integer.MAX_VALUE);
+
+    final Set<ObjectId> commitsToIgnore = Stream.of(COMMITS_TO_IGNORE_KEY)
+        .map(props::get)
+        .filter(Objects::nonNull)
+        .flatMap(s -> Stream.of(s.split(",")))
+        .map(String::trim)
+        .filter(s -> !s.isEmpty())
+        .map(ObjectId::fromString)
+        .collect(Collectors.toSet());
+
+    final TimeZone timeZone = Optional.ofNullable(props.get(COPYRIGHT_LAST_YEAR_TIME_ZONE_KEY))
+        .map(String::trim)
+        .map(TimeZone::getTimeZone)
+        .orElse(DEFAULT_ZONE);
+
+    return new GitLookup(file, dateSource, timeZone, checkCommitsCount, commitsToIgnore);
   }
 
   /**
@@ -122,10 +127,16 @@ public class GitLookup implements Closeable {
    * @param dateSource        where to read the commit dates from - committer date or author date
    * @param timeZone          the time zone if {@code dateSource} is {@link DateSource#COMMITER};
    *                          otherwise must be {@code null}.
-   * @param checkCommitsCount
+   * @param checkCommitsCount the number of historical commits, per file, to check
+   * @param commitsToIgnore   the commits to ignore while inspecting the history for {@code anyFile}
    * @throws IOException
    */
-  private GitLookup(File anyFile, DateSource dateSource, TimeZone timeZone, int checkCommitsCount) {
+  private GitLookup(File anyFile, DateSource dateSource, TimeZone timeZone, int checkCommitsCount, Set<ObjectId> commitsToIgnore) {
+    requireNonNull(anyFile);
+    requireNonNull(dateSource);
+    requireNonNull(timeZone);
+    requireNonNull(commitsToIgnore);
+
     try {
       this.repository = new FileRepositoryBuilder().findGitDir(anyFile).build();
       /* A workaround for  https://bugs.eclipse.org/bugs/show_bug.cgi?id=457961 */
@@ -135,26 +146,11 @@ public class GitLookup implements Closeable {
       // Closing the repository will close the FileObjectDatabase.
       // Here the newReader() is a WindowCursor which delegates the getShallowCommits() to the FileObjectDatabase.
       this.shallow = !this.repository.getObjectDatabase().newReader().getShallowCommits().isEmpty();
-
       this.pathResolver = new GitPathResolver(repository.getWorkTree().getAbsolutePath());
       this.dateSource = dateSource;
-      switch (dateSource) {
-        case COMMITER:
-          this.timeZone = timeZone == null ? DEFAULT_ZONE : timeZone;
-          break;
-        case AUTHOR:
-          if (timeZone != null) {
-            throw new IllegalArgumentException(
-                "Time zone must be null with dateSource " + DateSource.AUTHOR.name()
-                    + " because git author name already contains time zone information.");
-          }
-          this.timeZone = null;
-          break;
-        default:
-          throw new IllegalStateException(
-              "Unexpected " + DateSource.class.getName() + " " + dateSource);
-      }
+      this.timeZone = timeZone;
       this.checkCommitsCount = checkCommitsCount;
+      this.commitsToIgnore = commitsToIgnore;
     } catch (IOException e) {
       throw new UncheckedIOException(e);
     }
@@ -165,7 +161,7 @@ public class GitLookup implements Closeable {
    * year is taken either from the committer date or from the author identity depending on how {@link #dateSource} was
    * initialized.
    * <p>
-   * See also the note on time zones in {@link #GitLookup(File, DateSource, TimeZone, int)}.
+   * See also the note on time zones in {@link #GitLookup(File, DateSource, TimeZone, int, Set)}.
    *
    * @param file for which the year should be retrieved
    * @return year of last modification of the file
@@ -182,6 +178,9 @@ public class GitLookup implements Closeable {
     int commitYear = 0;
     RevWalk walk = getGitRevWalk(repoRelativePath, false);
     for (RevCommit commit : walk) {
+      if (commitsToIgnore.contains(commit.getId())) {
+        continue;
+      }
       int y = getYearFromCommit(commit);
       if (y > commitYear) {
         commitYear = y;
@@ -277,7 +276,7 @@ public class GitLookup implements Closeable {
   }
 
   private int getCurrentYear() {
-    return toYear(System.currentTimeMillis(), timeZone != null ? timeZone : DEFAULT_ZONE);
+    return toYear(System.currentTimeMillis(), timeZone);
   }
 
   private int getYearFromCommit(RevCommit commit) {
