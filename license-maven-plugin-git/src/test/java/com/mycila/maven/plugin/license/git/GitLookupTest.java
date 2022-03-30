@@ -156,17 +156,9 @@ class GitLookupTest {
 
   @Test
   void timezone() throws GitAPIException, IOException {
-    try {
-      GitLookup.create(gitRepoRoot.toFile(), buildProps(DateSource.AUTHOR, "GMT", "10", null));
-      Assertions.fail("RuntimeException expected");
-    } catch (RuntimeException e) {
-      if (e.getMessage().contains(
-          "license.git.copyrightLastYearTimeZone must not be set with license.git.copyrightLastYearSource = AUTHOR because git author name already contains time zone information.")) {
-        /* expected */
-      } else {
-        throw e;
-      }
-    }
+    // do not fail if a tz is./mv  set, it will just be unused
+    // it allows parent poms to pre-defined properties and let sub modules use them if needed
+    GitLookup.create(gitRepoRoot.toFile(), buildProps(DateSource.AUTHOR, "GMT", "10", null));
 
     /* null is GMT */
     GitLookup nullTzLookup = GitLookup.create(gitRepoRoot.toFile(),
