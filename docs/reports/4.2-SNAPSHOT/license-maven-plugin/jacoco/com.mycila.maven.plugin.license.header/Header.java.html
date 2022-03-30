@@ -15,18 +15,15 @@
  */
 package com.mycila.maven.plugin.license.header;
 
-import static com.mycila.maven.plugin.license.util.FileUtils.readFirstLines;
-import static com.mycila.maven.plugin.license.util.FileUtils.remove;
-
 import com.mycila.maven.plugin.license.HeaderSection;
 import com.mycila.maven.plugin.license.document.Document;
 import com.mycila.maven.plugin.license.util.StringUtils;
+
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.*;
+
+import static com.mycila.maven.plugin.license.util.FileUtils.readFirstLines;
+import static com.mycila.maven.plugin.license.util.FileUtils.remove;
 
 /**
  * The &lt;code&gt;Header&lt;/code&gt; class wraps the license template file, the one which have to be outputted inside the other
@@ -51,41 +48,41 @@ public final class Header {
    * @throws IllegalArgumentException If the header file location is null or if an error occurred while reading the
    *                                  file content.
    */
-<span class="fc" id="L54">  public Header(HeaderSource location, HeaderSection[] sections) {</span>
-<span class="fc" id="L55">    this.location = location;</span>
-<span class="fc" id="L56">    this.sections = sections;</span>
+<span class="fc" id="L51">  public Header(HeaderSource location, HeaderSection[] sections) {</span>
+<span class="fc" id="L52">    this.location = location;</span>
+<span class="fc" id="L53">    this.sections = sections;</span>
     try {
-<span class="fc" id="L58">      this.headerContent = location.getContent();</span>
-<span class="fc" id="L59">      lines = headerContent.replace(&quot;\r&quot;, &quot;&quot;).split(&quot;\n&quot;);</span>
-<span class="fc" id="L60">      headerContentOneLine = remove(headerContent, &quot; &quot;, &quot;\t&quot;, &quot;\r&quot;, &quot;\n&quot;);</span>
-<span class="nc" id="L61">    } catch (Exception e) {</span>
-<span class="nc" id="L62">      throw new IllegalArgumentException(&quot;Cannot read header document &quot; + location + &quot;. Cause: &quot; + e.getMessage(), e);</span>
-<span class="fc" id="L63">    }</span>
+<span class="fc" id="L55">      this.headerContent = location.getContent();</span>
+<span class="fc" id="L56">      lines = headerContent.replace(&quot;\r&quot;, &quot;&quot;).split(&quot;\n&quot;);</span>
+<span class="fc" id="L57">      headerContentOneLine = remove(headerContent, &quot; &quot;, &quot;\t&quot;, &quot;\r&quot;, &quot;\n&quot;);</span>
+<span class="nc" id="L58">    } catch (Exception e) {</span>
+<span class="nc" id="L59">      throw new IllegalArgumentException(&quot;Cannot read header document &quot; + location + &quot;. Cause: &quot; + e.getMessage(), e);</span>
+<span class="fc" id="L60">    }</span>
 
-<span class="fc" id="L65">    int maxLength = 0;</span>
-<span class="fc bfc" id="L66" title="All 2 branches covered.">    for (String line : lines) {</span>
-<span class="fc bfc" id="L67" title="All 2 branches covered.">      if (line.length() &gt; maxLength) {</span>
-<span class="fc" id="L68">        maxLength = line.length();</span>
+<span class="fc" id="L62">    int maxLength = 0;</span>
+<span class="fc bfc" id="L63" title="All 2 branches covered.">    for (String line : lines) {</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">      if (line.length() &gt; maxLength) {</span>
+<span class="fc" id="L65">        maxLength = line.length();</span>
       }
     }
 
-<span class="fc" id="L72">    this.maxLength = maxLength;</span>
-<span class="fc" id="L73">  }</span>
+<span class="fc" id="L69">    this.maxLength = maxLength;</span>
+<span class="fc" id="L70">  }</span>
 
   public String asString() {
-<span class="nc" id="L76">    return headerContent;</span>
+<span class="nc" id="L73">    return headerContent;</span>
   }
 
   public String asOneLineString() {
-<span class="fc" id="L80">    return headerContentOneLine;</span>
+<span class="fc" id="L77">    return headerContentOneLine;</span>
   }
 
   public int getLineCount() {
-<span class="fc" id="L84">    return lines.length;</span>
+<span class="fc" id="L81">    return lines.length;</span>
   }
 
   public int getMaxLineLength() {
-<span class="nc" id="L88">    return maxLength;</span>
+<span class="nc" id="L85">    return maxLength;</span>
   }
 
   /**
@@ -94,54 +91,54 @@ public final class Header {
    * @return The URL location.
    */
   public HeaderSource getLocation() {
-<span class="fc" id="L97">    return location;</span>
+<span class="fc" id="L94">    return location;</span>
   }
 
   public String eol(boolean unix) {
-<span class="fc bfc" id="L101" title="All 2 branches covered.">    return unix ? &quot;\n&quot; : &quot;\r\n&quot;;</span>
+<span class="fc bfc" id="L98" title="All 2 branches covered.">    return unix ? &quot;\n&quot; : &quot;\r\n&quot;;</span>
   }
 
   public String buildForDefinition(HeaderDefinition type, boolean unix) {
-<span class="fc" id="L105">    StringBuilder newHeader = new StringBuilder();</span>
-<span class="fc" id="L106">    String unixEndOfLine = eol(unix);</span>
-<span class="fc bfc" id="L107" title="All 2 branches covered.">    if (notEmpty(type.getFirstLine())) {</span>
-<span class="fc" id="L108">      String firstLine = type.getFirstLine().replace(&quot;EOL&quot;, unixEndOfLine);</span>
-<span class="fc" id="L109">      newHeader.append(firstLine);</span>
-<span class="fc bfc" id="L110" title="All 2 branches covered.">      if (!firstLine.equals(unixEndOfLine)) {</span>
-<span class="fc" id="L111">        newHeader.append(unixEndOfLine);</span>
+<span class="fc" id="L102">    StringBuilder newHeader = new StringBuilder();</span>
+<span class="fc" id="L103">    String unixEndOfLine = eol(unix);</span>
+<span class="fc bfc" id="L104" title="All 2 branches covered.">    if (notEmpty(type.getFirstLine())) {</span>
+<span class="fc" id="L105">      String firstLine = type.getFirstLine().replace(&quot;EOL&quot;, unixEndOfLine);</span>
+<span class="fc" id="L106">      newHeader.append(firstLine);</span>
+<span class="fc bfc" id="L107" title="All 2 branches covered.">      if (!firstLine.equals(unixEndOfLine)) {</span>
+<span class="fc" id="L108">        newHeader.append(unixEndOfLine);</span>
       }
     }
-<span class="fc bfc" id="L114" title="All 2 branches covered.">    for (String line : getLines()) {</span>
-<span class="fc" id="L115">      final String before = type.getBeforeEachLine().replace(&quot;EOL&quot;, unixEndOfLine);</span>
-<span class="fc" id="L116">      final String after = type.getAfterEachLine().replace(&quot;EOL&quot;, unixEndOfLine);</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">    for (String line : getLines()) {</span>
+<span class="fc" id="L112">      final String before = type.getBeforeEachLine().replace(&quot;EOL&quot;, unixEndOfLine);</span>
+<span class="fc" id="L113">      final String after = type.getAfterEachLine().replace(&quot;EOL&quot;, unixEndOfLine);</span>
       final String str;
 
-<span class="fc bfc" id="L119" title="All 2 branches covered.">      if (type.isPadLines()) {</span>
-<span class="fc" id="L120">        str = before + StringUtils.padRight(line, maxLength) + after;</span>
+<span class="fc bfc" id="L116" title="All 2 branches covered.">      if (type.isPadLines()) {</span>
+<span class="fc" id="L117">        str = before + StringUtils.padRight(line, maxLength) + after;</span>
       } else {
-<span class="fc" id="L122">        str = before + line + after;</span>
+<span class="fc" id="L119">        str = before + line + after;</span>
       }
 
-<span class="fc" id="L125">      newHeader.append(StringUtils.rtrim(str));</span>
-<span class="fc" id="L126">      newHeader.append(unixEndOfLine);</span>
+<span class="fc" id="L122">      newHeader.append(StringUtils.rtrim(str));</span>
+<span class="fc" id="L123">      newHeader.append(unixEndOfLine);</span>
     }
-<span class="fc bfc" id="L128" title="All 2 branches covered.">    if (notEmpty(type.getEndLine())) {</span>
-<span class="fc" id="L129">      String endLine = type.getEndLine().replace(&quot;EOL&quot;, unixEndOfLine);</span>
-<span class="fc" id="L130">      newHeader.append(endLine);</span>
-<span class="fc bfc" id="L131" title="All 2 branches covered.">      if (!endLine.equals(unixEndOfLine)) {</span>
-<span class="fc" id="L132">        newHeader.append(unixEndOfLine);</span>
+<span class="fc bfc" id="L125" title="All 2 branches covered.">    if (notEmpty(type.getEndLine())) {</span>
+<span class="fc" id="L126">      String endLine = type.getEndLine().replace(&quot;EOL&quot;, unixEndOfLine);</span>
+<span class="fc" id="L127">      newHeader.append(endLine);</span>
+<span class="fc bfc" id="L128" title="All 2 branches covered.">      if (!endLine.equals(unixEndOfLine)) {</span>
+<span class="fc" id="L129">        newHeader.append(unixEndOfLine);</span>
       }
     }
-<span class="fc" id="L135">    return newHeader.toString();</span>
+<span class="fc" id="L132">    return newHeader.toString();</span>
   }
 
   @Override
   public String toString() {
-<span class="nc" id="L140">    return asString();</span>
+<span class="nc" id="L137">    return asString();</span>
   }
 
   public String[] getLines() {
-<span class="fc" id="L144">    return lines;</span>
+<span class="fc" id="L141">    return lines;</span>
   }
 
   /**
@@ -156,74 +153,74 @@ public final class Header {
    * @return true if the header is matched
    */
   public boolean isMatchForText(String potentialFileHeader, HeaderDefinition headerDefinition, boolean unix) {
-<span class="fc" id="L159">    String expected = buildForDefinition(headerDefinition, unix);</span>
-<span class="fc" id="L160">    return isMatchForText(expected, potentialFileHeader, headerDefinition, unix);</span>
+<span class="fc" id="L156">    String expected = buildForDefinition(headerDefinition, unix);</span>
+<span class="fc" id="L157">    return isMatchForText(expected, potentialFileHeader, headerDefinition, unix);</span>
   }
 
   public boolean isMatchForText(String expected, String potentialFileHeader, HeaderDefinition headerDefinition, boolean unix) {
 
-<span class="fc" id="L165">    SortedMap&lt;Integer, HeaderSection&gt; sectionsByIndex = computeSectionsByIndex(expected);</span>
+<span class="fc" id="L162">    SortedMap&lt;Integer, HeaderSection&gt; sectionsByIndex = computeSectionsByIndex(expected);</span>
 
-<span class="fc bfc" id="L167" title="All 2 branches covered.">    if (sectionsByIndex.isEmpty()) {</span>
-<span class="fc" id="L168">      return potentialFileHeader.contains(expected);</span>
+<span class="fc bfc" id="L164" title="All 2 branches covered.">    if (sectionsByIndex.isEmpty()) {</span>
+<span class="fc" id="L165">      return potentialFileHeader.contains(expected);</span>
     }
 
-<span class="fc" id="L171">    List&lt;String&gt; textBetweenSections = buildExpectedTextBetweenSections(expected, sectionsByIndex);</span>
-<span class="fc" id="L172">    List&lt;HeaderSection&gt; sectionsInOrder = new ArrayList&lt;&gt;(sectionsByIndex.values());</span>
-<span class="fc" id="L173">    return recursivelyFindMatch(potentialFileHeader, headerDefinition, textBetweenSections, sectionsInOrder, 0, 0);</span>
+<span class="fc" id="L168">    List&lt;String&gt; textBetweenSections = buildExpectedTextBetweenSections(expected, sectionsByIndex);</span>
+<span class="fc" id="L169">    List&lt;HeaderSection&gt; sectionsInOrder = new ArrayList&lt;&gt;(sectionsByIndex.values());</span>
+<span class="fc" id="L170">    return recursivelyFindMatch(potentialFileHeader, headerDefinition, textBetweenSections, sectionsInOrder, 0, 0);</span>
   }
 
   public boolean isMatchForText(Document d, HeaderDefinition headerDefinition, boolean unix, String encoding) throws IOException {
-<span class="fc" id="L177">    String fileHeader = readFirstLines(d.getFile(), getLineCount() + 10, encoding).replaceAll(&quot; *\r?\n&quot;, &quot;\n&quot;);</span>
-<span class="fc" id="L178">    String expected = buildForDefinition(headerDefinition, unix);</span>
-<span class="fc" id="L179">    expected = d.mergeProperties(expected);</span>
-<span class="fc" id="L180">    return isMatchForText(expected, fileHeader, headerDefinition, unix);</span>
+<span class="fc" id="L174">    String fileHeader = readFirstLines(d.getFile(), getLineCount() + 10, encoding).replaceAll(&quot; *\r?\n&quot;, &quot;\n&quot;);</span>
+<span class="fc" id="L175">    String expected = buildForDefinition(headerDefinition, unix);</span>
+<span class="fc" id="L176">    expected = d.mergeProperties(expected);</span>
+<span class="fc" id="L177">    return isMatchForText(expected, fileHeader, headerDefinition, unix);</span>
   }
 
   public String applyDefinitionAndSections(HeaderDefinition headerDefinition, boolean unix) {
 
-<span class="fc" id="L185">    String expected = buildForDefinition(headerDefinition, unix);</span>
+<span class="fc" id="L182">    String expected = buildForDefinition(headerDefinition, unix);</span>
 
-<span class="fc" id="L187">    SortedMap&lt;Integer, HeaderSection&gt; sectionsByIndex = computeSectionsByIndex(expected);</span>
+<span class="fc" id="L184">    SortedMap&lt;Integer, HeaderSection&gt; sectionsByIndex = computeSectionsByIndex(expected);</span>
 
-<span class="fc bfc" id="L189" title="All 2 branches covered.">    if (sectionsByIndex.isEmpty()) {</span>
-<span class="fc" id="L190">      return expected;</span>
+<span class="fc bfc" id="L186" title="All 2 branches covered.">    if (sectionsByIndex.isEmpty()) {</span>
+<span class="fc" id="L187">      return expected;</span>
     }
 
-<span class="fc" id="L193">    List&lt;String&gt; textBetweenSections = buildExpectedTextBetweenSections(expected, sectionsByIndex);</span>
-<span class="fc" id="L194">    List&lt;HeaderSection&gt; sectionsInOrder = new ArrayList&lt;&gt;(sectionsByIndex.values());</span>
+<span class="fc" id="L190">    List&lt;String&gt; textBetweenSections = buildExpectedTextBetweenSections(expected, sectionsByIndex);</span>
+<span class="fc" id="L191">    List&lt;HeaderSection&gt; sectionsInOrder = new ArrayList&lt;&gt;(sectionsByIndex.values());</span>
 
-<span class="fc" id="L196">    StringBuilder b = new StringBuilder();</span>
-<span class="fc bfc" id="L197" title="All 2 branches covered.">    for (int i = 0; i &lt; textBetweenSections.size(); ++i) {</span>
-<span class="fc" id="L198">      String textBetween = textBetweenSections.get(i);</span>
-<span class="fc" id="L199">      b.append(textBetween);</span>
-<span class="fc bfc" id="L200" title="All 2 branches covered.">      if (i &lt; sectionsInOrder.size()) {</span>
-<span class="fc" id="L201">        HeaderSection section = sectionsInOrder.get(i);</span>
-<span class="fc" id="L202">        String sectionValue = section.getDefaultValue();</span>
-<span class="pc bpc" id="L203" title="1 of 2 branches missed.">        if (notEmpty(sectionValue)) {</span>
-<span class="fc" id="L204">          String[] tokens = sectionValue.split(eol(unix));</span>
-<span class="fc bfc" id="L205" title="All 2 branches covered.">          for (int j = 0; j &lt; tokens.length; j++) {</span>
-<span class="fc bfc" id="L206" title="All 2 branches covered.">            if (j &gt; 0) {</span>
-<span class="fc" id="L207">              b.append(eol(unix));</span>
-<span class="pc bpc" id="L208" title="1 of 2 branches missed.">              if (notEmpty(headerDefinition.getBeforeEachLine())) {</span>
-<span class="fc" id="L209">                b.append(headerDefinition.getBeforeEachLine());</span>
+<span class="fc" id="L193">    StringBuilder b = new StringBuilder();</span>
+<span class="fc bfc" id="L194" title="All 2 branches covered.">    for (int i = 0; i &lt; textBetweenSections.size(); ++i) {</span>
+<span class="fc" id="L195">      String textBetween = textBetweenSections.get(i);</span>
+<span class="fc" id="L196">      b.append(textBetween);</span>
+<span class="fc bfc" id="L197" title="All 2 branches covered.">      if (i &lt; sectionsInOrder.size()) {</span>
+<span class="fc" id="L198">        HeaderSection section = sectionsInOrder.get(i);</span>
+<span class="fc" id="L199">        String sectionValue = section.getDefaultValue();</span>
+<span class="pc bpc" id="L200" title="1 of 2 branches missed.">        if (notEmpty(sectionValue)) {</span>
+<span class="fc" id="L201">          String[] tokens = sectionValue.split(eol(unix));</span>
+<span class="fc bfc" id="L202" title="All 2 branches covered.">          for (int j = 0; j &lt; tokens.length; j++) {</span>
+<span class="fc bfc" id="L203" title="All 2 branches covered.">            if (j &gt; 0) {</span>
+<span class="fc" id="L204">              b.append(eol(unix));</span>
+<span class="pc bpc" id="L205" title="1 of 2 branches missed.">              if (notEmpty(headerDefinition.getBeforeEachLine())) {</span>
+<span class="fc" id="L206">                b.append(headerDefinition.getBeforeEachLine());</span>
               }
-<span class="fc" id="L211">              b.append(tokens[j]);</span>
-<span class="pc bpc" id="L212" title="1 of 2 branches missed.">              if (notEmpty(headerDefinition.getAfterEachLine())) {</span>
-<span class="nc" id="L213">                b.append(headerDefinition.getAfterEachLine());</span>
+<span class="fc" id="L208">              b.append(tokens[j]);</span>
+<span class="pc bpc" id="L209" title="1 of 2 branches missed.">              if (notEmpty(headerDefinition.getAfterEachLine())) {</span>
+<span class="nc" id="L210">                b.append(headerDefinition.getAfterEachLine());</span>
               }
             } else {
-<span class="fc" id="L216">              b.append(tokens[j]);</span>
+<span class="fc" id="L213">              b.append(tokens[j]);</span>
             }
           }
         }
       }
     }
-<span class="fc" id="L222">    return b.toString();</span>
+<span class="fc" id="L219">    return b.toString();</span>
   }
 
   private boolean notEmpty(String str) {
-<span class="fc bfc" id="L226" title="All 4 branches covered.">    return str != null &amp;&amp; str.length() &gt; 0;</span>
+<span class="fc bfc" id="L223" title="All 4 branches covered.">    return str != null &amp;&amp; str.length() &gt; 0;</span>
   }
 
   /**
@@ -237,45 +234,45 @@ public final class Header {
    */
   private SortedMap&lt;Integer, HeaderSection&gt; computeSectionsByIndex(String expectedHeaderText) {
 
-<span class="fc" id="L240">    SortedMap&lt;Integer, HeaderSection&gt; sectionsByIndex = new TreeMap&lt;&gt;();</span>
+<span class="fc" id="L237">    SortedMap&lt;Integer, HeaderSection&gt; sectionsByIndex = new TreeMap&lt;&gt;();</span>
 
-<span class="fc bfc" id="L242" title="All 2 branches covered.">    if (sections == null)</span>
-<span class="fc" id="L243">      return sectionsByIndex;</span>
+<span class="fc bfc" id="L239" title="All 2 branches covered.">    if (sections == null)</span>
+<span class="fc" id="L240">      return sectionsByIndex;</span>
 
-<span class="fc bfc" id="L245" title="All 2 branches covered.">    for (HeaderSection section : sections) {</span>
+<span class="fc bfc" id="L242" title="All 2 branches covered.">    for (HeaderSection section : sections) {</span>
 
-<span class="fc" id="L247">      String key = section.getKey();</span>
-<span class="fc" id="L248">      int index = expectedHeaderText.indexOf(key);</span>
-<span class="pc bpc" id="L249" title="1 of 2 branches missed.">      if (index == -1) {</span>
+<span class="fc" id="L244">      String key = section.getKey();</span>
+<span class="fc" id="L245">      int index = expectedHeaderText.indexOf(key);</span>
+<span class="pc bpc" id="L246" title="1 of 2 branches missed.">      if (index == -1) {</span>
         // TODO: we need some way to log that a header section key was not found...
-<span class="nc" id="L251">        continue;</span>
+<span class="nc" id="L248">        continue;</span>
       }
 
       /**
        * Verify that the new section doesn't overlap with an existing
        * section
        */
-<span class="fc" id="L258">      int indexEnd = index + section.getKey().length();</span>
+<span class="fc" id="L255">      int indexEnd = index + section.getKey().length();</span>
 
-<span class="fc bfc" id="L260" title="All 2 branches covered.">      for (Map.Entry&lt;Integer, HeaderSection&gt; entry : sectionsByIndex.entrySet()) {</span>
+<span class="fc bfc" id="L257" title="All 2 branches covered.">      for (Map.Entry&lt;Integer, HeaderSection&gt; entry : sectionsByIndex.entrySet()) {</span>
 
-<span class="fc" id="L262">        int existingIndexStart = entry.getKey();</span>
-<span class="fc" id="L263">        HeaderSection existingSection = entry.getValue();</span>
-<span class="fc" id="L264">        int existingIndexEnd = existingIndexStart + existingSection.getKey().length();</span>
+<span class="fc" id="L259">        int existingIndexStart = entry.getKey();</span>
+<span class="fc" id="L260">        HeaderSection existingSection = entry.getValue();</span>
+<span class="fc" id="L261">        int existingIndexEnd = existingIndexStart + existingSection.getKey().length();</span>
 
-<span class="pc bpc" id="L266" title="2 of 4 branches missed.">        if (existingIndexStart &lt; indexEnd &amp;&amp; index &lt; existingIndexEnd) {</span>
-<span class="nc" id="L267">          throw new IllegalArgumentException(String.format(</span>
-<span class="nc" id="L268">              &quot;Existing section '%1$s' overlaps with new section '%2$s'&quot;, existingSection.getKey(),</span>
-<span class="nc" id="L269">              section.getKey()));</span>
+<span class="pc bpc" id="L263" title="2 of 4 branches missed.">        if (existingIndexStart &lt; indexEnd &amp;&amp; index &lt; existingIndexEnd) {</span>
+<span class="nc" id="L264">          throw new IllegalArgumentException(String.format(</span>
+<span class="nc" id="L265">              &quot;Existing section '%1$s' overlaps with new section '%2$s'&quot;, existingSection.getKey(),</span>
+<span class="nc" id="L266">              section.getKey()));</span>
         }
 
-<span class="fc" id="L272">        sectionsByIndex.put(index, section);</span>
-<span class="fc" id="L273">      }</span>
+<span class="fc" id="L269">        sectionsByIndex.put(index, section);</span>
+<span class="fc" id="L270">      }</span>
 
-<span class="fc" id="L275">      sectionsByIndex.put(index, section);</span>
+<span class="fc" id="L272">      sectionsByIndex.put(index, section);</span>
     }
 
-<span class="fc" id="L278">    return sectionsByIndex;</span>
+<span class="fc" id="L275">    return sectionsByIndex;</span>
   }
 
   /**
@@ -302,24 +299,24 @@ public final class Header {
   private List&lt;String&gt; buildExpectedTextBetweenSections(String expectedHeaderText,
                                                         SortedMap&lt;Integer, HeaderSection&gt; sectionsByIndex) {
 
-<span class="fc" id="L305">    List&lt;String&gt; textBetweenSections = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L306">    int currentIndex = 0;</span>
+<span class="fc" id="L302">    List&lt;String&gt; textBetweenSections = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L303">    int currentIndex = 0;</span>
 
-<span class="fc bfc" id="L308" title="All 2 branches covered.">    for (Map.Entry&lt;Integer, HeaderSection&gt; entry : sectionsByIndex.entrySet()) {</span>
-<span class="fc" id="L309">      int index = entry.getKey();</span>
-<span class="fc" id="L310">      HeaderSection section = entry.getValue();</span>
-<span class="fc" id="L311">      String textBetween = expectedHeaderText.substring(currentIndex, index);</span>
-<span class="fc" id="L312">      textBetweenSections.add(textBetween);</span>
-<span class="fc" id="L313">      currentIndex = index + section.getKey().length();</span>
-<span class="fc" id="L314">    }</span>
+<span class="fc bfc" id="L305" title="All 2 branches covered.">    for (Map.Entry&lt;Integer, HeaderSection&gt; entry : sectionsByIndex.entrySet()) {</span>
+<span class="fc" id="L306">      int index = entry.getKey();</span>
+<span class="fc" id="L307">      HeaderSection section = entry.getValue();</span>
+<span class="fc" id="L308">      String textBetween = expectedHeaderText.substring(currentIndex, index);</span>
+<span class="fc" id="L309">      textBetweenSections.add(textBetween);</span>
+<span class="fc" id="L310">      currentIndex = index + section.getKey().length();</span>
+<span class="fc" id="L311">    }</span>
 
     /**
      * Add the tail of the expected text
      */
-<span class="fc" id="L319">    String textBetween = expectedHeaderText.substring(currentIndex, expectedHeaderText.length());</span>
-<span class="fc" id="L320">    textBetweenSections.add(textBetween);</span>
+<span class="fc" id="L316">    String textBetween = expectedHeaderText.substring(currentIndex, expectedHeaderText.length());</span>
+<span class="fc" id="L317">    textBetweenSections.add(textBetween);</span>
 
-<span class="fc" id="L322">    return textBetweenSections;</span>
+<span class="fc" id="L319">    return textBetweenSections;</span>
   }
 
   /**
@@ -352,34 +349,34 @@ public final class Header {
                                        List&lt;String&gt; expectedTextBetweenSections, List&lt;HeaderSection&gt; sectionsInOrder, int currentTextSegmentIndex,
                                        int currentPotentialFileHeaderIndex) {
 
-<span class="fc bfc" id="L355" title="All 2 branches covered.">    if (currentTextSegmentIndex == expectedTextBetweenSections.size()) {</span>
-<span class="fc" id="L356">      return true;</span>
+<span class="fc bfc" id="L352" title="All 2 branches covered.">    if (currentTextSegmentIndex == expectedTextBetweenSections.size()) {</span>
+<span class="fc" id="L353">      return true;</span>
     }
 
-<span class="fc" id="L359">    int currentSearchFromIndex = currentPotentialFileHeaderIndex;</span>
+<span class="fc" id="L356">    int currentSearchFromIndex = currentPotentialFileHeaderIndex;</span>
 
     while (true) {
-<span class="fc" id="L362">      String expectedText = expectedTextBetweenSections.get(currentTextSegmentIndex);</span>
-<span class="fc" id="L363">      int index = potentialFileHeader.indexOf(expectedText, currentSearchFromIndex);</span>
-<span class="fc bfc" id="L364" title="All 2 branches covered.">      if (index == -1) {</span>
-<span class="fc" id="L365">        return false;</span>
+<span class="fc" id="L359">      String expectedText = expectedTextBetweenSections.get(currentTextSegmentIndex);</span>
+<span class="fc" id="L360">      int index = potentialFileHeader.indexOf(expectedText, currentSearchFromIndex);</span>
+<span class="fc bfc" id="L361" title="All 2 branches covered.">      if (index == -1) {</span>
+<span class="fc" id="L362">        return false;</span>
       }
 
-<span class="fc bfc" id="L368" title="All 2 branches covered.">      if (currentTextSegmentIndex &gt; 0) {</span>
-<span class="fc" id="L369">        HeaderSection section = sectionsInOrder.get(currentTextSegmentIndex - 1);</span>
-<span class="fc" id="L370">        String sectionValue = potentialFileHeader.substring(currentPotentialFileHeaderIndex, index);</span>
-<span class="fc bfc" id="L371" title="All 2 branches covered.">        if (!ensureSectionMatch(headerDefinition, section, sectionValue)) {</span>
-<span class="fc" id="L372">          return false;</span>
+<span class="fc bfc" id="L365" title="All 2 branches covered.">      if (currentTextSegmentIndex &gt; 0) {</span>
+<span class="fc" id="L366">        HeaderSection section = sectionsInOrder.get(currentTextSegmentIndex - 1);</span>
+<span class="fc" id="L367">        String sectionValue = potentialFileHeader.substring(currentPotentialFileHeaderIndex, index);</span>
+<span class="fc bfc" id="L368" title="All 2 branches covered.">        if (!ensureSectionMatch(headerDefinition, section, sectionValue)) {</span>
+<span class="fc" id="L369">          return false;</span>
         }
       }
 
-<span class="fc bfc" id="L376" title="All 2 branches covered.">      if (recursivelyFindMatch(potentialFileHeader, headerDefinition, expectedTextBetweenSections,</span>
-<span class="fc" id="L377">          sectionsInOrder, currentTextSegmentIndex + 1, index + expectedText.length())) {</span>
-<span class="fc" id="L378">        return true;</span>
+<span class="fc bfc" id="L373" title="All 2 branches covered.">      if (recursivelyFindMatch(potentialFileHeader, headerDefinition, expectedTextBetweenSections,</span>
+<span class="fc" id="L374">          sectionsInOrder, currentTextSegmentIndex + 1, index + expectedText.length())) {</span>
+<span class="fc" id="L375">        return true;</span>
       }
 
-<span class="fc" id="L381">      currentSearchFromIndex = index + 1;</span>
-<span class="fc" id="L382">    }</span>
+<span class="fc" id="L378">      currentSearchFromIndex = index + 1;</span>
+<span class="fc" id="L379">    }</span>
   }
 
   /**
@@ -394,23 +391,23 @@ public final class Header {
    */
   private boolean ensureSectionMatch(HeaderDefinition headerDefinition, HeaderSection section, String sectionValue) {
 
-<span class="fc" id="L397">    String match = section.getEnsureMatch();</span>
-<span class="fc bfc" id="L398" title="All 2 branches covered.">    if (!notEmpty(match)) {</span>
-<span class="fc" id="L399">      return true;</span>
+<span class="fc" id="L394">    String match = section.getEnsureMatch();</span>
+<span class="fc bfc" id="L395" title="All 2 branches covered.">    if (!notEmpty(match)) {</span>
+<span class="fc" id="L396">      return true;</span>
     }
 
-<span class="fc" id="L402">    String[] lines = sectionValue.split(&quot;\n&quot;);</span>
+<span class="fc" id="L399">    String[] lines = sectionValue.split(&quot;\n&quot;);</span>
 
     /**
      * We need to clean off any header-specific line-start characters before
      * we perform the match
      */
-<span class="fc" id="L408">    String before = headerDefinition.getBeforeEachLine();</span>
-<span class="pc bpc" id="L409" title="1 of 2 branches missed.">    if (notEmpty(before)) {</span>
-<span class="fc bfc" id="L410" title="All 2 branches covered.">      for (int i = 0; i &lt; lines.length; ++i) {</span>
-<span class="fc" id="L411">        String line = lines[i];</span>
-<span class="fc bfc" id="L412" title="All 2 branches covered.">        if (line.startsWith(before)) {</span>
-<span class="fc" id="L413">          lines[i] = line.substring(before.length());</span>
+<span class="fc" id="L405">    String before = headerDefinition.getBeforeEachLine();</span>
+<span class="pc bpc" id="L406" title="1 of 2 branches missed.">    if (notEmpty(before)) {</span>
+<span class="fc bfc" id="L407" title="All 2 branches covered.">      for (int i = 0; i &lt; lines.length; ++i) {</span>
+<span class="fc" id="L408">        String line = lines[i];</span>
+<span class="fc bfc" id="L409" title="All 2 branches covered.">        if (line.startsWith(before)) {</span>
+<span class="fc" id="L410">          lines[i] = line.substring(before.length());</span>
         }
       }
     }
@@ -420,25 +417,25 @@ public final class Header {
      * multi-line string (now sans line-start characters) and perform the
      * match on the result
      */
-<span class="fc bfc" id="L423" title="All 2 branches covered.">    if (section.isMultiLineMatch()) {</span>
-<span class="fc" id="L424">      StringBuilder b = new StringBuilder();</span>
-<span class="fc bfc" id="L425" title="All 2 branches covered.">      for (int i = 0; i &lt; lines.length; ++i) {</span>
-<span class="fc bfc" id="L426" title="All 2 branches covered.">        if (i &gt; 0) {</span>
-<span class="fc" id="L427">          b.append('\n');</span>
+<span class="fc bfc" id="L420" title="All 2 branches covered.">    if (section.isMultiLineMatch()) {</span>
+<span class="fc" id="L421">      StringBuilder b = new StringBuilder();</span>
+<span class="fc bfc" id="L422" title="All 2 branches covered.">      for (int i = 0; i &lt; lines.length; ++i) {</span>
+<span class="fc bfc" id="L423" title="All 2 branches covered.">        if (i &gt; 0) {</span>
+<span class="fc" id="L424">          b.append('\n');</span>
         }
-<span class="fc" id="L429">        b.append(lines[i]);</span>
+<span class="fc" id="L426">        b.append(lines[i]);</span>
       }
-<span class="fc" id="L431">      String multiLineValue = b.toString();</span>
-<span class="fc" id="L432">      return multiLineValue.matches(match);</span>
+<span class="fc" id="L428">      String multiLineValue = b.toString();</span>
+<span class="fc" id="L429">      return multiLineValue.matches(match);</span>
     }
 
-<span class="fc bfc" id="L435" title="All 2 branches covered.">    for (String line : lines) {</span>
-<span class="fc bfc" id="L436" title="All 2 branches covered.">      if (!line.matches(match)) {</span>
-<span class="fc" id="L437">        return false;</span>
+<span class="fc bfc" id="L432" title="All 2 branches covered.">    for (String line : lines) {</span>
+<span class="fc bfc" id="L433" title="All 2 branches covered.">      if (!line.matches(match)) {</span>
+<span class="fc" id="L434">        return false;</span>
       }
     }
 
-<span class="fc" id="L441">    return true;</span>
+<span class="fc" id="L438">    return true;</span>
   }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

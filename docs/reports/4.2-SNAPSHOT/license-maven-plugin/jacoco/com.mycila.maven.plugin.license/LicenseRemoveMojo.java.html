@@ -17,10 +17,11 @@ package com.mycila.maven.plugin.license;
 
 import com.mycila.maven.plugin.license.document.Document;
 import com.mycila.maven.plugin.license.header.Header;
-import java.io.File;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
+
+import java.io.File;
 
 /**
  * Remove the specified header from source files
@@ -28,54 +29,54 @@ import org.apache.maven.plugins.annotations.Mojo;
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
 @Mojo(name = &quot;remove&quot;, threadSafe = true)
-<span class="fc" id="L31">public final class LicenseRemoveMojo extends AbstractLicenseMojo {</span>
+<span class="fc" id="L32">public final class LicenseRemoveMojo extends AbstractLicenseMojo {</span>
 
   @Override
   public void execute() throws MojoExecutionException, MojoFailureException {
-<span class="fc" id="L35">    report = new Report(reportFormat, Report.Action.REMOVE, project, clock, reportSkipped);</span>
+<span class="fc" id="L36">    report = new Report(reportFormat, Report.Action.REMOVE, project, clock, reportSkipped);</span>
 
-<span class="pc bpc" id="L37" title="1 of 2 branches missed.">    if (!skip) {</span>
-<span class="fc" id="L38">      getLog().info(&quot;Removing license headers...&quot;);</span>
+<span class="pc bpc" id="L38" title="1 of 2 branches missed.">    if (!skip) {</span>
+<span class="fc" id="L39">      getLog().info(&quot;Removing license headers...&quot;);</span>
     }
 
-<span class="fc" id="L41">    AbstractCallback callback = new AbstractCallback() {</span>
+<span class="fc" id="L42">    AbstractCallback callback = new AbstractCallback() {</span>
 
       @Override
       public void onHeaderNotFound(Document document, Header header) {
-<span class="fc" id="L45">        debug(&quot;Header was not found in: %s (But keep trying to find another header to remove)&quot;, document.getFile());</span>
-<span class="fc" id="L46">        remove(document);</span>
-<span class="fc" id="L47">      }</span>
+<span class="fc" id="L46">        debug(&quot;Header was not found in: %s (But keep trying to find another header to remove)&quot;, document.getFile());</span>
+<span class="fc" id="L47">        remove(document);</span>
+<span class="fc" id="L48">      }</span>
 
       @Override
       public void onExistingHeader(Document document, Header header) {
-<span class="fc" id="L51">        info(&quot;Removing license header from: %s&quot;, document.getFile());</span>
-<span class="fc" id="L52">        remove(document);</span>
-<span class="fc" id="L53">      }</span>
+<span class="fc" id="L52">        info(&quot;Removing license header from: %s&quot;, document.getFile());</span>
+<span class="fc" id="L53">        remove(document);</span>
+<span class="fc" id="L54">      }</span>
 
     };
 
-<span class="fc" id="L57">    execute(callback);</span>
+<span class="fc" id="L58">    execute(callback);</span>
 
-<span class="fc" id="L59">    callback.checkUnknown();</span>
-<span class="fc" id="L60">  }</span>
+<span class="fc" id="L60">    callback.checkUnknown();</span>
+<span class="fc" id="L61">  }</span>
 
   private void remove(Document document) {
-<span class="fc" id="L63">    document.parseHeader();</span>
-<span class="fc bfc" id="L64" title="All 2 branches covered.">    if (document.headerDetected()) {</span>
-<span class="fc" id="L65">      document.removeHeader();</span>
-<span class="pc bpc" id="L66" title="1 of 2 branches missed.">      if (!dryRun) {</span>
-<span class="fc" id="L67">        document.save();</span>
+<span class="fc" id="L64">    document.parseHeader();</span>
+<span class="fc bfc" id="L65" title="All 2 branches covered.">    if (document.headerDetected()) {</span>
+<span class="fc" id="L66">      document.removeHeader();</span>
+<span class="pc bpc" id="L67" title="1 of 2 branches missed.">      if (!dryRun) {</span>
+<span class="fc" id="L68">        document.save();</span>
       } else {
-<span class="nc" id="L69">        String name = document.getFile().getName() + &quot;.licensed&quot;;</span>
-<span class="nc" id="L70">        File copy = new File(document.getFile().getParentFile(), name);</span>
-<span class="nc" id="L71">        info(&quot;Result saved to: %s&quot;, copy);</span>
-<span class="nc" id="L72">        document.saveTo(copy);</span>
+<span class="nc" id="L70">        String name = document.getFile().getName() + &quot;.licensed&quot;;</span>
+<span class="nc" id="L71">        File copy = new File(document.getFile().getParentFile(), name);</span>
+<span class="nc" id="L72">        info(&quot;Result saved to: %s&quot;, copy);</span>
+<span class="nc" id="L73">        document.saveTo(copy);</span>
       }
-<span class="fc" id="L74">      report.add(document.getFile(), Report.Result.REMOVED);</span>
+<span class="fc" id="L75">      report.add(document.getFile(), Report.Result.REMOVED);</span>
     } else {
-<span class="fc" id="L76">      report.add(document.getFile(), Report.Result.NOOP);</span>
+<span class="fc" id="L77">      report.add(document.getFile(), Report.Result.NOOP);</span>
     }
-<span class="fc" id="L78">  }</span>
+<span class="fc" id="L79">  }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

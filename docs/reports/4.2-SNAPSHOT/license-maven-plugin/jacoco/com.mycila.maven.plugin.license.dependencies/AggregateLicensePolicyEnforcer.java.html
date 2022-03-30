@@ -15,13 +15,14 @@
  */
 package com.mycila.maven.plugin.license.dependencies;
 
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.model.License;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
-import org.apache.maven.artifact.Artifact;
-import org.apache.maven.model.License;
 
 /**
  * Aggregate license policy enforcement with default enforcer bindings based on {@link LicensePolicy.Type}.
@@ -39,11 +40,11 @@ public class AggregateLicensePolicyEnforcer {
   private LicensePolicyEnforcer defaultPolicy;
   private Set&lt;LicensePolicyEnforcer&gt; enforcers;
 
-<span class="fc" id="L42">  public AggregateLicensePolicyEnforcer(final Set&lt;LicensePolicy&gt; policies) {</span>
-<span class="fc" id="L43">    this.policies = policies;</span>
-<span class="fc" id="L44">    this.defaultPolicy = new DefaultLicensePolicyEnforcer();</span>
-<span class="fc" id="L45">    this.enforcers = policies.stream().map(policy -&gt; initPolicyEnforcer(policy)).collect(Collectors.toSet());</span>
-<span class="fc" id="L46">  }</span>
+<span class="fc" id="L43">  public AggregateLicensePolicyEnforcer(final Set&lt;LicensePolicy&gt; policies) {</span>
+<span class="fc" id="L44">    this.policies = policies;</span>
+<span class="fc" id="L45">    this.defaultPolicy = new DefaultLicensePolicyEnforcer();</span>
+<span class="fc" id="L46">    this.enforcers = policies.stream().map(policy -&gt; initPolicyEnforcer(policy)).collect(Collectors.toSet());</span>
+<span class="fc" id="L47">  }</span>
 
   /**
    * Initialize an {@LicensePolicyEnforcer} implementation based on its {@link LicensePolicy.Type}.
@@ -52,15 +53,15 @@ public class AggregateLicensePolicyEnforcer {
    * @return
    */
   private static LicensePolicyEnforcer&lt;?&gt; initPolicyEnforcer(final LicensePolicy policy) {
-<span class="pc bpc" id="L55" title="2 of 4 branches missed.">    switch (policy.getType()) {</span>
+<span class="pc bpc" id="L56" title="2 of 4 branches missed.">    switch (policy.getType()) {</span>
       case LICENSE_NAME:
-<span class="fc" id="L57">        return new LicenseNameLicensePolicyEnforcer(policy);</span>
+<span class="fc" id="L58">        return new LicenseNameLicensePolicyEnforcer(policy);</span>
       case ARTIFACT_PATTERN:
-<span class="fc" id="L59">        return new ArtifactLicensePolicyEnforcer(policy);</span>
+<span class="fc" id="L60">        return new ArtifactLicensePolicyEnforcer(policy);</span>
       case LICENSE_URL:
-<span class="nc" id="L61">        return new LicenseURLLicensePolicyEnforcer(policy);</span>
+<span class="nc" id="L62">        return new LicenseURLLicensePolicyEnforcer(policy);</span>
       default:
-<span class="nc" id="L63">        return new DefaultLicensePolicyEnforcer();</span>
+<span class="nc" id="L64">        return new DefaultLicensePolicyEnforcer();</span>
     }
   }
 
@@ -71,9 +72,9 @@ public class AggregateLicensePolicyEnforcer {
    * @return
    */
   private Set&lt;LicensePolicyEnforcer&gt; getEnforcers(final LicensePolicy.Rule rule) {
-<span class="fc" id="L74">    return enforcers.stream()</span>
-<span class="fc bfc" id="L75" title="All 2 branches covered.">        .filter(e -&gt; e.getPolicy().getRule() == rule)</span>
-<span class="fc" id="L76">        .collect(Collectors.toSet());</span>
+<span class="fc" id="L75">    return enforcers.stream()</span>
+<span class="fc bfc" id="L76" title="All 2 branches covered.">        .filter(e -&gt; e.getPolicy().getRule() == rule)</span>
+<span class="fc" id="L77">        .collect(Collectors.toSet());</span>
   }
 
   /**
@@ -86,24 +87,24 @@ public class AggregateLicensePolicyEnforcer {
    */
   @SuppressWarnings(&quot;unchecked&quot;)
   private Map&lt;Artifact, LicensePolicyEnforcerResult&gt; apply(final License license, final Set&lt;Artifact&gt; artifacts, final LicensePolicyEnforcer enforcer) {
-<span class="fc" id="L89">    final Map&lt;Artifact, LicensePolicyEnforcerResult&gt; results = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L90">    final Map&lt;Artifact, LicensePolicyEnforcerResult&gt; results = new HashMap&lt;&gt;();</span>
 
-<span class="fc" id="L91">    final LicensePolicy.Rule filter = enforcer.getPolicy().getRule();</span>
+<span class="fc" id="L92">    final LicensePolicy.Rule filter = enforcer.getPolicy().getRule();</span>
 
-<span class="fc" id="L93">    artifacts.forEach(artifact -&gt; {</span>
-<span class="fc" id="L94">      LicensePolicy.Rule ruling = LicensePolicy.Rule.DENY;</span>
-<span class="fc bfc" id="L95" title="All 2 branches covered.">      if (enforcer.getType() == License.class) {</span>
-<span class="fc" id="L96">        ruling = LicensePolicy.Rule.valueOf(enforcer.apply(license));</span>
-<span class="pc bpc" id="L97" title="1 of 2 branches missed.">      } else if (enforcer.getType() == Artifact.class) {</span>
-<span class="fc" id="L98">        ruling = LicensePolicy.Rule.valueOf(enforcer.apply(artifact));</span>
+<span class="fc" id="L94">    artifacts.forEach(artifact -&gt; {</span>
+<span class="fc" id="L95">      LicensePolicy.Rule ruling = LicensePolicy.Rule.DENY;</span>
+<span class="fc bfc" id="L96" title="All 2 branches covered.">      if (enforcer.getType() == License.class) {</span>
+<span class="fc" id="L97">        ruling = LicensePolicy.Rule.valueOf(enforcer.apply(license));</span>
+<span class="pc bpc" id="L98" title="1 of 2 branches missed.">      } else if (enforcer.getType() == Artifact.class) {</span>
+<span class="fc" id="L99">        ruling = LicensePolicy.Rule.valueOf(enforcer.apply(artifact));</span>
       }
-<span class="fc" id="L100">      results.put(artifact, new LicensePolicyEnforcerResult(enforcer.getPolicy(), license, artifact, ruling));</span>
-<span class="fc" id="L101">    });</span>
+<span class="fc" id="L101">      results.put(artifact, new LicensePolicyEnforcerResult(enforcer.getPolicy(), license, artifact, ruling));</span>
+<span class="fc" id="L102">    });</span>
 
     // if this was an APPROVE rule, only return approvals. If a DENY rule, only return denials
-<span class="fc" id="L104">    return results.entrySet().stream()</span>
-<span class="fc" id="L105">        .filter(result -&gt; filter.equals(result.getValue().getRuling()))</span>
-<span class="fc" id="L106">        .collect(Collectors.toMap(Entry::getKey, Entry::getValue));</span>
+<span class="fc" id="L105">    return results.entrySet().stream()</span>
+<span class="fc" id="L106">        .filter(result -&gt; filter.equals(result.getValue().getRuling()))</span>
+<span class="fc" id="L107">        .collect(Collectors.toMap(Entry::getKey, Entry::getValue));</span>
   }
 
   /**
@@ -114,12 +115,12 @@ public class AggregateLicensePolicyEnforcer {
    * @return
    */
   private Map&lt;Artifact, LicensePolicyEnforcerResult&gt; apply(final Map&lt;License, Set&lt;Artifact&gt;&gt; licenseMap, final LicensePolicyEnforcer enforcer) {
-<span class="fc" id="L117">    final Map&lt;Artifact, LicensePolicyEnforcerResult&gt; results = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L118">    final Map&lt;Artifact, LicensePolicyEnforcerResult&gt; results = new HashMap&lt;&gt;();</span>
 
-<span class="fc" id="L119">    licenseMap.forEach((license, artifactSet) -&gt; {</span>
-<span class="fc" id="L120">      results.putAll(apply(license, artifactSet, enforcer));</span>
-<span class="fc" id="L121">    });</span>
-<span class="fc" id="L122">    return results;</span>
+<span class="fc" id="L120">    licenseMap.forEach((license, artifactSet) -&gt; {</span>
+<span class="fc" id="L121">      results.putAll(apply(license, artifactSet, enforcer));</span>
+<span class="fc" id="L122">    });</span>
+<span class="fc" id="L123">    return results;</span>
   }
 
 
@@ -133,27 +134,27 @@ public class AggregateLicensePolicyEnforcer {
    */
   @SuppressWarnings(&quot;unchecked&quot;)
   public Map&lt;Artifact, LicensePolicyEnforcerResult&gt; apply(final Map&lt;License, Set&lt;Artifact&gt;&gt; licenseMap) {
-<span class="fc" id="L136">    final Map&lt;Artifact, LicensePolicyEnforcerResult&gt; results = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L137">    final Map&lt;Artifact, LicensePolicyEnforcerResult&gt; results = new HashMap&lt;&gt;();</span>
 
     // apply the default policy to all artifacts, populating the map
-<span class="fc" id="L139">    licenseMap.entrySet().stream().forEach(entry -&gt; {</span>
-<span class="fc" id="L140">      License license = entry.getKey();</span>
-<span class="fc" id="L141">      entry.getValue().forEach(</span>
-<span class="fc" id="L142">          artifact -&gt; results.putIfAbsent(artifact, new LicensePolicyEnforcerResult(defaultPolicy.getPolicy(),</span>
-<span class="fc" id="L143">              license, artifact, LicensePolicy.Rule.valueOf(defaultPolicy.apply(artifact)))));</span>
-<span class="fc" id="L144">    });</span>
+<span class="fc" id="L140">    licenseMap.entrySet().stream().forEach(entry -&gt; {</span>
+<span class="fc" id="L141">      License license = entry.getKey();</span>
+<span class="fc" id="L142">      entry.getValue().forEach(</span>
+<span class="fc" id="L143">          artifact -&gt; results.putIfAbsent(artifact, new LicensePolicyEnforcerResult(defaultPolicy.getPolicy(),</span>
+<span class="fc" id="L144">              license, artifact, LicensePolicy.Rule.valueOf(defaultPolicy.apply(artifact)))));</span>
+<span class="fc" id="L145">    });</span>
 
     // apply approval rules, updating the map
-<span class="fc" id="L147">    getEnforcers(LicensePolicy.Rule.APPROVE).forEach(enforcer -&gt; {</span>
-<span class="fc" id="L148">      results.putAll(apply(licenseMap, enforcer));</span>
-<span class="fc" id="L149">    });</span>
+<span class="fc" id="L148">    getEnforcers(LicensePolicy.Rule.APPROVE).forEach(enforcer -&gt; {</span>
+<span class="fc" id="L149">      results.putAll(apply(licenseMap, enforcer));</span>
+<span class="fc" id="L150">    });</span>
 
     // apply deny rules, updating the map
-<span class="fc" id="L152">    getEnforcers(LicensePolicy.Rule.DENY).forEach(enforcer -&gt; {</span>
-<span class="fc" id="L153">      results.putAll(apply(licenseMap, enforcer));</span>
-<span class="fc" id="L154">    });</span>
+<span class="fc" id="L153">    getEnforcers(LicensePolicy.Rule.DENY).forEach(enforcer -&gt; {</span>
+<span class="fc" id="L154">      results.putAll(apply(licenseMap, enforcer));</span>
+<span class="fc" id="L155">    });</span>
 
-<span class="fc" id="L156">    return results;</span>
+<span class="fc" id="L157">    return results;</span>
   }
 
   /**
@@ -165,27 +166,27 @@ public class AggregateLicensePolicyEnforcer {
    * @return final policy decision map on each artifact
    */
   public Map&lt;Artifact, LicensePolicyEnforcerResult&gt; apply(final LicenseMap licenseMap) {
-<span class="nc" id="L168">    return apply(licenseMap.getLicenseMap());</span>
+<span class="nc" id="L169">    return apply(licenseMap.getLicenseMap());</span>
   }
 
   public void setEnforcers(final Set&lt;LicensePolicyEnforcer&gt; enforcers) {
-<span class="nc" id="L172">    this.enforcers = enforcers;</span>
-<span class="nc" id="L173">  }</span>
+<span class="nc" id="L173">    this.enforcers = enforcers;</span>
+<span class="nc" id="L174">  }</span>
 
   public Set&lt;LicensePolicyEnforcer&gt; getEnforcers() {
-<span class="nc" id="L176">    return enforcers;</span>
+<span class="nc" id="L177">    return enforcers;</span>
   }
 
   public Set&lt;LicensePolicy&gt; getPolicies() {
-<span class="nc" id="L180">    return policies;</span>
+<span class="nc" id="L181">    return policies;</span>
   }
 
   public LicensePolicyEnforcer&lt;?&gt; getDefaultPolicy() {
-<span class="nc" id="L184">    return defaultPolicy;</span>
+<span class="nc" id="L185">    return defaultPolicy;</span>
   }
 
   public void setDefaultPolicy(final LicensePolicyEnforcer defaultPolicy) {
-<span class="nc" id="L188">    this.defaultPolicy = defaultPolicy;</span>
-<span class="nc" id="L189">  }</span>
+<span class="nc" id="L189">    this.defaultPolicy = defaultPolicy;</span>
+<span class="nc" id="L190">  }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

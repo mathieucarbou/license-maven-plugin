@@ -15,10 +15,11 @@
  */
 package com.mycila.maven.plugin.license;
 
-import java.util.Arrays;
 import org.apache.maven.plugins.annotations.Parameter;
 
-<span class="fc" id="L21">public class Multi {</span>
+import java.util.Arrays;
+
+<span class="fc" id="L22">public class Multi {</span>
 
   public static final String DEFAULT_SEPARATOR =
       &quot;---------------------------------------------------------------------&quot;;
@@ -55,15 +56,15 @@ import org.apache.maven.plugins.annotations.Parameter;
   String[] separators;
 
   public String getPreamble() {
-<span class="fc" id="L58">    return preamble;</span>
+<span class="fc" id="L59">    return preamble;</span>
   }
 
   public void setPreamble(final String preamble) {
-<span class="nc" id="L62">    this.preamble = preamble;</span>
-<span class="nc" id="L63">  }</span>
+<span class="nc" id="L63">    this.preamble = preamble;</span>
+<span class="nc" id="L64">  }</span>
 
   public String[] getHeaders() {
-<span class="fc" id="L66">    return headers;</span>
+<span class="fc" id="L67">    return headers;</span>
   }
 
   /**
@@ -77,20 +78,20 @@ import org.apache.maven.plugins.annotations.Parameter;
    * @param header the header to set
    */
   public void setHeader(final String header) {
-<span class="nc bnc" id="L80" title="All 2 branches missed.">    if (headers == null) {</span>
-<span class="nc" id="L81">      headers = new String[]{header};</span>
+<span class="nc bnc" id="L81" title="All 2 branches missed.">    if (headers == null) {</span>
+<span class="nc" id="L82">      headers = new String[]{header};</span>
     } else {
-<span class="nc" id="L83">      headers = Arrays.copyOf(headers, headers.length + 1);</span>
-<span class="nc" id="L84">      headers[headers.length - 1] = header;</span>
+<span class="nc" id="L84">      headers = Arrays.copyOf(headers, headers.length + 1);</span>
+<span class="nc" id="L85">      headers[headers.length - 1] = header;</span>
     }
-<span class="nc" id="L86">  }</span>
+<span class="nc" id="L87">  }</span>
 
   public void setHeaders(final String[] headers) {
-<span class="fc" id="L89">    this.headers = headers;</span>
-<span class="fc" id="L90">  }</span>
+<span class="fc" id="L90">    this.headers = headers;</span>
+<span class="fc" id="L91">  }</span>
 
   public String[] getInlineHeaders() {
-<span class="fc" id="L93">    return inlineHeaders;</span>
+<span class="fc" id="L94">    return inlineHeaders;</span>
   }
 
   /**
@@ -104,20 +105,20 @@ import org.apache.maven.plugins.annotations.Parameter;
    * @param inlineHeader the inline header to set
    */
   public void setInlineHeader(final String inlineHeader) {
-<span class="nc bnc" id="L107" title="All 2 branches missed.">    if (inlineHeaders == null) {</span>
-<span class="nc" id="L108">      inlineHeaders = new String[]{inlineHeader};</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">    if (inlineHeaders == null) {</span>
+<span class="nc" id="L109">      inlineHeaders = new String[]{inlineHeader};</span>
     } else {
-<span class="nc" id="L110">      inlineHeaders = Arrays.copyOf(inlineHeaders, inlineHeaders.length + 1);</span>
-<span class="nc" id="L111">      inlineHeaders[inlineHeaders.length - 1] = inlineHeader;</span>
+<span class="nc" id="L111">      inlineHeaders = Arrays.copyOf(inlineHeaders, inlineHeaders.length + 1);</span>
+<span class="nc" id="L112">      inlineHeaders[inlineHeaders.length - 1] = inlineHeader;</span>
     }
-<span class="nc" id="L113">  }</span>
+<span class="nc" id="L114">  }</span>
 
   public void setInlineHeaders(final String[] inlineHeaders) {
-<span class="fc" id="L116">    this.inlineHeaders = inlineHeaders;</span>
-<span class="fc" id="L117">  }</span>
+<span class="fc" id="L117">    this.inlineHeaders = inlineHeaders;</span>
+<span class="fc" id="L118">  }</span>
 
   public String[] getSeparators() {
-<span class="fc" id="L120">    return separators;</span>
+<span class="fc" id="L121">    return separators;</span>
   }
 
   /**
@@ -131,16 +132,16 @@ import org.apache.maven.plugins.annotations.Parameter;
    * @param separator the separator to set
    */
   public void setSeparator(final String separator) {
-<span class="nc bnc" id="L134" title="All 2 branches missed.">    if (separators == null) {</span>
-<span class="nc" id="L135">      separators = new String[]{separator};</span>
+<span class="nc bnc" id="L135" title="All 2 branches missed.">    if (separators == null) {</span>
+<span class="nc" id="L136">      separators = new String[]{separator};</span>
     } else {
-<span class="nc" id="L137">      separators = Arrays.copyOf(separators, separators.length + 1);</span>
-<span class="nc" id="L138">      separators[separators.length - 1] = separator;</span>
+<span class="nc" id="L138">      separators = Arrays.copyOf(separators, separators.length + 1);</span>
+<span class="nc" id="L139">      separators[separators.length - 1] = separator;</span>
     }
-<span class="nc" id="L140">  }</span>
+<span class="nc" id="L141">  }</span>
 
   public void setSeparators(final String[] separators) {
-<span class="fc" id="L143">    this.separators = separators;</span>
-<span class="fc" id="L144">  }</span>
+<span class="fc" id="L144">    this.separators = separators;</span>
+<span class="fc" id="L145">  }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
