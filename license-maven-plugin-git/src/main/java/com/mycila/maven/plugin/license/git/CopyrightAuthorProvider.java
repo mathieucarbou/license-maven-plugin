@@ -18,6 +18,7 @@ package com.mycila.maven.plugin.license.git;
 import com.mycila.maven.plugin.license.AbstractLicenseMojo;
 import com.mycila.maven.plugin.license.PropertiesProvider;
 import com.mycila.maven.plugin.license.document.Document;
+
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.Collections;

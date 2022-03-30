@@ -15,40 +15,21 @@
  */
 package com.mycila.maven.plugin.license;
 
-import static com.mycila.maven.plugin.license.header.HeaderType.APOSTROPHE_STYLE;
-import static com.mycila.maven.plugin.license.header.HeaderType.ASCIIDOC_STYLE;
-import static com.mycila.maven.plugin.license.header.HeaderType.ASP;
-import static com.mycila.maven.plugin.license.header.HeaderType.BATCH;
-import static com.mycila.maven.plugin.license.header.HeaderType.BRACESSTAR_STYLE;
-import static com.mycila.maven.plugin.license.header.HeaderType.DOUBLEDASHES_STYLE;
-import static com.mycila.maven.plugin.license.header.HeaderType.DOUBLESLASH_STYLE;
-import static com.mycila.maven.plugin.license.header.HeaderType.DOUBLETILDE_STYLE;
-import static com.mycila.maven.plugin.license.header.HeaderType.DYNASCRIPT3_STYLE;
-import static com.mycila.maven.plugin.license.header.HeaderType.DYNASCRIPT_STYLE;
-import static com.mycila.maven.plugin.license.header.HeaderType.EXCLAMATION3_STYLE;
-import static com.mycila.maven.plugin.license.header.HeaderType.EXCLAMATION_STYLE;
-import static com.mycila.maven.plugin.license.header.HeaderType.FTL;
-import static com.mycila.maven.plugin.license.header.HeaderType.FTL_ALT;
-import static com.mycila.maven.plugin.license.header.HeaderType.HAML_STYLE;
-import static com.mycila.maven.plugin.license.header.HeaderType.JAVADOC_STYLE;
-import static com.mycila.maven.plugin.license.header.HeaderType.JAVAPKG_STYLE;
-import static com.mycila.maven.plugin.license.header.HeaderType.LUA;
-import static com.mycila.maven.plugin.license.header.HeaderType.MUSTACHE_STYLE;
-import static com.mycila.maven.plugin.license.header.HeaderType.MVEL_STYLE;
-import static com.mycila.maven.plugin.license.header.HeaderType.PERCENT3_STYLE;
-import static com.mycila.maven.plugin.license.header.HeaderType.PERCENT_STYLE;
-import static com.mycila.maven.plugin.license.header.HeaderType.PHP;
-import static com.mycila.maven.plugin.license.header.HeaderType.SCALA_STYLE;
-import static com.mycila.maven.plugin.license.header.HeaderType.SCRIPT_STYLE;
-import static com.mycila.maven.plugin.license.header.HeaderType.SEMICOLON_STYLE;
-import static com.mycila.maven.plugin.license.header.HeaderType.SHARPSTAR_STYLE;
-import static com.mycila.maven.plugin.license.header.HeaderType.SINGLE_LINE_DOUBLESLASH_STYLE;
-import static com.mycila.maven.plugin.license.header.HeaderType.SLASHSTAR_STYLE;
-import static com.mycila.maven.plugin.license.header.HeaderType.TEXT;
-import static com.mycila.maven.plugin.license.header.HeaderType.TRIPLESLASH_STYLE;
-import static com.mycila.maven.plugin.license.header.HeaderType.UNKNOWN;
-import static com.mycila.maven.plugin.license.header.HeaderType.XML_PER_LINE;
-import static com.mycila.maven.plugin.license.header.HeaderType.XML_STYLE;
+import com.mycila.maven.plugin.license.header.HeaderType;
+import com.mycila.maven.plugin.license.util.FileUtils;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.io.File;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.stream.Stream;
+
+import static com.mycila.maven.plugin.license.header.HeaderType.*;
 import static java.util.Arrays.asList;
 import static java.util.EnumSet.complementOf;
 import static java.util.EnumSet.copyOf;
@@ -56,19 +37,6 @@ import static java.util.stream.Collectors.toList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-
-import com.mycila.maven.plugin.license.header.HeaderType;
-import com.mycila.maven.plugin.license.util.FileUtils;
-import java.io.File;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.stream.Stream;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)

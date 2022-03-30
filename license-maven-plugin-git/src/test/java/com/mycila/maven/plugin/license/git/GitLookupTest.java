@@ -16,12 +16,13 @@
 package com.mycila.maven.plugin.license.git;
 
 import com.mycila.maven.plugin.license.git.GitLookup.DateSource;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import org.eclipse.jgit.api.errors.GitAPIException;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+
+import java.io.*;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -31,11 +32,6 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-import org.eclipse.jgit.api.errors.GitAPIException;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 
 /**
  * @author <a href="mailto:ppalaga@redhat.com">Peter Palaga</a>

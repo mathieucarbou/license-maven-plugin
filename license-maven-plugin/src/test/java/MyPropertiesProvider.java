@@ -1,6 +1,7 @@
 import com.mycila.maven.plugin.license.AbstractLicenseMojo;
 import com.mycila.maven.plugin.license.PropertiesProvider;
 import com.mycila.maven.plugin.license.document.Document;
+
 import java.util.HashMap;
 import java.util.Map;
 

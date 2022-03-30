@@ -16,17 +16,18 @@
 package com.mycila.maven.plugin.license.dependencies;
 
 import com.google.common.io.Files;
-import java.io.File;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Optional;
 import org.apache.maven.it.VerificationException;
 import org.apache.maven.it.Verifier;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * We use {@link Verifier} here for mvn executions, mainly so:

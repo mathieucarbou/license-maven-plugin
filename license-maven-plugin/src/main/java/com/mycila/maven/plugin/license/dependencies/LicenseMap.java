@@ -15,10 +15,11 @@
  */
 package com.mycila.maven.plugin.license.dependencies;
 
-import java.util.Map;
-import java.util.Set;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.model.License;
+
+import java.util.Map;
+import java.util.Set;
 
 /**
  * To be implemented by different project/build-framework scanners presenting

@@ -1,9 +1,10 @@
 package com.mycila.maven.plugin.license;
 
 import com.google.common.base.Strings;
-import java.util.UUID;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.util.UUID;
 
 /**
  * @author Matthieu Brouillard

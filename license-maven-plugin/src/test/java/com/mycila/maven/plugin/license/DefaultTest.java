@@ -1,12 +1,13 @@
 package com.mycila.maven.plugin.license;
 
+import org.hamcrest.CoreMatchers;
+import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
-
-import java.util.Arrays;
-import org.hamcrest.CoreMatchers;
-import org.junit.jupiter.api.Test;
 
 class DefaultTest {
   @Test

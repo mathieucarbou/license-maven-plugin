@@ -15,16 +15,15 @@
  */
 package com.mycila.maven.plugin.license;
 
-import static org.hamcrest.CoreMatchers.is;
-
 import com.google.common.io.Files;
 import com.mycila.maven.plugin.license.util.FileUtils;
-import java.io.File;
-import java.nio.charset.Charset;
-import java.util.List;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.io.File;
+import java.nio.charset.Charset;
+import java.util.List;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
