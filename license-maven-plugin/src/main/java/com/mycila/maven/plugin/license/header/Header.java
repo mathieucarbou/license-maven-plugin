@@ -20,7 +20,11 @@ import com.mycila.maven.plugin.license.document.Document;
 import com.mycila.maven.plugin.license.util.StringUtils;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import static com.mycila.maven.plugin.license.util.FileUtils.readFirstLines;
 import static com.mycila.maven.plugin.license.util.FileUtils.remove;

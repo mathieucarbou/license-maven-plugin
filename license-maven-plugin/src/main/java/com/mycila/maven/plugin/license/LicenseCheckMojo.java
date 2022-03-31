@@ -15,7 +15,11 @@
  */
 package com.mycila.maven.plugin.license;
 
-import com.mycila.maven.plugin.license.dependencies.*;
+import com.mycila.maven.plugin.license.dependencies.AggregateLicensePolicyEnforcer;
+import com.mycila.maven.plugin.license.dependencies.LicenseMap;
+import com.mycila.maven.plugin.license.dependencies.LicensePolicy;
+import com.mycila.maven.plugin.license.dependencies.LicensePolicyEnforcerResult;
+import com.mycila.maven.plugin.license.dependencies.MavenProjectLicenses;
 import com.mycila.maven.plugin.license.document.Document;
 import com.mycila.maven.plugin.license.header.Header;
 import org.apache.maven.artifact.Artifact;
