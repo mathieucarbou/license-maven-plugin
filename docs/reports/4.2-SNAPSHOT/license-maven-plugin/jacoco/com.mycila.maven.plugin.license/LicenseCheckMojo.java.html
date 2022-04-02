@@ -15,7 +15,11 @@
  */
 package com.mycila.maven.plugin.license;
 
-import com.mycila.maven.plugin.license.dependencies.*;
+import com.mycila.maven.plugin.license.dependencies.AggregateLicensePolicyEnforcer;
+import com.mycila.maven.plugin.license.dependencies.LicenseMap;
+import com.mycila.maven.plugin.license.dependencies.LicensePolicy;
+import com.mycila.maven.plugin.license.dependencies.LicensePolicyEnforcerResult;
+import com.mycila.maven.plugin.license.dependencies.MavenProjectLicenses;
 import com.mycila.maven.plugin.license.document.Document;
 import com.mycila.maven.plugin.license.header.Header;
 import org.apache.maven.artifact.Artifact;
@@ -38,75 +42,75 @@ import java.util.stream.Collectors;
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
 @Mojo(name = &quot;check&quot;, defaultPhase = LifecyclePhase.VERIFY, threadSafe = true)
-<span class="fc" id="L41">public final class LicenseCheckMojo extends AbstractLicenseMojo {</span>
+<span class="fc" id="L45">public final class LicenseCheckMojo extends AbstractLicenseMojo {</span>
 
-<span class="fc" id="L43">  @Parameter(property = &quot;license.errorMessage&quot;, defaultValue = &quot;Some files do not have the expected license header&quot;)</span>
+<span class="fc" id="L47">  @Parameter(property = &quot;license.errorMessage&quot;, defaultValue = &quot;Some files do not have the expected license header&quot;)</span>
   public String errorMessage = &quot;Some files do not have the expected license header&quot;;
 
-<span class="fc" id="L46">  public final Collection&lt;File&gt; missingHeaders = new ConcurrentLinkedQueue&lt;File&gt;();</span>
+<span class="fc" id="L50">  public final Collection&lt;File&gt; missingHeaders = new ConcurrentLinkedQueue&lt;File&gt;();</span>
 
   @Override
   public void execute() throws MojoExecutionException, MojoFailureException {
-<span class="fc" id="L50">    report = new Report(reportFormat, Report.Action.CHECK, project, clock, reportSkipped);</span>
+<span class="fc" id="L54">    report = new Report(reportFormat, Report.Action.CHECK, project, clock, reportSkipped);</span>
 
-<span class="pc bpc" id="L52" title="1 of 2 branches missed.">    if (!skip) {</span>
-<span class="fc" id="L53">      getLog().info(&quot;Checking licenses...&quot;);</span>
+<span class="pc bpc" id="L56" title="1 of 2 branches missed.">    if (!skip) {</span>
+<span class="fc" id="L57">      getLog().info(&quot;Checking licenses...&quot;);</span>
     }
-<span class="fc" id="L55">    missingHeaders.clear();</span>
+<span class="fc" id="L59">    missingHeaders.clear();</span>
 
-<span class="fc" id="L57">    AbstractCallback callback = new AbstractCallback() {</span>
+<span class="fc" id="L61">    AbstractCallback callback = new AbstractCallback() {</span>
       @Override
       public void onHeaderNotFound(Document document, Header header) {
-<span class="fc bfc" id="L60" title="All 2 branches covered.">        if (skipExistingHeaders) {</span>
-<span class="fc" id="L61">          document.parseHeader();</span>
-<span class="pc bpc" id="L62" title="1 of 2 branches missed.">          if (document.headerDetected()) {</span>
-<span class="fc" id="L63">            debug(&quot;Existing header in: %s&quot;, document.getFilePath());</span>
-<span class="fc" id="L64">            report.add(document.getFile(), Report.Result.PRESENT);</span>
-<span class="fc" id="L65">            return;</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">        if (skipExistingHeaders) {</span>
+<span class="fc" id="L65">          document.parseHeader();</span>
+<span class="pc bpc" id="L66" title="1 of 2 branches missed.">          if (document.headerDetected()) {</span>
+<span class="fc" id="L67">            debug(&quot;Existing header in: %s&quot;, document.getFilePath());</span>
+<span class="fc" id="L68">            report.add(document.getFile(), Report.Result.PRESENT);</span>
+<span class="fc" id="L69">            return;</span>
           }
         }
-<span class="fc" id="L68">        warn(&quot;Missing header in: %s&quot;, document.getFilePath());</span>
-<span class="fc" id="L69">        missingHeaders.add(document.getFile());</span>
-<span class="fc" id="L70">        report.add(document.getFile(), Report.Result.MISSING);</span>
-<span class="fc" id="L71">      }</span>
+<span class="fc" id="L72">        warn(&quot;Missing header in: %s&quot;, document.getFilePath());</span>
+<span class="fc" id="L73">        missingHeaders.add(document.getFile());</span>
+<span class="fc" id="L74">        report.add(document.getFile(), Report.Result.MISSING);</span>
+<span class="fc" id="L75">      }</span>
 
       @Override
       public void onExistingHeader(Document document, Header header) {
-<span class="fc" id="L75">        debug(&quot;Header OK in: %s&quot;, document.getFilePath());</span>
-<span class="fc" id="L76">        report.add(document.getFile(), Report.Result.PRESENT);</span>
-<span class="fc" id="L77">      }</span>
+<span class="fc" id="L79">        debug(&quot;Header OK in: %s&quot;, document.getFilePath());</span>
+<span class="fc" id="L80">        report.add(document.getFile(), Report.Result.PRESENT);</span>
+<span class="fc" id="L81">      }</span>
     };
 
-<span class="pc bpc" id="L80" title="1 of 2 branches missed.">    if (dependencyEnforce) {</span>
+<span class="pc bpc" id="L84" title="1 of 2 branches missed.">    if (dependencyEnforce) {</span>
       //TODO(rremer) config-driven factory of the LicenseMap implementation
-<span class="nc" id="L82">      final LicenseMap licenseMap = new MavenProjectLicenses(session, project, dependencyGraphBuilder, projectBuilder, dependencyScopes, getLog());</span>
-<span class="nc" id="L83">      final AggregateLicensePolicyEnforcer enforcer = new AggregateLicensePolicyEnforcer(dependencyPolicies);</span>
-<span class="nc" id="L84">      final Map&lt;Artifact, LicensePolicyEnforcerResult&gt; licenseResult = enforcer.apply(licenseMap);</span>
-<span class="nc" id="L85">      final Set&lt;LicensePolicyEnforcerResult&gt; deniedLicenseResult = licenseResult.values().stream()</span>
-<span class="nc" id="L86">          .filter(result -&gt; result.getRuling().equals(LicensePolicy.Rule.DENY))</span>
-<span class="nc" id="L87">          .collect(Collectors.toSet());</span>
+<span class="nc" id="L86">      final LicenseMap licenseMap = new MavenProjectLicenses(session, project, dependencyGraphBuilder, projectBuilder, dependencyScopes, getLog());</span>
+<span class="nc" id="L87">      final AggregateLicensePolicyEnforcer enforcer = new AggregateLicensePolicyEnforcer(dependencyPolicies);</span>
+<span class="nc" id="L88">      final Map&lt;Artifact, LicensePolicyEnforcerResult&gt; licenseResult = enforcer.apply(licenseMap);</span>
+<span class="nc" id="L89">      final Set&lt;LicensePolicyEnforcerResult&gt; deniedLicenseResult = licenseResult.values().stream()</span>
+<span class="nc" id="L90">          .filter(result -&gt; result.getRuling().equals(LicensePolicy.Rule.DENY))</span>
+<span class="nc" id="L91">          .collect(Collectors.toSet());</span>
 
-<span class="nc bnc" id="L89" title="All 2 branches missed.">      if (deniedLicenseResult.size() != 0) {</span>
-<span class="nc" id="L90">        final StringBuilder licenseExceptionMsg = new StringBuilder(dependencyExceptionMessage);</span>
-<span class="nc" id="L91">        deniedLicenseResult.stream().forEach(result -&gt; {</span>
-<span class="nc" id="L92">          licenseExceptionMsg.append(System.lineSeparator());</span>
-<span class="nc" id="L93">          licenseExceptionMsg.append(result);</span>
-<span class="nc" id="L94">        });</span>
-<span class="nc" id="L95">        throw new MojoExecutionException(licenseExceptionMsg.toString());</span>
+<span class="nc bnc" id="L93" title="All 2 branches missed.">      if (deniedLicenseResult.size() != 0) {</span>
+<span class="nc" id="L94">        final StringBuilder licenseExceptionMsg = new StringBuilder(dependencyExceptionMessage);</span>
+<span class="nc" id="L95">        deniedLicenseResult.stream().forEach(result -&gt; {</span>
+<span class="nc" id="L96">          licenseExceptionMsg.append(System.lineSeparator());</span>
+<span class="nc" id="L97">          licenseExceptionMsg.append(result);</span>
+<span class="nc" id="L98">        });</span>
+<span class="nc" id="L99">        throw new MojoExecutionException(licenseExceptionMsg.toString());</span>
       }
     }
 
-<span class="fc" id="L99">    execute(callback);</span>
+<span class="fc" id="L103">    execute(callback);</span>
 
-<span class="fc bfc" id="L101" title="All 2 branches covered.">    if (!missingHeaders.isEmpty()) {</span>
-<span class="fc bfc" id="L102" title="All 2 branches covered.">      if (failIfMissing) {</span>
-<span class="fc" id="L103">        throw new MojoExecutionException(errorMessage);</span>
+<span class="fc bfc" id="L105" title="All 2 branches covered.">    if (!missingHeaders.isEmpty()) {</span>
+<span class="fc bfc" id="L106" title="All 2 branches covered.">      if (failIfMissing) {</span>
+<span class="fc" id="L107">        throw new MojoExecutionException(errorMessage);</span>
       }
-<span class="fc" id="L105">      getLog().warn(errorMessage);</span>
+<span class="fc" id="L109">      getLog().warn(errorMessage);</span>
     }
 
-<span class="fc" id="L108">    callback.checkUnknown();</span>
-<span class="fc" id="L109">  }</span>
+<span class="fc" id="L112">    callback.checkUnknown();</span>
+<span class="fc" id="L113">  }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
