@@ -107,13 +107,8 @@ public class AggregateLicensePolicyEnforcer {
         .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
   }
 
-  /**
-   * Helper method for taking a full map of License:Set<Artifact> and building a rulings map from a policy enforcer.
-   *
-   * @param licenseMap
-   * @param enforcer
-   * @return
-   */
+
+  // Helper method for taking a full map of License:Set<Artifact> and building a rulings map from a policy enforcer.
   private Map<Artifact, LicensePolicyEnforcerResult> apply(final Map<License, Set<Artifact>> licenseMap, final LicensePolicyEnforcer enforcer) {
     final Map<Artifact, LicensePolicyEnforcerResult> results = new HashMap<>();
 
@@ -162,7 +157,6 @@ public class AggregateLicensePolicyEnforcer {
    * applying the internal set of {@link LicensePolicyEnforcer} implementations on them,
    * and returning a mapping of Artifact keys to the boolean enforcement decision made.
    *
-   * @param licenseMap - a Consumer<LicenseMap>
    * @return final policy decision map on each artifact
    */
   public Map<Artifact, LicensePolicyEnforcerResult> apply(final LicenseMap licenseMap) {

@@ -105,7 +105,7 @@ public abstract class HeaderSource {
    * A {@link HeaderSource} loaded from multiple {@link URL}.
    */
   public static class MultiUrlHeaderSource extends HeaderSource {
-    private final URL urls[];
+    private final URL[] urls;
 
     public MultiUrlHeaderSource(final String preamble, final URL[] urls, final String[] separators, final String encoding) throws IOException {
       super(combineHeaders(preamble, FileUtils.read(urls, encoding), separators), false);

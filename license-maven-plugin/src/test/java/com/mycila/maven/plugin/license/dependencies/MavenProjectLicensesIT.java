@@ -35,7 +35,8 @@ import java.util.Optional;
  * b) the test harness method requires creating a custom Artifact resolver, as the dependencGraphBuilder Component will
  * not provide a usable bean, and we would need extensive mocking to override data for specific cases
  * c) it's a lot faster than maven-invoker-plugin
- * ... good overview of similar woes {@link https://khmarbaise.github.io/maven-it-extension/itf-documentation/background/background.html}
+ * ... good overview of similar woes <a href="https://khmarbaise.github.io/maven-it-extension/itf-documentation/background/background.html">
+ *   https://khmarbaise.github.io/maven-it-extension/itf-documentation/background/background.html</a>
  *
  * @author Royce Remer
  */

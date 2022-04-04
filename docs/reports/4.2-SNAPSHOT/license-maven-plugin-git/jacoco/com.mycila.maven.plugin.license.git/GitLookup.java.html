@@ -191,128 +191,123 @@ public class GitLookup implements Closeable {
 <span class="fc" id="L191">    return commitYear;</span>
   }
 
-  /**
+  /*
    * Returns the year of creation for the given {@code file) based on the history of the present git branch. The
    * year is taken either from the committer date or from the author identity depending on how {@link #dateSource} was
    * initialized.
-   *
-   * @param file for which the year should be retrieved
-   * @return year of creation of the file
-   * @throws IOException     if unable to read the file
-   * @throws GitAPIException if unable to process the git history
    */
   int getYearOfCreation(File file) throws IOException, GitAPIException {
-<span class="fc" id="L205">    String repoRelativePath = pathResolver.relativize(file);</span>
+<span class="fc" id="L200">    String repoRelativePath = pathResolver.relativize(file);</span>
 
-<span class="fc" id="L207">    int commitYear = 0;</span>
-<span class="fc" id="L208">    RevWalk walk = getGitRevWalk(repoRelativePath, true);</span>
-<span class="fc" id="L209">    Iterator&lt;RevCommit&gt; iterator = walk.iterator();</span>
-<span class="fc bfc" id="L210" title="All 2 branches covered.">    if (iterator.hasNext()) {</span>
-<span class="fc" id="L211">      RevCommit commit = iterator.next();</span>
-<span class="fc" id="L212">      commitYear = getYearFromCommit(commit);</span>
+<span class="fc" id="L202">    int commitYear = 0;</span>
+<span class="fc" id="L203">    RevWalk walk = getGitRevWalk(repoRelativePath, true);</span>
+<span class="fc" id="L204">    Iterator&lt;RevCommit&gt; iterator = walk.iterator();</span>
+<span class="fc bfc" id="L205" title="All 2 branches covered.">    if (iterator.hasNext()) {</span>
+<span class="fc" id="L206">      RevCommit commit = iterator.next();</span>
+<span class="fc" id="L207">      commitYear = getYearFromCommit(commit);</span>
     }
-<span class="fc" id="L214">    walk.dispose();</span>
+<span class="fc" id="L209">    walk.dispose();</span>
 
     // If we couldn't find a creation year from Git assume newly created file
-<span class="fc bfc" id="L217" title="All 2 branches covered.">    if (commitYear == 0) {</span>
-<span class="fc" id="L218">      return getCurrentYear();</span>
+<span class="fc bfc" id="L212" title="All 2 branches covered.">    if (commitYear == 0) {</span>
+<span class="fc" id="L213">      return getCurrentYear();</span>
     }
 
-<span class="fc" id="L221">    return commitYear;</span>
+<span class="fc" id="L216">    return commitYear;</span>
   }
 
   String getAuthorNameOfCreation(File file) throws IOException {
-<span class="fc" id="L225">    String repoRelativePath = pathResolver.relativize(file);</span>
-<span class="fc" id="L226">    String authorName = &quot;&quot;;</span>
-<span class="fc" id="L227">    RevWalk walk = getGitRevWalk(repoRelativePath, true);</span>
-<span class="fc" id="L228">    Iterator&lt;RevCommit&gt; iterator = walk.iterator();</span>
-<span class="pc bpc" id="L229" title="1 of 2 branches missed.">    if (iterator.hasNext()) {</span>
-<span class="fc" id="L230">      RevCommit commit = iterator.next();</span>
-<span class="fc" id="L231">      authorName = getAuthorNameFromCommit(commit);</span>
+<span class="fc" id="L220">    String repoRelativePath = pathResolver.relativize(file);</span>
+<span class="fc" id="L221">    String authorName = &quot;&quot;;</span>
+<span class="fc" id="L222">    RevWalk walk = getGitRevWalk(repoRelativePath, true);</span>
+<span class="fc" id="L223">    Iterator&lt;RevCommit&gt; iterator = walk.iterator();</span>
+<span class="pc bpc" id="L224" title="1 of 2 branches missed.">    if (iterator.hasNext()) {</span>
+<span class="fc" id="L225">      RevCommit commit = iterator.next();</span>
+<span class="fc" id="L226">      authorName = getAuthorNameFromCommit(commit);</span>
     }
-<span class="fc" id="L233">    walk.dispose();</span>
-<span class="fc" id="L234">    return authorName;</span>
+<span class="fc" id="L228">    walk.dispose();</span>
+<span class="fc" id="L229">    return authorName;</span>
   }
 
   String getAuthorEmailOfCreation(File file) throws IOException {
-<span class="fc" id="L238">    String repoRelativePath = pathResolver.relativize(file);</span>
-<span class="fc" id="L239">    String authorEmail = &quot;&quot;;</span>
-<span class="fc" id="L240">    RevWalk walk = getGitRevWalk(repoRelativePath, true);</span>
-<span class="fc" id="L241">    Iterator&lt;RevCommit&gt; iterator = walk.iterator();</span>
-<span class="pc bpc" id="L242" title="1 of 2 branches missed.">    if (iterator.hasNext()) {</span>
-<span class="fc" id="L243">      RevCommit commit = iterator.next();</span>
-<span class="fc" id="L244">      authorEmail = getAuthorEmailFromCommit(commit);</span>
+<span class="fc" id="L233">    String repoRelativePath = pathResolver.relativize(file);</span>
+<span class="fc" id="L234">    String authorEmail = &quot;&quot;;</span>
+<span class="fc" id="L235">    RevWalk walk = getGitRevWalk(repoRelativePath, true);</span>
+<span class="fc" id="L236">    Iterator&lt;RevCommit&gt; iterator = walk.iterator();</span>
+<span class="pc bpc" id="L237" title="1 of 2 branches missed.">    if (iterator.hasNext()) {</span>
+<span class="fc" id="L238">      RevCommit commit = iterator.next();</span>
+<span class="fc" id="L239">      authorEmail = getAuthorEmailFromCommit(commit);</span>
     }
-<span class="fc" id="L246">    walk.dispose();</span>
-<span class="fc" id="L247">    return authorEmail;</span>
+<span class="fc" id="L241">    walk.dispose();</span>
+<span class="fc" id="L242">    return authorEmail;</span>
   }
 
   boolean isShallowRepository() {
-<span class="fc" id="L251">    return this.shallow;</span>
+<span class="fc" id="L246">    return this.shallow;</span>
   }
 
   private boolean isFileModifiedOrUnstaged(String repoRelativePath) throws GitAPIException {
     @SuppressWarnings(&quot;resource&quot;)
-<span class="fc" id="L256">    Status status = new Git(repository).status().addPath(repoRelativePath).call();</span>
-<span class="fc bfc" id="L257" title="All 2 branches covered.">    return !status.isClean();</span>
+<span class="fc" id="L251">    Status status = new Git(repository).status().addPath(repoRelativePath).call();</span>
+<span class="fc bfc" id="L252" title="All 2 branches covered.">    return !status.isClean();</span>
   }
 
   private RevWalk getGitRevWalk(String repoRelativePath, boolean oldestCommitsFirst) throws IOException {
-<span class="fc" id="L261">    DiffConfig diffConfig = repository.getConfig().get(DiffConfig.KEY);</span>
+<span class="fc" id="L256">    DiffConfig diffConfig = repository.getConfig().get(DiffConfig.KEY);</span>
 
-<span class="fc" id="L263">    RevWalk walk = new RevWalk(repository);</span>
-<span class="fc" id="L264">    walk.markStart(walk.parseCommit(repository.resolve(Constants.HEAD)));</span>
-<span class="fc" id="L265">    walk.setTreeFilter(AndTreeFilter.create(Arrays.asList(</span>
-<span class="fc" id="L266">        PathFilter.create(repoRelativePath),</span>
-<span class="fc" id="L267">        FollowFilter.create(repoRelativePath, diffConfig), // Allows us to follow files as they move or are renamed</span>
+<span class="fc" id="L258">    RevWalk walk = new RevWalk(repository);</span>
+<span class="fc" id="L259">    walk.markStart(walk.parseCommit(repository.resolve(Constants.HEAD)));</span>
+<span class="fc" id="L260">    walk.setTreeFilter(AndTreeFilter.create(Arrays.asList(</span>
+<span class="fc" id="L261">        PathFilter.create(repoRelativePath),</span>
+<span class="fc" id="L262">        FollowFilter.create(repoRelativePath, diffConfig), // Allows us to follow files as they move or are renamed</span>
         TreeFilter.ANY_DIFF)
     ));
-<span class="fc" id="L270">    walk.setRevFilter(MaxCountRevFilter.create(checkCommitsCount));</span>
-<span class="fc" id="L271">    walk.setRetainBody(false);</span>
-<span class="fc bfc" id="L272" title="All 2 branches covered.">    if (oldestCommitsFirst) {</span>
-<span class="fc" id="L273">      walk.sort(RevSort.REVERSE);</span>
+<span class="fc" id="L265">    walk.setRevFilter(MaxCountRevFilter.create(checkCommitsCount));</span>
+<span class="fc" id="L266">    walk.setRetainBody(false);</span>
+<span class="fc bfc" id="L267" title="All 2 branches covered.">    if (oldestCommitsFirst) {</span>
+<span class="fc" id="L268">      walk.sort(RevSort.REVERSE);</span>
     }
 
-<span class="fc" id="L276">    return walk;</span>
+<span class="fc" id="L271">    return walk;</span>
   }
 
   private int getCurrentYear() {
-<span class="fc" id="L280">    return toYear(System.currentTimeMillis(), timeZone);</span>
+<span class="fc" id="L275">    return toYear(System.currentTimeMillis(), timeZone);</span>
   }
 
   private int getYearFromCommit(RevCommit commit) {
-<span class="pc bpc" id="L284" title="1 of 3 branches missed.">    switch (dateSource) {</span>
+<span class="pc bpc" id="L279" title="1 of 3 branches missed.">    switch (dateSource) {</span>
       case COMMITER:
-<span class="fc" id="L286">        int epochSeconds = commit.getCommitTime();</span>
-<span class="fc" id="L287">        return toYear(epochSeconds * 1000L, timeZone);</span>
+<span class="fc" id="L281">        int epochSeconds = commit.getCommitTime();</span>
+<span class="fc" id="L282">        return toYear(epochSeconds * 1000L, timeZone);</span>
       case AUTHOR:
-<span class="fc" id="L289">        PersonIdent id = commit.getAuthorIdent();</span>
-<span class="fc" id="L290">        Date date = id.getWhen();</span>
-<span class="fc" id="L291">        return toYear(date.getTime(), id.getTimeZone());</span>
+<span class="fc" id="L284">        PersonIdent id = commit.getAuthorIdent();</span>
+<span class="fc" id="L285">        Date date = id.getWhen();</span>
+<span class="fc" id="L286">        return toYear(date.getTime(), id.getTimeZone());</span>
       default:
-<span class="nc" id="L293">        throw new IllegalStateException(&quot;Unexpected &quot; + DateSource.class.getName() + &quot; &quot; + dateSource);</span>
+<span class="nc" id="L288">        throw new IllegalStateException(&quot;Unexpected &quot; + DateSource.class.getName() + &quot; &quot; + dateSource);</span>
     }
   }
 
   private static int toYear(long epochMilliseconds, TimeZone timeZone) {
-<span class="fc" id="L298">    Calendar result = Calendar.getInstance(timeZone);</span>
-<span class="fc" id="L299">    result.setTimeInMillis(epochMilliseconds);</span>
-<span class="fc" id="L300">    return result.get(Calendar.YEAR);</span>
+<span class="fc" id="L293">    Calendar result = Calendar.getInstance(timeZone);</span>
+<span class="fc" id="L294">    result.setTimeInMillis(epochMilliseconds);</span>
+<span class="fc" id="L295">    return result.get(Calendar.YEAR);</span>
   }
 
   private String getAuthorNameFromCommit(RevCommit commit) {
-<span class="fc" id="L304">    PersonIdent id = commit.getAuthorIdent();</span>
-<span class="fc" id="L305">    return id.getName();</span>
+<span class="fc" id="L299">    PersonIdent id = commit.getAuthorIdent();</span>
+<span class="fc" id="L300">    return id.getName();</span>
   }
 
   private String getAuthorEmailFromCommit(RevCommit commit) {
-<span class="fc" id="L309">    PersonIdent id = commit.getAuthorIdent();</span>
-<span class="fc" id="L310">    return id.getEmailAddress();</span>
+<span class="fc" id="L304">    PersonIdent id = commit.getAuthorIdent();</span>
+<span class="fc" id="L305">    return id.getEmailAddress();</span>
   }
 
   @Override
   public void close() {
-<span class="fc" id="L315">    repository.close();</span>
-<span class="fc" id="L316">  }</span>
+<span class="fc" id="L310">    repository.close();</span>
+<span class="fc" id="L311">  }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

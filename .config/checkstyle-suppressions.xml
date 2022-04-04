@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE suppressions PUBLIC
+    "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN"
+    "https://checkstyle.org/dtds/suppressions_1_2.dtd">
+
+<suppressions>
+
+  <!-- Suppress all checks for Maven-generated code -->
+  <suppress files="[/\\]target[/\\]generated-sources" checks=".*"/>
+
+  <!-- Suppress all checks in resources -->
+  <suppress files="[/\\]src[/\\]main[/\\]resources" checks=".*"/>
+  <suppress files="[/\\]src[/\\]test[/\\]resources" checks=".*"/>
+
+</suppressions>

@@ -742,6 +742,21 @@ Given the above configuration example, you could state:
 - Verify with: `mvn -v` that the right version is used
 - Replace my GPG key (EDEA921A) by yours in the following lines
 
+### Some Maven commands
+
+Making sure the project builds:
+
+```bash
+./mvnw clean install site
+```
+
+When developing, build fast with:
+
+```bash
+./mvnw clean install -Dfast
+```
+
+
 ### Releasing a version
 
 Example: `4.0.rc1`
@@ -771,5 +786,5 @@ Then you should see a few minutes later the new version at https://repo1.maven.o
 ### Generate site from any branch or tag
 
 ```bash
-./mvnw verify site -DperformRelease=true -Dgpg.skip=true
+./mvnw clean install site
 ```

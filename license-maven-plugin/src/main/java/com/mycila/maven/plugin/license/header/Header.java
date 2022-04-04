@@ -240,8 +240,9 @@ public final class Header {
 
     SortedMap<Integer, HeaderSection> sectionsByIndex = new TreeMap<>();
 
-    if (sections == null)
+    if (sections == null) {
       return sectionsByIndex;
+    }
 
     for (HeaderSection section : sections) {
 

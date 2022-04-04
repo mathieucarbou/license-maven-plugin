@@ -141,108 +141,112 @@ public final class HeaderParser {
 
   private boolean hasHeader() {
     // skip blank lines
-<span class="pc bpc" id="L144" title="1 of 4 branches missed.">    while (line != null &amp;&amp; &quot;&quot;.equals(line.trim()))</span>
+<span class="pc bpc" id="L144" title="1 of 4 branches missed.">    while (line != null &amp;&amp; &quot;&quot;.equals(line.trim())) {</span>
 <span class="fc" id="L145">      line = fileContent.nextLine();</span>
+    }
     // check if there is already a header
-<span class="fc" id="L147">    boolean gotHeader = false;</span>
-<span class="fc bfc" id="L148" title="All 2 branches covered.">    if (headerDefinition.isFirstHeaderLine(line)) {</span>
-<span class="fc" id="L149">      StringBuilder inPlaceHeader = new StringBuilder();</span>
-<span class="fc" id="L150">      inPlaceHeader.append(line.toLowerCase());</span>
+<span class="fc" id="L148">    boolean gotHeader = false;</span>
+<span class="fc bfc" id="L149" title="All 2 branches covered.">    if (headerDefinition.isFirstHeaderLine(line)) {</span>
+<span class="fc" id="L150">      StringBuilder inPlaceHeader = new StringBuilder();</span>
+<span class="fc" id="L151">      inPlaceHeader.append(line.toLowerCase());</span>
 
-<span class="fc" id="L152">      line = fileContent.nextLine();</span>
+<span class="fc" id="L153">      line = fileContent.nextLine();</span>
 
       // skip blank lines before header text
-<span class="fc bfc" id="L155" title="All 2 branches covered.">      if (headerDefinition.allowBlankLines()) {</span>
-<span class="fc bfc" id="L156" title="All 4 branches covered.">        while (line != null &amp;&amp; &quot;&quot;.equals(line.trim())) {</span>
-<span class="fc" id="L157">          line = fileContent.nextLine();</span>
+<span class="fc bfc" id="L156" title="All 2 branches covered.">      if (headerDefinition.allowBlankLines()) {</span>
+<span class="fc bfc" id="L157" title="All 4 branches covered.">        while (line != null &amp;&amp; &quot;&quot;.equals(line.trim())) {</span>
+<span class="fc" id="L158">          line = fileContent.nextLine();</span>
         }
       }
 
       // first header detected line &amp; potential blank lines have been detected
       // following lines should be header lines
-<span class="fc bfc" id="L163" title="All 2 branches covered.">      if (line == null) {</span>
+<span class="fc bfc" id="L164" title="All 2 branches covered.">      if (line == null) {</span>
         // we detected previously a one line comment block that matches the header detection
         // it is not an header it is a comment
-<span class="fc" id="L166">        return false;</span>
+<span class="fc" id="L167">        return false;</span>
 
       } else {
-<span class="fc" id="L169">        inPlaceHeader.append(line.toLowerCase());</span>
+<span class="fc" id="L170">        inPlaceHeader.append(line.toLowerCase());</span>
       }
 
-<span class="fc" id="L172">      String before = StringUtils.rtrim(headerDefinition.getBeforeEachLine());</span>
-<span class="pc bpc" id="L173" title="1 of 4 branches missed.">      if (&quot;&quot;.equals(before) &amp;&amp; !headerDefinition.isMultiLine()) {</span>
-<span class="nc" id="L174">        before = headerDefinition.getBeforeEachLine();</span>
+<span class="fc" id="L173">      String before = StringUtils.rtrim(headerDefinition.getBeforeEachLine());</span>
+<span class="pc bpc" id="L174" title="1 of 4 branches missed.">      if (&quot;&quot;.equals(before) &amp;&amp; !headerDefinition.isMultiLine()) {</span>
+<span class="nc" id="L175">        before = headerDefinition.getBeforeEachLine();</span>
       }
 
-<span class="fc" id="L177">      boolean foundEnd = false;</span>
-<span class="fc bfc" id="L178" title="All 4 branches covered.">      if (headerDefinition.isMultiLine() &amp;&amp; headerDefinition.isLastHeaderLine(line)) {</span>
-<span class="fc" id="L179">        foundEnd = true;</span>
+<span class="fc" id="L178">      boolean foundEnd = false;</span>
+<span class="fc bfc" id="L179" title="All 4 branches covered.">      if (headerDefinition.isMultiLine() &amp;&amp; headerDefinition.isLastHeaderLine(line)) {</span>
+<span class="fc" id="L180">        foundEnd = true;</span>
 
       } else {
-<span class="fc bfc" id="L182" title="All 4 branches covered.">        while ((line = fileContent.nextLine()) != null &amp;&amp; line.startsWith(before)) {</span>
-<span class="fc" id="L183">          inPlaceHeader.append(line.toLowerCase());</span>
-<span class="fc bfc" id="L184" title="All 4 branches covered.">          if (headerDefinition.isMultiLine() &amp;&amp; headerDefinition.isLastHeaderLine(line)) {</span>
-<span class="fc" id="L185">            foundEnd = true;</span>
-<span class="fc" id="L186">            break;</span>
+<span class="fc bfc" id="L183" title="All 4 branches covered.">        while ((line = fileContent.nextLine()) != null &amp;&amp; line.startsWith(before)) {</span>
+<span class="fc" id="L184">          inPlaceHeader.append(line.toLowerCase());</span>
+<span class="fc bfc" id="L185" title="All 4 branches covered.">          if (headerDefinition.isMultiLine() &amp;&amp; headerDefinition.isLastHeaderLine(line)) {</span>
+<span class="fc" id="L186">            foundEnd = true;</span>
+<span class="fc" id="L187">            break;</span>
           }
         }
       }
 
       // skip blank lines after header text
-<span class="fc bfc" id="L192" title="All 6 branches covered.">      if (headerDefinition.isMultiLine() &amp;&amp; headerDefinition.allowBlankLines() &amp;&amp; !foundEnd) {</span>
-<span class="fc" id="L193">        do line = fileContent.nextLine();</span>
-<span class="pc bpc" id="L194" title="2 of 4 branches missed.">        while (line != null &amp;&amp; &quot;&quot;.equals(line.trim()));</span>
-<span class="fc" id="L195">        fileContent.rewind();</span>
+<span class="fc bfc" id="L193" title="All 6 branches covered.">      if (headerDefinition.isMultiLine() &amp;&amp; headerDefinition.allowBlankLines() &amp;&amp; !foundEnd) {</span>
+        do {
+<span class="fc" id="L195">          line = fileContent.nextLine();</span>
+<span class="pc bpc" id="L196" title="2 of 4 branches missed.">        } while (line != null &amp;&amp; &quot;&quot;.equals(line.trim()));</span>
+<span class="fc" id="L197">        fileContent.rewind();</span>
 
-<span class="pc bpc" id="L197" title="1 of 4 branches missed.">      } else if (!headerDefinition.isMultiLine() &amp;&amp; !foundEnd) {</span>
-<span class="fc" id="L198">        fileContent.rewind();</span>
+<span class="pc bpc" id="L199" title="1 of 4 branches missed.">      } else if (!headerDefinition.isMultiLine() &amp;&amp; !foundEnd) {</span>
+<span class="fc" id="L200">        fileContent.rewind();</span>
       }
 
-<span class="fc bfc" id="L201" title="All 2 branches covered.">      if (!headerDefinition.isMultiLine()) {</span>
+<span class="fc bfc" id="L203" title="All 2 branches covered.">      if (!headerDefinition.isMultiLine()) {</span>
         // keep track of the position for headers where the end line is the same as the before each line
-<span class="fc" id="L203">        int pos = fileContent.getPosition();</span>
+<span class="fc" id="L205">        int pos = fileContent.getPosition();</span>
         // check if the line is the end line
-<span class="fc bfc" id="L205" title="All 2 branches covered.">        while (line != null</span>
-<span class="pc bpc" id="L206" title="1 of 2 branches missed.">            &amp;&amp; !headerDefinition.isLastHeaderLine(line)</span>
-<span class="pc bpc" id="L207" title="1 of 4 branches missed.">            &amp;&amp; (headerDefinition.allowBlankLines() || !&quot;&quot;.equals(line.trim()))</span>
-<span class="pc bpc" id="L208" title="1 of 2 branches missed.">            &amp;&amp; line.startsWith(before))</span>
-<span class="nc" id="L209">          line = fileContent.nextLine();</span>
-<span class="fc bfc" id="L210" title="All 2 branches covered.">        if (line == null)</span>
-<span class="fc" id="L211">          fileContent.resetTo(pos);</span>
-<span class="pc bpc" id="L212" title="1 of 2 branches missed.">      } else if (line != null) {</span>
+<span class="fc bfc" id="L207" title="All 2 branches covered.">        while (line != null</span>
+<span class="pc bpc" id="L208" title="1 of 2 branches missed.">            &amp;&amp; !headerDefinition.isLastHeaderLine(line)</span>
+<span class="pc bpc" id="L209" title="1 of 4 branches missed.">            &amp;&amp; (headerDefinition.allowBlankLines() || !&quot;&quot;.equals(line.trim()))</span>
+<span class="pc bpc" id="L210" title="1 of 2 branches missed.">            &amp;&amp; line.startsWith(before)) {</span>
+<span class="nc" id="L211">          line = fileContent.nextLine();</span>
+        }
+<span class="fc bfc" id="L213" title="All 2 branches covered.">        if (line == null) {</span>
+<span class="fc" id="L214">          fileContent.resetTo(pos);</span>
+        }
+<span class="pc bpc" id="L216" title="1 of 2 branches missed.">      } else if (line != null) {</span>
         // we could end up there if we still have some lines, but not matching &quot;before&quot;.
         // This can be the last line in a multi line header
-<span class="fc" id="L215">        int pos = fileContent.getPosition();</span>
-<span class="fc" id="L216">        line = fileContent.nextLine();</span>
-<span class="fc bfc" id="L217" title="All 4 branches covered.">        if (line == null || !headerDefinition.isLastHeaderLine(line)) {</span>
-<span class="fc" id="L218">          fileContent.resetTo(pos);</span>
+<span class="fc" id="L219">        int pos = fileContent.getPosition();</span>
+<span class="fc" id="L220">        line = fileContent.nextLine();</span>
+<span class="fc bfc" id="L221" title="All 4 branches covered.">        if (line == null || !headerDefinition.isLastHeaderLine(line)) {</span>
+<span class="fc" id="L222">          fileContent.resetTo(pos);</span>
         }
       }
-<span class="fc" id="L221">      gotHeader = true;</span>
-<span class="fc bfc" id="L222" title="All 2 branches covered.">      for (String keyword : keywords) {</span>
-<span class="fc bfc" id="L223" title="All 2 branches covered.">        if (inPlaceHeader.indexOf(keyword.toLowerCase()) == -1) {</span>
-<span class="fc" id="L224">          gotHeader = false;</span>
-<span class="fc" id="L225">          break;</span>
+<span class="fc" id="L225">      gotHeader = true;</span>
+<span class="fc bfc" id="L226" title="All 2 branches covered.">      for (String keyword : keywords) {</span>
+<span class="fc bfc" id="L227" title="All 2 branches covered.">        if (inPlaceHeader.indexOf(keyword.toLowerCase()) == -1) {</span>
+<span class="fc" id="L228">          gotHeader = false;</span>
+<span class="fc" id="L229">          break;</span>
         }
       }
     }
-<span class="fc" id="L229">    return gotHeader;</span>
+<span class="fc" id="L233">    return gotHeader;</span>
   }
 
   private int findEndPosition() {
     // we check if there is a header, if the next line is the blank line of the header
-<span class="fc" id="L234">    int end = fileContent.getPosition();</span>
-<span class="fc" id="L235">    line = fileContent.nextLine();</span>
-<span class="fc bfc" id="L236" title="All 2 branches covered.">    if (beginPosition == 0) {</span>
-<span class="fc bfc" id="L237" title="All 4 branches covered.">      while (line != null &amp;&amp; &quot;&quot;.equals(line.trim())) {</span>
-<span class="fc" id="L238">        end = fileContent.getPosition();</span>
-<span class="fc" id="L239">        line = fileContent.nextLine();</span>
+<span class="fc" id="L238">    int end = fileContent.getPosition();</span>
+<span class="fc" id="L239">    line = fileContent.nextLine();</span>
+<span class="fc bfc" id="L240" title="All 2 branches covered.">    if (beginPosition == 0) {</span>
+<span class="fc bfc" id="L241" title="All 4 branches covered.">      while (line != null &amp;&amp; &quot;&quot;.equals(line.trim())) {</span>
+<span class="fc" id="L242">        end = fileContent.getPosition();</span>
+<span class="fc" id="L243">        line = fileContent.nextLine();</span>
       }
     }
-<span class="pc bpc" id="L242" title="1 of 6 branches missed.">    if (headerDefinition.getEndLine().endsWith(&quot;EOL&quot;) &amp;&amp; line != null &amp;&amp; &quot;&quot;.equals(line.trim())) {</span>
-<span class="fc" id="L243">      end = fileContent.getPosition();</span>
+<span class="pc bpc" id="L246" title="1 of 6 branches missed.">    if (headerDefinition.getEndLine().endsWith(&quot;EOL&quot;) &amp;&amp; line != null &amp;&amp; &quot;&quot;.equals(line.trim())) {</span>
+<span class="fc" id="L247">      end = fileContent.getPosition();</span>
     }
-<span class="fc" id="L245">    return end;</span>
+<span class="fc" id="L249">    return end;</span>
   }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

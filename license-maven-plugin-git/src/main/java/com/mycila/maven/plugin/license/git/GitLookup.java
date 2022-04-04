@@ -191,15 +191,10 @@ public class GitLookup implements Closeable {
     return commitYear;
   }
 
-  /**
+  /*
    * Returns the year of creation for the given {@code file) based on the history of the present git branch. The
    * year is taken either from the committer date or from the author identity depending on how {@link #dateSource} was
    * initialized.
-   *
-   * @param file for which the year should be retrieved
-   * @return year of creation of the file
-   * @throws IOException     if unable to read the file
-   * @throws GitAPIException if unable to process the git history
    */
   int getYearOfCreation(File file) throws IOException, GitAPIException {
     String repoRelativePath = pathResolver.relativize(file);

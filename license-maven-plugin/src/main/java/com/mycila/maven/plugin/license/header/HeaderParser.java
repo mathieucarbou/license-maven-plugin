@@ -141,8 +141,9 @@ public final class HeaderParser {
 
   private boolean hasHeader() {
     // skip blank lines
-    while (line != null && "".equals(line.trim()))
+    while (line != null && "".equals(line.trim())) {
       line = fileContent.nextLine();
+    }
     // check if there is already a header
     boolean gotHeader = false;
     if (headerDefinition.isFirstHeaderLine(line)) {
@@ -190,8 +191,9 @@ public final class HeaderParser {
 
       // skip blank lines after header text
       if (headerDefinition.isMultiLine() && headerDefinition.allowBlankLines() && !foundEnd) {
-        do line = fileContent.nextLine();
-        while (line != null && "".equals(line.trim()));
+        do {
+          line = fileContent.nextLine();
+        } while (line != null && "".equals(line.trim()));
         fileContent.rewind();
 
       } else if (!headerDefinition.isMultiLine() && !foundEnd) {
@@ -205,10 +207,12 @@ public final class HeaderParser {
         while (line != null
             && !headerDefinition.isLastHeaderLine(line)
             && (headerDefinition.allowBlankLines() || !"".equals(line.trim()))
-            && line.startsWith(before))
+            && line.startsWith(before)) {
           line = fileContent.nextLine();
-        if (line == null)
+        }
+        if (line == null) {
           fileContent.resetTo(pos);
+        }
       } else if (line != null) {
         // we could end up there if we still have some lines, but not matching "before".
         // This can be the last line in a multi line header

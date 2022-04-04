@@ -60,7 +60,6 @@ public class MavenProjectLicenses implements LicenseMap, LicenseMessage {
    * @param projects       the Set of {@link MavenProject} to scan
    * @param graph          the {@link DependencyGraphBuilder} implementation
    * @param projectBuilder the maven {@link ProjectBuilder} implementation
-   * @param filters        the list of {@link ArtifactFilter} to scope analysis to
    * @param log            the log to sync to
    */
   public MavenProjectLicenses(final Set<MavenProject> projects, final DependencyGraphBuilder graph,
@@ -80,10 +79,6 @@ public class MavenProjectLicenses implements LicenseMap, LicenseMessage {
    * @param session        the current {@link MavenSession}
    * @param graph          the {@link DependencyGraphBuilder} implementation
    * @param projectBuilder the maven {@link ProjectBuilder} implementation
-   * @param scope          String to filter artifacts to,
-   *                       {@link org.apache.maven.artifact.ArtifactScopeEnum}
-   * @param exclusions     List<String> of exclusion expressions,
-   *                       {@link org.apache.maven.shared.artifact.filter.AbstractStrictPatternArtifactFilter}
    */
   public MavenProjectLicenses(final MavenSession session, MavenProject project, final DependencyGraphBuilder graph,
                               final ProjectBuilder projectBuilder, final List<String> scopes, final Log log) {
@@ -119,9 +114,8 @@ public class MavenProjectLicenses implements LicenseMap, LicenseMessage {
   /**
    * Get mapping of Licenses to a set of artifacts presenting that license.
    *
-   * @param dependencies Set<Artifact> to collate License entries from
-   * @return Map<License, Set < Artifact>> the same artifacts passed in, keyed by
-   * License.
+   * @param dependencies Set to collate License entries from
+   * @return the same artifacts passed in, keyed by license
    */
   protected Map<License, Set<Artifact>> getLicenseMapFromArtifacts(final Set<Artifact> dependencies) {
     final ConcurrentMap<License, Set<Artifact>> map = new ConcurrentHashMap<>();

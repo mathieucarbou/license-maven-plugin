@@ -60,116 +60,110 @@ public class MavenProjectLicenses implements LicenseMap, LicenseMessage {
    * @param projects       the Set of {@link MavenProject} to scan
    * @param graph          the {@link DependencyGraphBuilder} implementation
    * @param projectBuilder the maven {@link ProjectBuilder} implementation
-   * @param filters        the list of {@link ArtifactFilter} to scope analysis to
    * @param log            the log to sync to
    */
   public MavenProjectLicenses(final Set&lt;MavenProject&gt; projects, final DependencyGraphBuilder graph,
                               final ProjectBuilder projectBuilder, final ProjectBuildingRequest buildingRequest,
-<span class="nc" id="L68">                              final ArtifactFilter filter, final Log log) {</span>
-<span class="nc" id="L69">    this.setProjects(projects);</span>
-<span class="nc" id="L70">    this.setBuildingRequest(buildingRequest);</span>
-<span class="nc" id="L71">    this.setGraph(graph);</span>
-<span class="nc" id="L72">    this.setFilter(filter);</span>
-<span class="nc" id="L73">    this.setProjectBuilder(projectBuilder);</span>
-<span class="nc" id="L74">    this.setLog(log);</span>
+<span class="nc" id="L67">                              final ArtifactFilter filter, final Log log) {</span>
+<span class="nc" id="L68">    this.setProjects(projects);</span>
+<span class="nc" id="L69">    this.setBuildingRequest(buildingRequest);</span>
+<span class="nc" id="L70">    this.setGraph(graph);</span>
+<span class="nc" id="L71">    this.setFilter(filter);</span>
+<span class="nc" id="L72">    this.setProjectBuilder(projectBuilder);</span>
+<span class="nc" id="L73">    this.setLog(log);</span>
 
-<span class="nc" id="L76">    log.info(String.format(&quot;%s %s&quot;, INFO_LICENSE_IMPL, this.getClass()));</span>
-<span class="nc" id="L77">  }</span>
+<span class="nc" id="L75">    log.info(String.format(&quot;%s %s&quot;, INFO_LICENSE_IMPL, this.getClass()));</span>
+<span class="nc" id="L76">  }</span>
 
   /**
    * @param session        the current {@link MavenSession}
    * @param graph          the {@link DependencyGraphBuilder} implementation
    * @param projectBuilder the maven {@link ProjectBuilder} implementation
-   * @param scope          String to filter artifacts to,
-   *                       {@link org.apache.maven.artifact.ArtifactScopeEnum}
-   * @param exclusions     List&lt;String&gt; of exclusion expressions,
-   *                       {@link org.apache.maven.shared.artifact.filter.AbstractStrictPatternArtifactFilter}
    */
   public MavenProjectLicenses(final MavenSession session, MavenProject project, final DependencyGraphBuilder graph,
                               final ProjectBuilder projectBuilder, final List&lt;String&gt; scopes, final Log log) {
-<span class="nc" id="L90">    this(Collections.singleton(project), graph, projectBuilder, getBuildingRequestWithDefaults(session),</span>
+<span class="nc" id="L85">    this(Collections.singleton(project), graph, projectBuilder, getBuildingRequestWithDefaults(session),</span>
         new CumulativeScopeArtifactFilter(scopes), log);
-<span class="nc" id="L92">  }</span>
+<span class="nc" id="L87">  }</span>
 
   private static ProjectBuildingRequest getBuildingRequestWithDefaults(final MavenSession session) {
     ProjectBuildingRequest request;
-<span class="nc bnc" id="L96" title="All 2 branches missed.">    if (session == null) {</span>
-<span class="nc" id="L97">      request = new DefaultProjectBuildingRequest();</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">    if (session == null) {</span>
+<span class="nc" id="L92">      request = new DefaultProjectBuildingRequest();</span>
     } else {
-<span class="nc" id="L99">      request = session.getProjectBuildingRequest();</span>
+<span class="nc" id="L94">      request = session.getProjectBuildingRequest();</span>
     }
-<span class="nc" id="L101">    return request;</span>
+<span class="nc" id="L96">    return request;</span>
   }
 
   /**
    * Return a set of licenses attributed to a single artifact.
    */
   protected Set&lt;License&gt; getLicensesFromArtifact(final Artifact artifact) {
-<span class="nc" id="L108">    Set&lt;License&gt; licenses = new HashSet&lt;&gt;();</span>
+<span class="nc" id="L103">    Set&lt;License&gt; licenses = new HashSet&lt;&gt;();</span>
     try {
-<span class="nc" id="L110">      MavenProject project = getProjectBuilder().build(artifact, getBuildingRequest()).getProject();</span>
-<span class="nc" id="L111">      licenses.addAll(project.getLicenses());</span>
-<span class="nc" id="L112">    } catch (ProjectBuildingException ex) {</span>
-<span class="nc" id="L113">      getLog().warn(String.format(&quot;Could not get project from dependency's artifact: %s&quot;, artifact.getFile()));</span>
-<span class="nc" id="L114">    }</span>
+<span class="nc" id="L105">      MavenProject project = getProjectBuilder().build(artifact, getBuildingRequest()).getProject();</span>
+<span class="nc" id="L106">      licenses.addAll(project.getLicenses());</span>
+<span class="nc" id="L107">    } catch (ProjectBuildingException ex) {</span>
+<span class="nc" id="L108">      getLog().warn(String.format(&quot;Could not get project from dependency's artifact: %s&quot;, artifact.getFile()));</span>
+<span class="nc" id="L109">    }</span>
 
-<span class="nc" id="L116">    return licenses;</span>
+<span class="nc" id="L111">    return licenses;</span>
   }
 
   /**
    * Get mapping of Licenses to a set of artifacts presenting that license.
    *
-   * @param dependencies Set&lt;Artifact&gt; to collate License entries from
-   * @return Map&lt;License, Set &lt; Artifact&gt;&gt; the same artifacts passed in, keyed by
-   * License.
+   * @param dependencies Set to collate License entries from
+   * @return the same artifacts passed in, keyed by license
    */
   protected Map&lt;License, Set&lt;Artifact&gt;&gt; getLicenseMapFromArtifacts(final Set&lt;Artifact&gt; dependencies) {
-<span class="nc" id="L127">    final ConcurrentMap&lt;License, Set&lt;Artifact&gt;&gt; map = new ConcurrentHashMap&lt;&gt;();</span>
+<span class="nc" id="L121">    final ConcurrentMap&lt;License, Set&lt;Artifact&gt;&gt; map = new ConcurrentHashMap&lt;&gt;();</span>
 
     // license:artifact is a many-to-many relationship.
     // Each artifact may have several licenses.
     // Each artifact may appear multiple times in the map.
-<span class="nc" id="L132">    dependencies.parallelStream().forEach(artifact -&gt; getLicensesFromArtifact(artifact).forEach(license -&gt; {</span>
-<span class="nc" id="L133">      map.putIfAbsent(license, new HashSet&lt;&gt;());</span>
-<span class="nc" id="L134">      Set&lt;Artifact&gt; artifacts = map.get(license);</span>
-<span class="nc" id="L135">      artifacts.add(artifact);</span>
-<span class="nc" id="L136">      map.put(license, artifacts);</span>
-<span class="nc" id="L137">    }));</span>
+<span class="nc" id="L126">    dependencies.parallelStream().forEach(artifact -&gt; getLicensesFromArtifact(artifact).forEach(license -&gt; {</span>
+<span class="nc" id="L127">      map.putIfAbsent(license, new HashSet&lt;&gt;());</span>
+<span class="nc" id="L128">      Set&lt;Artifact&gt; artifacts = map.get(license);</span>
+<span class="nc" id="L129">      artifacts.add(artifact);</span>
+<span class="nc" id="L130">      map.put(license, artifacts);</span>
+<span class="nc" id="L131">    }));</span>
 
-<span class="nc" id="L139">    return map;</span>
+<span class="nc" id="L133">    return map;</span>
   }
 
   @Override
   public Map&lt;License, Set&lt;Artifact&gt;&gt; getLicenseMap() {
-<span class="nc" id="L144">    return getLicenseMapFromArtifacts(getDependencies());</span>
+<span class="nc" id="L138">    return getLicenseMapFromArtifacts(getDependencies());</span>
   }
 
   /**
    * Return the Set of all direct and transitive Artifact dependencies.
    */
   private Set&lt;Artifact&gt; getDependencies() {
-<span class="nc" id="L151">    final Set&lt;Artifact&gt; artifacts = new HashSet&lt;&gt;();</span>
-<span class="nc" id="L152">    final Set&lt;DependencyNode&gt; dependencies = new HashSet&lt;&gt;();</span>
+<span class="nc" id="L145">    final Set&lt;Artifact&gt; artifacts = new HashSet&lt;&gt;();</span>
+<span class="nc" id="L146">    final Set&lt;DependencyNode&gt; dependencies = new HashSet&lt;&gt;();</span>
 
     // build the set of maven dependencies for each module in the reactor (might
     // only be the single one) and all its transitives
-<span class="nc" id="L156">    getLog().debug(String.format(&quot;Building dependency graphs for %d projects&quot;, getProjects().size()));</span>
-<span class="nc" id="L157">    getProjects().parallelStream().forEach(project -&gt; {</span>
+<span class="nc" id="L150">    getLog().debug(String.format(&quot;Building dependency graphs for %d projects&quot;, getProjects().size()));</span>
+<span class="nc" id="L151">    getProjects().parallelStream().forEach(project -&gt; {</span>
       try {
-<span class="nc" id="L159">        dependencies.addAll(getGraph().buildDependencyGraph(buildingRequest, getFilter()).getChildren());</span>
-<span class="nc" id="L160">      } catch (DependencyGraphBuilderException ex) {</span>
-<span class="nc" id="L161">        getLog().warn(</span>
-<span class="nc" id="L162">            String.format(&quot;Could not get children from project %s, it's dependencies will not be checked!&quot;,</span>
-<span class="nc" id="L163">                project.getId()));</span>
-<span class="nc" id="L164">      }</span>
-<span class="nc" id="L165">    });</span>
+<span class="nc" id="L153">        dependencies.addAll(getGraph().buildDependencyGraph(buildingRequest, getFilter()).getChildren());</span>
+<span class="nc" id="L154">      } catch (DependencyGraphBuilderException ex) {</span>
+<span class="nc" id="L155">        getLog().warn(</span>
+<span class="nc" id="L156">            String.format(&quot;Could not get children from project %s, it's dependencies will not be checked!&quot;,</span>
+<span class="nc" id="L157">                project.getId()));</span>
+<span class="nc" id="L158">      }</span>
+<span class="nc" id="L159">    });</span>
 
     // build the complete set of direct+transitive dependent artifacts in all
     // modules in the reactor
-<span class="nc" id="L169">    dependencies.parallelStream().forEach(d -&gt; artifacts.add(d.getArtifact()));</span>
-<span class="nc" id="L170">    getLog().info(String.format(&quot;%s: %d&quot;, INFO_DEPS_DISCOVERED, dependencies.size()));</span>
+<span class="nc" id="L163">    dependencies.parallelStream().forEach(d -&gt; artifacts.add(d.getArtifact()));</span>
+<span class="nc" id="L164">    getLog().info(String.format(&quot;%s: %d&quot;, INFO_DEPS_DISCOVERED, dependencies.size()));</span>
 
-<span class="nc" id="L172">    return artifacts;</span>
+<span class="nc" id="L166">    return artifacts;</span>
 
     // tempting, but does not resolve dependencies after the scope in which this
     // plugin is invoked
@@ -177,51 +171,51 @@ public class MavenProjectLicenses implements LicenseMap, LicenseMessage {
   }
 
   protected Set&lt;MavenProject&gt; getProjects() {
-<span class="nc" id="L180">    return projects;</span>
+<span class="nc" id="L174">    return projects;</span>
   }
 
   protected void setProjects(final Set&lt;MavenProject&gt; projects) {
-<span class="nc" id="L184">    this.projects = Optional.ofNullable(projects).orElse(new HashSet&lt;&gt;());</span>
-<span class="nc" id="L185">  }</span>
+<span class="nc" id="L178">    this.projects = Optional.ofNullable(projects).orElse(new HashSet&lt;&gt;());</span>
+<span class="nc" id="L179">  }</span>
 
   private DependencyGraphBuilder getGraph() {
-<span class="nc" id="L188">    return graph;</span>
+<span class="nc" id="L182">    return graph;</span>
   }
 
   private void setGraph(DependencyGraphBuilder graph) {
-<span class="nc" id="L192">    this.graph = Optional.ofNullable(graph).orElse(new Maven31DependencyGraphBuilder());</span>
-<span class="nc" id="L193">  }</span>
+<span class="nc" id="L186">    this.graph = Optional.ofNullable(graph).orElse(new Maven31DependencyGraphBuilder());</span>
+<span class="nc" id="L187">  }</span>
 
   private ProjectBuilder getProjectBuilder() {
-<span class="nc" id="L196">    return projectBuilder;</span>
+<span class="nc" id="L190">    return projectBuilder;</span>
   }
 
   private void setProjectBuilder(ProjectBuilder projectBuilder) {
-<span class="nc" id="L200">    this.projectBuilder = Optional.ofNullable(projectBuilder).orElse(new DefaultProjectBuilder());</span>
-<span class="nc" id="L201">  }</span>
+<span class="nc" id="L194">    this.projectBuilder = Optional.ofNullable(projectBuilder).orElse(new DefaultProjectBuilder());</span>
+<span class="nc" id="L195">  }</span>
 
   private ArtifactFilter getFilter() {
-<span class="nc" id="L204">    return filter;</span>
+<span class="nc" id="L198">    return filter;</span>
   }
 
   private void setFilter(ArtifactFilter filter) {
-<span class="nc" id="L208">    this.filter = filter;</span>
-<span class="nc" id="L209">  }</span>
+<span class="nc" id="L202">    this.filter = filter;</span>
+<span class="nc" id="L203">  }</span>
 
   private Log getLog() {
-<span class="nc" id="L212">    return log;</span>
+<span class="nc" id="L206">    return log;</span>
   }
 
   private void setLog(Log log) {
-<span class="nc" id="L216">    this.log = log;</span>
-<span class="nc" id="L217">  }</span>
+<span class="nc" id="L210">    this.log = log;</span>
+<span class="nc" id="L211">  }</span>
 
   private ProjectBuildingRequest getBuildingRequest() {
-<span class="nc" id="L220">    return buildingRequest;</span>
+<span class="nc" id="L214">    return buildingRequest;</span>
   }
 
   protected void setBuildingRequest(final ProjectBuildingRequest buildingRequest) {
-<span class="nc" id="L224">    this.buildingRequest = Optional.ofNullable(buildingRequest).orElse(new DefaultProjectBuildingRequest());</span>
-<span class="nc" id="L225">  }</span>
+<span class="nc" id="L218">    this.buildingRequest = Optional.ofNullable(buildingRequest).orElse(new DefaultProjectBuildingRequest());</span>
+<span class="nc" id="L219">  }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
