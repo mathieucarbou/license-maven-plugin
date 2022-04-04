@@ -38,7 +38,7 @@ Basically, when you are developing a project either in open source or in a compa
 ## Links
 
 - __Build Status:__ [![Java CI](https://github.com/mathieucarbou/license-maven-plugin/actions/workflows/ci.yaml/badge.svg)](https://github.com/mathieucarbou/license-maven-plugin/actions/workflows/ci.yaml)
-- __Issues:__ https://github.com/mathieucarbou/license-maven-plugin/issues
+- __Issues:__ [https://github.com/mathieucarbou/license-maven-plugin/issues](https://github.com/mathieucarbou/license-maven-plugin/issues)
 - __License:__ [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0)
 
 ## Contributors
@@ -79,7 +79,7 @@ Please let me know if your name is missing!
 
 ## Releases
 
-Available in Maven Central Repository: https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/
+Available in Maven Central Repository: [https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/)
 
 * [4.2.rc3](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/4.2.rc3/) (2022-04-04) - see [issues and pull requests](https://github.com/mathieucarbou/license-maven-plugin/milestone/18?closed=1)
 * [4.2.rc2](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/4.2.rc2/) (2022-01-10) - see [issues and pull requests](https://github.com/mathieucarbou/license-maven-plugin/milestone/18?closed=1)
