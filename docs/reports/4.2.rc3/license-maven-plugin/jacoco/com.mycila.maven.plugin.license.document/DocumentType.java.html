@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DocumentType.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">license-maven-plugin</a> &gt; <a href="index.source.html" class="el_package">com.mycila.maven.plugin.license.document</a> &gt; <span class="el_source">DocumentType.java</span></div><h1>DocumentType.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2008-2022 Mycila (mathieu.carbou@gmail.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.mycila.maven.plugin.license.document;
+
+import com.mycila.maven.plugin.license.header.HeaderType;
+
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+/**
+ * &lt;b&gt;Date:&lt;/b&gt; 16-Feb-2008&lt;br&gt;
+ * &lt;b&gt;Author:&lt;/b&gt; Mathieu Carbou (mathieu.carbou@gmail.com)
+ */
+<span class="fc" id="L28">public enum DocumentType {</span>
+  ////////// Document types ordered alphabetically //////////
+
+<span class="fc" id="L31">  ACTIONSCRIPT(&quot;as&quot;, HeaderType.JAVADOC_STYLE),</span>
+<span class="fc" id="L32">  ADA_BODY(&quot;adb&quot;, HeaderType.DOUBLEDASHES_STYLE),</span>
+<span class="fc" id="L33">  ADA_SPEC(&quot;ads&quot;, HeaderType.DOUBLEDASHES_STYLE),</span>
+<span class="fc" id="L34">  ASCII_DOC(&quot;adoc&quot;, HeaderType.ASCIIDOC_STYLE),</span>
+<span class="fc" id="L35">  ASP(&quot;asp&quot;, HeaderType.ASP),</span>
+<span class="fc" id="L36">  ASPECTJ(&quot;aj&quot;, HeaderType.JAVADOC_STYLE),</span>
+<span class="fc" id="L37">  ASSEMBLER(&quot;asm&quot;, HeaderType.SEMICOLON_STYLE),</span>
+<span class="fc" id="L38">  C(&quot;c&quot;, HeaderType.JAVADOC_STYLE),</span>
+<span class="fc" id="L39">  CLOJURE(&quot;clj&quot;, HeaderType.SEMICOLON_STYLE),</span>
+<span class="fc" id="L40">  CLOJURESCRIPT(&quot;cljs&quot;, HeaderType.SEMICOLON_STYLE),</span>
+<span class="fc" id="L41">  COLDFUSION_COMPONENT(&quot;cfc&quot;, HeaderType.DYNASCRIPT3_STYLE),</span>
+<span class="fc" id="L42">  COLDFUSION_ML(&quot;cfm&quot;, HeaderType.DYNASCRIPT3_STYLE),</span>
+<span class="fc" id="L43">  CPP(&quot;cpp&quot;, HeaderType.JAVADOC_STYLE),</span>
+<span class="fc" id="L44">  CSHARP(&quot;cs&quot;, HeaderType.JAVADOC_STYLE),</span>
+<span class="fc" id="L45">  CSS(&quot;css&quot;, HeaderType.JAVADOC_STYLE),</span>
+<span class="fc" id="L46">  DELPHI(&quot;pas&quot;, HeaderType.BRACESSTAR_STYLE),</span>
+<span class="fc" id="L47">  DOCKERFILE(&quot;Dockerfile&quot;, HeaderType.SCRIPT_STYLE),</span>
+<span class="fc" id="L48">  DOXIA_APT(&quot;apt&quot;, HeaderType.DOUBLETILDE_STYLE),</span>
+<span class="fc" id="L49">  DOXIA_FAQ(&quot;fml&quot;, HeaderType.XML_STYLE),</span>
+<span class="fc" id="L50">  DTD(&quot;dtd&quot;, HeaderType.XML_STYLE),</span>
+<span class="fc" id="L51">  EDITORCONFIG(&quot;.editorconfig&quot;, HeaderType.SCRIPT_STYLE),</span>
+<span class="fc" id="L52">  EIFFEL(&quot;e&quot;, HeaderType.DOUBLEDASHES_STYLE),</span>
+<span class="fc" id="L53">  ERLANG(&quot;erl&quot;, HeaderType.PERCENT3_STYLE),</span>
+<span class="fc" id="L54">  ERLANG_HEADER(&quot;hrl&quot;, HeaderType.PERCENT3_STYLE),</span>
+<span class="fc" id="L55">  FORTRAN(&quot;f&quot;, HeaderType.EXCLAMATION_STYLE),</span>
+<span class="fc" id="L56">  FREEMARKER(&quot;ftl&quot;, HeaderType.FTL),</span>
+<span class="fc" id="L57">  GROOVY(&quot;groovy&quot;, HeaderType.SLASHSTAR_STYLE),</span>
+<span class="fc" id="L58">  GSP(&quot;GSP&quot;, HeaderType.XML_STYLE),</span>
+<span class="fc" id="L59">  H(&quot;h&quot;, HeaderType.JAVADOC_STYLE),</span>
+<span class="fc" id="L60">  HAML(&quot;haml&quot;, HeaderType.HAML_STYLE),</span>
+<span class="fc" id="L61">  HTM(&quot;htm&quot;, HeaderType.XML_STYLE),</span>
+<span class="fc" id="L62">  HTML(&quot;html&quot;, HeaderType.XML_STYLE),</span>
+<span class="fc" id="L63">  JAVA(&quot;java&quot;, HeaderType.SLASHSTAR_STYLE),</span>
+<span class="fc" id="L64">  JAVAFX(&quot;fx&quot;, HeaderType.SLASHSTAR_STYLE),</span>
+<span class="fc" id="L65">  JAVASCRIPT(&quot;js&quot;, HeaderType.SLASHSTAR_STYLE),</span>
+<span class="fc" id="L66">  JSP(&quot;jsp&quot;, HeaderType.DYNASCRIPT_STYLE),</span>
+<span class="fc" id="L67">  JSPX(&quot;jspx&quot;, HeaderType.XML_STYLE),</span>
+<span class="fc" id="L68">  KML(&quot;kml&quot;, HeaderType.XML_STYLE),</span>
+<span class="fc" id="L69">  KOTLIN(&quot;kt&quot;, HeaderType.SLASHSTAR_STYLE),</span>
+<span class="fc" id="L70">  LISP(&quot;el&quot;, HeaderType.EXCLAMATION3_STYLE),</span>
+<span class="fc" id="L71">  LUA(&quot;lua&quot;, HeaderType.LUA),</span>
+<span class="fc" id="L72">  MUSTACHE(&quot;mustache&quot;, HeaderType.MUSTACHE_STYLE),</span>
+<span class="fc" id="L73">  MVEL(&quot;mv&quot;, HeaderType.MVEL_STYLE),</span>
+<span class="fc" id="L74">  MXML(&quot;mxml&quot;, HeaderType.XML_STYLE),</span>
+<span class="fc" id="L75">  PERL(&quot;pl&quot;, HeaderType.SCRIPT_STYLE),</span>
+<span class="fc" id="L76">  PERL_MODULE(&quot;pm&quot;, HeaderType.SCRIPT_STYLE),</span>
+<span class="fc" id="L77">  PHP(&quot;php&quot;, HeaderType.PHP),</span>
+<span class="fc" id="L78">  POM(&quot;pom&quot;, HeaderType.XML_STYLE),</span>
+<span class="fc" id="L79">  PROPERTIES(&quot;properties&quot;, HeaderType.SCRIPT_STYLE),</span>
+<span class="fc" id="L80">  PYTHON(&quot;py&quot;, HeaderType.SCRIPT_STYLE),</span>
+<span class="fc" id="L81">  RUBY(&quot;rb&quot;, HeaderType.SCRIPT_STYLE),</span>
+<span class="fc" id="L82">  SCALA(&quot;scala&quot;, HeaderType.SLASHSTAR_STYLE),</span>
+<span class="fc" id="L83">  SCAML(&quot;scaml&quot;, HeaderType.HAML_STYLE),</span>
+<span class="fc" id="L84">  SCSS(&quot;scss&quot;, HeaderType.JAVADOC_STYLE),</span>
+<span class="fc" id="L85">  SHELL(&quot;sh&quot;, HeaderType.SCRIPT_STYLE),</span>
+<span class="fc" id="L86">  SPRING_FACTORIES(&quot;spring.factories&quot;, HeaderType.SCRIPT_STYLE),</span>
+<span class="fc" id="L87">  SQL(&quot;sql&quot;, HeaderType.DOUBLEDASHES_STYLE),</span>
+<span class="fc" id="L88">  TAGX(&quot;tagx&quot;, HeaderType.XML_STYLE),</span>
+<span class="fc" id="L89">  TEX_CLASS(&quot;cls&quot;, HeaderType.PERCENT_STYLE),</span>
+<span class="fc" id="L90">  TEX_STYLE(&quot;sty&quot;, HeaderType.PERCENT_STYLE),</span>
+<span class="fc" id="L91">  TEX(&quot;tex&quot;, HeaderType.PERCENT_STYLE),</span>
+<span class="fc" id="L92">  TLD(&quot;tld&quot;, HeaderType.XML_STYLE),</span>
+<span class="fc" id="L93">  TS(&quot;ts&quot;, HeaderType.TRIPLESLASH_STYLE),</span>
+<span class="fc" id="L94">  TXT(&quot;txt&quot;, HeaderType.TEXT),</span>
+<span class="fc" id="L95">  UNKNOWN(&quot;&quot;, HeaderType.UNKNOWN),</span>
+<span class="fc" id="L96">  VB(&quot;bas&quot;, HeaderType.HAML_STYLE),</span>
+<span class="fc" id="L97">  VBA(&quot;vba&quot;, HeaderType.APOSTROPHE_STYLE),</span>
+<span class="fc" id="L98">  VELOCITY(&quot;vm&quot;, HeaderType.SHARPSTAR_STYLE),</span>
+<span class="fc" id="L99">  WINDOWS_BATCH(&quot;bat&quot;, HeaderType.BATCH),</span>
+<span class="fc" id="L100">  WINDOWS_SHELL(&quot;cmd&quot;, HeaderType.BATCH),</span>
+<span class="fc" id="L101">  WSDL(&quot;wsdl&quot;, HeaderType.XML_STYLE),</span>
+<span class="fc" id="L102">  XHTML(&quot;xhtml&quot;, HeaderType.XML_STYLE),</span>
+<span class="fc" id="L103">  XML(&quot;xml&quot;, HeaderType.XML_STYLE),</span>
+<span class="fc" id="L104">  XSD(&quot;xsd&quot;, HeaderType.XML_STYLE),</span>
+<span class="fc" id="L105">  XSL(&quot;xsl&quot;, HeaderType.XML_STYLE),</span>
+<span class="fc" id="L106">  XSLT(&quot;xslt&quot;, HeaderType.XML_STYLE),</span>
+<span class="fc" id="L107">  YAML(&quot;yaml&quot;, HeaderType.SCRIPT_STYLE),</span>
+<span class="fc" id="L108">  YML(&quot;yml&quot;, HeaderType.SCRIPT_STYLE);</span>
+
+  ////////////////////////////////////
+
+<span class="fc" id="L112">  private static final Map&lt;String, String&gt; MAPPING = new LinkedHashMap&lt;&gt;(values().length);</span>
+
+  static {
+<span class="fc bfc" id="L115" title="All 2 branches covered.">    for (DocumentType type : values()) {</span>
+<span class="fc" id="L116">      MAPPING.put(type.getExtension(), type.getDefaultHeaderTypeName());</span>
+    }
+<span class="fc" id="L118">  }</span>
+
+  private final String extension;
+  private final HeaderType defaultHeaderType;
+
+<span class="fc" id="L123">  private DocumentType(String extension, HeaderType defaultHeaderType) {</span>
+<span class="fc" id="L124">    this.extension = extension;</span>
+<span class="fc" id="L125">    this.defaultHeaderType = defaultHeaderType;</span>
+<span class="fc" id="L126">  }</span>
+
+  public String getExtension() {
+<span class="fc" id="L129">    return extension;</span>
+  }
+
+  public HeaderType getDefaultHeaderType() {
+<span class="fc" id="L133">    return defaultHeaderType;</span>
+  }
+
+  public String getDefaultHeaderTypeName() {
+<span class="fc" id="L137">    return defaultHeaderType.name().toLowerCase();</span>
+  }
+
+  public static Map&lt;String, String&gt; defaultMapping() {
+<span class="fc" id="L141">    return Collections.unmodifiableMap(MAPPING);</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -763,21 +763,21 @@ Example: `4.0.rc1`
 
 ```bash
 ./mvnw release:prepare -DreleaseVersion=4.0.rc1 -Dtag=license-maven-plugin-4.0.rc1 -DdevelopmentVersion=4.0-SNAPSHOT
-./mvnw release:perform -Darguments="-Dgpg.keyname=EDEA921A -Dmaven.site.deploy.skip=true"
+./mvnw release:perform -Darguments="-Dmaven.site.deploy.skip=true"
 ```
 
 Example: `4.2.rc2`
 
 ```bash
 ./mvnw release:prepare -DreleaseVersion=4.2.rc2 -Dtag=license-maven-plugin-4.2.rc2 -DdevelopmentVersion=4.2-SNAPSHOT
-./mvnw release:perform -Darguments="-Dgpg.keyname=EDEA921A -Dmaven.site.deploy.skip=true"
+./mvnw release:perform -Darguments="-Dmaven.site.deploy.skip=true"
 ```
 
 Example: `4.0`
 
 ```bash
 ./mvnw release:prepare -DreleaseVersion=4.0 -Dtag=license-maven-plugin-4.0 -DdevelopmentVersion=4.1-SNAPSHOT
-./mvnw release:perform -Darguments="-Dgpg.keyname=EDEA921A -Dmaven.site.deploy.skip=true"
+./mvnw release:perform -Darguments="-Dmaven.site.deploy.skip=true"
 ```
 
 Then, go to https://oss.sonatype.org/ to "close and release".

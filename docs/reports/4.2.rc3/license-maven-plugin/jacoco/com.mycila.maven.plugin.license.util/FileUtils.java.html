@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FileUtils.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">license-maven-plugin</a> &gt; <a href="index.source.html" class="el_package">com.mycila.maven.plugin.license.util</a> &gt; <span class="el_source">FileUtils.java</span></div><h1>FileUtils.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2008-2022 Mycila (mathieu.carbou@gmail.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.mycila.maven.plugin.license.util;
+
+import org.codehaus.plexus.util.IOUtil;
+import org.codehaus.plexus.util.InterpolationFilterReader;
+
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.UncheckedIOException;
+import java.net.URL;
+import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
+import java.nio.channels.FileChannel;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Map;
+import java.util.stream.Stream;
+
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+
+/**
+ * &lt;b&gt;Date:&lt;/b&gt; 16-Feb-2008&lt;br&gt;
+ * &lt;b&gt;Author:&lt;/b&gt; Mathieu Carbou (mathieu.carbou@gmail.com)
+ */
+public final class FileUtils {
+
+  private FileUtils() {
+  }
+
+  @SuppressWarnings(&quot;resource&quot;)
+  public static void write(File file, String content, String encoding) throws IOException {
+<span class="fc" id="L52">    try (FileChannel channel = new FileOutputStream(file).getChannel()) {</span>
+<span class="fc" id="L53">      channel.write(ByteBuffer.wrap(content.getBytes(encoding)));</span>
+    }
+<span class="fc" id="L55">  }</span>
+
+  public static String read(URL location, String encoding, Map&lt;String, Object&gt; properties) throws IOException {
+<span class="nc" id="L58">    try (Reader reader = new InterpolationFilterReader(new BufferedReader(new InputStreamReader(location.openStream(), encoding)), properties)) {</span>
+<span class="nc" id="L59">      return IOUtil.toString(reader);</span>
+    }
+  }
+
+  public static String read(URL location, String encoding) throws IOException {
+<span class="fc" id="L64">    try (Reader reader = new BufferedReader(new InputStreamReader(location.openStream(), encoding))) {</span>
+<span class="fc" id="L65">      return IOUtil.toString(reader);</span>
+    }
+  }
+
+  public static String[] read(final URL[] locations, final String encoding) throws IOException {
+<span class="fc" id="L70">    final String[] results = new String[locations.length];</span>
+<span class="fc bfc" id="L71" title="All 2 branches covered.">    for (int i = 0; i &lt; locations.length; i++) {</span>
+<span class="fc" id="L72">      try (Reader reader = new BufferedReader(new InputStreamReader(locations[i].openStream(), encoding))) {</span>
+<span class="fc" id="L73">        results[i] = IOUtil.toString(reader);</span>
+      }
+    }
+<span class="fc" id="L76">    return results;</span>
+  }
+
+  @SuppressWarnings(&quot;resource&quot;)
+  public static String read(File file, String encoding) throws IOException {
+<span class="fc" id="L81">    try (FileChannel in = new FileInputStream(file).getChannel()) {</span>
+<span class="fc" id="L82">      ByteArrayOutputStream baos = new ByteArrayOutputStream();</span>
+<span class="fc" id="L83">      in.transferTo(0, in.size(), Channels.newChannel(baos));</span>
+<span class="fc" id="L84">      return baos.toString(encoding);</span>
+    }
+  }
+
+  public static String readFirstLines(File file, int lineCount, String encoding) throws IOException {
+<span class="fc" id="L89">    try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), encoding))) {</span>
+      String line;
+<span class="fc" id="L91">      StringBuilder sb = new StringBuilder();</span>
+<span class="fc bfc" id="L92" title="All 4 branches covered.">      while (lineCount &gt; 0 &amp;&amp; (line = reader.readLine()) != null) {</span>
+<span class="fc" id="L93">        lineCount--;</span>
+<span class="fc" id="L94">        sb.append(line).append(&quot;\n&quot;);</span>
+      }
+<span class="fc" id="L96">      return sb.toString();</span>
+    }
+  }
+
+  public static String remove(String str, String... chars) {
+<span class="fc bfc" id="L101" title="All 2 branches covered.">    for (String s : chars) {</span>
+<span class="fc" id="L102">      str = str.replace(s, &quot;&quot;);</span>
+    }
+<span class="fc" id="L104">    return str;</span>
+  }
+
+  @SuppressWarnings(&quot;resource&quot;)
+  public static void copyFileToFolder(File file, File folder) throws IOException {
+<span class="fc" id="L109">    File dest = new File(folder, file.getName());</span>
+<span class="fc" id="L110">    try (FileChannel inChannel = new FileInputStream(file).getChannel();</span>
+<span class="fc" id="L111">         FileChannel outChannel = new FileOutputStream(dest).getChannel()) {</span>
+<span class="fc" id="L112">      inChannel.transferTo(0, inChannel.size(), outChannel);</span>
+    }
+<span class="fc" id="L114">  }</span>
+
+  public static Path asPath(final File file) {
+<span class="fc bfc" id="L117" title="All 2 branches covered.">    if (file == null) {</span>
+<span class="fc" id="L118">      return null;</span>
+    }
+
+<span class="fc" id="L121">    return file.toPath();</span>
+  }
+
+  @SuppressWarnings({&quot;ConstantConditions&quot;, &quot;ResultOfMethodCallIgnored&quot;})
+  public static void copyFilesToFolder(File src, File dst) {
+<span class="fc" id="L126">    dst.mkdirs();</span>
+<span class="fc" id="L127">    Stream.of(src.listFiles()).filter(File::isFile).forEach(file -&gt; {</span>
+      try {
+<span class="fc" id="L129">        Files.copy(file.toPath(), dst.toPath().resolve(file.getName()), REPLACE_EXISTING);</span>
+<span class="nc" id="L130">      } catch (IOException e) {</span>
+<span class="nc" id="L131">        throw new UncheckedIOException(e);</span>
+<span class="fc" id="L132">      }</span>
+<span class="fc" id="L133">    });</span>
+<span class="fc" id="L134">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
