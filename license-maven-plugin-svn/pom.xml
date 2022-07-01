@@ -50,7 +50,7 @@
     <dependency>
       <groupId>org.tmatesoft.svnkit</groupId>
       <artifactId>svnkit</artifactId>
-      <version>1.10.6</version>
+      <version>1.10.7</version>
     </dependency>
   </dependencies>
 </project>
