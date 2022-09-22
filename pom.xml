@@ -52,7 +52,7 @@
     <source.encoding>UTF-8</source.encoding>
     <mycila.github.name>license-maven-plugin</mycila.github.name>
     <jacoco.minimum.coverage>1.00</jacoco.minimum.coverage>
-    <junit.version>5.9.0</junit.version>
+    <junit.version>5.9.1</junit.version>
   </properties>
 
   <modules>
