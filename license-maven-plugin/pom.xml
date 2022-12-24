@@ -52,8 +52,6 @@
         <configuration>
           <goalPrefix>license</goalPrefix>
           <helpPackageName>com.mycila.maven.plugin.license</helpPackageName>
-          <!-- see https://issues.apache.org/jira/browse/MNG-5346 -->
-          <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
         </configuration>
         <executions>
           <execution>
@@ -63,7 +61,6 @@
             </goals>
             <phase>process-classes</phase>
           </execution>
-          <!-- if you want to generate help goal -->
           <execution>
             <id>help-goal</id>
             <goals>
