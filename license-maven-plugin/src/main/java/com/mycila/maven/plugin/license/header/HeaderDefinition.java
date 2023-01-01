@@ -190,6 +190,8 @@ public final class HeaderDefinition {
       afterEachLine = value;
     } else if ("skipLine".equalsIgnoreCase(property)) {
       skipLinePattern = compile(value);
+    } else if ("skipLinePattern".equals(property)) {
+      skipLinePattern = compile(value);
     } else if ("padLines".equalsIgnoreCase(property)) {
       padLines = Boolean.parseBoolean(value);
     } else if ("firstLineDetectionPattern".equalsIgnoreCase(property)) {
