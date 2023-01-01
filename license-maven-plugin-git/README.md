@@ -33,7 +33,7 @@ Just add `license-maven-plugin-git` as a dependency to `license-maven-plugin` in
 ...
 <properties>
   <!-- This quite certainly out of date at the time when you are reading this -->
-  <license-maven-plugin.version>2.9</license-maven-plugin.version>
+  <license-maven-plugin.version>4.2.rc3</license-maven-plugin.version>
 </properties>
 ...
 <build>
