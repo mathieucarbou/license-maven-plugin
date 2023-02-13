@@ -103,7 +103,7 @@ class MavenProjectLicensesIT {
     final String description = "A project with enforcement enabled but nothing in scope should find zero dependencies";
     syncTarget("null");
 
-    Assertions.assertTrue(hasLogLine(LicenseMessage.INFO_DEPS_DISCOVERED + ": 1"), description);
+    Assertions.assertTrue(hasLogLine(LicenseMessage.INFO_DEPS_DISCOVERED + ": 0"), description);
   }
 
   @Test
