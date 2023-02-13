@@ -31,7 +31,6 @@ import org.apache.maven.project.ProjectBuildingRequest;
 import org.apache.maven.shared.dependency.graph.DependencyGraphBuilder;
 import org.apache.maven.shared.dependency.graph.DependencyGraphBuilderException;
 import org.apache.maven.shared.dependency.graph.DependencyNode;
-import org.apache.maven.shared.dependency.graph.internal.Maven31DependencyGraphBuilder;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -179,7 +178,7 @@ public class MavenProjectLicenses implements LicenseMap, LicenseMessage {
   }
 
   private void setGraph(DependencyGraphBuilder graph) {
-    this.graph = Optional.ofNullable(graph).orElse(new Maven31DependencyGraphBuilder());
+    this.graph = graph;
   }
 
   private ProjectBuilder getProjectBuilder() {
