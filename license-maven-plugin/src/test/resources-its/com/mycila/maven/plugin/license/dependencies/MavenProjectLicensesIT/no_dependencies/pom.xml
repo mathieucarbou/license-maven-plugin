@@ -24,7 +24,7 @@
       <plugin>
         <groupId>com.mycila</groupId>
         <artifactId>license-maven-plugin</artifactId>
-        <version>${env.LICENSE_PLUGIN_VERSION}</version>
+        <version>@project.version@</version>
         <executions>
           <execution>
             <goals>
