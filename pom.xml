@@ -49,7 +49,11 @@
 
   <properties>
     <jdk.version>8</jdk.version>
-    <source.encoding>UTF-8</source.encoding>
+
+    <!-- Project Encoding -->
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <mycila.github.name>license-maven-plugin</mycila.github.name>
     <jacoco.minimum.coverage>1.00</jacoco.minimum.coverage>
     <junit.version>5.9.2</junit.version>
@@ -257,7 +261,6 @@
           <version>3.2.1</version>
           <configuration>
             <configLocation>.config/checkstyle.xml</configLocation>
-            <encoding>UTF-8</encoding>
             <consoleOutput>true</consoleOutput>
             <includeTestSourceDirectory>true</includeTestSourceDirectory>
           </configuration>
@@ -327,7 +330,6 @@ limitations under the License.
           <configuration>
             <source>${jdk.version}</source>
             <target>${jdk.version}</target>
-            <encoding>${source.encoding}</encoding>
           </configuration>
           <dependencies>
             <dependency>
