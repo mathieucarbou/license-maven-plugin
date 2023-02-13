@@ -50,8 +50,21 @@
   <properties>
     <!-- Get method parameter names via reflection -->
     <maven.compiler.parameters>true</maven.compiler.parameters>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
+
+    <!-- Maven compiler options -->
+    <java.version>8</java.version>
+    <java.release.version>8</java.release.version>
+    <java.test.version>${java.version}</java.test.version>
+    <java.test.release.version>${java.release.version}</java.test.release.version>
+
+    <!-- Legacy compiler options source/target not really needed now (but still used by things like sonar, m2e) -->
+    <maven.compiler.source>${java.version}</maven.compiler.source>
+    <maven.compiler.target>${java.version}</maven.compiler.target>
+    <maven.compiler.testSource>${java.test.version}</maven.compiler.testSource>
+    <maven.compiler.testTarget>${java.test.version}</maven.compiler.testTarget>
+
+    <maven.compiler.release>${java.release.version}</maven.compiler.release>
+    <maven.compiler.testRelease>${java.test.release.version}</maven.compiler.testRelease>
 
     <!-- Project Encoding -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -270,6 +283,20 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-enforcer-plugin</artifactId>
           <version>3.4.0</version>
+          <configuration>
+            <rules>
+              <enforceBytecodeVersion>
+                <maxJdkVersion>${java.version}</maxJdkVersion>
+              </enforceBytecodeVersion>
+            </rules>
+          </configuration>
+          <dependencies>
+            <dependency>
+              <groupId>org.codehaus.mojo</groupId>
+              <artifactId>extra-enforcer-rules</artifactId>
+              <version>1.7.0</version>
+            </dependency>
+          </dependencies>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -519,6 +546,32 @@ limitations under the License.
             <goals>
               <goal>jar</goal>
             </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>enforce-maven</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>enforce-clean</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <phase>pre-clean</phase>
+          </execution>
+          <execution>
+            <id>enforce-site</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <phase>pre-site</phase>
           </execution>
         </executions>
       </plugin>
