@@ -9,6 +9,7 @@ release.properties
 # Eclipse
 .project
 .classpath
+.factorypath
 .settings/
 
 # IDEA
