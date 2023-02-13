@@ -90,7 +90,6 @@
         <artifactId>maven-javadoc-plugin</artifactId>
         <configuration>
           <failOnError>false</failOnError>
-          <!--additionalparam>-Xdoclint:none</additionalparam-->
           <sourceFileExcludes combine.children="append">
             <sourceFileExclude>**/*Mojo.java</sourceFileExclude>
           </sourceFileExcludes>
