@@ -15,6 +15,7 @@
  */
 package com.mycila.maven.plugin.license.dependencies;
 
+import org.apache.maven.Maven;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
 import org.apache.maven.artifact.resolver.filter.CumulativeScopeArtifactFilter;
@@ -49,10 +50,10 @@ import java.util.concurrent.ConcurrentMap;
  */
 public class MavenProjectLicenses implements LicenseMap, LicenseMessage {
 
+  private MavenSession session;
   private Set<MavenProject> projects;
   private DependencyGraphBuilder graph;
   private ProjectBuilder projectBuilder;
-  private ProjectBuildingRequest buildingRequest;
   private ArtifactFilter filter;
   private Log log;
 
@@ -62,11 +63,11 @@ public class MavenProjectLicenses implements LicenseMap, LicenseMessage {
    * @param projectBuilder the maven {@link ProjectBuilder} implementation
    * @param log            the log to sync to
    */
-  public MavenProjectLicenses(final Set<MavenProject> projects, final DependencyGraphBuilder graph,
-                              final ProjectBuilder projectBuilder, final ProjectBuildingRequest buildingRequest,
+  MavenProjectLicenses(final MavenSession session, final Set<MavenProject> projects, final DependencyGraphBuilder graph,
+                              final ProjectBuilder projectBuilder,
                               final ArtifactFilter filter, final Log log) {
+    this.setSession(session);
     this.setProjects(projects);
-    this.setBuildingRequest(buildingRequest);
     this.setGraph(graph);
     this.setFilter(filter);
     this.setProjectBuilder(projectBuilder);
@@ -82,18 +83,7 @@ public class MavenProjectLicenses implements LicenseMap, LicenseMessage {
    */
   public MavenProjectLicenses(final MavenSession session, MavenProject project, final DependencyGraphBuilder graph,
                               final ProjectBuilder projectBuilder, final List<String> scopes, final Log log) {
-    this(Collections.singleton(project), graph, projectBuilder, getBuildingRequestWithDefaults(session),
-        new CumulativeScopeArtifactFilter(scopes), log);
-  }
-
-  private static ProjectBuildingRequest getBuildingRequestWithDefaults(final MavenSession session) {
-    ProjectBuildingRequest request;
-    if (session == null) {
-      request = new DefaultProjectBuildingRequest();
-    } else {
-      request = session.getProjectBuildingRequest();
-    }
-    return request;
+    this(session, Collections.singleton(project), graph, projectBuilder, new CumulativeScopeArtifactFilter(scopes), log);
   }
 
   /**
@@ -150,6 +140,8 @@ public class MavenProjectLicenses implements LicenseMap, LicenseMessage {
     getLog().debug(String.format("Building dependency graphs for %d projects", getProjects().size()));
     getProjects().parallelStream().forEach(project -> {
       try {
+        DefaultProjectBuildingRequest buildingRequest = new DefaultProjectBuildingRequest(getBuildingRequest());
+        buildingRequest.setProject(project);
         dependencies.addAll(getGraph().buildDependencyGraph(buildingRequest, getFilter()).getChildren());
       } catch (DependencyGraphBuilderException ex) {
         getLog().warn(
@@ -172,6 +164,10 @@ public class MavenProjectLicenses implements LicenseMap, LicenseMessage {
 
   protected Set<MavenProject> getProjects() {
     return projects;
+  }
+
+  private void setSession(MavenSession session) {
+    this.session = session;
   }
 
   protected void setProjects(final Set<MavenProject> projects) {
@@ -211,10 +207,7 @@ public class MavenProjectLicenses implements LicenseMap, LicenseMessage {
   }
 
   private ProjectBuildingRequest getBuildingRequest() {
-    return buildingRequest;
-  }
-
-  protected void setBuildingRequest(final ProjectBuildingRequest buildingRequest) {
-    this.buildingRequest = Optional.ofNullable(buildingRequest).orElse(new DefaultProjectBuildingRequest());
+    // There's an odd comment on the below used method, pretty sure it is not as stable as one likes it to be
+    return session.getProjectBuildingRequest();
   }
 }
