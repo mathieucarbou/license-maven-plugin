@@ -15,110 +15,63 @@
  */
 package com.mycila.maven.plugin.license.dependencies;
 
-import com.google.common.io.Files;
-import org.apache.maven.it.VerificationException;
-import org.apache.maven.it.Verifier;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
+import static com.soebes.itf.extension.assertj.MavenITAssertions.assertThat;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Optional;
+import org.junit.jupiter.api.DisplayName;
+
+import com.soebes.itf.jupiter.extension.MavenGoal;
+import com.soebes.itf.jupiter.extension.MavenJupiterExtension;
+import com.soebes.itf.jupiter.extension.MavenTest;
+import com.soebes.itf.jupiter.maven.MavenExecutionResult;
 
 /**
- * We use {@link Verifier} here for mvn executions, mainly so:
- * a) we can verify a few cases that the invoker method make really difficult (I'd like to step-through with my IDE)
- * b) the test harness method requires creating a custom Artifact resolver, as the dependencGraphBuilder Component will
+ * The <a href="https://khmarbaise.github.io/maven-it-extension/itf-documentation/usersguide/usersguide.html">Maven Integration Testing Framework</a>
+ * is used here. The main reasons being as follow
+ * <p>
+ * a) we can verify a few cases that the invoker method make really difficult (For debugging purpose follow this
+ * <a href="https://khmarbaise.github.io/maven-it-extension/itf-documentation/usersguide/usersguide.html#_debugging">
+ * guide</a>)
+ * b) the test harness method requires creating a custom Artifact resolver, as the dependencyGraphBuilder Component will
  * not provide a usable bean, and we would need extensive mocking to override data for specific cases
  * c) it's a lot faster than maven-invoker-plugin
- * ... good overview of similar woes <a href="https://khmarbaise.github.io/maven-it-extension/itf-documentation/background/background.html">
- *   https://khmarbaise.github.io/maven-it-extension/itf-documentation/background/background.html</a>
+ * d) No snapshot installation should be necessary (the custom extension does all the necessary filtering)
+ * <p>
+ * A good overview of similar woes <a href="https://khmarbaise.github.io/maven-it-extension/itf-documentation/background/background.html">
+ *   https://khmarbaise.github.io/maven-it-extension/itf-documentation/background/background.html</a>.
  *
  * @author Royce Remer
+ * @author Michael J. Simons
  */
-class MavenProjectLicensesIT {
+@MavenJupiterExtension
+public class MavenProjectLicensesIT {
 
-  File source;
-  String target;
-  String phase;
-  Map<String, String> env;
-
-  @TempDir
-  File workspace;
-  final String sourcePrefix = "src/test/resources/config/";
-  final String resource = "/pom.xml";
-
-  @BeforeEach
-  public void setUp() {
-    // your maven may be on a different path, they'll append '/bin/mvn' to it
-    System.setProperty("maven.home", "/usr/local");
-
-    this.target = workspace.getAbsolutePath();
-    this.env = Collections.singletonMap("LICENSE_PLUGIN_VERSION", this.getClass().getPackage().getImplementationVersion());
-    this.phase = "verify";
+  @MavenTest
+  @MavenGoal("license:check")
+  @DisplayName("A project with enforcement enabled but nothing in scope should find zero dependencies")
+  void no_dependencies(MavenExecutionResult result) {
+    assertThat(result)
+      .isSuccessful()
+      .out().info()
+      .contains(LicenseMessage.INFO_DEPS_DISCOVERED + ": 0");
   }
 
-  private boolean hasLogLine(final String logline) {
-    Optional<Verifier> verifier;
-    try {
-      verifier = Optional.of(new Verifier(target));
-    } catch (Exception ex) {
-      // project didn't even build, this is a test or test resource error
-      return false;
-    }
-
-    try {
-      verifier.get().executeGoal(phase, env);
-    } catch (VerificationException e) {
-      // potential purposeful MojoExecutionException (hidden in stack)
-      try {
-        verifier.get().verifyTextInLog(logline);
-        return true;
-      } catch (VerificationException e1) {
-      }
-    }
-
-    // legit test failure
-    return false;
+  @MavenTest
+  @MavenGoal("license:check")
+  @DisplayName("A project with enforcement enabled and dependencies in scope under default deny policy should fail.")
+  void deny(MavenExecutionResult result) {
+    assertThat(result)
+      .isFailure()
+      .out().error()
+      .anyMatch(s -> s.contains(LicenseMessage.WARN_POLICY_DENIED));
   }
 
-  /**
-   * Helper method to sync test resources to a temporary folder for execution.
-   *
-   * @param dir - String relative path to {@link sourcePrefix} to copy from.
-   * @throws IOException
-   */
-  private void syncTarget(final String dir) throws IOException {
-    source = new File(sourcePrefix + dir + resource);
-    final File syncTarget = new File(target + resource);
-    Files.copy(source, syncTarget);
-  }
-
-  @Test
-  void test_null() throws IOException {
-    final String description = "A project with enforcement enabled but nothing in scope should find zero dependencies";
-    syncTarget("null");
-
-    Assertions.assertTrue(hasLogLine(LicenseMessage.INFO_DEPS_DISCOVERED + ": 0"), description);
-  }
-
-  @Test
-  void test_deny() throws IOException {
-    final String description = "A project with enforcement enabled and dependencies in scope under default deny policy should fail.";
-    syncTarget("deny");
-
-    Assertions.assertTrue(hasLogLine(LicenseMessage.WARN_POLICY_DENIED), description);
-  }
-
-  @Test
-  void test_approved() throws IOException {
-    final String description = "A project with allow policy and a single dependency should succeed.";
-    syncTarget("approve");
-
-    Assertions.assertTrue(hasLogLine(LicenseMessage.INFO_DEPS_DISCOVERED + ": 1"), description);
+  @MavenTest
+  @MavenGoal("license:check")
+  @DisplayName("A project with allow policy and a single dependency should succeed.")
+  void approve(MavenExecutionResult result) {
+    assertThat(result)
+      .isSuccessful()
+      .out().info()
+      .contains(LicenseMessage.INFO_DEPS_DISCOVERED + ": 1");
   }
 }
