@@ -141,10 +141,10 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
         <configuration>
-          <systemProperties>
+          <systemPropertyVariables>
             <maven.version>${maven.version}</maven.version>
             <maven.home>${maven.home}</maven.home>
-          </systemProperties>
+          </systemPropertyVariables>
           <properties>
             <configurationParameters>
               junit.jupiter.execution.parallel.enabled=true
