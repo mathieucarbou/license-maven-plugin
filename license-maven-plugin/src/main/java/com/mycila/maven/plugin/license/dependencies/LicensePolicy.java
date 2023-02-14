@@ -54,7 +54,7 @@ public class LicensePolicy {
      * @return true, if is allowed
      */
     public boolean isAllowed(final boolean matched) {
-      return (matched && allowed) || (!matched && !allowed);
+      return matched == allowed;
     }
 
     public static Rule valueOf(final boolean allowed) {
