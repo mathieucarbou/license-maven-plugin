@@ -27,3 +27,4 @@ nb-configuration.xml
 # OSX
 .DS_Store
 release-pom.xml
+.mvn/wrapper/maven-wrapper.jar
