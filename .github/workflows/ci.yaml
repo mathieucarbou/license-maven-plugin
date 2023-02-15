@@ -20,10 +20,19 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Set up JDK
+      - name: Set up JDK ${{ matrix.java }}
         uses: actions/setup-java@v3
         with:
           java-version: ${{ matrix.java }}
           distribution: ${{ matrix.distribution }}
-      - name: Test with Maven
+      - name: Test with Maven Using Project Maven Wrapper
         run: ./mvnw clean install site -V -B -D"maven.artifact.threads=64" -D"org.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
+      - name: Set up JDK 8 Integration Run (Consumer Run)
+        uses: actions/setup-java@v3
+        with:
+          java-version: 8
+          distribution: ${{ matrix.distribution }}
+      - name: Load Maven 3.2.5 Integration Run (Consumer Run) using GitHub Provided Maven
+        run: mvn org.apache.maven.plugins:maven-wrapper-plugin:3.2.0:wrapper -V -B -D"maven=3.2.5"
+      - name: Test with Maven 3.2.5 Java 8 (Consumer Run)
+        run: ./mvnw invoker:run -V -B -D"maven.artifact.threads=64" -D"org.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
