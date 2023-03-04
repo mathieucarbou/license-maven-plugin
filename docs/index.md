@@ -523,7 +523,7 @@ The plugin enables you to add any other mapping you want.* I.e., if you are deve
 </mapping>
 ```
 
-You can use composed-extensions like *.apt.vm and redefine them, but you will have to nake sure that the mapping of `apt.vm` is _before_ the mapping of the `vm` extension. The order in the mapping section is important: extensions seen first take precedence.
+You can use composed-extensions like *.apt.vm and redefine them, but you will have to make sure that the mapping of `apt.vm` is _before_ the mapping of the `vm` extension. The order in the mapping section is important: extensions seen first take precedence.
 
 __Java packages__
 
