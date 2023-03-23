@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<licensePluginReport goal="CHECK" timestamp="1679564880056">
+    <module artifactId="license-maven-plugin-git" groupId="com.mycila" version="4.3-SNAPSHOT"/>
+    <files>
+        <file path="pom.xml" result="PRESENT"/>
+        <file path="src/main/java/com/mycila/maven/plugin/license/git/CopyrightAuthorProvider.java" result="PRESENT"/>
+        <file path="src/main/java/com/mycila/maven/plugin/license/git/CopyrightRangeProvider.java" result="PRESENT"/>
+        <file path="src/main/java/com/mycila/maven/plugin/license/git/GitLookup.java" result="PRESENT"/>
+        <file path="src/main/java/com/mycila/maven/plugin/license/git/GitPathResolver.java" result="PRESENT"/>
+        <file path="src/test/java/com/mycila/maven/plugin/license/git/CopyrightAuthorProviderTest.java" result="PRESENT"/>
+        <file path="src/test/java/com/mycila/maven/plugin/license/git/CopyrightRangeProviderTest.java" result="PRESENT"/>
+        <file path="src/test/java/com/mycila/maven/plugin/license/git/GitLookupTest.java" result="PRESENT"/>
+        <file path="src/test/java/com/mycila/maven/plugin/license/git/GitPathResolverTest.java" result="PRESENT"/>
+    </files>
+</licensePluginReport>
