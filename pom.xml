@@ -48,10 +48,10 @@
   </ciManagement>
 
   <properties>
-    <jdk.version>8</jdk.version>
-
     <!-- Get method parameter names via reflection -->
     <maven.compiler.parameters>true</maven.compiler.parameters>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
 
     <!-- Project Encoding -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -330,10 +330,6 @@ limitations under the License.
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.11.0</version>
-          <configuration>
-            <source>${jdk.version}</source>
-            <target>${jdk.version}</target>
-          </configuration>
           <dependencies>
             <dependency>
               <groupId>org.codehaus.groovy</groupId>
@@ -526,6 +522,28 @@ limitations under the License.
           </plugin>
         </plugins>
       </build>
+    </profile>
+    <profile>
+      <!-- activate release flag for Eclipse compiler compliance when in Eclipse environment -->
+      <id>m2e</id>
+      <activation>
+        <property>
+          <name>m2e.version</name>
+        </property>
+      </activation>
+      <properties>
+        <maven.compiler.release>8</maven.compiler.release>
+      </properties>
+    </profile>
+    <profile>
+      <!-- activate release flag for compiler compliance when building with JDK 9 or later -->
+      <id>jdk-release-flag</id>
+      <activation>
+        <jdk>[9,)</jdk>
+      </activation>
+      <properties>
+        <maven.compiler.release>8</maven.compiler.release>
+      </properties>
     </profile>
   </profiles>
 
