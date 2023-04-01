@@ -38,7 +38,7 @@ class UseDefaultExcludesMojoTest {
       check.strictCheck = true;
       check.execute();
     } catch (Exception e) {
-      Assertions.assertEquals("Some files do not have the expected license header", e.getMessage());
+      Assertions.assertEquals("Some files do not have the expected license header. Run license:format to update them.", e.getMessage());
     }
   }
 
@@ -64,7 +64,7 @@ class UseDefaultExcludesMojoTest {
       check.strictCheck = true;
       check.execute();
     } catch (Exception e) {
-      Assertions.assertEquals("Some files do not have the expected license header", e.getMessage());
+      Assertions.assertEquals("Some files do not have the expected license header. Run license:format to update them.", e.getMessage());
     }
   }
 }

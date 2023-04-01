@@ -49,7 +49,7 @@ class MappingMojoTest {
       e.printStackTrace(System.out);
       //assertFalse(logger.getContent().contains("header style: javadoc_style"));
       //assertTrue(logger.getContent().contains("header style: text"));
-      Assertions.assertEquals("Some files do not have the expected license header", e.getMessage());
+      Assertions.assertEquals("Some files do not have the expected license header. Run license:format to update them.", e.getMessage());
     }
 
     logger.clear();
@@ -63,7 +63,7 @@ class MappingMojoTest {
     } catch (MojoExecutionException e) {
       Assertions.assertTrue(logger.getContent().contains("header style: javadoc_style"));
       Assertions.assertFalse(logger.getContent().contains("header style: text"));
-      Assertions.assertEquals("Some files do not have the expected license header", e.getMessage());
+      Assertions.assertEquals("Some files do not have the expected license header. Run license:format to update them.", e.getMessage());
     }
   }
 
@@ -87,7 +87,7 @@ class MappingMojoTest {
     } catch (MojoExecutionException e) {
       e.printStackTrace(System.out);
       Assertions.assertTrue(logger.getContent().contains("test.apt.vm [header style: sharpstar_style]"));
-      Assertions.assertEquals("Some files do not have the expected license header", e.getMessage());
+      Assertions.assertEquals("Some files do not have the expected license header. Run license:format to update them.", e.getMessage());
     }
 
     check.setLog(new SystemStreamLog());
@@ -155,7 +155,7 @@ class MappingMojoTest {
     } catch (MojoExecutionException e) {
       e.printStackTrace(System.out);
       Assertions.assertTrue(mappedLogger.getContent().contains("extensionless-file [header style: script_style]"));
-      Assertions.assertEquals("Some files do not have the expected license header", e.getMessage());
+      Assertions.assertEquals("Some files do not have the expected license header. Run license:format to update them.", e.getMessage());
     }
 
   }

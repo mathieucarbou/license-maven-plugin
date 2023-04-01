@@ -106,7 +106,7 @@ class UpdateMojoTest {
       check.execute();
       Assertions.fail();
     } catch (MojoExecutionException e) {
-      Assertions.assertEquals("Some files do not have the expected license header", e.getMessage());
+      Assertions.assertEquals("Some files do not have the expected license header. Run license:format to update them.", e.getMessage());
       Assertions.assertEquals(1, check.missingHeaders.size());
     }
 

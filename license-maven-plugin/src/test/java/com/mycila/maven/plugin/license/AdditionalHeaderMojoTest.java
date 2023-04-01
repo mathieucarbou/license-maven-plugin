@@ -41,7 +41,7 @@ class AdditionalHeaderMojoTest {
       check.execute();
       Assertions.fail();
     } catch (MojoExecutionException e) {
-      Assertions.assertEquals("Some files do not have the expected license header", e.getMessage());
+      Assertions.assertEquals("Some files do not have the expected license header. Run license:format to update them.", e.getMessage());
     }
 
     check.defaultHeaderDefinitions = new String[]{"/check/def/additionalHeaderDefinitions.xml"};
@@ -60,7 +60,7 @@ class AdditionalHeaderMojoTest {
       check.execute();
       Assertions.fail();
     } catch (MojoExecutionException e) {
-      Assertions.assertEquals("Some files do not have the expected license header", e.getMessage());
+      Assertions.assertEquals("Some files do not have the expected license header. Run license:format to update them.", e.getMessage());
     }
 
     HeaderStyle style = new HeaderStyle();
