@@ -43,7 +43,7 @@ class ValidHeaderMojoTest {
       check.execute();
       Assertions.fail();
     } catch (MojoExecutionException e) {
-      Assertions.assertEquals("Some files do not have the expected license header", e.getMessage());
+      Assertions.assertEquals("Some files do not have the expected license header. Run license:format to update them.", e.getMessage());
     }
 
     check.legacyConfigValidHeaders = new String[]{"src/test/resources/check/header2.txt"};

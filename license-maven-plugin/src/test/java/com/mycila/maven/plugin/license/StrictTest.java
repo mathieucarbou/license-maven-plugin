@@ -50,7 +50,7 @@ class StrictTest {
     try {
       check.execute();
     } catch (MojoExecutionException e) {
-      Assertions.assertEquals("Some files do not have the expected license header", e.getMessage());
+      Assertions.assertEquals("Some files do not have the expected license header. Run license:format to update them.", e.getMessage());
     }
     System.out.println(check.missingHeaders);
     Assertions.assertEquals(4, check.missingHeaders.size());
