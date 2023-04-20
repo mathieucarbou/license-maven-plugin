@@ -66,6 +66,7 @@
     <module>license-maven-plugin</module>
     <module>license-maven-plugin-git</module>
     <module>license-maven-plugin-svn</module>
+    <module>license-maven-plugin-fs</module>
   </modules>
 
   <scm>
