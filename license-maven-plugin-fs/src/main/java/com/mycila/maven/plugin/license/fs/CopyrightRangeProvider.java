@@ -41,11 +41,10 @@ public class CopyrightRangeProvider implements PropertiesProvider {
   public static final String INCEPTION_YEAR_KEY = "project.inceptionYear";
 
   /**
-   * Returns an unmodifiable map containing the following entries, whose values are set based on inspecting git history.
+   * Returns an unmodifiable map containing the following entries, whose values are set based on inspecting the filesystem.
    *
    * <ul>
-   * <li>{@value #COPYRIGHT_LAST_YEAR_KEY} key stores the year from the committer date of the last git commit that has
-   * modified the supplied {@code document}.</li>
+   * <li>{@value #COPYRIGHT_LAST_YEAR_KEY} key stores the year from the file's last modification timestamp .</li>
    * <li>{@value #COPYRIGHT_YEARS_KEY} key stores the range from {@value #INCEPTION_YEAR_KEY} value to
    * {@value #COPYRIGHT_LAST_YEAR_KEY} value. If both values a equal, only the {@value #INCEPTION_YEAR_KEY} value is
    * returned; otherwise, the two values are combined using dash, so that the result is e.g. {@code "2000-2010"}.</li>
