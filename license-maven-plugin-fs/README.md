@@ -9,10 +9,10 @@ What is license-maven-plugin-fs?
 * `license-maven-plugin-fs` can optionally be used with `license-maven-plugin` to bring in properties (esp. the year of the last change) from the filesystem.
 * The properties added by `license-maven-plugin-fs` can be used in file header templates used by `license-maven-plugin`
 
-Which properties is license-maven-plugin-git adding?
+Which properties is license-maven-plugin-fs adding?
 ----------------------------------------------------
 
-* `license.fs.copyrightLastYear` - the year of the last change of the present file as seen in git history
+* `license.fs.copyrightLastYear` - the year of the last change of the present file, seen as last modification time in the filesystem.
 * `license.fs.copyrightYears` - the combination of `project.inceptionYear` and `license.fs.copyrightLastYear` delimited by a dash (`-`), or just `project.inceptionYear` if `project.inceptionYear` is equal to `license.fs.copyrightLastYear`
 
 How to use license-maven-plugin-fs

@@ -53,7 +53,7 @@ class CopyrightRangeProviderTest {
       assertRange(provider, "dir1/file1.txt", "2023", "1999-2023");
       assertRange(provider, "dir1/file2.txt", "1999", "1999");
 
-      /* The last change of file3.txt in git history is in 1999
+      /* The last change of file3.txt is in 1999
        * but the inception year is 2000
        * and we do not want the range to go back (2000-1999)
        * so in this case we expect just 2000
