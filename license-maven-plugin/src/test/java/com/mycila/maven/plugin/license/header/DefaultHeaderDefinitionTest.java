@@ -24,9 +24,6 @@ import java.io.File;
 
 import static java.lang.String.format;
 
-/**
- * @author Mathieu Carbou (mathieu.carbou@gmail.com)
- */
 class DefaultHeaderDefinitionTest {
   @Test
   void test_styles() throws Exception {

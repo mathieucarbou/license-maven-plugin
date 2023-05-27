@@ -22,8 +22,6 @@ import java.util.Optional;
 /**
  * A policy decision based on some matcher/value and type. Different policy
  * enforcers should take this class as a constructor argument.
- *
- * @author Royce Remer
  */
 public class LicensePolicy {
   public enum Type {

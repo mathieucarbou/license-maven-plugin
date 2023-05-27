@@ -21,9 +21,6 @@ import org.codehaus.plexus.logging.Logger;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-/**
- * @author Mathieu Carbou (mathieu.carbou@gmail.com)
- */
 final class MockedLog extends AbstractLogger {
 
   private final StringWriter sw = new StringWriter();

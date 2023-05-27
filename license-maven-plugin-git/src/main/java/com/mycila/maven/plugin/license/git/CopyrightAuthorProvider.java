@@ -29,8 +29,6 @@ import java.util.Map;
  * An implementation of {@link PropertiesProvider} that adds {@value
  * #COPYRIGHT_CREATION_AUTHOR_NAME_KEY} and {@value #COPYRIGHT_CREATION_AUTHOR_EMAIL_KEY} values -
  * see {@link #adjustProperties(AbstractLicenseMojo, Map, Document)}.
- *
- * @author masakimu
  */
 public class CopyrightAuthorProvider implements PropertiesProvider {
 

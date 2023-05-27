@@ -5,9 +5,6 @@ import com.mycila.maven.plugin.license.document.Document;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @author Mathieu Carbou (mathieu.carbou@gmail.com) 2013-08-27
- */
 public final class MyPropertiesProvider implements PropertiesProvider {
 
   @Override

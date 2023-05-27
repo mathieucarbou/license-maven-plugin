@@ -57,8 +57,6 @@ import java.util.Map;
  *   &lt;/xs:complexType&gt;
  *  &lt;/xs:schema&gt;
  * </pre>
- *
- * @author Cedric Pronzato
  */
 public final class AdditionalHeaderDefinition {
   private final Map<String, HeaderDefinition> definitions = new HashMap<>();

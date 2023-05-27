@@ -17,8 +17,6 @@ package com.mycila.maven.plugin.license.dependencies;
 
 /**
  * Methods exposed by enforcer implementations using {@link LicensePolicy}.
- *
- * @author Royce Remer
  */
 public interface LicensePolicyEnforcer<T> {
 

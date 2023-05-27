@@ -23,9 +23,6 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 
-/**
- * @author Mathieu Carbou (mathieu.carbou@gmail.com)
- */
 class UseDefaultMappingMojoTest {
   @Test
   void test_not_useDefaultMapping() throws Exception {

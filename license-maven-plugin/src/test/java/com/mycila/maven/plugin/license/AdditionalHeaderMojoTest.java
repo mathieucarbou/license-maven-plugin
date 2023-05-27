@@ -24,9 +24,6 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.util.Collections;
 
-/**
- * @author Mathieu Carbou (mathieu.carbou@gmail.com)
- */
 class AdditionalHeaderMojoTest {
   @Test
   void test_additionalHeaderDefinitions() throws Exception {

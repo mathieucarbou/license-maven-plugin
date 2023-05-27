@@ -24,9 +24,6 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.IOException;
 
-/**
- * @author Mathieu Carbou (mathieu.carbou@gmail.com)
- */
 class HeaderTest {
   @Test
   void test() throws Exception {

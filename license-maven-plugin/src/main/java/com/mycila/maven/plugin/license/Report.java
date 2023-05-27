@@ -36,9 +36,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-/**
- * @author Mathieu Carbou
- */
 public class Report {
 
   enum Action {CHECK, FORMAT, REMOVE}

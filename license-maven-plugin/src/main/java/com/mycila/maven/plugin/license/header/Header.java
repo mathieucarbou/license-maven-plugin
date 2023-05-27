@@ -32,8 +32,6 @@ import static com.mycila.maven.plugin.license.util.FileUtils.remove;
 /**
  * The <code>Header</code> class wraps the license template file, the one which have to be outputted inside the other
  * files.
- *
- * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
 public final class Header {
   private final HeaderSource location;

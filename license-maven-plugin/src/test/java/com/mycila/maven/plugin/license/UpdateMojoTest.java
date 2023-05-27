@@ -32,9 +32,6 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-/**
- * @author Mathieu Carbou (mathieu.carbou@gmail.com)
- */
 class UpdateMojoTest {
 
   public static final String LS = "\n";

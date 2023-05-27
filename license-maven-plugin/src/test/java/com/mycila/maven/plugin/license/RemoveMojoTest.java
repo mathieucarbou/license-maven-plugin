@@ -25,9 +25,6 @@ import java.io.File;
 import java.nio.charset.Charset;
 import java.util.List;
 
-/**
- * @author Mathieu Carbou (mathieu.carbou@gmail.com)
- */
 final class RemoveMojoTest {
   public static final String LS = "\n";
 

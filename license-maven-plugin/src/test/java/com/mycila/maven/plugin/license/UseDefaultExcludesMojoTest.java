@@ -21,9 +21,6 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 
-/**
- * @author Mathieu Carbou (mathieu.carbou@gmail.com)
- */
 class UseDefaultExcludesMojoTest {
 
   @Test

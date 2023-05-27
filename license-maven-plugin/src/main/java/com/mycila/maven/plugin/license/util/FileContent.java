@@ -20,9 +20,6 @@ import java.io.IOException;
 
 import static com.mycila.maven.plugin.license.util.FileUtils.read;
 
-/**
- * @author Mathieu Carbou (mathieu.carbou@gmail.com)
- */
 public final class FileContent {
   private final File file;
   private final StringBuilder fileContent;

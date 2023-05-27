@@ -18,9 +18,6 @@ package com.mycila.maven.plugin.license.header;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-/**
- * @author Mathieu Carbou (mathieu.carbou@gmail.com)
- */
 class HeaderTypeTest {
   @Test
   void test() throws Exception {

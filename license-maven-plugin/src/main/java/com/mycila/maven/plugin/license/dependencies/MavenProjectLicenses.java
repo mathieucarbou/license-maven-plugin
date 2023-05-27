@@ -44,8 +44,6 @@ import java.util.concurrent.ConcurrentMap;
 /**
  * Helper class for building Artifact/License mappings from a maven project
  * (multi module or single).
- *
- * @author Royce Remer
  */
 public class MavenProjectLicenses implements LicenseMap, LicenseMessage {
 

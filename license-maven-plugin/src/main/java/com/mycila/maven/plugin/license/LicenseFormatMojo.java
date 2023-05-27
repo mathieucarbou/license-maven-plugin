@@ -25,8 +25,6 @@ import java.io.File;
 
 /**
  * Reformat files with a missing header to add it
- *
- * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
 @Mojo(name = "format", threadSafe = true)
 public final class LicenseFormatMojo extends AbstractLicenseMojo {

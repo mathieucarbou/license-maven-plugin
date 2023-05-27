@@ -20,8 +20,6 @@ import java.io.File;
 /**
  * A utility to transform native {@link File} paths to the form expected by jGit - i.e. relative to git working tree
  * root directory and delimited by {@code '/'}.
- *
- * @author <a href="mailto:ppalaga@redhat.com">Peter Palaga</a>
  */
 public class GitPathResolver {
 

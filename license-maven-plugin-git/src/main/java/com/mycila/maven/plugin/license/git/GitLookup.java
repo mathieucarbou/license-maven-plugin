@@ -54,8 +54,6 @@ import static java.util.Objects.requireNonNull;
 
 /**
  * A jGit library wrapper to query the date of the last commit.
- *
- * @author <a href="mailto:ppalaga@redhat.com">Peter Palaga</a>
  */
 public class GitLookup implements Closeable {
 

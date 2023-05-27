@@ -38,8 +38,6 @@ import java.util.stream.Collectors;
 
 /**
  * Check if the source files of the project have a valid license header
- *
- * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
 @Mojo(name = "check", defaultPhase = LifecyclePhase.VERIFY, threadSafe = true)
 public final class LicenseCheckMojo extends AbstractLicenseMojo {

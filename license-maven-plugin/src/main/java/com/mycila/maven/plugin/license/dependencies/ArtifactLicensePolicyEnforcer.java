@@ -23,8 +23,6 @@ import java.util.Collections;
 
 /**
  * Make policy decisions on a {@link Artifact} based on an {@link ArtifactFilter}.
- *
- * @author Royce Remer
  */
 public class ArtifactLicensePolicyEnforcer extends AbstractLicensePolicyEnforcer<Artifact> {
   private ArtifactFilter filter;

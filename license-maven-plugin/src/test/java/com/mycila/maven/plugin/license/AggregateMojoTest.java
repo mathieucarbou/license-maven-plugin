@@ -24,9 +24,6 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * @author Mathieu Carbou (mathieu.carbou@gmail.com)
- */
 class AggregateMojoTest {
   @Test
   void test_modules_ignored() throws Exception {
