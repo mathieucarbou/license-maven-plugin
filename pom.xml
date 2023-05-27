@@ -57,7 +57,10 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
     <mycila.github.name>license-maven-plugin</mycila.github.name>
+
+    <groovy.version>4.0.12</groovy.version>
     <jacoco.minimum.coverage>1.00</jacoco.minimum.coverage>
     <junit.version>5.9.3</junit.version>
   </properties>
@@ -222,12 +225,29 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-invoker-plugin</artifactId>
           <version>3.5.1</version>
+          <configuration>
+            <streamLogsOnFailures>true</streamLogsOnFailures>
+          </configuration>
           <dependencies>
             <dependency>
               <groupId>org.apache.groovy</groupId>
-              <artifactId>groovy-all</artifactId>
-              <version>4.0.12</version>
-              <type>pom</type>
+              <artifactId>groovy</artifactId>
+              <version>${groovy.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>org.apache.groovy</groupId>
+              <artifactId>groovy-json</artifactId>
+              <version>${groovy.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>org.apache.groovy</groupId>
+              <artifactId>groovy-nio</artifactId>
+              <version>${groovy.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>org.apache.groovy</groupId>
+              <artifactId>groovy-xml</artifactId>
+              <version>${groovy.version}</version>
             </dependency>
           </dependencies>
         </plugin>
