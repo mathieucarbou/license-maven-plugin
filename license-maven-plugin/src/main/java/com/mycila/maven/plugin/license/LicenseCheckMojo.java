@@ -37,14 +37,16 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Collectors;
 
 /**
- * Check if the source files of the project have a valid license header
+ * Check if the source files of the project have a valid license header.
  */
 @Mojo(name = "check", defaultPhase = LifecyclePhase.VERIFY, threadSafe = true)
 public final class LicenseCheckMojo extends AbstractLicenseMojo {
 
+  /** The error message. */
   @Parameter(property = "license.errorMessage", defaultValue = "Some files do not have the expected license header. Run license:format to update them.")
   public String errorMessage = "Some files do not have the expected license header. Run license:format to update them.";
 
+  /** The missing headers. */
   public final Collection<File> missingHeaders = new ConcurrentLinkedQueue<>();
 
   @Override

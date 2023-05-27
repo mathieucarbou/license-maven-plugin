@@ -41,6 +41,15 @@ public final class Document {
   private HeaderParser parser;
 
 
+  /**
+   * Instantiates a new document.
+   *
+   * @param file the file
+   * @param headerDefinition the header definition
+   * @param encoding the encoding
+   * @param keywords the keywords
+   * @param documentPropertiesLoader the document properties loader
+   */
   public Document(File file, HeaderDefinition headerDefinition, String encoding, String[] keywords, DocumentPropertiesLoader documentPropertiesLoader) {
     this.keywords = keywords.clone();
     this.file = file;
@@ -49,26 +58,58 @@ public final class Document {
     this.documentPropertiesLoader = documentPropertiesLoader;
   }
 
+  /**
+   * Gets the header definition.
+   *
+   * @return the header definition
+   */
   public HeaderDefinition getHeaderDefinition() {
     return headerDefinition;
   }
 
+  /**
+   * Gets the file.
+   *
+   * @return the file
+   */
   public File getFile() {
     return file;
   }
 
+  /**
+   * Gets the file path.
+   *
+   * @return the file path
+   */
   public String getFilePath() {
     return getFile().getPath().replace('\\', '/');
   }
 
+  /**
+   * Gets the encoding.
+   *
+   * @return the encoding
+   */
   public String getEncoding() {
     return encoding;
   }
 
+  /**
+   * Checks if is not supported.
+   *
+   * @return true, if is not supported
+   */
   public boolean isNotSupported() {
     return headerDefinition == null || HeaderType.UNKNOWN.getDefinition().getType().equals(headerDefinition.getType());
   }
 
+  /**
+   * Checks for header.
+   *
+   * @param header the header
+   * @param strictCheck the strict check
+   * @return true, if successful
+   */
   public boolean hasHeader(Header header, boolean strictCheck) {
     if (!strictCheck) {
       try {
@@ -87,19 +128,38 @@ public final class Document {
     }
   }
 
+  /**
+   * Update header.
+   *
+   * @param header the header
+   */
   public void updateHeader(Header header) {
     String headerStr = header.applyDefinitionAndSections(parser.getHeaderDefinition(), parser.getFileContent().isUnix());
     parser.getFileContent().insert(parser.getBeginPosition(), mergeProperties(headerStr));
   }
 
+  /**
+   * Merge properties.
+   *
+   * @param str the str
+   * @return the string
+   */
   public String mergeProperties(String str) {
     return placeholderResolver.replacePlaceholders(str, documentPropertiesLoader.load(this));
   }
 
+  /**
+   * Save.
+   */
   public void save() {
     saveTo(file);
   }
 
+  /**
+   * Save to.
+   *
+   * @param dest the dest
+   */
   public void saveTo(File dest) {
     if (parser != null) {
       try {
@@ -110,16 +170,30 @@ public final class Document {
     }
   }
 
+  /**
+   * Gets the content.
+   *
+   * @return the content
+   */
   public String getContent() {
     return parser == null ? "" : parser.getFileContent().getContent();
   }
 
+  /**
+   * Removes the header.
+   */
   public void removeHeader() {
     if (headerDetected()) {
       parser.getFileContent().delete(parser.getBeginPosition(), parser.getEndPosition());
     }
   }
 
+  /**
+   * Checks if is.
+   *
+   * @param header the header
+   * @return true, if successful
+   */
   public boolean is(Header header) {
     try {
       return header.getLocation().isFromUrl(this.file.toURI().toURL());
@@ -128,12 +202,20 @@ public final class Document {
     }
   }
 
+  /**
+   * Parses the header.
+   */
   public void parseHeader() {
     if (parser == null) {
       parser = new HeaderParser(new FileContent(file, encoding), headerDefinition, keywords);
     }
   }
 
+  /**
+   * Header detected.
+   *
+   * @return true, if successful
+   */
   public boolean headerDetected() {
     return parser.gotAnyHeader();
   }

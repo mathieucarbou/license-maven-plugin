@@ -20,6 +20,9 @@ package com.mycila.maven.plugin.license.dependencies;
  */
 public class DefaultLicensePolicyEnforcer extends ArtifactLicensePolicyEnforcer {
 
+  /**
+   * Instantiates a new default license policy enforcer.
+   */
   public DefaultLicensePolicyEnforcer() {
     super(new LicensePolicy(LicensePolicy.Rule.DENY, LicensePolicy.Type.ARTIFACT_PATTERN, "*"));
   }

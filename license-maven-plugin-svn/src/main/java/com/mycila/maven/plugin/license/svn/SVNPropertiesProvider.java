@@ -43,13 +43,25 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class SVNPropertiesProvider implements PropertiesProvider {
 
-
+  /** The Constant SVN_COPYRIGHT_LASTCHANGE_YEAR_KEY. */
   public static final String SVN_COPYRIGHT_LASTCHANGE_YEAR_KEY = "license.svn.lastchange.year";
+
+  /** The Constant SVN_COPYRIGHT_LASTCHANGE_DATE_KEY. */
   public static final String SVN_COPYRIGHT_LASTCHANGE_DATE_KEY = "license.svn.lastchange.date";
+
+  /** The Constant SVN_COPYRIGHT_LASTCHANGE_TIMESTAMP_KEY. */
   public static final String SVN_COPYRIGHT_LASTCHANGE_TIMESTAMP_KEY = "license.svn.lastchange.timestamp";
+
+  /** The Constant SVN_COPYRIGHT_LASTCHANGE_REVISION_KEY. */
   public static final String SVN_COPYRIGHT_LASTCHANGE_REVISION_KEY = "license.svn.lastchange.revision";
+
+  /** The Constant SVN_COPYRIGHT_YEARS_RANGE_KEY. */
   public static final String SVN_COPYRIGHT_YEARS_RANGE_KEY = "license.svn.years.range";
+
+  /** The Constant INCEPTION_YEAR_KEY. */
   public static final String INCEPTION_YEAR_KEY = "project.inceptionYear";
+
+  /** The Constant SVN_SERVER_ID_PLUGIN_KEY. */
   public static final String SVN_SERVER_ID_PLUGIN_KEY = "license.svn.serverId";
 
   private Credentials svnCredentials;

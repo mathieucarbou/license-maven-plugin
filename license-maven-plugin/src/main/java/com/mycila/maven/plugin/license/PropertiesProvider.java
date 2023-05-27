@@ -23,12 +23,28 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
+ * The Interface PropertiesProvider.
  */
 public interface PropertiesProvider extends Closeable {
 
+  /**
+   * Inits the.
+   *
+   * @param mojo the mojo
+   * @param currentProperties the current properties
+   */
   default void init(AbstractLicenseMojo mojo, Map<String, String> currentProperties) {
+      // Do nothing on default
   }
 
+  /**
+   * Adjust properties.
+   *
+   * @param mojo the mojo
+   * @param currentProperties the current properties
+   * @param document the document
+   * @return the map
+   */
   default Map<String, String> adjustProperties(AbstractLicenseMojo mojo,
                                                Map<String, String> currentProperties, Document document) {
     Properties properties = new Properties();
@@ -37,6 +53,12 @@ public interface PropertiesProvider extends Closeable {
   }
 
   /**
+   * Gets the additional properties.
+   *
+   * @param mojo the mojo
+   * @param currentProperties the current properties
+   * @param document the document
+   * @return the additional properties
    * @deprecated Use instead {@link #adjustProperties(AbstractLicenseMojo, Map, Document)}
    */
   @Deprecated
@@ -45,7 +67,11 @@ public interface PropertiesProvider extends Closeable {
     return Collections.emptyMap();
   }
 
+  /**
+   * Close.
+   */
   @Override
   default void close() {
+      // Do nothing on default
   }
 }

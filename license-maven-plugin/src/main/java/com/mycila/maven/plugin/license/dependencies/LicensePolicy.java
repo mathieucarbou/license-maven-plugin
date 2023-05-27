@@ -24,12 +24,32 @@ import java.util.Optional;
  * enforcers should take this class as a constructor argument.
  */
 public class LicensePolicy {
+
+  /**
+   * The Enum Type.
+   */
   public enum Type {
-    LICENSE_NAME, LICENSE_URL, ARTIFACT_PATTERN;
+    /** The license name. */
+    LICENSE_NAME,
+
+    /** The license url. */
+    LICENSE_URL,
+
+    /** The artifact pattern. */
+    ARTIFACT_PATTERN;
   }
 
+  /**
+   * The Enum Rule.
+   */
   public enum Rule {
-    APPROVE(true), DENY(false);
+
+    /** The approve. */
+    APPROVE(true),
+
+    /** The deny. */
+    DENY(false);
+
     boolean allowed;
 
     Rule(final boolean allowed) {
@@ -39,7 +59,7 @@ public class LicensePolicy {
     /**
      * Get a boolean form of a rule.
      *
-     * @return
+     * @return the predicate
      */
     public boolean getPredicate() {
       return allowed;
@@ -55,6 +75,12 @@ public class LicensePolicy {
       return matched == allowed;
     }
 
+    /**
+     * Value of.
+     *
+     * @param allowed the allowed
+     * @return the rule
+     */
     public static Rule valueOf(final boolean allowed) {
       if (allowed) {
         return APPROVE;
@@ -71,10 +97,20 @@ public class LicensePolicy {
   @Parameter
   private String value;
 
+  /**
+   * Instantiates a new license policy.
+   */
   // only here for plexus container injection by maven
   public LicensePolicy() {
   }
 
+  /**
+   * Instantiates a new license policy.
+   *
+   * @param rule the rule
+   * @param type the type
+   * @param value the value
+   */
   public LicensePolicy(final Rule rule, final Type type, final String value) {
     this.setRule(rule);
     this.setType(type);
@@ -95,14 +131,29 @@ public class LicensePolicy {
     }
   }
 
+  /**
+   * Gets the value.
+   *
+   * @return the value
+   */
   public String getValue() {
     return value;
   }
 
+  /**
+   * Gets the rule.
+   *
+   * @return the rule
+   */
   public Rule getRule() {
     return rule;
   }
 
+  /**
+   * Gets the type.
+   *
+   * @return the type
+   */
   public Type getType() {
     return type;
   }

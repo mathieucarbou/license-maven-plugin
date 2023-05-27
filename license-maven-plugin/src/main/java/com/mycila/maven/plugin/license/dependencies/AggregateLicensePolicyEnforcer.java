@@ -29,8 +29,8 @@ import java.util.stream.Collectors;
  * <p>
  * Rules are applied in the following order:
  * 1) defaultPolicy: unless overridden via setDefaultPolicy, this will DENY all artifacts.
- * 2) APPROVE policies: any policy in the Set which have {@link LicensePolicy.Rule.APPROVE}
- * 3) DENY policies: any policy in the Set which have {@link LIcensePolicy.Rule.DENY}
+ * 2) APPROVE policies: any policy in the Set which have {@link LicensePolicy.Rule#APPROVE}
+ * 3) DENY policies: any policy in the Set which have {@link LicensePolicy.Rule#DENY}
  */
 @SuppressWarnings("rawtypes")
 public class AggregateLicensePolicyEnforcer {
@@ -38,6 +38,11 @@ public class AggregateLicensePolicyEnforcer {
   private LicensePolicyEnforcer defaultPolicy;
   private Set<LicensePolicyEnforcer> enforcers;
 
+  /**
+   * Instantiates a new aggregate license policy enforcer.
+   *
+   * @param policies the policies
+   */
   public AggregateLicensePolicyEnforcer(final Set<LicensePolicy> policies) {
     this.policies = policies;
     this.defaultPolicy = new DefaultLicensePolicyEnforcer();
@@ -149,28 +154,54 @@ public class AggregateLicensePolicyEnforcer {
    * applying the internal set of {@link LicensePolicyEnforcer} implementations on them,
    * and returning a mapping of Artifact keys to the boolean enforcement decision made.
    *
+   * @param licenseMap the license map
    * @return final policy decision map on each artifact
    */
   public Map<Artifact, LicensePolicyEnforcerResult> apply(final LicenseMap licenseMap) {
     return apply(licenseMap.getLicenseMap());
   }
 
+  /**
+   * Sets the enforcers.
+   *
+   * @param enforcers the new enforcers
+   */
   public void setEnforcers(final Set<LicensePolicyEnforcer> enforcers) {
     this.enforcers = enforcers;
   }
 
+  /**
+   * Gets the enforcers.
+   *
+   * @return the enforcers
+   */
   public Set<LicensePolicyEnforcer> getEnforcers() {
     return enforcers;
   }
 
+  /**
+   * Gets the policies.
+   *
+   * @return the policies
+   */
   public Set<LicensePolicy> getPolicies() {
     return policies;
   }
 
+  /**
+   * Gets the default policy.
+   *
+   * @return the default policy
+   */
   public LicensePolicyEnforcer<?> getDefaultPolicy() {
     return defaultPolicy;
   }
 
+  /**
+   * Sets the default policy.
+   *
+   * @param defaultPolicy the new default policy
+   */
   public void setDefaultPolicy(final LicensePolicyEnforcer defaultPolicy) {
     this.defaultPolicy = defaultPolicy;
   }

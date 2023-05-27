@@ -57,17 +57,34 @@ import static java.util.Objects.requireNonNull;
  */
 public class GitLookup implements Closeable {
 
+  /** The Constant DEFAULT_ZONE. */
   public static final TimeZone DEFAULT_ZONE = TimeZone.getTimeZone("GMT");
 
+  /** The Constant MAX_COMMITS_LOOKUP_KEY. */
   public static final String MAX_COMMITS_LOOKUP_KEY = "license.git.maxCommitsLookup";
-  // keep for compatibility
-  private static final String COPYRIGHT_LAST_YEAR_MAX_COMMITS_LOOKUP_KEY = "license.git.copyrightLastYearMaxCommitsLookup";
+
+  /** The Constant COPYRIGHT_LAST_YEAR_SOURCE_KEY. */
   public static final String COPYRIGHT_LAST_YEAR_SOURCE_KEY = "license.git.copyrightLastYearSource";
+
+  /** The Constant COPYRIGHT_LAST_YEAR_TIME_ZONE_KEY. */
   public static final String COPYRIGHT_LAST_YEAR_TIME_ZONE_KEY = "license.git.copyrightLastYearTimeZone";
+
+  /** The Constant COMMITS_TO_IGNORE_KEY. */
   public static final String COMMITS_TO_IGNORE_KEY = "license.git.commitsToIgnore";
 
+  /** The Constant COPYRIGHT_LAST_YEAR_MAX_COMMITS_LOOKUP_KEY.  Keep for compatibility. */
+  private static final String COPYRIGHT_LAST_YEAR_MAX_COMMITS_LOOKUP_KEY = "license.git.copyrightLastYearMaxCommitsLookup";
+
+  /**
+   * The Enum DateSource.
+   */
   public enum DateSource {
-    AUTHOR, COMMITER
+
+    /** The author. */
+    AUTHOR,
+
+    /** The commiter. */
+    COMMITER
   }
 
   private final int checkCommitsCount;
@@ -81,6 +98,10 @@ public class GitLookup implements Closeable {
   /**
    * Lazily initializes #gitLookup assuming that all subsequent calls to this method will be related
    * to the same git repository.
+   *
+   * @param file the file
+   * @param props the props
+   * @return the git lookup
    */
   public static GitLookup create(File file, Map<String, String> props) {
     final GitLookup.DateSource dateSource = Optional.ofNullable(props.get(COPYRIGHT_LAST_YEAR_SOURCE_KEY))
@@ -129,7 +150,6 @@ public class GitLookup implements Closeable {
    *                          otherwise must be {@code null}.
    * @param checkCommitsCount the number of historical commits, per file, to check
    * @param commitsToIgnore   the commits to ignore while inspecting the history for {@code anyFile}
-   * @throws IOException
    */
   private GitLookup(File anyFile, DateSource dateSource, TimeZone timeZone, int checkCommitsCount, Set<ObjectId> commitsToIgnore) {
     requireNonNull(anyFile);
@@ -167,8 +187,8 @@ public class GitLookup implements Closeable {
    *
    * @param file for which the year should be retrieved
    * @return year of last modification of the file
-   * @throws IOException     if unable to read the file
    * @throws GitAPIException if unable to process the git history
+   * @throws IOException     if unable to read the file
    */
   int getYearOfLastChange(File file) throws GitAPIException, IOException {
     String repoRelativePath = pathResolver.relativize(file);
@@ -192,12 +212,16 @@ public class GitLookup implements Closeable {
     return commitYear;
   }
 
-  /*
-   * Returns the year of creation for the given {@code file) based on the history of the present git branch. The
+  /**
+   * Returns the year of creation for the given {@code file} based on the history of the present git branch. The
    * year is taken either from the committer date or from the author identity depending on how {@link #dateSource} was
    * initialized.
+   *
+   * @param file the file
+   * @return the year of creation
+   * @throws IOException Signals that an I/O exception has occurred.
    */
-  int getYearOfCreation(File file) throws IOException, GitAPIException {
+  int getYearOfCreation(File file) throws IOException {
     String repoRelativePath = pathResolver.relativize(file);
 
     int commitYear = 0;

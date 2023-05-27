@@ -71,18 +71,38 @@ public final class Header {
     this.maxLength = maxLength;
   }
 
+  /**
+   * As string.
+   *
+   * @return the string
+   */
   public String asString() {
     return headerContent;
   }
 
+  /**
+   * As one line string.
+   *
+   * @return the string
+   */
   public String asOneLineString() {
     return headerContentOneLine;
   }
 
+  /**
+   * Gets the line count.
+   *
+   * @return the line count
+   */
   public int getLineCount() {
     return lines.length;
   }
 
+  /**
+   * Gets the max line length.
+   *
+   * @return the max line length
+   */
   public int getMaxLineLength() {
     return maxLength;
   }
@@ -96,10 +116,23 @@ public final class Header {
     return location;
   }
 
+  /**
+   * Eol.
+   *
+   * @param unix the unix
+   * @return the string
+   */
   public String eol(boolean unix) {
     return unix ? "\n" : "\r\n";
   }
 
+  /**
+   * Builds the for definition.
+   *
+   * @param type the type
+   * @param unix the unix
+   * @return the string
+   */
   public String buildForDefinition(HeaderDefinition type, boolean unix) {
     StringBuilder newHeader = new StringBuilder();
     String unixEndOfLine = eol(unix);
@@ -139,6 +172,11 @@ public final class Header {
     return asString();
   }
 
+  /**
+   * Gets the lines.
+   *
+   * @return the lines
+   */
   public String[] getLines() {
     return lines;
   }
@@ -159,6 +197,15 @@ public final class Header {
     return isMatchForText(expected, potentialFileHeader, headerDefinition, unix);
   }
 
+  /**
+   * Checks if is match for text.
+   *
+   * @param expected the expected
+   * @param potentialFileHeader the potential file header
+   * @param headerDefinition the header definition
+   * @param unix the unix
+   * @return true, if is match for text
+   */
   public boolean isMatchForText(String expected, String potentialFileHeader, HeaderDefinition headerDefinition, boolean unix) {
 
     SortedMap<Integer, HeaderSection> sectionsByIndex = computeSectionsByIndex(expected);
@@ -172,6 +219,16 @@ public final class Header {
     return recursivelyFindMatch(potentialFileHeader, headerDefinition, textBetweenSections, sectionsInOrder, 0, 0);
   }
 
+  /**
+   * Checks if is match for text.
+   *
+   * @param d the d
+   * @param headerDefinition the header definition
+   * @param unix the unix
+   * @param encoding the encoding
+   * @return true, if is match for text
+   * @throws IOException Signals that an I/O exception has occurred.
+   */
   public boolean isMatchForText(Document d, HeaderDefinition headerDefinition, boolean unix, String encoding) throws IOException {
     String fileHeader = readFirstLines(d.getFile(), getLineCount() + 10, encoding).replaceAll(" *\r?\n", "\n");
     String expected = buildForDefinition(headerDefinition, unix);
@@ -179,6 +236,13 @@ public final class Header {
     return isMatchForText(expected, fileHeader, headerDefinition, unix);
   }
 
+  /**
+   * Apply definition and sections.
+   *
+   * @param headerDefinition the header definition
+   * @param unix the unix
+   * @return the string
+   */
   public String applyDefinitionAndSections(HeaderDefinition headerDefinition, boolean unix) {
 
     String expected = buildForDefinition(headerDefinition, unix);

@@ -22,6 +22,11 @@ import org.apache.maven.model.License;
  */
 public class LicenseURLLicensePolicyEnforcer extends AbstractLicensePolicyEnforcer<License> {
 
+  /**
+   * Instantiates a new license URL license policy enforcer.
+   *
+   * @param policy the policy
+   */
   public LicenseURLLicensePolicyEnforcer(final LicensePolicy policy) {
     super(policy);
   }

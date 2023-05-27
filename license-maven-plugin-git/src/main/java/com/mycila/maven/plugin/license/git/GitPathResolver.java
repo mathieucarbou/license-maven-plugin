@@ -23,9 +23,7 @@ import java.io.File;
  */
 public class GitPathResolver {
 
-  /**
-   * The path separator expected by jGit.
-   */
+  /** The path separator expected by jGit. */
   private static final char CANONICAL_PATH_SEPARATOR = '/';
 
   /**
@@ -38,6 +36,11 @@ public class GitPathResolver {
    */
   private final String repositoryRootDir;
 
+  /**
+   * Instantiates a new git path resolver.
+   *
+   * @param repositoryRootDir the repository root dir
+   */
   public GitPathResolver(String repositoryRootDir) {
     this(repositoryRootDir, File.separatorChar);
   }

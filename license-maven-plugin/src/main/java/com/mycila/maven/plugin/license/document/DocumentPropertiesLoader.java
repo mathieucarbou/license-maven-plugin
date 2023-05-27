@@ -17,7 +17,16 @@ package com.mycila.maven.plugin.license.document;
 
 import java.util.Map;
 
+/**
+ * The Interface DocumentPropertiesLoader.
+ */
 public interface DocumentPropertiesLoader {
 
+  /**
+   * Load.
+   *
+   * @param d the d
+   * @return the map
+   */
   Map<String, String> load(Document d);
 }

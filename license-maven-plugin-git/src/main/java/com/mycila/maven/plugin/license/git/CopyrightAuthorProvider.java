@@ -32,7 +32,10 @@ import java.util.Map;
  */
 public class CopyrightAuthorProvider implements PropertiesProvider {
 
+  /** The Constant COPYRIGHT_CREATION_AUTHOR_NAME_KEY. */
   public static final String COPYRIGHT_CREATION_AUTHOR_NAME_KEY = "license.git.CreationAuthorName";
+
+  /** The Constant COPYRIGHT_CREATION_AUTHOR_EMAIL_KEY. */
   public static final String COPYRIGHT_CREATION_AUTHOR_EMAIL_KEY = "license.git.CreationAuthorEmail";
 
   private GitLookup gitLookup;

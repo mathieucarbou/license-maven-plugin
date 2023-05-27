@@ -22,15 +22,31 @@ public class Credentials {
   private final String login;
   private final String password;
 
+  /**
+   * Instantiates a new credentials.
+   *
+   * @param login the login
+   * @param password the password
+   */
   public Credentials(String login, String password) {
     this.login = login;
     this.password = password;
   }
 
+  /**
+   * Gets the login.
+   *
+   * @return the login
+   */
   public String getLogin() {
     return login;
   }
 
+  /**
+   * Gets the password.
+   *
+   * @return the password
+   */
   public String getPassword() {
     return password;
   }

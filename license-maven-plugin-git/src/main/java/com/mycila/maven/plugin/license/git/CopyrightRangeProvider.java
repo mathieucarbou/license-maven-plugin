@@ -32,10 +32,19 @@ import java.util.Map;
  */
 public class CopyrightRangeProvider implements PropertiesProvider {
 
+  /** The Constant COPYRIGHT_LAST_YEAR_KEY. */
   public static final String COPYRIGHT_LAST_YEAR_KEY = "license.git.copyrightLastYear";
+
+  /** The Constant COPYRIGHT_CREATION_YEAR_KEY. */
   public static final String COPYRIGHT_CREATION_YEAR_KEY = "license.git.copyrightCreationYear";
+
+  /** The Constant COPYRIGHT_EXISTENCE_YEARS_KEY. */
   public static final String COPYRIGHT_EXISTENCE_YEARS_KEY = "license.git.copyrightExistenceYears";
+
+  /** The Constant COPYRIGHT_YEARS_KEY. */
   public static final String COPYRIGHT_YEARS_KEY = "license.git.copyrightYears";
+
+  /** The Constant INCEPTION_YEAR_KEY. */
   public static final String INCEPTION_YEAR_KEY = "project.inceptionYear";
 
   private GitLookup gitLookup;

@@ -20,6 +20,9 @@ import java.io.IOException;
 
 import static com.mycila.maven.plugin.license.util.FileUtils.read;
 
+/**
+ * The Class FileContent.
+ */
 public final class FileContent {
   private final File file;
   private final StringBuilder fileContent;
@@ -27,6 +30,12 @@ public final class FileContent {
   private int oldPos;
   private int position;
 
+  /**
+   * Instantiates a new file content.
+   *
+   * @param file the file
+   * @param encoding the encoding
+   */
   public FileContent(File file, String encoding) {
     try {
       this.file = file;
@@ -37,24 +46,45 @@ public final class FileContent {
     }
   }
 
+  /**
+   * Reset to.
+   *
+   * @param pos the pos
+   */
   public void resetTo(int pos) {
     oldPos = position;
     position = pos;
   }
 
+  /**
+   * Reset.
+   */
   public void reset() {
     oldPos = position;
     position = 0;
   }
 
+  /**
+   * Rewind.
+   */
   public void rewind() {
     position = oldPos;
   }
 
+  /**
+   * End reached.
+   *
+   * @return true, if successful
+   */
   public boolean endReached() {
     return position >= fileContent.length();
   }
 
+  /**
+   * Next line.
+   *
+   * @return the string
+   */
   public String nextLine() {
     if (endReached()) {
       return null;
@@ -67,18 +97,38 @@ public final class FileContent {
     return str;
   }
 
+  /**
+   * Gets the position.
+   *
+   * @return the position
+   */
   public int getPosition() {
     return position;
   }
 
+  /**
+   * Delete.
+   *
+   * @param start the start
+   * @param end the end
+   */
   public void delete(int start, int end) {
     fileContent.delete(start, end);
   }
 
+  /**
+   * Insert.
+   *
+   * @param index the index
+   * @param str the str
+   */
   public void insert(int index, String str) {
     fileContent.insert(index, str);
   }
 
+  /**
+   * Removes the duplicated empty end lines.
+   */
   public void removeDuplicatedEmptyEndLines() {
     int pos;
     while ((pos = fileContent.lastIndexOf("\n")) != -1) {
@@ -100,10 +150,20 @@ public final class FileContent {
     position = fileContent.length();
   }
 
+  /**
+   * Gets the content.
+   *
+   * @return the content
+   */
   public String getContent() {
     return fileContent.toString();
   }
 
+  /**
+   * Checks if is unix.
+   *
+   * @return true, if is unix
+   */
   public boolean isUnix() {
     return unix;
   }

@@ -36,6 +36,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
+/**
+ * The Class Report.
+ */
 public class Report {
 
   enum Action {CHECK, FORMAT, REMOVE}
@@ -85,6 +88,15 @@ public class Report {
   private final Map<String, Result> results = new ConcurrentHashMap<>();
   private final Path basePath;
 
+  /**
+   * Instantiates a new report.
+   *
+   * @param format the format
+   * @param action the action
+   * @param project the project
+   * @param clock the clock
+   * @param skip the skip
+   */
   public Report(String format, Action action, MavenProject project, Clock clock, boolean skip) {
     this.format = format;
     this.action = action;
@@ -100,6 +112,11 @@ public class Report {
     }
   }
 
+  /**
+   * Export to.
+   *
+   * @param reportLocation the report location
+   */
   public void exportTo(File reportLocation) {
     if (!skipped && reportLocation != null) {
 

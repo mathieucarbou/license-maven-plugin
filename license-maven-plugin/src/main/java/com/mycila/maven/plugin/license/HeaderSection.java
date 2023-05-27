@@ -17,6 +17,9 @@ package com.mycila.maven.plugin.license;
 
 import org.apache.maven.plugins.annotations.Parameter;
 
+/**
+ * The Class HeaderSection.
+ */
 public class HeaderSection {
 
   /**
@@ -49,34 +52,74 @@ public class HeaderSection {
   @Parameter(defaultValue = "false")
   boolean multiLineMatch;
 
+  /**
+   * Gets the key.
+   *
+   * @return the key
+   */
   public String getKey() {
     return key;
   }
 
+  /**
+   * Sets the key.
+   *
+   * @param key the new key
+   */
   public void setKey(String key) {
     this.key = key;
   }
 
+  /**
+   * Gets the default value.
+   *
+   * @return the default value
+   */
   public String getDefaultValue() {
     return defaultValue;
   }
 
+  /**
+   * Sets the default value.
+   *
+   * @param defaultValue the new default value
+   */
   public void setDefaultValue(String defaultValue) {
     this.defaultValue = defaultValue;
   }
 
+  /**
+   * Gets the ensure match.
+   *
+   * @return the ensure match
+   */
   public String getEnsureMatch() {
     return ensureMatch;
   }
 
+  /**
+   * Sets the ensure match.
+   *
+   * @param ensureMatch the new ensure match
+   */
   public void setEnsureMatch(String ensureMatch) {
     this.ensureMatch = ensureMatch;
   }
 
+  /**
+   * Checks if is multi line match.
+   *
+   * @return true, if is multi line match
+   */
   public boolean isMultiLineMatch() {
     return multiLineMatch;
   }
 
+  /**
+   * Sets the multi line match.
+   *
+   * @param multiLineMatch the new multi line match
+   */
   public void setMultiLineMatch(boolean multiLineMatch) {
     this.multiLineMatch = multiLineMatch;
   }

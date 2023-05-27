@@ -37,6 +37,13 @@ class PropertyPlaceholderResolver {
   private final String placeholderPrefix = "${";
   private final String placeholderSuffix = "}";
 
+  /**
+   * Replace placeholders.
+   *
+   * @param value the value
+   * @param properties the properties
+   * @return the string
+   */
   public String replacePlaceholders(String value, final Map<String, String> properties) {
     return replacePlaceholders(value, properties::get);
   }

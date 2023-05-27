@@ -15,14 +15,19 @@
  */
 package com.mycila.maven.plugin.license;
 
+/**
+ * The Class Default.
+ */
 public final class Default {
 
   private Default() {
     // Prevent Instantiation
   }
 
+  /** The Constant INCLUDE. */
   public static final String[] INCLUDE = new String[]{"**"};
 
+  /** The Constant EXCLUDES. */
   public static final String[] EXCLUDES = {
       // Miscellaneous typical temporary files
       "**/*~",

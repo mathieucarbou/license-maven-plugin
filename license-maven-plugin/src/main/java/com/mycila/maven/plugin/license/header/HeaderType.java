@@ -25,51 +25,114 @@ import java.util.Map;
  * @see com.mycila.maven.plugin.license.header.HeaderDefinition
  */
 public enum HeaderType {
-  ////////// COMMENT TYPES //////////
-  ////////// COMMENT TYPES //////////
 
-  //              firstLine   beforeEachLine   endLine   afterEachLine   skipLinePattern   firstLineDetectionPattern   lastLineDetectionPattern   allowBlankLines   multiLine   padLines
-  //generic
+  // Comment Type (firstLine, beforeEachLine, endLine, afterEachLine, skipLinePattern, firstLineDetectionPattern, lastLineDetectionPattern, allowBlankLines, multiLine, padLines)
+
+  /** The asciidoc style. */
   ASCIIDOC_STYLE("////", "  // ", "////EOL", "", null, "^////$", "^////$", false, true, false),
+
+  /** The mvel style. */
   MVEL_STYLE("@comment{", "  ", "}", "", null, "@comment\\{$", "\\}$", true, true, false),
+
+  /** The javadoc style. */
   JAVADOC_STYLE("/**", " * ", " */", "", null, "(\\s|\\t)*/\\*.*$", ".*\\*/(\\s|\\t)*$", false, true, false),
+
+  /** The scala style. */
   SCALA_STYLE("/**", "  * ", "  */", "", null, "(\\s|\\t)*/\\*.*$", ".*\\*/(\\s|\\t)*$", false, true, false),
+
+  /** The javapkg style. */
   JAVAPKG_STYLE("EOL/*-", " * ", " */", "", "^package [a-z_]+(\\.[a-z_][a-z0-9_]*)*;$", "(EOL)*(\\s|\\t)*/\\*.*$", ".*\\*/(\\s|\\t)*$", false, true, false),
+
+  /** The script style. */
   SCRIPT_STYLE("#", "# ", "#EOL", "", "^#!.*$", "#.*$", "#.*$", false, false, false),
+
+  /** The haml style. */
   HAML_STYLE("-#", "-# ", "-#EOL", "", "^-#!.*$", "-#.*$", "-#.*$", false, false, false),
+
+  /** The xml style. */
   XML_STYLE("<!--EOL", "    ", "EOL-->", "", "^<\\?xml.*>$", "(\\s|\\t)*<!--.*$", ".*-->(\\s|\\t)*$", true, true, false),
+
+  /** The xml per line. */
   XML_PER_LINE("EOL", "<!-- ", "EOL", " -->", "^<\\?xml.*>$", "(\\s|\\t)*<!--.*$", ".*-->(\\s|\\t)*$", false, false, true),
+
+  /** The semicolon style. */
   SEMICOLON_STYLE(";", "; ", ";EOL", "", null, ";.*$", ";.*$", false, false, false),
+
+  /** The apostrophe style. */
   APOSTROPHE_STYLE("'", "' ", "'EOL", "", null, "'.*$", "'.*$", false, false, false),
+
+  /** The exclamation style. */
   EXCLAMATION_STYLE("!", "! ", "!EOL", "", null, "!.*$", "!.*$", false, false, false),
+
+  /** The doubledashes style. */
   DOUBLEDASHES_STYLE("--", "-- ", "--EOL", "", null, "--.*$", "--.*$", false, false, false),
+
+  /** The slashstar style. */
   SLASHSTAR_STYLE("/*", " * ", " */", "", null, "(\\s|\\t)*/\\*.*$", ".*\\*/(\\s|\\t)*$", false, true, false),
+
+  /** The bracesstar style. */
   BRACESSTAR_STYLE("{*", " * ", " *}", "", null, "(\\s|\\t)*\\{\\*.*$", ".*\\*\\}(\\s|\\t)*$", false, true, false),
+
+  /** The sharpstar style. */
   SHARPSTAR_STYLE("#*", " * ", " *#", "", null, "(\\s|\\t)*#\\*.*$", ".*\\*#(\\s|\\t)*$", false, true, false),
+
+  /** The doubletilde style. */
   DOUBLETILDE_STYLE("~~", "~~ ", "~~EOL", "", null, "~~.*$", "~~.*$", false, false, false),
+
+  /** The dynascript style. */
   DYNASCRIPT_STYLE("<%--EOL", "    ", "EOL--%>", "", null, "(\\s|\\t)*<%--.*$", ".*--%>(\\s|\\t)*$", true, true, false),
+
+  /** The dynascript3 style. */
   DYNASCRIPT3_STYLE("<!---EOL", "    ", "EOL--->", "", null, "(\\s|\\t)*<!---.*$", ".*--->(\\s|\\t)*$", true, true, false),
+
+  /** The percent style. */
   PERCENT_STYLE("", "% ", "EOL", "", null, "^% .*$", "^% .*$", false, false, false),
+
+  /** The percent3 style. */
   PERCENT3_STYLE("%%%", "%%% ", "%%%EOL", "", null, "%%%.*$", "%%%.*$", false, false, false),
+
+  /** The exclamation3 style. */
   EXCLAMATION3_STYLE("!!!", "!!! ", "!!!EOL", "", null, "!!!.*$", "!!!.*$", false, false, false),
 
+  /** The doubleslash style. */
   DOUBLESLASH_STYLE("//", "// ", "//EOL", "", null, "//.*$", "//.*$", false, false, false),
+
+  /** The single line doubleslash style. */
   SINGLE_LINE_DOUBLESLASH_STYLE("", "// ", "", "", null, "//.*$", "//.*$", false, false, false),
+
+  /** The tripleslash style. */
   TRIPLESLASH_STYLE("///", "/// ", "///EOL", "", null, "///.*$", "///.*$", false, false, false),
+
+  /** The php. */
   // non generic
   PHP("/*", " * ", " */", "", "^<\\?php.*$", "(\\s|\\t)*/\\*.*$", ".*\\*/(\\s|\\t)*$", false, true, false),
+
+  /** The asp. */
   ASP("<%", "' ", "%>", "", null, "(\\s|\\t)*<%( .*)?$", ".*%>(\\s|\\t)*$", true, true, false),
+
+  /** The lua. */
   LUA("--[[EOL", "    ", "EOL]]", "", null, "--\\[\\[$", "\\]\\]$", true, true, false),
+
+  /** The ftl. */
   FTL("<#--EOL", "    ", "EOL-->", "", null, "(\\s|\\t)*<#--.*$", ".*-->(\\s|\\t)*$", true, true, false),
+
+  /** The ftl alt. */
   FTL_ALT("[#--EOL", "    ", "EOL--]", "", "\\[#ftl(\\s.*)?\\]", "(\\s|\\t)*\\[#--.*$", ".*--\\](\\s|\\t)*$", true, true, false),
+
+  /** The text. */
   TEXT("====", "    ", "====EOL", "", null, "====.*$", "====.*$", true, true, false),
+
+  /** The batch. */
   BATCH("@REM", "@REM ", "@REMEOL", "", null, "@REM.*$", "@REM.*$", false, false, false),
+
+  /** The mustache style. */
   MUSTACHE_STYLE("{{!", "    ", "}}", "", null, "\\{\\{\\!.*$", "\\}\\}.*$", false, true, false),
+
+  /** The unknown. */
   // unknown
   UNKNOWN("", "", "", "", null, null, null, false, false, false);
 
-  ////////////////////////////////////
-
+  /** The Constant DEFINITIONS. */
   private static final Map<String, HeaderDefinition> DEFINITIONS = new HashMap<String, HeaderDefinition>(values().length);
 
   static {
@@ -78,8 +141,23 @@ public enum HeaderType {
     }
   }
 
+  /** The definition. */
   private final HeaderDefinition definition;
 
+  /**
+   * Instantiates a new header type.
+   *
+   * @param firstLine the first line
+   * @param beforeEachLine the before each line
+   * @param endLine the end line
+   * @param afterEachLine the after each line
+   * @param skipLinePattern the skip line pattern
+   * @param firstLineDetectionPattern the first line detection pattern
+   * @param lastLineDetectionPattern the last line detection pattern
+   * @param allowBlankLines the allow blank lines
+   * @param multiLine the multi line
+   * @param padLines the pad lines
+   */
   private HeaderType(String firstLine, String beforeEachLine,
                      String endLine, String afterEachLine,
                      String skipLinePattern, String firstLineDetectionPattern, String lastLineDetectionPattern,

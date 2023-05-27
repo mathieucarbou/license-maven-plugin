@@ -17,12 +17,30 @@ package com.mycila.maven.plugin.license.dependencies;
 
 /**
  * Methods exposed by enforcer implementations using {@link LicensePolicy}.
+ *
+ * @param <T> the generic type
  */
 public interface LicensePolicyEnforcer<T> {
 
+  /**
+   * Gets the policy.
+   *
+   * @return the policy
+   */
   public LicensePolicy getPolicy();
 
+  /**
+   * Apply.
+   *
+   * @param target the target
+   * @return true, if successful
+   */
   public boolean apply(final T target);
 
+  /**
+   * Gets the type.
+   *
+   * @return the type
+   */
   public Class<?> getType();
 }

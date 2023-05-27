@@ -34,8 +34,13 @@ import static java.time.ZoneOffset.UTC;
  */
 public class CopyrightRangeProvider implements PropertiesProvider {
 
+  /** The Constant COPYRIGHT_LAST_YEAR_KEY. */
   public static final String COPYRIGHT_LAST_YEAR_KEY = "license.fs.copyrightLastYear";
+
+  /** The Constant COPYRIGHT_YEARS_KEY. */
   public static final String COPYRIGHT_YEARS_KEY = "license.fs.copyrightYears";
+
+  /** The Constant INCEPTION_YEAR_KEY. */
   public static final String INCEPTION_YEAR_KEY = "project.inceptionYear";
 
   /**

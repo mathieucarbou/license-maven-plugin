@@ -84,6 +84,7 @@ import static java.util.Arrays.deepToString;
  */
 public abstract class AbstractLicenseMojo extends AbstractMojo {
 
+  /** The license sets. */
   @Parameter
   public LicenseSet[] licenseSets;
 
@@ -177,7 +178,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
 
   /**
    * HeadSections define special regions of a header that allow for dynamic
-   * substitution and validation
+   * substitution and validation.
    *
    * @deprecated use {@link LicenseSet#headerSections}
    */
@@ -292,9 +293,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
   @Parameter(property = "license.nThreads", defaultValue = "0")
   public int nThreads;
 
-  /**
-   * Whether to skip the plugin execution
-   */
+  /** Whether to skip the plugin execution. */
   @Parameter(property = "license.skip", defaultValue = "false")
   public boolean skip = false;
 
@@ -308,10 +307,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
   @Parameter(property = "license.warnIfShallow", defaultValue = "true")
   public boolean warnIfShallow = true;
 
-  /**
-   * If you do not want to see the list of file having a missing header, you
-   * can add the quiet flag that will shorten the output
-   */
+  /** If you do not want to see the list of file having a missing header, you can add the quiet flag that will shorten the output. */
   @Parameter(property = "license.quiet", defaultValue = "false")
   public boolean quiet = false;
 
@@ -413,6 +409,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
   @Component
   protected ProjectBuilder projectBuilder;
 
+  /** The session. */
   @Parameter(defaultValue = "${session}")
   public MavenSession session;
 
@@ -794,18 +791,36 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
     return ex.toArray(new String[ex.size()]);
   }
 
+  /**
+   * Info.
+   *
+   * @param format the format
+   * @param params the params
+   */
   public final void info(String format, Object... params) {
     if (!quiet) {
       getLog().info(format(format, params));
     }
   }
 
+  /**
+   * Debug.
+   *
+   * @param format the format
+   * @param params the params
+   */
   public final void debug(String format, Object... params) {
     if (!quiet) {
       getLog().debug(format(format, params));
     }
   }
 
+  /**
+   * Warn.
+   *
+   * @param format the format
+   * @param params the params
+   */
   public final void warn(String format, Object... params) {
     if (!quiet) {
       getLog().warn(format(format, params));
@@ -884,10 +899,10 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
 
   /**
    * Retrieves the credentials for the given server or null if none could be
-   * found
+   * found.
    *
-   * @param serverID
-   * @return
+   * @param serverID the server ID
+   * @return the credentials
    */
   public Credentials findCredentials(String serverID) {
     if (serverID == null) {

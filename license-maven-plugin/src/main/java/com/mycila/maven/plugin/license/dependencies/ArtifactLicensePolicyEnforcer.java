@@ -27,11 +27,22 @@ import java.util.Collections;
 public class ArtifactLicensePolicyEnforcer extends AbstractLicensePolicyEnforcer<Artifact> {
   private ArtifactFilter filter;
 
+  /**
+   * Instantiates a new artifact license policy enforcer.
+   *
+   * @param policy the policy
+   * @param filter the filter
+   */
   public ArtifactLicensePolicyEnforcer(final LicensePolicy policy, final ArtifactFilter filter) {
     super(policy);
     this.filter = filter;
   }
 
+  /**
+   * Instantiates a new artifact license policy enforcer.
+   *
+   * @param policy the policy
+   */
   public ArtifactLicensePolicyEnforcer(final LicensePolicy policy) {
     super(policy);
     this.filter = new StrictPatternIncludesArtifactFilter(Collections.singletonList(policy.getValue()));

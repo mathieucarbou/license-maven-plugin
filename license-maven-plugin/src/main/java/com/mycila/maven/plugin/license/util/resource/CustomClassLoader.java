@@ -29,10 +29,20 @@ final class CustomClassLoader extends URLClassLoader {
     super(new URL[0], parent);
   }
 
+  /**
+   * Adds the folder.
+   *
+   * @param absolutePath the absolute path
+   */
   public void addFolder(String absolutePath) {
     addFolder(new File(absolutePath));
   }
 
+  /**
+   * Adds the folder.
+   *
+   * @param folder the folder
+   */
   public void addFolder(File folder) {
     if (folder.isDirectory()) {
       try {

@@ -15,11 +15,20 @@
  */
 package com.mycila.maven.plugin.license.util;
 
+/**
+ * The Class StringUtils.
+ */
 public final class StringUtils {
 
   private StringUtils() {
   }
 
+  /**
+   * Rtrim.
+   *
+   * @param s the s
+   * @return the string
+   */
   public static String rtrim(java.lang.String s) {
     int i;
     for (i = s.length() - 1; i >= 0; i--) {
@@ -31,6 +40,13 @@ public final class StringUtils {
     return s.substring(0, i + 1);
   }
 
+  /**
+   * Pad right.
+   *
+   * @param s the s
+   * @param len the len
+   * @return the string
+   */
   public static String padRight(String s, int len) {
     if (s == null || s.length() >= len) {
       return s;

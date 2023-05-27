@@ -45,6 +45,7 @@ public final class HeaderParser {
    *
    * @param fileContent      The file content.
    * @param headerDefinition The associated header definition to use.
+   * @param keywords the keywords
    * @throws IllegalArgumentException If the file content is null or if the header definition is null.
    */
   public HeaderParser(FileContent fileContent, HeaderDefinition headerDefinition, String[] keywords) {

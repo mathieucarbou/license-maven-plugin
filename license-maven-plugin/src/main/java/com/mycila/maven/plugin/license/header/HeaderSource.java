@@ -34,6 +34,12 @@ public abstract class HeaderSource {
    * A {@link HeaderSource} built from a license header template literal.
    */
   public static class LiteralHeaderSource extends HeaderSource {
+
+    /**
+     * Instantiates a new literal header source.
+     *
+     * @param content the content
+     */
     public LiteralHeaderSource(String content) {
       super(content, true);
     }
@@ -59,6 +65,13 @@ public abstract class HeaderSource {
   public static class UrlHeaderSource extends HeaderSource {
     private final URL url;
 
+    /**
+     * Instantiates a new url header source.
+     *
+     * @param url the url
+     * @param encoding the encoding
+     * @throws IOException Signals that an I/O exception has occurred.
+     */
     public UrlHeaderSource(URL url, String encoding) throws IOException {
       super(FileUtils.read(url, encoding), false);
       this.url = url;
@@ -80,6 +93,14 @@ public abstract class HeaderSource {
    * A {@link HeaderSource} built from multiple license header template literals.
    */
   public static class MultiLiteralHeaderSource extends HeaderSource {
+
+    /**
+     * Instantiates a new multi literal header source.
+     *
+     * @param preamble the preamble
+     * @param contents the contents
+     * @param separators the separators
+     */
     public MultiLiteralHeaderSource(final String preamble, final String[] contents, final String[] separators) {
       super(combineHeaders(preamble, contents, separators), true);
     }
@@ -105,6 +126,15 @@ public abstract class HeaderSource {
   public static class MultiUrlHeaderSource extends HeaderSource {
     private final URL[] urls;
 
+    /**
+     * Instantiates a new multi url header source.
+     *
+     * @param preamble the preamble
+     * @param urls the urls
+     * @param separators the separators
+     * @param encoding the encoding
+     * @throws IOException Signals that an I/O exception has occurred.
+     */
     public MultiUrlHeaderSource(final String preamble, final URL[] urls, final String[] separators, final String encoding) throws IOException {
       super(combineHeaders(preamble, FileUtils.read(urls, encoding), separators), false);
       this.urls = urls;
@@ -180,6 +210,14 @@ public abstract class HeaderSource {
     return builder.toString();
   }
 
+  /**
+   * Of.
+   *
+   * @param headerPath the header path
+   * @param encoding the encoding
+   * @param finder the finder
+   * @return the header source
+   */
   public static HeaderSource of(String headerPath, String encoding, ResourceFinder finder) {
     return of(null, encoding, finder);
   }
@@ -238,9 +276,17 @@ public abstract class HeaderSource {
     }
   }
 
+  /** The content. */
   protected final String content;
+
   private final boolean inline;
 
+  /**
+   * Instantiates a new header source.
+   *
+   * @param content the content
+   * @param inline the inline
+   */
   protected HeaderSource(String content, boolean inline) {
     super();
     this.content = content;
@@ -248,6 +294,8 @@ public abstract class HeaderSource {
   }
 
   /**
+   * Gets the content.
+   *
    * @return the text of the license template
    */
   public String getContent() {
@@ -255,6 +303,8 @@ public abstract class HeaderSource {
   }
 
   /**
+   * Checks if is inline.
+   *
    * @return {@code true} if this {@link HeaderSource} was created from a string rather by loading the bits from an
    * URL; {@code false} otherwise
    */

@@ -19,8 +19,12 @@ import org.apache.maven.plugins.annotations.Parameter;
 
 import java.util.Arrays;
 
+/**
+ * The Class Multi.
+ */
 public class Multi {
 
+  /** The Constant DEFAULT_SEPARATOR. */
   public static final String DEFAULT_SEPARATOR =
       "---------------------------------------------------------------------";
 
@@ -55,14 +59,29 @@ public class Multi {
   @Parameter(alias = "separator")
   String[] separators;
 
+  /**
+   * Gets the preamble.
+   *
+   * @return the preamble
+   */
   public String getPreamble() {
     return preamble;
   }
 
+  /**
+   * Sets the preamble.
+   *
+   * @param preamble the new preamble
+   */
   public void setPreamble(final String preamble) {
     this.preamble = preamble;
   }
 
+  /**
+   * Gets the headers.
+   *
+   * @return the headers
+   */
   public String[] getHeaders() {
     return headers;
   }
@@ -86,10 +105,20 @@ public class Multi {
     }
   }
 
+  /**
+   * Sets the headers.
+   *
+   * @param headers the new headers
+   */
   public void setHeaders(final String[] headers) {
     this.headers = headers;
   }
 
+  /**
+   * Gets the inline headers.
+   *
+   * @return the inline headers
+   */
   public String[] getInlineHeaders() {
     return inlineHeaders;
   }
@@ -113,10 +142,20 @@ public class Multi {
     }
   }
 
+  /**
+   * Sets the inline headers.
+   *
+   * @param inlineHeaders the new inline headers
+   */
   public void setInlineHeaders(final String[] inlineHeaders) {
     this.inlineHeaders = inlineHeaders;
   }
 
+  /**
+   * Gets the separators.
+   *
+   * @return the separators
+   */
   public String[] getSeparators() {
     return separators;
   }
@@ -140,6 +179,11 @@ public class Multi {
     }
   }
 
+  /**
+   * Sets the separators.
+   *
+   * @param separators the new separators
+   */
   public void setSeparators(final String[] separators) {
     this.separators = separators;
   }

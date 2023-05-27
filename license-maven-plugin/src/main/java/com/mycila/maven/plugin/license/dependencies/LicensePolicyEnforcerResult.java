@@ -18,6 +18,9 @@ package com.mycila.maven.plugin.license.dependencies;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.model.License;
 
+/**
+ * The Class LicensePolicyEnforcerResult.
+ */
 public class LicensePolicyEnforcerResult {
 
   private final LicensePolicy policy;
@@ -25,6 +28,14 @@ public class LicensePolicyEnforcerResult {
   private final Artifact artifact;
   private final LicensePolicy.Rule ruling;
 
+  /**
+   * Instantiates a new license policy enforcer result.
+   *
+   * @param policy the policy
+   * @param license the license
+   * @param artifact the artifact
+   * @param ruling the ruling
+   */
   public LicensePolicyEnforcerResult(final LicensePolicy policy, final License license, final Artifact artifact, final LicensePolicy.Rule ruling) {
     this.policy = policy;
     this.license = license;
@@ -46,22 +57,47 @@ public class LicensePolicyEnforcerResult {
     }
   }
 
+  /**
+   * Gets the policy.
+   *
+   * @return the policy
+   */
   public LicensePolicy getPolicy() {
     return policy;
   }
 
+  /**
+   * Gets the artifact.
+   *
+   * @return the artifact
+   */
   public Artifact getArtifact() {
     return artifact;
   }
 
+  /**
+   * Checks if is allowed.
+   *
+   * @return the boolean
+   */
   public Boolean isAllowed() {
     return ruling.getPredicate();
   }
 
+  /**
+   * Gets the ruling.
+   *
+   * @return the ruling
+   */
   public LicensePolicy.Rule getRuling() {
     return ruling;
   }
 
+  /**
+   * Gets the license.
+   *
+   * @return the license
+   */
   public License getLicense() {
     return license;
   }

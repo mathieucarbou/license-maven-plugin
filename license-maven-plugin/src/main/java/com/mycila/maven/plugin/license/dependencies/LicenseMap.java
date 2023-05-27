@@ -27,5 +27,10 @@ import java.util.Set;
  */
 public interface LicenseMap {
 
+  /**
+   * Gets the license map.
+   *
+   * @return the license map
+   */
   Map<License, Set<Artifact>> getLicenseMap();
 }

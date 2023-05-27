@@ -26,18 +26,27 @@ import java.nio.file.Paths;
 import java.util.List;
 
 /**
- * <b>Date:</b> 26-Feb-2008<br>
- * <b>Author:</b> Mathieu Carbou (mathieu.carbou@gmail.com)
+ * The Class ResourceFinder.
  */
 public final class ResourceFinder {
   private final Path basedir;
   private CustomClassLoader compileClassPath;
   private CustomClassLoader pluginClassPath;
 
+  /**
+   * Instantiates a new resource finder.
+   *
+   * @param basedir the basedir
+   */
   public ResourceFinder(final Path basedir) {
     this.basedir = basedir;
   }
 
+  /**
+   * Sets the compile class path.
+   *
+   * @param classpath the new compile class path
+   */
   public void setCompileClassPath(List<String> classpath) {
     compileClassPath = new CustomClassLoader();
     if (classpath != null) {
@@ -47,6 +56,11 @@ public final class ResourceFinder {
     }
   }
 
+  /**
+   * Sets the plugin class path.
+   *
+   * @param classLoader the new plugin class path
+   */
   public void setPluginClassPath(ClassLoader classLoader) {
     pluginClassPath = new CustomClassLoader(classLoader);
   }

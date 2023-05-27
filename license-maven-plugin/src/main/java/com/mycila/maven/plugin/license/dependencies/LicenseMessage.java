@@ -19,7 +19,13 @@ package com.mycila.maven.plugin.license.dependencies;
  * Expose message text to config and tests.
  */
 public interface LicenseMessage {
+
+  /** The warn policy denied. */
   String WARN_POLICY_DENIED = "Some licenses were denied by policy:";
+
+  /** The info license impl. */
   String INFO_LICENSE_IMPL = "Checking licenses in dependencies using";
+
+  /** The info deps discovered. */
   String INFO_DEPS_DISCOVERED = "Discovered dependencies after filtering";
 }
