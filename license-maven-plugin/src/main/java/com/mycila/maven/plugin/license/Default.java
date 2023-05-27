@@ -173,6 +173,8 @@ public final class Default {
 
       // Security files
       "**/*.asc",
+      "**/*.cer",
+      "**/*.der",
       "**/*.jks",
       "**/*.keytab",
       "**/*.lic",
@@ -180,12 +182,15 @@ public final class Default {
       "**/*.pub",
 
       // binary files - archives
+      "**/*.ear",
       "**/*.jar",
+      "**/*.war",
       "**/*.zip",
       "**/*.rar",
       "**/*.tar",
       "**/*.tar.gz",
       "**/*.tar.bz2",
+      "**/*.tar.bz3",
       "**/*.gz",
       "**/*.7z",
 
@@ -251,6 +256,9 @@ public final class Default {
       "**/*.docx",
       "**/*.ppt",
       "**/*.pptx",
+
+      // Explicit Folder to Entirely Ignore
+      "**/unlicensed/**"
   };
 
 }
