@@ -17,8 +17,6 @@ package com.mycila.maven.plugin.license.dependencies;
 
 /**
  * A default deny ArtifactLicensePolicyEnforcer.
- *
- * @author Royce Remer
  */
 public class DefaultLicensePolicyEnforcer extends ArtifactLicensePolicyEnforcer {
 

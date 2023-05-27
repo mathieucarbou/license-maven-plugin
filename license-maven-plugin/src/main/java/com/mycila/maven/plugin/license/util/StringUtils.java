@@ -15,9 +15,6 @@
  */
 package com.mycila.maven.plugin.license.util;
 
-/**
- * @author Mathieu Carbou (mathieu.carbou@gmail.com)
- */
 public final class StringUtils {
 
   private StringUtils() {

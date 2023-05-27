@@ -27,8 +27,6 @@ import static com.mycila.maven.plugin.license.Multi.DEFAULT_SEPARATOR;
 
 /**
  * Provides an access to the license template text.
- *
- * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
  */
 public abstract class HeaderSource {
 

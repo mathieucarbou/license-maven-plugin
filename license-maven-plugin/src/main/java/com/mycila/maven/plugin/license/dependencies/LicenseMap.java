@@ -24,8 +24,6 @@ import java.util.Set;
 /**
  * To be implemented by different project/build-framework scanners presenting
  * licenses of dependencies.
- *
- * @author Royce Remer
  */
 public interface LicenseMap {
 

@@ -21,8 +21,6 @@ import java.util.regex.Pattern;
  * The <code>HeaderDefinition</code> class defines what is needed to output a header text into the of the given file
  * type and what is needed to match the first line as well as the last line of a previous header of the given file
  * type. Optionally you can define the lines you want to skip before outputting the header.
- *
- * @author Cedric Pronzato
  */
 public final class HeaderDefinition {
   private final String type;

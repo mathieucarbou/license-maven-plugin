@@ -26,9 +26,6 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
-/**
- * @author Mathieu Carbou (mathieu.carbou@gmail.com)
- */
 class MappingMojoTest {
 
   @Test

@@ -30,8 +30,6 @@ import java.util.function.Function;
  * user-supplied values. <p> Values for substitution can be supplied using a {@link Properties} instance or
  * using a {@link Function}.
  *
- * @author Juergen Hoeller
- * @author Rob Harrop
  * @since 3.0
  */
 class PropertyPlaceholderResolver {

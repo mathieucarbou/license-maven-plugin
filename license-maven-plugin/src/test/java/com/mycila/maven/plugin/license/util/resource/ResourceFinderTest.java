@@ -26,9 +26,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 
-/**
- * @author Mathieu Carbou (mathieu.carbou@gmail.com)
- */
 class ResourceFinderTest {
 
   static ResourceFinder finder;

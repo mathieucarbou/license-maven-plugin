@@ -34,9 +34,6 @@ import java.util.UUID;
 
 import static java.util.Arrays.asList;
 
-/**
- * @author Mathieu Carbou (mathieu.carbou@gmail.com)
- */
 class SelectionTest {
   private final Log log = new SystemStreamLog();
 

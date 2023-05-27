@@ -30,9 +30,6 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @author <a href="mailto:ppalaga@redhat.com">Peter Palaga</a>
- */
 class CopyrightRangeProviderTest {
 
   private static Path gitRepoRoot;

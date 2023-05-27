@@ -22,8 +22,6 @@ import java.util.Map;
 /**
  * Defines the default header definitions available out of the box within this plugin.
  *
- * @author Mathieu Carbou (mathieu.carbou@gmail.com)
- * @author Cedric Pronzato
  * @see com.mycila.maven.plugin.license.header.HeaderDefinition
  */
 public enum HeaderType {

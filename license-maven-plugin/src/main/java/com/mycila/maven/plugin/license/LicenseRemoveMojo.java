@@ -25,8 +25,6 @@ import java.io.File;
 
 /**
  * Remove the specified header from source files
- *
- * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
 @Mojo(name = "remove", threadSafe = true)
 public final class LicenseRemoveMojo extends AbstractLicenseMojo {

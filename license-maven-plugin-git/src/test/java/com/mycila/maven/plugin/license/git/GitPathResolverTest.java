@@ -18,9 +18,6 @@ package com.mycila.maven.plugin.license.git;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-/**
- * @author <a href="mailto:ppalaga@redhat.com">Peter Palaga</a>
- */
 class GitPathResolverTest {
 
   @Test

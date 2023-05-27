@@ -31,8 +31,6 @@ import java.util.stream.Collectors;
  * 1) defaultPolicy: unless overridden via setDefaultPolicy, this will DENY all artifacts.
  * 2) APPROVE policies: any policy in the Set which have {@link LicensePolicy.Rule.APPROVE}
  * 3) DENY policies: any policy in the Set which have {@link LIcensePolicy.Rule.DENY}
- *
- * @author Royce Remer
  */
 @SuppressWarnings("rawtypes")
 public class AggregateLicensePolicyEnforcer {

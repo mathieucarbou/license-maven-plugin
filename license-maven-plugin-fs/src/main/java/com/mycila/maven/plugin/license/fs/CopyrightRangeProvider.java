@@ -31,8 +31,6 @@ import static java.time.ZoneOffset.UTC;
  * An implementation of {@link PropertiesProvider} that adds {@value #COPYRIGHT_LAST_YEAR_KEY} and
  * {@value #COPYRIGHT_YEARS_KEY} values - see {@link #adjustProperties(AbstractLicenseMojo, Map,
  * Document)}.
- *
- * @author <a href="mailto:ppalaga@redhat.com">Peter Palaga</a>
  */
 public class CopyrightRangeProvider implements PropertiesProvider {
 

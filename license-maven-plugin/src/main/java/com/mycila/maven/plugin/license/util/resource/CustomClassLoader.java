@@ -20,9 +20,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 
-/**
- * @author Mathieu Carbou (mathieu.carbou@gmail.com)
- */
 final class CustomClassLoader extends URLClassLoader {
   CustomClassLoader() {
     super(new URL[0], null);

@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * @author Mathieu Carbou (mathieu.carbou@gmail.com) 2013-08-27
  */
 public interface PropertiesProvider extends Closeable {
 

@@ -38,9 +38,6 @@ import com.soebes.itf.jupiter.maven.MavenExecutionResult;
  * <p>
  * A good overview of similar woes <a href="https://khmarbaise.github.io/maven-it-extension/itf-documentation/background/background.html">
  *   https://khmarbaise.github.io/maven-it-extension/itf-documentation/background/background.html</a>.
- *
- * @author Royce Remer
- * @author Michael J. Simons
  */
 @MavenJupiterExtension
 public class MavenProjectLicensesIT {

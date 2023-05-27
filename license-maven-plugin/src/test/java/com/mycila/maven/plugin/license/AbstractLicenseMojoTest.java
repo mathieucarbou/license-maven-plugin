@@ -6,9 +6,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
-/**
- * @author Matthieu Brouillard
- */
 class AbstractLicenseMojoTest {
 
   @Test

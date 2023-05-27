@@ -19,8 +19,6 @@ import org.apache.maven.model.License;
 
 /**
  * Make policy decisions on a {@link License} based on the license URL.
- *
- * @author Royce Remer
  */
 public class LicenseURLLicensePolicyEnforcer extends AbstractLicensePolicyEnforcer<License> {
 

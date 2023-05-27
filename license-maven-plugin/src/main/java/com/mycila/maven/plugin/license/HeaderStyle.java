@@ -18,9 +18,6 @@ package com.mycila.maven.plugin.license;
 import com.mycila.maven.plugin.license.header.HeaderDefinition;
 import org.apache.maven.plugins.annotations.Parameter;
 
-/**
- * @author Mathieu Carbou
- */
 public class HeaderStyle {
 
   /**

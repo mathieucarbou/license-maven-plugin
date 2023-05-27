@@ -26,7 +26,6 @@ import com.mycila.maven.plugin.license.util.StringUtils;
  * within a section of the file which match the given <code>HeaderDefinition</code> associated to this
  * <code>HeaderParser</code>.
  *
- * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  * @see com.mycila.maven.plugin.license.header.HeaderDefinition
  */
 public final class HeaderParser {

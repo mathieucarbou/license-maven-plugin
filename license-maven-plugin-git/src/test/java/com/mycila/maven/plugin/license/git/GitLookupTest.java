@@ -38,9 +38,6 @@ import java.util.TimeZone;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-/**
- * @author <a href="mailto:ppalaga@redhat.com">Peter Palaga</a>
- */
 class GitLookupTest {
 
   private static Path gitRepoRoot;

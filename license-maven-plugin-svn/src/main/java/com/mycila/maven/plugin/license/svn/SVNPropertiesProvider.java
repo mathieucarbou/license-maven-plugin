@@ -40,8 +40,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * An implementation of {@link PropertiesProvider} that uses SVN to retrieve
  * year information of last modification of files.
- *
- * @author Matthieu Brouillard
  */
 public class SVNPropertiesProvider implements PropertiesProvider {
 
