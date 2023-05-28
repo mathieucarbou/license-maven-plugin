@@ -21,7 +21,7 @@ jobs:
       - name: Build with Maven
         run: ./mvnw clean install site -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v3
+        uses: peter-evans/create-pull-request@v5
         with:
           commit-message: '[GA] Update snapshot report'
           title: '[GA] Update snapshot report'
