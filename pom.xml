@@ -213,7 +213,6 @@
   </dependencyManagement>
 
   <reporting>
-    <outputDirectory>docs/reports/${project.version}</outputDirectory>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -649,6 +648,17 @@ limitations under the License.
       <properties>
         <maven.compiler.release>8</maven.compiler.release>
       </properties>
+    </profile>
+    <profile>
+      <id>report</id>
+      <activation>
+        <os>
+          <family>unix</family>
+        </os>
+      </activation>
+      <reporting>
+        <outputDirectory>docs/reports/${project.version}</outputDirectory>
+      </reporting>
     </profile>
   </profiles>
 
