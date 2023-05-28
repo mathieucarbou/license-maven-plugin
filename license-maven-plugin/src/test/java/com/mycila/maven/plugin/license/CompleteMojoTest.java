@@ -18,12 +18,16 @@ package com.mycila.maven.plugin.license;
 import com.mycila.maven.plugin.license.header.HeaderType;
 import com.mycila.maven.plugin.license.util.FileUtils;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
@@ -247,38 +251,54 @@ class CompleteMojoTest {
 
     plugin.execute();
   }
-//
-//  public static void main(String[] args) throws IOException, MojoExecutionException, MojoFailureException {
-//    for (Object[] parameter : parameters()) {
-//      HeaderType headerType = (HeaderType) parameter[0];
-//      String extension = (String) parameter[1];
-//      final File root = new File("src/test/resources/complete/" + headerType);
-//
-//      if (root.exists()) {
-//        continue;
-//      }
-//
-//      root.mkdirs();
-//
-//      Files.write(new File(root, "file." + extension).toPath(), "### Hello world!\n\nI am a Markdown doc\n".getBytes(StandardCharsets.UTF_8));
-//      Files.write(new File(root, "expected1." + extension).toPath(), "### Hello world!\n\nI am a Markdown doc\n".getBytes(StandardCharsets.UTF_8));
-//      Files.write(new File(root, "expected2." + extension).toPath(), "### Hello world!\n\nI am a Markdown doc\n".getBytes(StandardCharsets.UTF_8));
-//
-//      AbstractLicenseMojo plugin = new LicenseFormatMojo();
-//      plugin.project = new MavenProjectStub();
-//      plugin.defaultBasedir = root;
-//      plugin.legacyConfigHeader = "src/test/resources/complete/header1.txt";
-//      plugin.legacyConfigIncludes = new String[]{"expected1." + extension};
-//      plugin.mapping = Collections.singletonMap(extension, headerType.name());
-//      plugin.execute();
-//
-//      plugin = new LicenseFormatMojo();
-//      plugin.project = new MavenProjectStub();
-//      plugin.defaultBasedir = root;
-//      plugin.legacyConfigHeader = "src/test/resources/complete/header2.txt";
-//      plugin.legacyConfigIncludes = new String[]{"expected2." + extension};
-//      plugin.mapping = Collections.singletonMap(extension, headerType.name());
-//      plugin.execute();
-//    }
-//  }
+
+  public static void main(String[] args) {
+    try {
+      parameters().forEach(parameter -> {
+        HeaderType headerType = (HeaderType) parameter[0];
+        String extension = (String) parameter[1];
+        final File root = new File("src/test/resources/complete/" + headerType);
+
+        if (root.exists()) {
+          throw new RuntimeException("Root Exists");
+        }
+
+        root.mkdirs();
+
+        try {
+          Files.write(new File(root, "file." + extension).toPath(), "### Hello world!\n\nI am a Markdown doc\n".getBytes(StandardCharsets.UTF_8));
+          Files.write(new File(root, "expected1." + extension).toPath(), "### Hello world!\n\nI am a Markdown doc\n".getBytes(StandardCharsets.UTF_8));
+          Files.write(new File(root, "expected2." + extension).toPath(), "### Hello world!\n\nI am a Markdown doc\n".getBytes(StandardCharsets.UTF_8));
+        } catch (IOException e) {
+          throw new RuntimeException("IOException", e);
+        }
+
+        AbstractLicenseMojo plugin = new LicenseFormatMojo();
+        plugin.project = new MavenProjectStub();
+        plugin.defaultBasedir = root;
+        plugin.legacyConfigHeader = "src/test/resources/complete/header1.txt";
+        plugin.legacyConfigIncludes = new String[]{"expected1." + extension};
+        plugin.mapping = Collections.singletonMap(extension, headerType.name());
+        try {
+          plugin.execute();
+        } catch (MojoExecutionException | MojoFailureException e) {
+          throw new RuntimeException("MojoExecutionException or MojoFailureException", e);
+        }
+
+        plugin = new LicenseFormatMojo();
+        plugin.project = new MavenProjectStub();
+        plugin.defaultBasedir = root;
+        plugin.legacyConfigHeader = "src/test/resources/complete/header2.txt";
+        plugin.legacyConfigIncludes = new String[]{"expected2." + extension};
+        plugin.mapping = Collections.singletonMap(extension, headerType.name());
+        try {
+          plugin.execute();
+        } catch (MojoExecutionException | MojoFailureException e) {
+          throw new RuntimeException("MojoExecutionException or MojoFailureException", e);
+        }
+      });
+    } catch (Exception e) {
+        // Streams don't exit cleanly, just ignore
+    }
+  }
 }
