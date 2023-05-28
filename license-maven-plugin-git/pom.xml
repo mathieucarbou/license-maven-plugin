@@ -28,10 +28,6 @@
   <name>license-maven-plugin-git</name>
   <description>An optional module for license-maven-plugin adding git related functionality</description>
 
-  <reporting>
-    <outputDirectory>../docs/reports/${project.version}/${project.artifactId}</outputDirectory>
-  </reporting>
-
   <distributionManagement>
     <site>
       <id>report</id>
@@ -67,4 +63,18 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <profiles>
+    <profile>
+      <id>report</id>
+      <activation>
+        <os>
+          <family>unix</family>
+        </os>
+      </activation>
+      <reporting>
+        <outputDirectory>../docs/reports/${project.version}/${project.artifactId}</outputDirectory>
+      </reporting>
+    </profile>
+  </profiles>
 </project>

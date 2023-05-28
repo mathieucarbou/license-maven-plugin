@@ -26,10 +26,6 @@
   <artifactId>license-maven-plugin-svn</artifactId>
   <packaging>jar</packaging>
 
-  <reporting>
-    <outputDirectory>../docs/reports/${project.version}/${project.artifactId}</outputDirectory>
-  </reporting>
-
   <distributionManagement>
     <site>
       <id>report</id>
@@ -58,4 +54,18 @@
       <version>1.10.11</version>
     </dependency>
   </dependencies>
+
+  <profiles>
+    <profile>
+      <id>report</id>
+      <activation>
+        <os>
+          <family>unix</family>
+        </os>
+      </activation>
+      <reporting>
+        <outputDirectory>../docs/reports/${project.version}/${project.artifactId}</outputDirectory>
+      </reporting>
+    </profile>
+  </profiles>
 </project>
