@@ -64,11 +64,6 @@ class CopyrightAuthorProviderTest {
     }
   }
 
-  private void assertAuthor(CopyrightAuthorProvider provider, String path,
-                            String copyrightAuthorName, String copyrightAuthorEmail) {
-
-  }
-
   private static Document newDocument(String relativePath) {
     Path path = Paths.get(gitRepoRoot + File.separator
         + relativePath.replace('/', File.separatorChar));
