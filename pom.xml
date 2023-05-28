@@ -339,14 +339,6 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-site-plugin</artifactId>
           <version>3.12.1</version>
-          <executions>
-            <execution>
-              <id>attach-descriptor</id>
-              <goals>
-                <goal>attach-descriptor</goal>
-              </goals>
-            </execution>
-          </executions>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -549,15 +541,6 @@ limitations under the License.
             <executions>
               <execution>
                 <id>enforce-maven</id>
-                <phase>none</phase>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <artifactId>maven-site-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>attach-descriptor</id>
                 <phase>none</phase>
               </execution>
             </executions>
