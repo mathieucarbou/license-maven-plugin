@@ -204,13 +204,13 @@ class GitLookupTest {
   }
 
   @Test
-  public void ignoreCommitsInLastChange() throws GitAPIException, IOException {
+  void ignoreCommitsInLastChange() throws GitAPIException, IOException {
     assertLastChange(newAuthorLookup("95d52919cbe340dc271cf1f5ec68cf36705bd3a3"), "dir1/file1.txt", 2004);
     assertLastChange(newCommitterLookup("95d52919cbe340dc271cf1f5ec68cf36705bd3a3"), "dir1/file1.txt", 2004);
   }
 
   @Test
-  public void doNotIgnoreCommitsInCreation() throws GitAPIException, IOException {
+  void doNotIgnoreCommitsInCreation() throws GitAPIException, IOException {
     assertCreation(newAuthorLookup("53b44baedc5a378f9b665da12f298e1003793219"), "dir1/file1.txt", 2000);
     assertCreation(newCommitterLookup("53b44baedc5a378f9b665da12f298e1003793219"), "dir1/file1.txt", 2000);
   }

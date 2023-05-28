@@ -127,20 +127,17 @@ public class SVNPropertiesProvider implements PropertiesProvider {
       // One-time warning for shallow repo
       if (mojo.warnIfShallow && !warnedIfShallow.get()) {
         SVNInfo info = svnClientManager.getWCClient().doInfo(documentFile, SVNRevision.HEAD);
-        if (info.getDepth() != SVNDepth.INFINITY) {
-          if (warnedIfShallow.compareAndSet(false, true)) {
-            mojo.warn(
-                "Sparse svn repository detected. Year property values may not be accurate.");
-          }
+        if (info.getDepth() != SVNDepth.INFINITY && warnedIfShallow.compareAndSet(false, true)) {
+          mojo.warn(
+              "Sparse svn repository detected. Year property values may not be accurate.");
         }
       }
 
       svnClientManager.getLogClient()
           .doLog(new File[]{documentFile}, SVNRevision.HEAD, SVNRevision.create(0), true, true, 1,
               lastChangeDateLogEntryHandler);
-    } catch (SVNException ex) {
-      IllegalStateException ise = new IllegalStateException("cannot query SVN latest date information for file: " + documentFile, ex);
-      throw ise;
+    } catch (SVNException e) {
+      throw new IllegalStateException("cannot query SVN latest date information for file: " + documentFile, e);
     }
 
     return newProperties;

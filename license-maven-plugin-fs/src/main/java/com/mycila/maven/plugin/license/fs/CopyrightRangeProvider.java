@@ -80,7 +80,7 @@ public class CopyrightRangeProvider implements PropertiesProvider {
       result.put(COPYRIGHT_YEARS_KEY, copyrightYears);
 
       return Collections.unmodifiableMap(result);
-    } catch (Throwable e) {
+    } catch (Exception e) {
       throw new RuntimeException(
           "CopyrightRangeProvider error on file: " + document.getFile().getAbsolutePath() + ": "
               + e.getMessage(), e);
