@@ -42,7 +42,7 @@
             <dependencyPolicy>
               <type>LICENSE_NAME</type>
               <rule>APPROVE</rule>
-              <value>Eclipse Public License 1.0</value>
+              <value>Eclipse Public License v2.0</value>
             </dependencyPolicy>
           </dependencyPolicies>
         </configuration>
