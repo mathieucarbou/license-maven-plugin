@@ -22,21 +22,19 @@ import java.util.Optional;
 /**
  * A policy decision based on some matcher/value and type. Different policy
  * enforcers should take this class as a constructor argument.
- *
- * @author Royce Remer
  */
 public class LicensePolicy {
-<span class="fc" id="L29">  public enum Type {</span>
-<span class="fc" id="L30">    LICENSE_NAME, LICENSE_URL, ARTIFACT_PATTERN;</span>
+<span class="fc" id="L27">  public enum Type {</span>
+<span class="fc" id="L28">    LICENSE_NAME, LICENSE_URL, ARTIFACT_PATTERN;</span>
   }
 
-<span class="fc" id="L33">  public enum Rule {</span>
-<span class="fc" id="L34">    APPROVE(true), DENY(false);</span>
+<span class="fc" id="L31">  public enum Rule {</span>
+<span class="fc" id="L32">    APPROVE(true), DENY(false);</span>
     boolean allowed;
 
-<span class="fc" id="L37">    Rule(final boolean allowed) {</span>
-<span class="fc" id="L38">      this.allowed = allowed;</span>
-<span class="fc" id="L39">    }</span>
+<span class="fc" id="L35">    Rule(final boolean allowed) {</span>
+<span class="fc" id="L36">      this.allowed = allowed;</span>
+<span class="fc" id="L37">    }</span>
 
     /**
      * Get a boolean form of a rule.
@@ -44,7 +42,7 @@ public class LicensePolicy {
      * @return
      */
     public boolean getPredicate() {
-<span class="nc" id="L47">      return allowed;</span>
+<span class="nc" id="L45">      return allowed;</span>
     }
 
     /**
@@ -54,14 +52,14 @@ public class LicensePolicy {
      * @return true, if is allowed
      */
     public boolean isAllowed(final boolean matched) {
-<span class="fc bfc" id="L57" title="All 2 branches covered.">      return matched == allowed;</span>
+<span class="fc bfc" id="L55" title="All 2 branches covered.">      return matched == allowed;</span>
     }
 
     public static Rule valueOf(final boolean allowed) {
-<span class="fc bfc" id="L61" title="All 2 branches covered.">      if (allowed) {</span>
-<span class="fc" id="L62">        return APPROVE;</span>
+<span class="fc bfc" id="L59" title="All 2 branches covered.">      if (allowed) {</span>
+<span class="fc" id="L60">        return APPROVE;</span>
       } else {
-<span class="fc" id="L64">        return DENY;</span>
+<span class="fc" id="L62">        return DENY;</span>
       }
     }
   }
@@ -74,56 +72,56 @@ public class LicensePolicy {
   private String value;
 
   // only here for plexus container injection by maven
-<span class="nc" id="L77">  public LicensePolicy() {</span>
-<span class="nc" id="L78">  }</span>
+<span class="nc" id="L75">  public LicensePolicy() {</span>
+<span class="nc" id="L76">  }</span>
 
-<span class="fc" id="L80">  public LicensePolicy(final Rule rule, final Type type, final String value) {</span>
-<span class="fc" id="L81">    this.setRule(rule);</span>
-<span class="fc" id="L82">    this.setType(type);</span>
-<span class="fc" id="L83">    this.setValue(value);</span>
-<span class="fc" id="L84">  }</span>
+<span class="fc" id="L78">  public LicensePolicy(final Rule rule, final Type type, final String value) {</span>
+<span class="fc" id="L79">    this.setRule(rule);</span>
+<span class="fc" id="L80">    this.setType(type);</span>
+<span class="fc" id="L81">    this.setValue(value);</span>
+<span class="fc" id="L82">  }</span>
 
   @Override
   public int hashCode() {
-<span class="fc" id="L88">    return 11 * (rule.hashCode() + type.hashCode() + value.hashCode());</span>
+<span class="fc" id="L86">    return 11 * (rule.hashCode() + type.hashCode() + value.hashCode());</span>
   }
 
   @Override
   public boolean equals(final Object other) {
-<span class="pc bpc" id="L93" title="1 of 2 branches missed.">    if (other == null) {</span>
-<span class="nc" id="L94">      return false;</span>
+<span class="pc bpc" id="L91" title="1 of 2 branches missed.">    if (other == null) {</span>
+<span class="nc" id="L92">      return false;</span>
     } else {
-<span class="pc bpc" id="L96" title="1 of 2 branches missed.">      return (other.hashCode() == hashCode());</span>
+<span class="pc bpc" id="L94" title="1 of 2 branches missed.">      return (other.hashCode() == hashCode());</span>
     }
   }
 
   public String getValue() {
-<span class="fc" id="L101">    return value;</span>
+<span class="fc" id="L99">    return value;</span>
   }
 
   public Rule getRule() {
-<span class="fc" id="L105">    return rule;</span>
+<span class="fc" id="L103">    return rule;</span>
   }
 
   public Type getType() {
-<span class="fc" id="L109">    return type;</span>
+<span class="fc" id="L107">    return type;</span>
   }
 
   private void setType(Type type) {
-<span class="fc" id="L113">    this.type = type;</span>
-<span class="fc" id="L114">  }</span>
+<span class="fc" id="L111">    this.type = type;</span>
+<span class="fc" id="L112">  }</span>
 
   private void setRule(Rule rule) {
-<span class="fc" id="L117">    this.rule = Optional.ofNullable(rule).orElse(Rule.DENY);</span>
-<span class="fc" id="L118">  }</span>
+<span class="fc" id="L115">    this.rule = Optional.ofNullable(rule).orElse(Rule.DENY);</span>
+<span class="fc" id="L116">  }</span>
 
   private void setValue(String value) {
-<span class="fc" id="L121">    this.value = Optional.ofNullable(value).orElse(&quot;&quot;);</span>
-<span class="fc" id="L122">  }</span>
+<span class="fc" id="L119">    this.value = Optional.ofNullable(value).orElse(&quot;&quot;);</span>
+<span class="fc" id="L120">  }</span>
 
   @Override
   public String toString() {
-<span class="fc" id="L126">    return String.format(&quot;%s:%s:%s&quot;, getType(), getRule(), getValue());</span>
+<span class="fc" id="L124">    return String.format(&quot;%s:%s:%s&quot;, getType(), getRule(), getValue());</span>
   }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

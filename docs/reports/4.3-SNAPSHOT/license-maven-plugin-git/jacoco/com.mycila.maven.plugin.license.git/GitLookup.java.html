@@ -54,12 +54,10 @@ import static java.util.Objects.requireNonNull;
 
 /**
  * A jGit library wrapper to query the date of the last commit.
- *
- * @author &lt;a href=&quot;mailto:ppalaga@redhat.com&quot;&gt;Peter Palaga&lt;/a&gt;
  */
 public class GitLookup implements Closeable {
 
-<span class="fc" id="L62">  public static final TimeZone DEFAULT_ZONE = TimeZone.getTimeZone(&quot;GMT&quot;);</span>
+<span class="fc" id="L60">  public static final TimeZone DEFAULT_ZONE = TimeZone.getTimeZone(&quot;GMT&quot;);</span>
 
   public static final String MAX_COMMITS_LOOKUP_KEY = &quot;license.git.maxCommitsLookup&quot;;
   // keep for compatibility
@@ -68,8 +66,8 @@ public class GitLookup implements Closeable {
   public static final String COPYRIGHT_LAST_YEAR_TIME_ZONE_KEY = &quot;license.git.copyrightLastYearTimeZone&quot;;
   public static final String COMMITS_TO_IGNORE_KEY = &quot;license.git.commitsToIgnore&quot;;
 
-<span class="fc" id="L71">  public enum DateSource {</span>
-<span class="fc" id="L72">    AUTHOR, COMMITER</span>
+<span class="fc" id="L69">  public enum DateSource {</span>
+<span class="fc" id="L70">    AUTHOR, COMMITER</span>
   }
 
   private final int checkCommitsCount;
@@ -85,37 +83,37 @@ public class GitLookup implements Closeable {
    * to the same git repository.
    */
   public static GitLookup create(File file, Map&lt;String, String&gt; props) {
-<span class="fc" id="L88">    final GitLookup.DateSource dateSource = Optional.ofNullable(props.get(COPYRIGHT_LAST_YEAR_SOURCE_KEY))</span>
-<span class="fc" id="L89">        .map(String::trim)</span>
-<span class="fc" id="L90">        .map(String::toUpperCase)</span>
-<span class="fc" id="L91">        .map(GitLookup.DateSource::valueOf)</span>
-<span class="fc" id="L92">        .orElse(GitLookup.DateSource.AUTHOR);</span>
+<span class="fc" id="L86">    final GitLookup.DateSource dateSource = Optional.ofNullable(props.get(COPYRIGHT_LAST_YEAR_SOURCE_KEY))</span>
+<span class="fc" id="L87">        .map(String::trim)</span>
+<span class="fc" id="L88">        .map(String::toUpperCase)</span>
+<span class="fc" id="L89">        .map(GitLookup.DateSource::valueOf)</span>
+<span class="fc" id="L90">        .orElse(GitLookup.DateSource.AUTHOR);</span>
 
-<span class="fc" id="L94">    final int checkCommitsCount = Stream.of(</span>
+<span class="fc" id="L92">    final int checkCommitsCount = Stream.of(</span>
             MAX_COMMITS_LOOKUP_KEY,
             COPYRIGHT_LAST_YEAR_MAX_COMMITS_LOOKUP_KEY) // Backwards compatibility
-<span class="fc" id="L97">        .map(props::get)</span>
-<span class="fc" id="L98">        .filter(Objects::nonNull)</span>
-<span class="fc" id="L99">        .map(String::trim)</span>
-<span class="fc" id="L100">        .map(Integer::parseInt)</span>
-<span class="fc" id="L101">        .findFirst()</span>
-<span class="fc" id="L102">        .orElse(Integer.MAX_VALUE);</span>
+<span class="fc" id="L95">        .map(props::get)</span>
+<span class="fc" id="L96">        .filter(Objects::nonNull)</span>
+<span class="fc" id="L97">        .map(String::trim)</span>
+<span class="fc" id="L98">        .map(Integer::parseInt)</span>
+<span class="fc" id="L99">        .findFirst()</span>
+<span class="fc" id="L100">        .orElse(Integer.MAX_VALUE);</span>
 
-<span class="fc" id="L104">    final Set&lt;ObjectId&gt; commitsToIgnore = Stream.of(COMMITS_TO_IGNORE_KEY)</span>
-<span class="fc" id="L105">        .map(props::get)</span>
-<span class="fc" id="L106">        .filter(Objects::nonNull)</span>
-<span class="fc" id="L107">        .flatMap(s -&gt; Stream.of(s.split(&quot;,&quot;)))</span>
-<span class="fc" id="L108">        .map(String::trim)</span>
-<span class="pc bpc" id="L109" title="1 of 2 branches missed.">        .filter(s -&gt; !s.isEmpty())</span>
-<span class="fc" id="L110">        .map(ObjectId::fromString)</span>
-<span class="fc" id="L111">        .collect(Collectors.toSet());</span>
+<span class="fc" id="L102">    final Set&lt;ObjectId&gt; commitsToIgnore = Stream.of(COMMITS_TO_IGNORE_KEY)</span>
+<span class="fc" id="L103">        .map(props::get)</span>
+<span class="fc" id="L104">        .filter(Objects::nonNull)</span>
+<span class="fc" id="L105">        .flatMap(s -&gt; Stream.of(s.split(&quot;,&quot;)))</span>
+<span class="fc" id="L106">        .map(String::trim)</span>
+<span class="pc bpc" id="L107" title="1 of 2 branches missed.">        .filter(s -&gt; !s.isEmpty())</span>
+<span class="fc" id="L108">        .map(ObjectId::fromString)</span>
+<span class="fc" id="L109">        .collect(Collectors.toSet());</span>
 
-<span class="fc" id="L113">    final TimeZone timeZone = Optional.ofNullable(props.get(COPYRIGHT_LAST_YEAR_TIME_ZONE_KEY))</span>
-<span class="fc" id="L114">        .map(String::trim)</span>
-<span class="fc" id="L115">        .map(TimeZone::getTimeZone)</span>
-<span class="fc" id="L116">        .orElse(DEFAULT_ZONE);</span>
+<span class="fc" id="L111">    final TimeZone timeZone = Optional.ofNullable(props.get(COPYRIGHT_LAST_YEAR_TIME_ZONE_KEY))</span>
+<span class="fc" id="L112">        .map(String::trim)</span>
+<span class="fc" id="L113">        .map(TimeZone::getTimeZone)</span>
+<span class="fc" id="L114">        .orElse(DEFAULT_ZONE);</span>
 
-<span class="fc" id="L118">    return new GitLookup(file, dateSource, timeZone, checkCommitsCount, commitsToIgnore);</span>
+<span class="fc" id="L116">    return new GitLookup(file, dateSource, timeZone, checkCommitsCount, commitsToIgnore);</span>
   }
 
   /**
@@ -133,32 +131,32 @@ public class GitLookup implements Closeable {
    * @param commitsToIgnore   the commits to ignore while inspecting the history for {@code anyFile}
    * @throws IOException
    */
-<span class="fc" id="L136">  private GitLookup(File anyFile, DateSource dateSource, TimeZone timeZone, int checkCommitsCount, Set&lt;ObjectId&gt; commitsToIgnore) {</span>
-<span class="fc" id="L137">    requireNonNull(anyFile);</span>
-<span class="fc" id="L138">    requireNonNull(dateSource);</span>
-<span class="fc" id="L139">    requireNonNull(timeZone);</span>
-<span class="fc" id="L140">    requireNonNull(commitsToIgnore);</span>
+<span class="fc" id="L134">  private GitLookup(File anyFile, DateSource dateSource, TimeZone timeZone, int checkCommitsCount, Set&lt;ObjectId&gt; commitsToIgnore) {</span>
+<span class="fc" id="L135">    requireNonNull(anyFile);</span>
+<span class="fc" id="L136">    requireNonNull(dateSource);</span>
+<span class="fc" id="L137">    requireNonNull(timeZone);</span>
+<span class="fc" id="L138">    requireNonNull(commitsToIgnore);</span>
 
     try {
-<span class="fc" id="L143">      this.repository = new FileRepositoryBuilder().findGitDir(anyFile).build();</span>
+<span class="fc" id="L141">      this.repository = new FileRepositoryBuilder().findGitDir(anyFile).build();</span>
       /* A workaround for  https://bugs.eclipse.org/bugs/show_bug.cgi?id=457961 */
       // Also contains contents of .git/shallow and can detect shallow repo
       // the line below reads and caches the entries in the FileObjectDatabase of the repository to
       // avoid concurrent modifications during RevWalk
       // Closing the repository will close the FileObjectDatabase.
       // Here the newReader() is a WindowCursor which delegates the getShallowCommits() to the FileObjectDatabase.
-<span class="fc" id="L150">      try (ObjectReader objectReader = this.repository.getObjectDatabase().newReader()) {</span>
-<span class="pc bpc" id="L151" title="1 of 2 branches missed.">        this.shallow = !objectReader.getShallowCommits().isEmpty();</span>
+<span class="fc" id="L148">      try (ObjectReader objectReader = this.repository.getObjectDatabase().newReader()) {</span>
+<span class="pc bpc" id="L149" title="1 of 2 branches missed.">        this.shallow = !objectReader.getShallowCommits().isEmpty();</span>
       }
-<span class="fc" id="L153">      this.pathResolver = new GitPathResolver(repository.getWorkTree().getAbsolutePath());</span>
-<span class="fc" id="L154">      this.dateSource = dateSource;</span>
-<span class="fc" id="L155">      this.timeZone = timeZone;</span>
-<span class="fc" id="L156">      this.checkCommitsCount = checkCommitsCount;</span>
-<span class="fc" id="L157">      this.commitsToIgnore = commitsToIgnore;</span>
-<span class="nc" id="L158">    } catch (IOException e) {</span>
-<span class="nc" id="L159">      throw new UncheckedIOException(e);</span>
-<span class="fc" id="L160">    }</span>
-<span class="fc" id="L161">  }</span>
+<span class="fc" id="L151">      this.pathResolver = new GitPathResolver(repository.getWorkTree().getAbsolutePath());</span>
+<span class="fc" id="L152">      this.dateSource = dateSource;</span>
+<span class="fc" id="L153">      this.timeZone = timeZone;</span>
+<span class="fc" id="L154">      this.checkCommitsCount = checkCommitsCount;</span>
+<span class="fc" id="L155">      this.commitsToIgnore = commitsToIgnore;</span>
+<span class="nc" id="L156">    } catch (IOException e) {</span>
+<span class="nc" id="L157">      throw new UncheckedIOException(e);</span>
+<span class="fc" id="L158">    }</span>
+<span class="fc" id="L159">  }</span>
 
   /**
    * Returns the year of the last change of the given {@code file} based on the history of the present git branch. The
@@ -173,25 +171,25 @@ public class GitLookup implements Closeable {
    * @throws GitAPIException if unable to process the git history
    */
   int getYearOfLastChange(File file) throws GitAPIException, IOException {
-<span class="fc" id="L176">    String repoRelativePath = pathResolver.relativize(file);</span>
+<span class="fc" id="L174">    String repoRelativePath = pathResolver.relativize(file);</span>
 
-<span class="fc bfc" id="L178" title="All 2 branches covered.">    if (isFileModifiedOrUnstaged(repoRelativePath)) {</span>
-<span class="fc" id="L179">      return getCurrentYear();</span>
+<span class="fc bfc" id="L176" title="All 2 branches covered.">    if (isFileModifiedOrUnstaged(repoRelativePath)) {</span>
+<span class="fc" id="L177">      return getCurrentYear();</span>
     }
 
-<span class="fc" id="L182">    int commitYear = 0;</span>
-<span class="fc" id="L183">    RevWalk walk = getGitRevWalk(repoRelativePath, false);</span>
-<span class="fc bfc" id="L184" title="All 2 branches covered.">    for (RevCommit commit : walk) {</span>
-<span class="fc bfc" id="L185" title="All 2 branches covered.">      if (commitsToIgnore.contains(commit.getId())) {</span>
-<span class="fc" id="L186">        continue;</span>
+<span class="fc" id="L180">    int commitYear = 0;</span>
+<span class="fc" id="L181">    RevWalk walk = getGitRevWalk(repoRelativePath, false);</span>
+<span class="fc bfc" id="L182" title="All 2 branches covered.">    for (RevCommit commit : walk) {</span>
+<span class="fc bfc" id="L183" title="All 2 branches covered.">      if (commitsToIgnore.contains(commit.getId())) {</span>
+<span class="fc" id="L184">        continue;</span>
       }
-<span class="fc" id="L188">      int y = getYearFromCommit(commit);</span>
-<span class="fc bfc" id="L189" title="All 2 branches covered.">      if (y &gt; commitYear) {</span>
-<span class="fc" id="L190">        commitYear = y;</span>
+<span class="fc" id="L186">      int y = getYearFromCommit(commit);</span>
+<span class="fc bfc" id="L187" title="All 2 branches covered.">      if (y &gt; commitYear) {</span>
+<span class="fc" id="L188">        commitYear = y;</span>
       }
-<span class="fc" id="L192">    }</span>
-<span class="fc" id="L193">    walk.dispose();</span>
-<span class="fc" id="L194">    return commitYear;</span>
+<span class="fc" id="L190">    }</span>
+<span class="fc" id="L191">    walk.dispose();</span>
+<span class="fc" id="L192">    return commitYear;</span>
   }
 
   /*
@@ -200,119 +198,119 @@ public class GitLookup implements Closeable {
    * initialized.
    */
   int getYearOfCreation(File file) throws IOException, GitAPIException {
-<span class="fc" id="L203">    String repoRelativePath = pathResolver.relativize(file);</span>
+<span class="fc" id="L201">    String repoRelativePath = pathResolver.relativize(file);</span>
 
-<span class="fc" id="L205">    int commitYear = 0;</span>
-<span class="fc" id="L206">    RevWalk walk = getGitRevWalk(repoRelativePath, true);</span>
-<span class="fc" id="L207">    Iterator&lt;RevCommit&gt; iterator = walk.iterator();</span>
-<span class="fc bfc" id="L208" title="All 2 branches covered.">    if (iterator.hasNext()) {</span>
-<span class="fc" id="L209">      RevCommit commit = iterator.next();</span>
-<span class="fc" id="L210">      commitYear = getYearFromCommit(commit);</span>
+<span class="fc" id="L203">    int commitYear = 0;</span>
+<span class="fc" id="L204">    RevWalk walk = getGitRevWalk(repoRelativePath, true);</span>
+<span class="fc" id="L205">    Iterator&lt;RevCommit&gt; iterator = walk.iterator();</span>
+<span class="fc bfc" id="L206" title="All 2 branches covered.">    if (iterator.hasNext()) {</span>
+<span class="fc" id="L207">      RevCommit commit = iterator.next();</span>
+<span class="fc" id="L208">      commitYear = getYearFromCommit(commit);</span>
     }
-<span class="fc" id="L212">    walk.dispose();</span>
+<span class="fc" id="L210">    walk.dispose();</span>
 
     // If we couldn't find a creation year from Git assume newly created file
-<span class="fc bfc" id="L215" title="All 2 branches covered.">    if (commitYear == 0) {</span>
-<span class="fc" id="L216">      return getCurrentYear();</span>
+<span class="fc bfc" id="L213" title="All 2 branches covered.">    if (commitYear == 0) {</span>
+<span class="fc" id="L214">      return getCurrentYear();</span>
     }
 
-<span class="fc" id="L219">    return commitYear;</span>
+<span class="fc" id="L217">    return commitYear;</span>
   }
 
   String getAuthorNameOfCreation(File file) throws IOException {
-<span class="fc" id="L223">    String repoRelativePath = pathResolver.relativize(file);</span>
-<span class="fc" id="L224">    String authorName = &quot;&quot;;</span>
-<span class="fc" id="L225">    RevWalk walk = getGitRevWalk(repoRelativePath, true);</span>
-<span class="fc" id="L226">    Iterator&lt;RevCommit&gt; iterator = walk.iterator();</span>
-<span class="pc bpc" id="L227" title="1 of 2 branches missed.">    if (iterator.hasNext()) {</span>
-<span class="fc" id="L228">      RevCommit commit = iterator.next();</span>
-<span class="fc" id="L229">      authorName = getAuthorNameFromCommit(commit);</span>
+<span class="fc" id="L221">    String repoRelativePath = pathResolver.relativize(file);</span>
+<span class="fc" id="L222">    String authorName = &quot;&quot;;</span>
+<span class="fc" id="L223">    RevWalk walk = getGitRevWalk(repoRelativePath, true);</span>
+<span class="fc" id="L224">    Iterator&lt;RevCommit&gt; iterator = walk.iterator();</span>
+<span class="pc bpc" id="L225" title="1 of 2 branches missed.">    if (iterator.hasNext()) {</span>
+<span class="fc" id="L226">      RevCommit commit = iterator.next();</span>
+<span class="fc" id="L227">      authorName = getAuthorNameFromCommit(commit);</span>
     }
-<span class="fc" id="L231">    walk.dispose();</span>
-<span class="fc" id="L232">    return authorName;</span>
+<span class="fc" id="L229">    walk.dispose();</span>
+<span class="fc" id="L230">    return authorName;</span>
   }
 
   String getAuthorEmailOfCreation(File file) throws IOException {
-<span class="fc" id="L236">    String repoRelativePath = pathResolver.relativize(file);</span>
-<span class="fc" id="L237">    String authorEmail = &quot;&quot;;</span>
-<span class="fc" id="L238">    RevWalk walk = getGitRevWalk(repoRelativePath, true);</span>
-<span class="fc" id="L239">    Iterator&lt;RevCommit&gt; iterator = walk.iterator();</span>
-<span class="pc bpc" id="L240" title="1 of 2 branches missed.">    if (iterator.hasNext()) {</span>
-<span class="fc" id="L241">      RevCommit commit = iterator.next();</span>
-<span class="fc" id="L242">      authorEmail = getAuthorEmailFromCommit(commit);</span>
+<span class="fc" id="L234">    String repoRelativePath = pathResolver.relativize(file);</span>
+<span class="fc" id="L235">    String authorEmail = &quot;&quot;;</span>
+<span class="fc" id="L236">    RevWalk walk = getGitRevWalk(repoRelativePath, true);</span>
+<span class="fc" id="L237">    Iterator&lt;RevCommit&gt; iterator = walk.iterator();</span>
+<span class="pc bpc" id="L238" title="1 of 2 branches missed.">    if (iterator.hasNext()) {</span>
+<span class="fc" id="L239">      RevCommit commit = iterator.next();</span>
+<span class="fc" id="L240">      authorEmail = getAuthorEmailFromCommit(commit);</span>
     }
-<span class="fc" id="L244">    walk.dispose();</span>
-<span class="fc" id="L245">    return authorEmail;</span>
+<span class="fc" id="L242">    walk.dispose();</span>
+<span class="fc" id="L243">    return authorEmail;</span>
   }
 
   boolean isShallowRepository() {
-<span class="fc" id="L249">    return this.shallow;</span>
+<span class="fc" id="L247">    return this.shallow;</span>
   }
 
   private boolean isFileModifiedOrUnstaged(String repoRelativePath) throws GitAPIException {
-<span class="fc" id="L253">    Status status = null;</span>
-<span class="fc" id="L254">    try (Git git = new Git(repository)) {</span>
-<span class="fc" id="L255">      status = git.status().addPath(repoRelativePath).call();</span>
+<span class="fc" id="L251">    Status status = null;</span>
+<span class="fc" id="L252">    try (Git git = new Git(repository)) {</span>
+<span class="fc" id="L253">      status = git.status().addPath(repoRelativePath).call();</span>
     }
-<span class="fc bfc" id="L257" title="All 2 branches covered.">    return !status.isClean();</span>
+<span class="fc bfc" id="L255" title="All 2 branches covered.">    return !status.isClean();</span>
   }
 
   private RevWalk getGitRevWalk(String repoRelativePath, boolean oldestCommitsFirst) throws IOException {
-<span class="fc" id="L261">    DiffConfig diffConfig = repository.getConfig().get(DiffConfig.KEY);</span>
+<span class="fc" id="L259">    DiffConfig diffConfig = repository.getConfig().get(DiffConfig.KEY);</span>
 
-<span class="fc" id="L263">    RevWalk walk = new RevWalk(repository);</span>
-<span class="fc" id="L264">    walk.markStart(walk.parseCommit(repository.resolve(Constants.HEAD)));</span>
-<span class="fc" id="L265">    walk.setTreeFilter(AndTreeFilter.create(Arrays.asList(</span>
-<span class="fc" id="L266">        PathFilter.create(repoRelativePath),</span>
-<span class="fc" id="L267">        FollowFilter.create(repoRelativePath, diffConfig), // Allows us to follow files as they move or are renamed</span>
+<span class="fc" id="L261">    RevWalk walk = new RevWalk(repository);</span>
+<span class="fc" id="L262">    walk.markStart(walk.parseCommit(repository.resolve(Constants.HEAD)));</span>
+<span class="fc" id="L263">    walk.setTreeFilter(AndTreeFilter.create(Arrays.asList(</span>
+<span class="fc" id="L264">        PathFilter.create(repoRelativePath),</span>
+<span class="fc" id="L265">        FollowFilter.create(repoRelativePath, diffConfig), // Allows us to follow files as they move or are renamed</span>
         TreeFilter.ANY_DIFF)
     ));
-<span class="fc" id="L270">    walk.setRevFilter(MaxCountRevFilter.create(checkCommitsCount));</span>
-<span class="fc" id="L271">    walk.setRetainBody(false);</span>
-<span class="fc bfc" id="L272" title="All 2 branches covered.">    if (oldestCommitsFirst) {</span>
-<span class="fc" id="L273">      walk.sort(RevSort.REVERSE);</span>
+<span class="fc" id="L268">    walk.setRevFilter(MaxCountRevFilter.create(checkCommitsCount));</span>
+<span class="fc" id="L269">    walk.setRetainBody(false);</span>
+<span class="fc bfc" id="L270" title="All 2 branches covered.">    if (oldestCommitsFirst) {</span>
+<span class="fc" id="L271">      walk.sort(RevSort.REVERSE);</span>
     }
 
-<span class="fc" id="L276">    return walk;</span>
+<span class="fc" id="L274">    return walk;</span>
   }
 
   private int getCurrentYear() {
-<span class="fc" id="L280">    return toYear(System.currentTimeMillis(), timeZone);</span>
+<span class="fc" id="L278">    return toYear(System.currentTimeMillis(), timeZone);</span>
   }
 
   private int getYearFromCommit(RevCommit commit) {
-<span class="pc bpc" id="L284" title="1 of 3 branches missed.">    switch (dateSource) {</span>
+<span class="pc bpc" id="L282" title="1 of 3 branches missed.">    switch (dateSource) {</span>
       case COMMITER:
-<span class="fc" id="L286">        int epochSeconds = commit.getCommitTime();</span>
-<span class="fc" id="L287">        return toYear(epochSeconds * 1000L, timeZone);</span>
+<span class="fc" id="L284">        int epochSeconds = commit.getCommitTime();</span>
+<span class="fc" id="L285">        return toYear(epochSeconds * 1000L, timeZone);</span>
       case AUTHOR:
-<span class="fc" id="L289">        PersonIdent id = commit.getAuthorIdent();</span>
-<span class="fc" id="L290">        Date date = id.getWhen();</span>
-<span class="fc" id="L291">        return toYear(date.getTime(), id.getTimeZone());</span>
+<span class="fc" id="L287">        PersonIdent id = commit.getAuthorIdent();</span>
+<span class="fc" id="L288">        Date date = id.getWhen();</span>
+<span class="fc" id="L289">        return toYear(date.getTime(), id.getTimeZone());</span>
       default:
-<span class="nc" id="L293">        throw new IllegalStateException(&quot;Unexpected &quot; + DateSource.class.getName() + &quot; &quot; + dateSource);</span>
+<span class="nc" id="L291">        throw new IllegalStateException(&quot;Unexpected &quot; + DateSource.class.getName() + &quot; &quot; + dateSource);</span>
     }
   }
 
   private static int toYear(long epochMilliseconds, TimeZone timeZone) {
-<span class="fc" id="L298">    Calendar result = Calendar.getInstance(timeZone);</span>
-<span class="fc" id="L299">    result.setTimeInMillis(epochMilliseconds);</span>
-<span class="fc" id="L300">    return result.get(Calendar.YEAR);</span>
+<span class="fc" id="L296">    Calendar result = Calendar.getInstance(timeZone);</span>
+<span class="fc" id="L297">    result.setTimeInMillis(epochMilliseconds);</span>
+<span class="fc" id="L298">    return result.get(Calendar.YEAR);</span>
   }
 
   private String getAuthorNameFromCommit(RevCommit commit) {
-<span class="fc" id="L304">    PersonIdent id = commit.getAuthorIdent();</span>
-<span class="fc" id="L305">    return id.getName();</span>
+<span class="fc" id="L302">    PersonIdent id = commit.getAuthorIdent();</span>
+<span class="fc" id="L303">    return id.getName();</span>
   }
 
   private String getAuthorEmailFromCommit(RevCommit commit) {
-<span class="fc" id="L309">    PersonIdent id = commit.getAuthorIdent();</span>
-<span class="fc" id="L310">    return id.getEmailAddress();</span>
+<span class="fc" id="L307">    PersonIdent id = commit.getAuthorIdent();</span>
+<span class="fc" id="L308">    return id.getEmailAddress();</span>
   }
 
   @Override
   public void close() {
-<span class="fc" id="L315">    repository.close();</span>
-<span class="fc" id="L316">  }</span>
+<span class="fc" id="L313">    repository.close();</span>
+<span class="fc" id="L314">  }</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

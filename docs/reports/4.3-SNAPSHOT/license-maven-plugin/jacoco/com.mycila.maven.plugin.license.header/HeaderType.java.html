@@ -22,72 +22,70 @@ import java.util.Map;
 /**
  * Defines the default header definitions available out of the box within this plugin.
  *
- * @author Mathieu Carbou (mathieu.carbou@gmail.com)
- * @author Cedric Pronzato
  * @see com.mycila.maven.plugin.license.header.HeaderDefinition
  */
-<span class="fc" id="L29">public enum HeaderType {</span>
+<span class="fc" id="L27">public enum HeaderType {</span>
   ////////// COMMENT TYPES //////////
   ////////// COMMENT TYPES //////////
 
   //              firstLine   beforeEachLine   endLine   afterEachLine   skipLinePattern   firstLineDetectionPattern   lastLineDetectionPattern   allowBlankLines   multiLine   padLines
   //generic
-<span class="fc" id="L35">  ASCIIDOC_STYLE(&quot;////&quot;, &quot;  // &quot;, &quot;////EOL&quot;, &quot;&quot;, null, &quot;^////$&quot;, &quot;^////$&quot;, false, true, false),</span>
-<span class="fc" id="L36">  MVEL_STYLE(&quot;@comment{&quot;, &quot;  &quot;, &quot;}&quot;, &quot;&quot;, null, &quot;@comment\\{$&quot;, &quot;\\}$&quot;, true, true, false),</span>
-<span class="fc" id="L37">  JAVADOC_STYLE(&quot;/**&quot;, &quot; * &quot;, &quot; */&quot;, &quot;&quot;, null, &quot;(\\s|\\t)*/\\*.*$&quot;, &quot;.*\\*/(\\s|\\t)*$&quot;, false, true, false),</span>
-<span class="fc" id="L38">  SCALA_STYLE(&quot;/**&quot;, &quot;  * &quot;, &quot;  */&quot;, &quot;&quot;, null, &quot;(\\s|\\t)*/\\*.*$&quot;, &quot;.*\\*/(\\s|\\t)*$&quot;, false, true, false),</span>
-<span class="fc" id="L39">  JAVAPKG_STYLE(&quot;EOL/*-&quot;, &quot; * &quot;, &quot; */&quot;, &quot;&quot;, &quot;^package [a-z_]+(\\.[a-z_][a-z0-9_]*)*;$&quot;, &quot;(EOL)*(\\s|\\t)*/\\*.*$&quot;, &quot;.*\\*/(\\s|\\t)*$&quot;, false, true, false),</span>
-<span class="fc" id="L40">  SCRIPT_STYLE(&quot;#&quot;, &quot;# &quot;, &quot;#EOL&quot;, &quot;&quot;, &quot;^#!.*$&quot;, &quot;#.*$&quot;, &quot;#.*$&quot;, false, false, false),</span>
-<span class="fc" id="L41">  HAML_STYLE(&quot;-#&quot;, &quot;-# &quot;, &quot;-#EOL&quot;, &quot;&quot;, &quot;^-#!.*$&quot;, &quot;-#.*$&quot;, &quot;-#.*$&quot;, false, false, false),</span>
-<span class="fc" id="L42">  XML_STYLE(&quot;&lt;!--EOL&quot;, &quot;    &quot;, &quot;EOL--&gt;&quot;, &quot;&quot;, &quot;^&lt;\\?xml.*&gt;$&quot;, &quot;(\\s|\\t)*&lt;!--.*$&quot;, &quot;.*--&gt;(\\s|\\t)*$&quot;, true, true, false),</span>
-<span class="fc" id="L43">  XML_PER_LINE(&quot;EOL&quot;, &quot;&lt;!-- &quot;, &quot;EOL&quot;, &quot; --&gt;&quot;, &quot;^&lt;\\?xml.*&gt;$&quot;, &quot;(\\s|\\t)*&lt;!--.*$&quot;, &quot;.*--&gt;(\\s|\\t)*$&quot;, false, false, true),</span>
-<span class="fc" id="L44">  SEMICOLON_STYLE(&quot;;&quot;, &quot;; &quot;, &quot;;EOL&quot;, &quot;&quot;, null, &quot;;.*$&quot;, &quot;;.*$&quot;, false, false, false),</span>
-<span class="fc" id="L45">  APOSTROPHE_STYLE(&quot;'&quot;, &quot;' &quot;, &quot;'EOL&quot;, &quot;&quot;, null, &quot;'.*$&quot;, &quot;'.*$&quot;, false, false, false),</span>
-<span class="fc" id="L46">  EXCLAMATION_STYLE(&quot;!&quot;, &quot;! &quot;, &quot;!EOL&quot;, &quot;&quot;, null, &quot;!.*$&quot;, &quot;!.*$&quot;, false, false, false),</span>
-<span class="fc" id="L47">  DOUBLEDASHES_STYLE(&quot;--&quot;, &quot;-- &quot;, &quot;--EOL&quot;, &quot;&quot;, null, &quot;--.*$&quot;, &quot;--.*$&quot;, false, false, false),</span>
-<span class="fc" id="L48">  SLASHSTAR_STYLE(&quot;/*&quot;, &quot; * &quot;, &quot; */&quot;, &quot;&quot;, null, &quot;(\\s|\\t)*/\\*.*$&quot;, &quot;.*\\*/(\\s|\\t)*$&quot;, false, true, false),</span>
-<span class="fc" id="L49">  BRACESSTAR_STYLE(&quot;{*&quot;, &quot; * &quot;, &quot; *}&quot;, &quot;&quot;, null, &quot;(\\s|\\t)*\\{\\*.*$&quot;, &quot;.*\\*\\}(\\s|\\t)*$&quot;, false, true, false),</span>
-<span class="fc" id="L50">  SHARPSTAR_STYLE(&quot;#*&quot;, &quot; * &quot;, &quot; *#&quot;, &quot;&quot;, null, &quot;(\\s|\\t)*#\\*.*$&quot;, &quot;.*\\*#(\\s|\\t)*$&quot;, false, true, false),</span>
-<span class="fc" id="L51">  DOUBLETILDE_STYLE(&quot;~~&quot;, &quot;~~ &quot;, &quot;~~EOL&quot;, &quot;&quot;, null, &quot;~~.*$&quot;, &quot;~~.*$&quot;, false, false, false),</span>
-<span class="fc" id="L52">  DYNASCRIPT_STYLE(&quot;&lt;%--EOL&quot;, &quot;    &quot;, &quot;EOL--%&gt;&quot;, &quot;&quot;, null, &quot;(\\s|\\t)*&lt;%--.*$&quot;, &quot;.*--%&gt;(\\s|\\t)*$&quot;, true, true, false),</span>
-<span class="fc" id="L53">  DYNASCRIPT3_STYLE(&quot;&lt;!---EOL&quot;, &quot;    &quot;, &quot;EOL---&gt;&quot;, &quot;&quot;, null, &quot;(\\s|\\t)*&lt;!---.*$&quot;, &quot;.*---&gt;(\\s|\\t)*$&quot;, true, true, false),</span>
-<span class="fc" id="L54">  PERCENT_STYLE(&quot;&quot;, &quot;% &quot;, &quot;EOL&quot;, &quot;&quot;, null, &quot;^% .*$&quot;, &quot;^% .*$&quot;, false, false, false),</span>
-<span class="fc" id="L55">  PERCENT3_STYLE(&quot;%%%&quot;, &quot;%%% &quot;, &quot;%%%EOL&quot;, &quot;&quot;, null, &quot;%%%.*$&quot;, &quot;%%%.*$&quot;, false, false, false),</span>
-<span class="fc" id="L56">  EXCLAMATION3_STYLE(&quot;!!!&quot;, &quot;!!! &quot;, &quot;!!!EOL&quot;, &quot;&quot;, null, &quot;!!!.*$&quot;, &quot;!!!.*$&quot;, false, false, false),</span>
+<span class="fc" id="L33">  ASCIIDOC_STYLE(&quot;////&quot;, &quot;  // &quot;, &quot;////EOL&quot;, &quot;&quot;, null, &quot;^////$&quot;, &quot;^////$&quot;, false, true, false),</span>
+<span class="fc" id="L34">  MVEL_STYLE(&quot;@comment{&quot;, &quot;  &quot;, &quot;}&quot;, &quot;&quot;, null, &quot;@comment\\{$&quot;, &quot;\\}$&quot;, true, true, false),</span>
+<span class="fc" id="L35">  JAVADOC_STYLE(&quot;/**&quot;, &quot; * &quot;, &quot; */&quot;, &quot;&quot;, null, &quot;(\\s|\\t)*/\\*.*$&quot;, &quot;.*\\*/(\\s|\\t)*$&quot;, false, true, false),</span>
+<span class="fc" id="L36">  SCALA_STYLE(&quot;/**&quot;, &quot;  * &quot;, &quot;  */&quot;, &quot;&quot;, null, &quot;(\\s|\\t)*/\\*.*$&quot;, &quot;.*\\*/(\\s|\\t)*$&quot;, false, true, false),</span>
+<span class="fc" id="L37">  JAVAPKG_STYLE(&quot;EOL/*-&quot;, &quot; * &quot;, &quot; */&quot;, &quot;&quot;, &quot;^package [a-z_]+(\\.[a-z_][a-z0-9_]*)*;$&quot;, &quot;(EOL)*(\\s|\\t)*/\\*.*$&quot;, &quot;.*\\*/(\\s|\\t)*$&quot;, false, true, false),</span>
+<span class="fc" id="L38">  SCRIPT_STYLE(&quot;#&quot;, &quot;# &quot;, &quot;#EOL&quot;, &quot;&quot;, &quot;^#!.*$&quot;, &quot;#.*$&quot;, &quot;#.*$&quot;, false, false, false),</span>
+<span class="fc" id="L39">  HAML_STYLE(&quot;-#&quot;, &quot;-# &quot;, &quot;-#EOL&quot;, &quot;&quot;, &quot;^-#!.*$&quot;, &quot;-#.*$&quot;, &quot;-#.*$&quot;, false, false, false),</span>
+<span class="fc" id="L40">  XML_STYLE(&quot;&lt;!--EOL&quot;, &quot;    &quot;, &quot;EOL--&gt;&quot;, &quot;&quot;, &quot;^&lt;\\?xml.*&gt;$&quot;, &quot;(\\s|\\t)*&lt;!--.*$&quot;, &quot;.*--&gt;(\\s|\\t)*$&quot;, true, true, false),</span>
+<span class="fc" id="L41">  XML_PER_LINE(&quot;EOL&quot;, &quot;&lt;!-- &quot;, &quot;EOL&quot;, &quot; --&gt;&quot;, &quot;^&lt;\\?xml.*&gt;$&quot;, &quot;(\\s|\\t)*&lt;!--.*$&quot;, &quot;.*--&gt;(\\s|\\t)*$&quot;, false, false, true),</span>
+<span class="fc" id="L42">  SEMICOLON_STYLE(&quot;;&quot;, &quot;; &quot;, &quot;;EOL&quot;, &quot;&quot;, null, &quot;;.*$&quot;, &quot;;.*$&quot;, false, false, false),</span>
+<span class="fc" id="L43">  APOSTROPHE_STYLE(&quot;'&quot;, &quot;' &quot;, &quot;'EOL&quot;, &quot;&quot;, null, &quot;'.*$&quot;, &quot;'.*$&quot;, false, false, false),</span>
+<span class="fc" id="L44">  EXCLAMATION_STYLE(&quot;!&quot;, &quot;! &quot;, &quot;!EOL&quot;, &quot;&quot;, null, &quot;!.*$&quot;, &quot;!.*$&quot;, false, false, false),</span>
+<span class="fc" id="L45">  DOUBLEDASHES_STYLE(&quot;--&quot;, &quot;-- &quot;, &quot;--EOL&quot;, &quot;&quot;, null, &quot;--.*$&quot;, &quot;--.*$&quot;, false, false, false),</span>
+<span class="fc" id="L46">  SLASHSTAR_STYLE(&quot;/*&quot;, &quot; * &quot;, &quot; */&quot;, &quot;&quot;, null, &quot;(\\s|\\t)*/\\*.*$&quot;, &quot;.*\\*/(\\s|\\t)*$&quot;, false, true, false),</span>
+<span class="fc" id="L47">  BRACESSTAR_STYLE(&quot;{*&quot;, &quot; * &quot;, &quot; *}&quot;, &quot;&quot;, null, &quot;(\\s|\\t)*\\{\\*.*$&quot;, &quot;.*\\*\\}(\\s|\\t)*$&quot;, false, true, false),</span>
+<span class="fc" id="L48">  SHARPSTAR_STYLE(&quot;#*&quot;, &quot; * &quot;, &quot; *#&quot;, &quot;&quot;, null, &quot;(\\s|\\t)*#\\*.*$&quot;, &quot;.*\\*#(\\s|\\t)*$&quot;, false, true, false),</span>
+<span class="fc" id="L49">  DOUBLETILDE_STYLE(&quot;~~&quot;, &quot;~~ &quot;, &quot;~~EOL&quot;, &quot;&quot;, null, &quot;~~.*$&quot;, &quot;~~.*$&quot;, false, false, false),</span>
+<span class="fc" id="L50">  DYNASCRIPT_STYLE(&quot;&lt;%--EOL&quot;, &quot;    &quot;, &quot;EOL--%&gt;&quot;, &quot;&quot;, null, &quot;(\\s|\\t)*&lt;%--.*$&quot;, &quot;.*--%&gt;(\\s|\\t)*$&quot;, true, true, false),</span>
+<span class="fc" id="L51">  DYNASCRIPT3_STYLE(&quot;&lt;!---EOL&quot;, &quot;    &quot;, &quot;EOL---&gt;&quot;, &quot;&quot;, null, &quot;(\\s|\\t)*&lt;!---.*$&quot;, &quot;.*---&gt;(\\s|\\t)*$&quot;, true, true, false),</span>
+<span class="fc" id="L52">  PERCENT_STYLE(&quot;&quot;, &quot;% &quot;, &quot;EOL&quot;, &quot;&quot;, null, &quot;^% .*$&quot;, &quot;^% .*$&quot;, false, false, false),</span>
+<span class="fc" id="L53">  PERCENT3_STYLE(&quot;%%%&quot;, &quot;%%% &quot;, &quot;%%%EOL&quot;, &quot;&quot;, null, &quot;%%%.*$&quot;, &quot;%%%.*$&quot;, false, false, false),</span>
+<span class="fc" id="L54">  EXCLAMATION3_STYLE(&quot;!!!&quot;, &quot;!!! &quot;, &quot;!!!EOL&quot;, &quot;&quot;, null, &quot;!!!.*$&quot;, &quot;!!!.*$&quot;, false, false, false),</span>
 
-<span class="fc" id="L58">  DOUBLESLASH_STYLE(&quot;//&quot;, &quot;// &quot;, &quot;//EOL&quot;, &quot;&quot;, null, &quot;//.*$&quot;, &quot;//.*$&quot;, false, false, false),</span>
-<span class="fc" id="L59">  SINGLE_LINE_DOUBLESLASH_STYLE(&quot;&quot;, &quot;// &quot;, &quot;&quot;, &quot;&quot;, null, &quot;//.*$&quot;, &quot;//.*$&quot;, false, false, false),</span>
-<span class="fc" id="L60">  TRIPLESLASH_STYLE(&quot;///&quot;, &quot;/// &quot;, &quot;///EOL&quot;, &quot;&quot;, null, &quot;///.*$&quot;, &quot;///.*$&quot;, false, false, false),</span>
+<span class="fc" id="L56">  DOUBLESLASH_STYLE(&quot;//&quot;, &quot;// &quot;, &quot;//EOL&quot;, &quot;&quot;, null, &quot;//.*$&quot;, &quot;//.*$&quot;, false, false, false),</span>
+<span class="fc" id="L57">  SINGLE_LINE_DOUBLESLASH_STYLE(&quot;&quot;, &quot;// &quot;, &quot;&quot;, &quot;&quot;, null, &quot;//.*$&quot;, &quot;//.*$&quot;, false, false, false),</span>
+<span class="fc" id="L58">  TRIPLESLASH_STYLE(&quot;///&quot;, &quot;/// &quot;, &quot;///EOL&quot;, &quot;&quot;, null, &quot;///.*$&quot;, &quot;///.*$&quot;, false, false, false),</span>
   // non generic
-<span class="fc" id="L62">  PHP(&quot;/*&quot;, &quot; * &quot;, &quot; */&quot;, &quot;&quot;, &quot;^&lt;\\?php.*$&quot;, &quot;(\\s|\\t)*/\\*.*$&quot;, &quot;.*\\*/(\\s|\\t)*$&quot;, false, true, false),</span>
-<span class="fc" id="L63">  ASP(&quot;&lt;%&quot;, &quot;' &quot;, &quot;%&gt;&quot;, &quot;&quot;, null, &quot;(\\s|\\t)*&lt;%( .*)?$&quot;, &quot;.*%&gt;(\\s|\\t)*$&quot;, true, true, false),</span>
-<span class="fc" id="L64">  LUA(&quot;--[[EOL&quot;, &quot;    &quot;, &quot;EOL]]&quot;, &quot;&quot;, null, &quot;--\\[\\[$&quot;, &quot;\\]\\]$&quot;, true, true, false),</span>
-<span class="fc" id="L65">  FTL(&quot;&lt;#--EOL&quot;, &quot;    &quot;, &quot;EOL--&gt;&quot;, &quot;&quot;, null, &quot;(\\s|\\t)*&lt;#--.*$&quot;, &quot;.*--&gt;(\\s|\\t)*$&quot;, true, true, false),</span>
-<span class="fc" id="L66">  FTL_ALT(&quot;[#--EOL&quot;, &quot;    &quot;, &quot;EOL--]&quot;, &quot;&quot;, &quot;\\[#ftl(\\s.*)?\\]&quot;, &quot;(\\s|\\t)*\\[#--.*$&quot;, &quot;.*--\\](\\s|\\t)*$&quot;, true, true, false),</span>
-<span class="fc" id="L67">  TEXT(&quot;====&quot;, &quot;    &quot;, &quot;====EOL&quot;, &quot;&quot;, null, &quot;====.*$&quot;, &quot;====.*$&quot;, true, true, false),</span>
-<span class="fc" id="L68">  BATCH(&quot;@REM&quot;, &quot;@REM &quot;, &quot;@REMEOL&quot;, &quot;&quot;, null, &quot;@REM.*$&quot;, &quot;@REM.*$&quot;, false, false, false),</span>
-<span class="fc" id="L69">  MUSTACHE_STYLE(&quot;{{!&quot;, &quot;    &quot;, &quot;}}&quot;, &quot;&quot;, null, &quot;\\{\\{\\!.*$&quot;, &quot;\\}\\}.*$&quot;, false, true, false),</span>
+<span class="fc" id="L60">  PHP(&quot;/*&quot;, &quot; * &quot;, &quot; */&quot;, &quot;&quot;, &quot;^&lt;\\?php.*$&quot;, &quot;(\\s|\\t)*/\\*.*$&quot;, &quot;.*\\*/(\\s|\\t)*$&quot;, false, true, false),</span>
+<span class="fc" id="L61">  ASP(&quot;&lt;%&quot;, &quot;' &quot;, &quot;%&gt;&quot;, &quot;&quot;, null, &quot;(\\s|\\t)*&lt;%( .*)?$&quot;, &quot;.*%&gt;(\\s|\\t)*$&quot;, true, true, false),</span>
+<span class="fc" id="L62">  LUA(&quot;--[[EOL&quot;, &quot;    &quot;, &quot;EOL]]&quot;, &quot;&quot;, null, &quot;--\\[\\[$&quot;, &quot;\\]\\]$&quot;, true, true, false),</span>
+<span class="fc" id="L63">  FTL(&quot;&lt;#--EOL&quot;, &quot;    &quot;, &quot;EOL--&gt;&quot;, &quot;&quot;, null, &quot;(\\s|\\t)*&lt;#--.*$&quot;, &quot;.*--&gt;(\\s|\\t)*$&quot;, true, true, false),</span>
+<span class="fc" id="L64">  FTL_ALT(&quot;[#--EOL&quot;, &quot;    &quot;, &quot;EOL--]&quot;, &quot;&quot;, &quot;\\[#ftl(\\s.*)?\\]&quot;, &quot;(\\s|\\t)*\\[#--.*$&quot;, &quot;.*--\\](\\s|\\t)*$&quot;, true, true, false),</span>
+<span class="fc" id="L65">  TEXT(&quot;====&quot;, &quot;    &quot;, &quot;====EOL&quot;, &quot;&quot;, null, &quot;====.*$&quot;, &quot;====.*$&quot;, true, true, false),</span>
+<span class="fc" id="L66">  BATCH(&quot;@REM&quot;, &quot;@REM &quot;, &quot;@REMEOL&quot;, &quot;&quot;, null, &quot;@REM.*$&quot;, &quot;@REM.*$&quot;, false, false, false),</span>
+<span class="fc" id="L67">  MUSTACHE_STYLE(&quot;{{!&quot;, &quot;    &quot;, &quot;}}&quot;, &quot;&quot;, null, &quot;\\{\\{\\!.*$&quot;, &quot;\\}\\}.*$&quot;, false, true, false),</span>
   // unknown
-<span class="fc" id="L71">  UNKNOWN(&quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, null, null, null, false, false, false);</span>
+<span class="fc" id="L69">  UNKNOWN(&quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, null, null, null, false, false, false);</span>
 
   ////////////////////////////////////
 
-<span class="fc" id="L75">  private static final Map&lt;String, HeaderDefinition&gt; DEFINITIONS = new HashMap&lt;String, HeaderDefinition&gt;(values().length);</span>
+<span class="fc" id="L73">  private static final Map&lt;String, HeaderDefinition&gt; DEFINITIONS = new HashMap&lt;String, HeaderDefinition&gt;(values().length);</span>
 
   static {
-<span class="fc bfc" id="L78" title="All 2 branches covered.">    for (HeaderType type : values()) {</span>
-<span class="fc" id="L79">      DEFINITIONS.put(type.getDefinition().getType(), type.getDefinition());</span>
+<span class="fc bfc" id="L76" title="All 2 branches covered.">    for (HeaderType type : values()) {</span>
+<span class="fc" id="L77">      DEFINITIONS.put(type.getDefinition().getType(), type.getDefinition());</span>
     }
-<span class="fc" id="L81">  }</span>
+<span class="fc" id="L79">  }</span>
 
   private final HeaderDefinition definition;
 
   private HeaderType(String firstLine, String beforeEachLine,
                      String endLine, String afterEachLine,
                      String skipLinePattern, String firstLineDetectionPattern, String lastLineDetectionPattern,
-<span class="fc" id="L88">                     boolean allowBlankLines, boolean multiLine, boolean padLines) {</span>
-<span class="fc" id="L89">    definition = new HeaderDefinition(this.name().toLowerCase(), firstLine, beforeEachLine, endLine, afterEachLine, skipLinePattern, firstLineDetectionPattern, lastLineDetectionPattern, allowBlankLines, multiLine, padLines);</span>
-<span class="fc" id="L90">  }</span>
+<span class="fc" id="L86">                     boolean allowBlankLines, boolean multiLine, boolean padLines) {</span>
+<span class="fc" id="L87">    definition = new HeaderDefinition(this.name().toLowerCase(), firstLine, beforeEachLine, endLine, afterEachLine, skipLinePattern, firstLineDetectionPattern, lastLineDetectionPattern, allowBlankLines, multiLine, padLines);</span>
+<span class="fc" id="L88">  }</span>
 
   /**
    * Returns the &lt;code&gt;HeaderDefinition&lt;/code&gt; which corresponds to this enumeration instance.
@@ -95,7 +93,7 @@ import java.util.Map;
    * @return The header definition.
    */
   public HeaderDefinition getDefinition() {
-<span class="fc" id="L98">    return definition;</span>
+<span class="fc" id="L96">    return definition;</span>
   }
 
   /**
@@ -106,12 +104,12 @@ import java.util.Map;
    * com.mycila.maven.plugin.license.header.HeaderType#UNKNOWN}.
    */
   public static HeaderType fromName(String name) {
-<span class="nc bnc" id="L109" title="All 2 branches missed.">    for (HeaderType type : values()) {</span>
-<span class="nc bnc" id="L110" title="All 2 branches missed.">      if (type.name().equalsIgnoreCase(name)) {</span>
-<span class="nc" id="L111">        return type;</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">    for (HeaderType type : values()) {</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">      if (type.name().equalsIgnoreCase(name)) {</span>
+<span class="nc" id="L109">        return type;</span>
       }
     }
-<span class="nc" id="L114">    return UNKNOWN;</span>
+<span class="nc" id="L112">    return UNKNOWN;</span>
   }
 
   /**
@@ -121,7 +119,7 @@ import java.util.Map;
    * @return The default definitions declared by this enumeration.
    */
   public static Map&lt;String, HeaderDefinition&gt; defaultDefinitions() {
-<span class="fc" id="L124">    return Collections.unmodifiableMap(DEFINITIONS);</span>
+<span class="fc" id="L122">    return Collections.unmodifiableMap(DEFINITIONS);</span>
   }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

@@ -15,19 +15,15 @@
  */
 package com.mycila.maven.plugin.license;
 
-/**
- * @author Mathieu Carbou (mathieu.carbou@gmail.com)
- * 2013-08-01
- */
 public final class Default {
 
   private Default() {
     // Prevent Instantiation
   }
 
-<span class="fc" id="L28">  public static final String[] INCLUDE = new String[]{&quot;**&quot;};</span>
+<span class="fc" id="L24">  public static final String[] INCLUDE = new String[]{&quot;**&quot;};</span>
 
-<span class="fc" id="L30">  public static final String[] EXCLUDES = {</span>
+<span class="fc" id="L26">  public static final String[] EXCLUDES = {</span>
       // Miscellaneous typical temporary files
       &quot;**/*~&quot;,
       &quot;**/#*#&quot;,
@@ -173,6 +169,8 @@ public final class Default {
 
       // Security files
       &quot;**/*.asc&quot;,
+      &quot;**/*.cer&quot;,
+      &quot;**/*.der&quot;,
       &quot;**/*.jks&quot;,
       &quot;**/*.keytab&quot;,
       &quot;**/*.lic&quot;,
@@ -180,12 +178,15 @@ public final class Default {
       &quot;**/*.pub&quot;,
 
       // binary files - archives
+      &quot;**/*.ear&quot;,
       &quot;**/*.jar&quot;,
+      &quot;**/*.war&quot;,
       &quot;**/*.zip&quot;,
       &quot;**/*.rar&quot;,
       &quot;**/*.tar&quot;,
       &quot;**/*.tar.gz&quot;,
       &quot;**/*.tar.bz2&quot;,
+      &quot;**/*.tar.bz3&quot;,
       &quot;**/*.gz&quot;,
       &quot;**/*.7z&quot;,
 
@@ -251,7 +252,10 @@ public final class Default {
       &quot;**/*.docx&quot;,
       &quot;**/*.ppt&quot;,
       &quot;**/*.pptx&quot;,
+
+      // Explicit Folder to Entirely Ignore
+      &quot;**/unlicensed/**&quot;
   };
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

@@ -23,18 +23,17 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * @author Mathieu Carbou (mathieu.carbou@gmail.com) 2013-08-27
  */
 public interface PropertiesProvider extends Closeable {
 
   default void init(AbstractLicenseMojo mojo, Map&lt;String, String&gt; currentProperties) {
-<span class="nc" id="L31">  }</span>
+<span class="nc" id="L30">  }</span>
 
   default Map&lt;String, String&gt; adjustProperties(AbstractLicenseMojo mojo,
                                                Map&lt;String, String&gt; currentProperties, Document document) {
-<span class="nc" id="L35">    Properties properties = new Properties();</span>
-<span class="nc" id="L36">    properties.putAll(currentProperties);</span>
-<span class="nc" id="L37">    return getAdditionalProperties(mojo, properties, document);</span>
+<span class="nc" id="L34">    Properties properties = new Properties();</span>
+<span class="nc" id="L35">    properties.putAll(currentProperties);</span>
+<span class="nc" id="L36">    return getAdditionalProperties(mojo, properties, document);</span>
   }
 
   /**
@@ -43,11 +42,11 @@ public interface PropertiesProvider extends Closeable {
   @Deprecated
   default Map&lt;String, String&gt; getAdditionalProperties(AbstractLicenseMojo mojo,
                                                       Properties currentProperties, Document document) {
-<span class="nc" id="L46">    return Collections.emptyMap();</span>
+<span class="nc" id="L45">    return Collections.emptyMap();</span>
   }
 
   @Override
   default void close() {
-<span class="nc" id="L51">  }</span>
+<span class="nc" id="L50">  }</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

@@ -18,10 +18,7 @@ package com.mycila.maven.plugin.license;
 import com.mycila.maven.plugin.license.header.HeaderDefinition;
 import org.apache.maven.plugins.annotations.Parameter;
 
-/**
- * @author Mathieu Carbou
- */
-<span class="fc" id="L24">public class HeaderStyle {</span>
+<span class="fc" id="L21">public class HeaderStyle {</span>
 
   /**
    * The name of this header style
@@ -32,25 +29,25 @@ import org.apache.maven.plugins.annotations.Parameter;
   /**
    * The first fixed line of this header. Default to none.
    */
-<span class="fc" id="L35">  @Parameter</span>
+<span class="fc" id="L32">  @Parameter</span>
   public String firstLine = &quot;&quot;;
 
   /**
    * The last fixed line of this header. Default to none.
    */
-<span class="fc" id="L41">  @Parameter</span>
+<span class="fc" id="L38">  @Parameter</span>
   public String endLine = &quot;&quot;;
 
   /**
    * The characters to prepend before each license header lines. Default to empty.
    */
-<span class="fc" id="L47">  @Parameter</span>
+<span class="fc" id="L44">  @Parameter</span>
   public String beforeEachLine = &quot;&quot;;
 
   /**
    * The characters to append after each license header lines. Default to empty.
    */
-<span class="fc" id="L53">  @Parameter</span>
+<span class="fc" id="L50">  @Parameter</span>
   public String afterEachLine = &quot;&quot;;
 
   /**
@@ -61,7 +58,7 @@ import org.apache.maven.plugins.annotations.Parameter;
    * &lt;p&gt;
    * A style that is not multi-line is usually repeating in each line the characters before and after each line to delimit a one-line comment.
    */
-<span class="fc" id="L64">  @Parameter(alias = &quot;multiline&quot;)</span>
+<span class="fc" id="L61">  @Parameter(alias = &quot;multiline&quot;)</span>
   public boolean multiLine = true;
 
   /**
@@ -101,7 +98,7 @@ import org.apache.maven.plugins.annotations.Parameter;
   public String lastLineDetectionPattern;
 
   public HeaderDefinition toHeaderDefinition() {
-<span class="fc" id="L104">    return new HeaderDefinition(name, firstLine, beforeEachLine, endLine, afterEachLine, skipLinePattern, firstLineDetectionPattern, lastLineDetectionPattern, allowBlankLines, multiLine, padLines);</span>
+<span class="fc" id="L101">    return new HeaderDefinition(name, firstLine, beforeEachLine, endLine, afterEachLine, skipLinePattern, firstLineDetectionPattern, lastLineDetectionPattern, allowBlankLines, multiLine, padLines);</span>
   }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

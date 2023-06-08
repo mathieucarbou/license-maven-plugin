@@ -30,102 +30,100 @@ import java.util.function.Function;
  * user-supplied values. &lt;p&gt; Values for substitution can be supplied using a {@link Properties} instance or
  * using a {@link Function}.
  *
- * @author Juergen Hoeller
- * @author Rob Harrop
  * @since 3.0
  */
-<span class="fc" id="L37">class PropertyPlaceholderResolver {</span>
+<span class="fc" id="L35">class PropertyPlaceholderResolver {</span>
 
-<span class="fc" id="L39">  private final String placeholderPrefix = &quot;${&quot;;</span>
-<span class="fc" id="L40">  private final String placeholderSuffix = &quot;}&quot;;</span>
+<span class="fc" id="L37">  private final String placeholderPrefix = &quot;${&quot;;</span>
+<span class="fc" id="L38">  private final String placeholderSuffix = &quot;}&quot;;</span>
 
   public String replacePlaceholders(String value, final Map&lt;String, String&gt; properties) {
-<span class="fc" id="L43">    return replacePlaceholders(value, properties::get);</span>
+<span class="fc" id="L41">    return replacePlaceholders(value, properties::get);</span>
   }
 
   private String replacePlaceholders(String value, Function&lt;String, String&gt; placeholderResolver) {
-<span class="fc" id="L47">    return parseStringValue(value, placeholderResolver, new HashSet&lt;&gt;());</span>
+<span class="fc" id="L45">    return parseStringValue(value, placeholderResolver, new HashSet&lt;&gt;());</span>
   }
 
   private String parseStringValue(String value, Function&lt;String, String&gt; placeholderResolver,
                                   Set&lt;String&gt; visitedPlaceholders) {
-<span class="fc" id="L52">    StringBuilder result = new StringBuilder(value);</span>
-<span class="fc" id="L53">    int startIndex = value.indexOf(this.placeholderPrefix);</span>
-<span class="fc bfc" id="L54" title="All 2 branches covered.">    while (startIndex != -1) {</span>
-<span class="fc" id="L55">      int endIndex = findPlaceholderEndIndex(result, startIndex);</span>
-<span class="pc bpc" id="L56" title="1 of 2 branches missed.">      if (endIndex != -1) {</span>
-<span class="fc" id="L57">        String placeholder = result.substring(startIndex + this.placeholderPrefix.length(), endIndex);</span>
-<span class="fc" id="L58">        String originalPlaceholder = placeholder;</span>
-<span class="pc bpc" id="L59" title="1 of 2 branches missed.">        if (!visitedPlaceholders.add(originalPlaceholder)) {</span>
-<span class="nc" id="L60">          throw new IllegalArgumentException(&quot;Circular placeholder reference '&quot; + originalPlaceholder + &quot;' in property definitions&quot;);</span>
+<span class="fc" id="L50">    StringBuilder result = new StringBuilder(value);</span>
+<span class="fc" id="L51">    int startIndex = value.indexOf(this.placeholderPrefix);</span>
+<span class="fc bfc" id="L52" title="All 2 branches covered.">    while (startIndex != -1) {</span>
+<span class="fc" id="L53">      int endIndex = findPlaceholderEndIndex(result, startIndex);</span>
+<span class="pc bpc" id="L54" title="1 of 2 branches missed.">      if (endIndex != -1) {</span>
+<span class="fc" id="L55">        String placeholder = result.substring(startIndex + this.placeholderPrefix.length(), endIndex);</span>
+<span class="fc" id="L56">        String originalPlaceholder = placeholder;</span>
+<span class="pc bpc" id="L57" title="1 of 2 branches missed.">        if (!visitedPlaceholders.add(originalPlaceholder)) {</span>
+<span class="nc" id="L58">          throw new IllegalArgumentException(&quot;Circular placeholder reference '&quot; + originalPlaceholder + &quot;' in property definitions&quot;);</span>
         }
         // Recursive invocation, parsing placeholders contained in the placeholder key.
-<span class="fc" id="L63">        placeholder = parseStringValue(placeholder, placeholderResolver, visitedPlaceholders);</span>
+<span class="fc" id="L61">        placeholder = parseStringValue(placeholder, placeholderResolver, visitedPlaceholders);</span>
         // Now obtain the value for the fully resolved key...
-<span class="fc" id="L65">        String propVal = placeholderResolver.apply(placeholder);</span>
-<span class="fc" id="L66">        String valueSeparator = &quot;:&quot;;</span>
-<span class="fc bfc" id="L67" title="All 2 branches covered.">        if (propVal == null) {</span>
-<span class="fc" id="L68">          int separatorIndex = placeholder.indexOf(valueSeparator);</span>
-<span class="pc bpc" id="L69" title="1 of 2 branches missed.">          if (separatorIndex != -1) {</span>
-<span class="nc" id="L70">            String actualPlaceholder = placeholder.substring(0, separatorIndex);</span>
-<span class="nc" id="L71">            String defaultValue = placeholder.substring(separatorIndex + valueSeparator.length());</span>
-<span class="nc" id="L72">            propVal = placeholderResolver.apply(actualPlaceholder);</span>
-<span class="nc bnc" id="L73" title="All 2 branches missed.">            if (propVal == null) {</span>
-<span class="nc" id="L74">              propVal = defaultValue;</span>
+<span class="fc" id="L63">        String propVal = placeholderResolver.apply(placeholder);</span>
+<span class="fc" id="L64">        String valueSeparator = &quot;:&quot;;</span>
+<span class="fc bfc" id="L65" title="All 2 branches covered.">        if (propVal == null) {</span>
+<span class="fc" id="L66">          int separatorIndex = placeholder.indexOf(valueSeparator);</span>
+<span class="pc bpc" id="L67" title="1 of 2 branches missed.">          if (separatorIndex != -1) {</span>
+<span class="nc" id="L68">            String actualPlaceholder = placeholder.substring(0, separatorIndex);</span>
+<span class="nc" id="L69">            String defaultValue = placeholder.substring(separatorIndex + valueSeparator.length());</span>
+<span class="nc" id="L70">            propVal = placeholderResolver.apply(actualPlaceholder);</span>
+<span class="nc bnc" id="L71" title="All 2 branches missed.">            if (propVal == null) {</span>
+<span class="nc" id="L72">              propVal = defaultValue;</span>
             }
           }
         }
-<span class="fc bfc" id="L78" title="All 2 branches covered.">        if (propVal != null) {</span>
+<span class="fc bfc" id="L76" title="All 2 branches covered.">        if (propVal != null) {</span>
           // Recursive invocation, parsing placeholders contained in the
           // previously resolved placeholder value.
-<span class="fc" id="L81">          propVal = parseStringValue(propVal, placeholderResolver, visitedPlaceholders);</span>
-<span class="fc" id="L82">          result.replace(startIndex, endIndex + this.placeholderSuffix.length(), propVal);</span>
-<span class="fc" id="L83">          startIndex = result.indexOf(this.placeholderPrefix, startIndex + propVal.length());</span>
+<span class="fc" id="L79">          propVal = parseStringValue(propVal, placeholderResolver, visitedPlaceholders);</span>
+<span class="fc" id="L80">          result.replace(startIndex, endIndex + this.placeholderSuffix.length(), propVal);</span>
+<span class="fc" id="L81">          startIndex = result.indexOf(this.placeholderPrefix, startIndex + propVal.length());</span>
         } else {
           // Proceed with unprocessed value.
-<span class="fc" id="L86">          startIndex = result.indexOf(this.placeholderPrefix, endIndex + this.placeholderSuffix.length());</span>
+<span class="fc" id="L84">          startIndex = result.indexOf(this.placeholderPrefix, endIndex + this.placeholderSuffix.length());</span>
         }
-<span class="fc" id="L88">        visitedPlaceholders.remove(originalPlaceholder);</span>
-<span class="fc" id="L89">      } else {</span>
-<span class="nc" id="L90">        startIndex = -1;</span>
+<span class="fc" id="L86">        visitedPlaceholders.remove(originalPlaceholder);</span>
+<span class="fc" id="L87">      } else {</span>
+<span class="nc" id="L88">        startIndex = -1;</span>
       }
-<span class="fc" id="L92">    }</span>
+<span class="fc" id="L90">    }</span>
 
-<span class="fc" id="L94">    return result.toString();</span>
+<span class="fc" id="L92">    return result.toString();</span>
   }
 
   private int findPlaceholderEndIndex(CharSequence buf, int startIndex) {
-<span class="fc" id="L98">    int index = startIndex + this.placeholderPrefix.length();</span>
-<span class="fc" id="L99">    int withinNestedPlaceholder = 0;</span>
-<span class="pc bpc" id="L100" title="1 of 2 branches missed.">    while (index &lt; buf.length()) {</span>
-<span class="fc" id="L101">      String simplePrefix = &quot;{&quot;;</span>
-<span class="fc bfc" id="L102" title="All 2 branches covered.">      if (substringMatch(buf, index, this.placeholderSuffix)) {</span>
-<span class="pc bpc" id="L103" title="1 of 2 branches missed.">        if (withinNestedPlaceholder &gt; 0) {</span>
-<span class="nc" id="L104">          withinNestedPlaceholder--;</span>
-<span class="nc" id="L105">          index = index + this.placeholderSuffix.length();</span>
+<span class="fc" id="L96">    int index = startIndex + this.placeholderPrefix.length();</span>
+<span class="fc" id="L97">    int withinNestedPlaceholder = 0;</span>
+<span class="pc bpc" id="L98" title="1 of 2 branches missed.">    while (index &lt; buf.length()) {</span>
+<span class="fc" id="L99">      String simplePrefix = &quot;{&quot;;</span>
+<span class="fc bfc" id="L100" title="All 2 branches covered.">      if (substringMatch(buf, index, this.placeholderSuffix)) {</span>
+<span class="pc bpc" id="L101" title="1 of 2 branches missed.">        if (withinNestedPlaceholder &gt; 0) {</span>
+<span class="nc" id="L102">          withinNestedPlaceholder--;</span>
+<span class="nc" id="L103">          index = index + this.placeholderSuffix.length();</span>
         } else {
-<span class="fc" id="L107">          return index;</span>
+<span class="fc" id="L105">          return index;</span>
         }
-<span class="pc bpc" id="L109" title="1 of 2 branches missed.">      } else if (substringMatch(buf, index, simplePrefix)) {</span>
-<span class="nc" id="L110">        withinNestedPlaceholder++;</span>
-<span class="nc" id="L111">        index = index + simplePrefix.length();</span>
+<span class="pc bpc" id="L107" title="1 of 2 branches missed.">      } else if (substringMatch(buf, index, simplePrefix)) {</span>
+<span class="nc" id="L108">        withinNestedPlaceholder++;</span>
+<span class="nc" id="L109">        index = index + simplePrefix.length();</span>
       } else {
-<span class="fc" id="L113">        index++;</span>
+<span class="fc" id="L111">        index++;</span>
       }
-<span class="fc" id="L115">    }</span>
-<span class="nc" id="L116">    return -1;</span>
+<span class="fc" id="L113">    }</span>
+<span class="nc" id="L114">    return -1;</span>
   }
 
   private static boolean substringMatch(CharSequence str, int index, CharSequence substring) {
-<span class="pc bpc" id="L120" title="1 of 2 branches missed.">    if (index + substring.length() &gt; str.length()) {</span>
-<span class="nc" id="L121">      return false;</span>
+<span class="pc bpc" id="L118" title="1 of 2 branches missed.">    if (index + substring.length() &gt; str.length()) {</span>
+<span class="nc" id="L119">      return false;</span>
     }
-<span class="fc bfc" id="L123" title="All 2 branches covered.">    for (int i = 0; i &lt; substring.length(); i++) {</span>
-<span class="fc bfc" id="L124" title="All 2 branches covered.">      if (str.charAt(index + i) != substring.charAt(i)) {</span>
-<span class="fc" id="L125">        return false;</span>
+<span class="fc bfc" id="L121" title="All 2 branches covered.">    for (int i = 0; i &lt; substring.length(); i++) {</span>
+<span class="fc bfc" id="L122" title="All 2 branches covered.">      if (str.charAt(index + i) != substring.charAt(i)) {</span>
+<span class="fc" id="L123">        return false;</span>
       }
     }
-<span class="fc" id="L128">    return true;</span>
+<span class="fc" id="L126">    return true;</span>
   }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
