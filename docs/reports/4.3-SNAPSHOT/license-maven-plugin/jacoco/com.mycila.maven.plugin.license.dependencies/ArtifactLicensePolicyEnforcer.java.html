@@ -23,31 +23,29 @@ import java.util.Collections;
 
 /**
  * Make policy decisions on a {@link Artifact} based on an {@link ArtifactFilter}.
- *
- * @author Royce Remer
  */
 public class ArtifactLicensePolicyEnforcer extends AbstractLicensePolicyEnforcer&lt;Artifact&gt; {
   private ArtifactFilter filter;
 
   public ArtifactLicensePolicyEnforcer(final LicensePolicy policy, final ArtifactFilter filter) {
-<span class="nc" id="L33">    super(policy);</span>
-<span class="nc" id="L34">    this.filter = filter;</span>
-<span class="nc" id="L35">  }</span>
+<span class="nc" id="L31">    super(policy);</span>
+<span class="nc" id="L32">    this.filter = filter;</span>
+<span class="nc" id="L33">  }</span>
 
   public ArtifactLicensePolicyEnforcer(final LicensePolicy policy) {
-<span class="fc" id="L38">    super(policy);</span>
-<span class="fc" id="L39">    this.filter = new StrictPatternIncludesArtifactFilter(Collections.singletonList(policy.getValue()));</span>
-<span class="fc" id="L40">  }</span>
+<span class="fc" id="L36">    super(policy);</span>
+<span class="fc" id="L37">    this.filter = new StrictPatternIncludesArtifactFilter(Collections.singletonList(policy.getValue()));</span>
+<span class="fc" id="L38">  }</span>
 
   @Override
   public boolean apply(final Artifact target) {
-<span class="fc" id="L44">    final boolean matches = filter.include(target);</span>
-<span class="fc" id="L45">    return getPolicy().getRule().isAllowed(matches);</span>
+<span class="fc" id="L42">    final boolean matches = filter.include(target);</span>
+<span class="fc" id="L43">    return getPolicy().getRule().isAllowed(matches);</span>
   }
 
   @Override
   public Class&lt;?&gt; getType() {
-<span class="fc" id="L50">    return Artifact.class;</span>
+<span class="fc" id="L48">    return Artifact.class;</span>
   }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

@@ -20,8 +20,6 @@ import java.io.File;
 /**
  * A utility to transform native {@link File} paths to the form expected by jGit - i.e. relative to git working tree
  * root directory and delimited by {@code '/'}.
- *
- * @author &lt;a href=&quot;mailto:ppalaga@redhat.com&quot;&gt;Peter Palaga&lt;/a&gt;
  */
 public class GitPathResolver {
 
@@ -41,8 +39,8 @@ public class GitPathResolver {
   private final String repositoryRootDir;
 
   public GitPathResolver(String repositoryRootDir) {
-<span class="fc" id="L44">    this(repositoryRootDir, File.separatorChar);</span>
-<span class="fc" id="L45">  }</span>
+<span class="fc" id="L42">    this(repositoryRootDir, File.separatorChar);</span>
+<span class="fc" id="L43">  }</span>
 
   /**
    * Default visibility for testing purposes.
@@ -51,11 +49,11 @@ public class GitPathResolver {
    * @param nativePathSeparator
    */
   GitPathResolver(String repositoryRootDir, char nativePathSeparator) {
-<span class="fc" id="L54">    super();</span>
-<span class="fc bfc" id="L55" title="All 2 branches covered.">    this.repositoryRootDir = repositoryRootDir.charAt(repositoryRootDir.length() - 1) == nativePathSeparator ? repositoryRootDir</span>
-        : repositoryRootDir + nativePathSeparator;
-<span class="fc" id="L57">    this.nativePathSeparator = nativePathSeparator;</span>
-<span class="fc" id="L58">  }</span>
+<span class="fc" id="L52">    super();</span>
+<span class="fc bfc" id="L53" title="All 2 branches covered.">    this.repositoryRootDir = repositoryRootDir.charAt(repositoryRootDir.length() - 1) == nativePathSeparator ? repositoryRootDir</span>
+<span class="fc" id="L54">        : repositoryRootDir + nativePathSeparator;</span>
+<span class="fc" id="L55">    this.nativePathSeparator = nativePathSeparator;</span>
+<span class="fc" id="L56">  }</span>
 
   /**
    * With default visibility to be testable.
@@ -64,15 +62,15 @@ public class GitPathResolver {
    * @return
    */
   String relativize(String absoluteNativePath) {
-<span class="fc bfc" id="L67" title="All 2 branches covered.">    if (!absoluteNativePath.startsWith(repositoryRootDir)) {</span>
-<span class="fc" id="L68">      throw new RuntimeException(&quot;Cannot relativize path '&quot; + absoluteNativePath + &quot;' to directory '&quot;</span>
+<span class="fc bfc" id="L65" title="All 2 branches covered.">    if (!absoluteNativePath.startsWith(repositoryRootDir)) {</span>
+<span class="fc" id="L66">      throw new RuntimeException(&quot;Cannot relativize path '&quot; + absoluteNativePath + &quot;' to directory '&quot;</span>
           + repositoryRootDir + &quot;'&quot;);
     }
-<span class="fc" id="L71">    String result = absoluteNativePath.substring(repositoryRootDir.length());</span>
-<span class="fc bfc" id="L72" title="All 2 branches covered.">    if (nativePathSeparator != CANONICAL_PATH_SEPARATOR) {</span>
-<span class="fc" id="L73">      result = result.replace(nativePathSeparator, CANONICAL_PATH_SEPARATOR);</span>
+<span class="fc" id="L69">    String result = absoluteNativePath.substring(repositoryRootDir.length());</span>
+<span class="fc bfc" id="L70" title="All 2 branches covered.">    if (nativePathSeparator != CANONICAL_PATH_SEPARATOR) {</span>
+<span class="fc" id="L71">      result = result.replace(nativePathSeparator, CANONICAL_PATH_SEPARATOR);</span>
     }
-<span class="fc" id="L75">    return result;</span>
+<span class="fc" id="L73">    return result;</span>
   }
 
   /**
@@ -83,8 +81,8 @@ public class GitPathResolver {
    * @return the relativized path
    */
   public String relativize(File path) {
-<span class="fc" id="L86">    return relativize(path.getAbsolutePath());</span>
+<span class="fc" id="L84">    return relativize(path.getAbsolutePath());</span>
   }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

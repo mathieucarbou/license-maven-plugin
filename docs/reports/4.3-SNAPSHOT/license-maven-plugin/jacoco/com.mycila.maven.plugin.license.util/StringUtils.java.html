@@ -15,9 +15,6 @@
  */
 package com.mycila.maven.plugin.license.util;
 
-/**
- * @author Mathieu Carbou (mathieu.carbou@gmail.com)
- */
 public final class StringUtils {
 
   private StringUtils() {
@@ -25,26 +22,26 @@ public final class StringUtils {
 
   public static String rtrim(java.lang.String s) {
     int i;
-<span class="fc bfc" id="L28" title="All 2 branches covered.">    for (i = s.length() - 1; i &gt;= 0; i--) {</span>
-<span class="fc bfc" id="L29" title="All 2 branches covered.">      if (Character.isWhitespace(s.charAt(i))) {</span>
+<span class="fc bfc" id="L25" title="All 2 branches covered.">    for (i = s.length() - 1; i &gt;= 0; i--) {</span>
+<span class="fc bfc" id="L26" title="All 2 branches covered.">      if (Character.isWhitespace(s.charAt(i))) {</span>
         continue;
       }
       break;
     }
-<span class="fc" id="L34">    return s.substring(0, i + 1);</span>
+<span class="fc" id="L31">    return s.substring(0, i + 1);</span>
   }
 
   public static String padRight(String s, int len) {
-<span class="pc bpc" id="L38" title="1 of 4 branches missed.">    if (s == null || s.length() &gt;= len) {</span>
-<span class="fc" id="L39">      return s;</span>
+<span class="pc bpc" id="L35" title="1 of 4 branches missed.">    if (s == null || s.length() &gt;= len) {</span>
+<span class="fc" id="L36">      return s;</span>
     }
 
-<span class="fc" id="L42">    StringBuilder sb = new StringBuilder(len);</span>
-<span class="fc" id="L43">    sb.append(s);</span>
-<span class="fc bfc" id="L44" title="All 2 branches covered.">    for (int i = s.length(); i &lt; len; i++) {</span>
-<span class="fc" id="L45">      sb.append(' ');</span>
+<span class="fc" id="L39">    StringBuilder sb = new StringBuilder(len);</span>
+<span class="fc" id="L40">    sb.append(s);</span>
+<span class="fc bfc" id="L41" title="All 2 branches covered.">    for (int i = s.length(); i &lt; len; i++) {</span>
+<span class="fc" id="L42">      sb.append(' ');</span>
     }
-<span class="fc" id="L47">    return sb.toString();</span>
+<span class="fc" id="L44">    return sb.toString();</span>
   }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

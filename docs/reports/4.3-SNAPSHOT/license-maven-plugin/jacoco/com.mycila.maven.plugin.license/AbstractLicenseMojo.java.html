@@ -735,7 +735,7 @@ import static java.util.Arrays.deepToString;
 
   private int getNumberOfExecutorThreads() {
 <span class="pc bpc" id="L737" title="1 of 2 branches missed.">    return nThreads &gt; 0 ?</span>
-        nThreads :
+<span class="nc" id="L738">        nThreads :</span>
 <span class="fc" id="L739">        Math.max(1, (int) (Runtime.getRuntime().availableProcessors() * concurrencyFactor));</span>
   }
 
@@ -923,4 +923,4 @@ import static java.util.Arrays.deepToString;
 <span class="fc" id="L923">    return t2;</span>
   }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
