@@ -62,7 +62,7 @@
 
     <groovy.version>4.0.13</groovy.version>
     <jacoco.minimum.coverage>1.00</jacoco.minimum.coverage>
-    <junit.version>5.9.3</junit.version>
+    <junit.version>5.10.0</junit.version>
   </properties>
 
   <modules>
