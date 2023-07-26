@@ -1,4 +1,4 @@
-# LIcense Maven Plugin
+# License Maven Plugin
 
 - __Build Status:__ [![Java CI](https://github.com/mathieucarbou/license-maven-plugin/actions/workflows/ci.yaml/badge.svg)](https://github.com/mathieucarbou/license-maven-plugin/actions/workflows/ci.yaml)
 - __Issues:__ https://github.com/mathieucarbou/license-maven-plugin/issues
