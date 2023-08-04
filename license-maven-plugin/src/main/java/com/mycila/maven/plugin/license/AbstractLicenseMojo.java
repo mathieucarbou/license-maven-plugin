@@ -84,6 +84,8 @@ import static java.util.Arrays.deepToString;
  */
 public abstract class AbstractLicenseMojo extends AbstractMojo {
 
+  private static final String[] DEFAULT_KEYWORDS = {"copyright"};
+
   @Parameter
   public LicenseSet[] licenseSets;
 
@@ -228,7 +230,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
    */
   @Deprecated
   @Parameter(alias = "keywords")
-  public String[] legacyConfigKeywords = new String[]{"copyright"};
+  public String[] legacyConfigKeywords = DEFAULT_KEYWORDS;
 
   /**
    * Specify if you want to use default exclusions besides the files you have
@@ -454,6 +456,9 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
   @Parameter(property = "license.report.skip", defaultValue = "false")
   public boolean reportSkipped = false;
 
+  @Parameter(property = "license.prohibitLegacyUse", defaultValue = "false")
+  public boolean prohibitLegacyUse = false;
+
   protected Clock clock = Clock.systemUTC();
   protected Report report;
 
@@ -487,6 +492,9 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
   @SuppressWarnings({"unchecked"})
   protected final void execute(final Callback callback) throws MojoExecutionException, MojoFailureException {
     if (!skip) {
+      if (prohibitLegacyUse && detectLegacyUse()) {
+        throw new MojoExecutionException("Use of legacy parameters has been prohibited by configuration.");
+      }
 
       // make default base dir canonical
       this.defaultBasedir = this.getCanonicalFile(this.defaultBasedir, "license.basedir");
@@ -550,6 +558,17 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
     for (final LicenseSet licenseSet : licenseSets) {
       executeForLicenseSet(licenseSet, callback);
     }
+  }
+
+  private boolean detectLegacyUse() {
+    return legacyConfigHeader != null
+            || legacyConfigInlineHeader != null
+            || (legacyConfigValidHeaders != null && legacyConfigValidHeaders.length > 0)
+            || legacyConfigMulti != null
+            || (legacyConfigHeaderSections != null && legacyConfigHeaderSections.length > 0)
+            || (legacyConfigIncludes != null && legacyConfigIncludes.length > 0)
+            || (legacyConfigExcludes != null && legacyConfigExcludes.length > 0)
+            || (legacyConfigKeywords != null && !Arrays.equals(legacyConfigKeywords, DEFAULT_KEYWORDS));
   }
 
   private LicenseSet convertLegacyConfigToLicenseSet() {
