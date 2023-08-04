@@ -194,7 +194,7 @@ The table below shows all the available options you can use in the configure sec
 All plugin configuration options are described in the [Detailed Maven documentation](#detailed-maven-documentation) but here are some details.
 
 - `useDefaultExcludes`: The default exclusion list can be found [here](https://github.com/mathieucarbou/license-maven-plugin/blob/master/license-maven-plugin/src/main/java/com/mycila/maven/plugin/license/Default.java)
-
+- `prohibitLegacyUse`: Fail when deprecated configuration options are used (the default behaviour is to warn).
 
 ### License templates
 
