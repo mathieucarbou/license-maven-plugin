@@ -253,6 +253,10 @@ public final class Default {
       "**/*.ppt",
       "**/*.pptx",
 
+      // String Template
+      "**/*.st",
+      "**/*.stg",
+
       // Explicit Folder to Entirely Ignore
       "**/unlicensed/**"
   };
