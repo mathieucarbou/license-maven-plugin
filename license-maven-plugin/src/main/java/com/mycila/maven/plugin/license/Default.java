@@ -187,6 +187,7 @@ public final class Default {
       "**/*.tar.gz",
       "**/*.tar.bz2",
       "**/*.tar.bz3",
+      "**/*.tar.xz",
       "**/*.gz",
       "**/*.7z",
 
