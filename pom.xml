@@ -22,7 +22,7 @@
   <parent>
     <groupId>com.mycila</groupId>
     <artifactId>mycila-pom</artifactId>
-    <version>10</version>
+    <version>11-SNAPSHOT</version>
     <relativePath />
   </parent>
 
@@ -403,8 +403,10 @@
           <artifactId>license-maven-plugin</artifactId>
           <version>4.2</version>
           <configuration>
-            <inlineHeader>
-              <![CDATA[
+            <licenseSets>
+              <licenseSet>
+                <inlineHeader>
+                  <![CDATA[
 Copyright (C) ${year} ${owner} (${email})
 
 Licensed under the Apache License, Version 2.0 (the "License").
@@ -419,18 +421,20 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ]]>
-            </inlineHeader>
-            <properties>
-              <owner>Mycila</owner>
-              <year>${project.inceptionYear}-2023</year>
-              <email>mathieu.carbou@gmail.com</email>
-            </properties>
-            <excludes>
-              <exclude>src/test/resources/**</exclude>
-              <exclude>**/release-pom.xml</exclude>
-              <exclude>docs/**</exclude>
-              <exclude>.config/**</exclude>
-            </excludes>
+                </inlineHeader>
+                <properties>
+                  <owner>Mycila</owner>
+                  <year>${project.inceptionYear}-2023</year>
+                  <email>mathieu.carbou@gmail.com</email>
+                </properties>
+                <excludes>
+                  <exclude>src/test/resources/**</exclude>
+                  <exclude>**/release-pom.xml</exclude>
+                  <exclude>docs/**</exclude>
+                  <exclude>.config/**</exclude>
+                </excludes>
+              </licenseSet>
+            </licenseSets>
           </configuration>
         </plugin>
         <plugin>
