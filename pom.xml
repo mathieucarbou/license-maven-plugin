@@ -73,7 +73,7 @@
 
     <mycila.github.name>license-maven-plugin</mycila.github.name>
 
-    <groovy.version>4.0.14</groovy.version>
+    <groovy.version>4.0.15</groovy.version>
     <jacoco.minimum.coverage>1.00</jacoco.minimum.coverage>
     <junit.version>5.10.0</junit.version>
   </properties>
