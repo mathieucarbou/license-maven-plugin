@@ -77,6 +77,7 @@ public enum DocumentType {
   PHP("php", HeaderType.PHP),
   POM("pom", HeaderType.XML_STYLE),
   PROPERTIES("properties", HeaderType.SCRIPT_STYLE),
+  PROTO("proto", HeaderType.DOUBLESLASH_STYLE),
   PYTHON("py", HeaderType.SCRIPT_STYLE),
   RUBY("rb", HeaderType.SCRIPT_STYLE),
   SCALA("scala", HeaderType.SLASHSTAR_STYLE),
