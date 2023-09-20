@@ -54,6 +54,8 @@ public enum DocumentType {
   ERLANG_HEADER("hrl", HeaderType.PERCENT3_STYLE),
   FORTRAN("f", HeaderType.EXCLAMATION_STYLE),
   FREEMARKER("ftl", HeaderType.FTL),
+  GRADLE("gradle", HeaderType.SLASHSTAR_STYLE),
+  GRADLE_KOTLIN("kts", HeaderType.SLASHSTAR_STYLE),
   GROOVY("groovy", HeaderType.SLASHSTAR_STYLE),
   GSP("GSP", HeaderType.XML_STYLE),
   H("h", HeaderType.JAVADOC_STYLE),
