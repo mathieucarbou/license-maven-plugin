@@ -84,6 +84,8 @@ import static java.util.Arrays.deepToString;
  */
 <span class="fc" id="L85">public abstract class AbstractLicenseMojo extends AbstractMojo {</span>
 
+<span class="fc" id="L87">  private static final String[] DEFAULT_KEYWORDS = {&quot;copyright&quot;};</span>
+
   @Parameter
   public LicenseSet[] licenseSets;
 
@@ -130,7 +132,7 @@ import static java.util.Arrays.deepToString;
    *
    * @deprecated use {@link LicenseSet#validHeaders}
    */
-<span class="fc" id="L133">  @Deprecated</span>
+<span class="fc" id="L135">  @Deprecated</span>
   @Parameter(alias = &quot;validHeaders&quot;)
   public String[] legacyConfigValidHeaders = new String[0];
 
@@ -158,7 +160,7 @@ import static java.util.Arrays.deepToString;
    * in each LicenseSet by setting {@link LicenseSet#headerDefinitions}  or
    * {@link LicenseSet#inlineHeaderStyles} and is overridden by {@link #defaultInlineHeaderStyles}.
    */
-<span class="fc" id="L161">  @Parameter(alias = &quot;headerDefinitions&quot;)</span>
+<span class="fc" id="L163">  @Parameter(alias = &quot;headerDefinitions&quot;)</span>
   public String[] defaultHeaderDefinitions = new String[0];
 
   /**
@@ -172,7 +174,7 @@ import static java.util.Arrays.deepToString;
    * &lt;p&gt;
    * Inline styles overrides those read from file
    */
-<span class="fc" id="L175">  @Parameter</span>
+<span class="fc" id="L177">  @Parameter</span>
   public HeaderStyle[] defaultInlineHeaderStyles = new HeaderStyle[0];
 
   /**
@@ -181,7 +183,7 @@ import static java.util.Arrays.deepToString;
    *
    * @deprecated use {@link LicenseSet#headerSections}
    */
-<span class="fc" id="L184">  @Deprecated</span>
+<span class="fc" id="L186">  @Deprecated</span>
   @Parameter(alias = &quot;headerSections&quot;)
   public HeaderSection[] legacyConfigHeaderSections = new HeaderSection[0];
 
@@ -196,7 +198,7 @@ import static java.util.Arrays.deepToString;
    * value for the properties. This default value can be overridden
    * in each LicenseSet by setting {@link LicenseSet#properties}.
    */
-<span class="fc" id="L199">  @Parameter(alias = &quot;properties&quot;)</span>
+<span class="fc" id="L201">  @Parameter(alias = &quot;properties&quot;)</span>
   public Map&lt;String, String&gt; defaultProperties = new HashMap&lt;String, String&gt;();
 
   /**
@@ -205,7 +207,7 @@ import static java.util.Arrays.deepToString;
    *
    * @deprecated use {@link LicenseSet#includes}
    */
-<span class="fc" id="L208">  @Deprecated</span>
+<span class="fc" id="L210">  @Deprecated</span>
   @Parameter(alias = &quot;includes&quot;, property = &quot;license.includes&quot;)
   public String[] legacyConfigIncludes = new String[0];
 
@@ -215,7 +217,7 @@ import static java.util.Arrays.deepToString;
    *
    * @deprecated use {@link LicenseSet#excludes}
    */
-<span class="fc" id="L218">  @Deprecated</span>
+<span class="fc" id="L220">  @Deprecated</span>
   @Parameter(alias = &quot;excludes&quot;, property = &quot;license.excludes&quot;)
   public String[] legacyConfigExcludes = new String[0];
 
@@ -226,9 +228,9 @@ import static java.util.Arrays.deepToString;
    *
    * @deprecated use {@link LicenseSet#keywords}
    */
-<span class="fc" id="L229">  @Deprecated</span>
+<span class="fc" id="L231">  @Deprecated</span>
   @Parameter(alias = &quot;keywords&quot;)
-  public String[] legacyConfigKeywords = new String[]{&quot;copyright&quot;};
+  public String[] legacyConfigKeywords = DEFAULT_KEYWORDS;
 
   /**
    * Specify if you want to use default exclusions besides the files you have
@@ -239,7 +241,7 @@ import static java.util.Arrays.deepToString;
    * value for whether to use default excludes. This default value can be overridden
    * in each LicenseSet by setting {@link LicenseSet#useDefaultExcludes}.
    */
-<span class="fc" id="L242">  @Parameter(property = &quot;license.useDefaultExcludes&quot;, defaultValue = &quot;true&quot;, alias = &quot;useDefaultExcludes&quot;)</span>
+<span class="fc" id="L244">  @Parameter(property = &quot;license.useDefaultExcludes&quot;, defaultValue = &quot;true&quot;, alias = &quot;useDefaultExcludes&quot;)</span>
   public boolean defaultUseDefaultExcludes = true;
 
   /**
@@ -248,7 +250,7 @@ import static java.util.Arrays.deepToString;
    * for example the header licenses from the parent module for all sub
    * modules.
    */
-<span class="fc" id="L251">  @Parameter(property = &quot;license.aggregate&quot;, defaultValue = &quot;false&quot;)</span>
+<span class="fc" id="L253">  @Parameter(property = &quot;license.aggregate&quot;, defaultValue = &quot;false&quot;)</span>
   public boolean aggregate = false;
 
   /**
@@ -259,14 +261,14 @@ import static java.util.Arrays.deepToString;
    * an existing type of comment. The tag name is the new extension name to
    * support, and the value is the name of the comment type to use.
    */
-<span class="fc" id="L262">  @Parameter</span>
+<span class="fc" id="L264">  @Parameter</span>
   public Map&lt;String, String&gt; mapping = new LinkedHashMap&lt;&gt;();
 
   /**
    * Whether to use the default mapping between file extensions and comment
    * types, or only the one your provide.
    */
-<span class="fc" id="L269">  @Parameter(property = &quot;license.useDefaultMapping&quot;, defaultValue = &quot;true&quot;)</span>
+<span class="fc" id="L271">  @Parameter(property = &quot;license.useDefaultMapping&quot;, defaultValue = &quot;true&quot;)</span>
   public boolean useDefaultMapping = true;
 
   /**
@@ -277,7 +279,7 @@ import static java.util.Arrays.deepToString;
    * &lt;br&gt;
    * The default is 1.5.
    */
-<span class="fc" id="L280">  @Parameter(property = &quot;license.concurrencyFactor&quot;, defaultValue = &quot;1.5&quot;)</span>
+<span class="fc" id="L282">  @Parameter(property = &quot;license.concurrencyFactor&quot;, defaultValue = &quot;1.5&quot;)</span>
   public float concurrencyFactor = 1.5f;
 
 
@@ -295,7 +297,7 @@ import static java.util.Arrays.deepToString;
   /**
    * Whether to skip the plugin execution
    */
-<span class="fc" id="L298">  @Parameter(property = &quot;license.skip&quot;, defaultValue = &quot;false&quot;)</span>
+<span class="fc" id="L300">  @Parameter(property = &quot;license.skip&quot;, defaultValue = &quot;false&quot;)</span>
   public boolean skip = false;
 
   /**
@@ -305,14 +307,14 @@ import static java.util.Arrays.deepToString;
    * are certain the repository depth will permit accurate determination of these
    * values, you can disable this check.
    */
-<span class="fc" id="L308">  @Parameter(property = &quot;license.warnIfShallow&quot;, defaultValue = &quot;true&quot;)</span>
+<span class="fc" id="L310">  @Parameter(property = &quot;license.warnIfShallow&quot;, defaultValue = &quot;true&quot;)</span>
   public boolean warnIfShallow = true;
 
   /**
    * If you do not want to see the list of file having a missing header, you
    * can add the quiet flag that will shorten the output
    */
-<span class="fc" id="L315">  @Parameter(property = &quot;license.quiet&quot;, defaultValue = &quot;false&quot;)</span>
+<span class="fc" id="L317">  @Parameter(property = &quot;license.quiet&quot;, defaultValue = &quot;false&quot;)</span>
   public boolean quiet = false;
 
   /**
@@ -323,21 +325,21 @@ import static java.util.Arrays.deepToString;
    * &lt;br&gt;
    * We highly recommend to keep this option set to {@code true}.
    */
-<span class="fc" id="L326">  @Parameter(property = &quot;license.strictCheck&quot;, defaultValue = &quot;true&quot;)</span>
+<span class="fc" id="L328">  @Parameter(property = &quot;license.strictCheck&quot;, defaultValue = &quot;true&quot;)</span>
   public boolean strictCheck = true;
 
   /**
    * Specify the encoding of your files. Default to the project source
    * encoding property (project.build.sourceEncoding).
    */
-<span class="fc" id="L333">  @Parameter(property = &quot;license.encoding&quot;, defaultValue = &quot;${project.build.sourceEncoding}&quot;)</span>
+<span class="fc" id="L335">  @Parameter(property = &quot;license.encoding&quot;, defaultValue = &quot;${project.build.sourceEncoding}&quot;)</span>
   public String encoding = &quot;UTF-8&quot;;
 
   /**
    * You can set this flag to false if you do not want the build to fail when
    * some headers are missing.
    */
-<span class="fc" id="L340">  @Parameter(property = &quot;license.failIfMissing&quot;, defaultValue = &quot;true&quot;)</span>
+<span class="fc" id="L342">  @Parameter(property = &quot;license.failIfMissing&quot;, defaultValue = &quot;true&quot;)</span>
   public boolean failIfMissing = true;
 
   /**
@@ -351,7 +353,7 @@ import static java.util.Arrays.deepToString;
    *
    * @since 2.8
    */
-<span class="fc" id="L354">  @Parameter(property = &quot;license.failIfUnknown&quot;, defaultValue = &quot;false&quot;)</span>
+<span class="fc" id="L356">  @Parameter(property = &quot;license.failIfUnknown&quot;, defaultValue = &quot;false&quot;)</span>
   public boolean failIfUnknown = false;
 
   /**
@@ -359,13 +361,13 @@ import static java.util.Arrays.deepToString;
    * overwrite the existing file but instead write the result to a new file
    * with the same name but ending with `.licensed`.
    */
-<span class="fc" id="L362">  @Parameter(property = &quot;license.dryRun&quot;, defaultValue = &quot;false&quot;)</span>
+<span class="fc" id="L364">  @Parameter(property = &quot;license.dryRun&quot;, defaultValue = &quot;false&quot;)</span>
   public boolean dryRun = false;
 
   /**
    * Skip the formatting of files which already contain a detected header.
    */
-<span class="fc" id="L368">  @Parameter(property = &quot;license.skipExistingHeaders&quot;, defaultValue = &quot;false&quot;)</span>
+<span class="fc" id="L370">  @Parameter(property = &quot;license.skipExistingHeaders&quot;, defaultValue = &quot;false&quot;)</span>
   public boolean skipExistingHeaders = false;
 
   /**
@@ -451,422 +453,439 @@ import static java.util.Arrays.deepToString;
   /**
    * Skip the report generation. Default: false
    */
-<span class="fc" id="L454">  @Parameter(property = &quot;license.report.skip&quot;, defaultValue = &quot;false&quot;)</span>
+<span class="fc" id="L456">  @Parameter(property = &quot;license.report.skip&quot;, defaultValue = &quot;false&quot;)</span>
   public boolean reportSkipped = false;
 
-<span class="fc" id="L457">  protected Clock clock = Clock.systemUTC();</span>
+<span class="fc" id="L459">  @Parameter(property = &quot;license.prohibitLegacyUse&quot;, defaultValue = &quot;false&quot;)</span>
+  public boolean prohibitLegacyUse = false;
+
+<span class="fc" id="L462">  protected Clock clock = Clock.systemUTC();</span>
   protected Report report;
 
-<span class="fc" id="L460">  protected abstract class AbstractCallback implements Callback {</span>
+<span class="fc" id="L465">  protected abstract class AbstractCallback implements Callback {</span>
 
     /**
      * Related to {@link #failIfUnknown}.
      */
-<span class="fc" id="L465">    private final Collection&lt;File&gt; unknownFiles = new ConcurrentLinkedQueue&lt;&gt;();</span>
+<span class="fc" id="L470">    private final Collection&lt;File&gt; unknownFiles = new ConcurrentLinkedQueue&lt;&gt;();</span>
 
     @Override
     public void onUnknownFile(Document document, Header header) {
-<span class="fc" id="L469">      warn(&quot;Unknown file extension: %s&quot;, document.getFilePath());</span>
-<span class="fc" id="L470">      unknownFiles.add(document.getFile());</span>
-<span class="fc" id="L471">      report.add(document.getFile(), Report.Result.UNKNOWN);</span>
-<span class="fc" id="L472">    }</span>
+<span class="fc" id="L474">      warn(&quot;Unknown file extension: %s&quot;, document.getFilePath());</span>
+<span class="fc" id="L475">      unknownFiles.add(document.getFile());</span>
+<span class="fc" id="L476">      report.add(document.getFile(), Report.Result.UNKNOWN);</span>
+<span class="fc" id="L477">    }</span>
 
     public void checkUnknown() throws MojoExecutionException {
-<span class="fc bfc" id="L475" title="All 2 branches covered.">      if (!unknownFiles.isEmpty()) {</span>
-<span class="fc" id="L476">        String msg = &quot;Unable to find a comment style definition for some &quot;</span>
+<span class="fc bfc" id="L480" title="All 2 branches covered.">      if (!unknownFiles.isEmpty()) {</span>
+<span class="fc" id="L481">        String msg = &quot;Unable to find a comment style definition for some &quot;</span>
             + &quot;files. You may want to add a custom mapping for the relevant file extensions.&quot;;
-<span class="fc bfc" id="L478" title="All 2 branches covered.">        if (failIfUnknown) {</span>
-<span class="fc" id="L479">          throw new MojoExecutionException(msg);</span>
+<span class="fc bfc" id="L483" title="All 2 branches covered.">        if (failIfUnknown) {</span>
+<span class="fc" id="L484">          throw new MojoExecutionException(msg);</span>
         }
-<span class="fc" id="L481">        getLog().warn(msg);</span>
+<span class="fc" id="L486">        getLog().warn(msg);</span>
       }
-<span class="fc" id="L483">    }</span>
+<span class="fc" id="L488">    }</span>
 
   }
 
   @SuppressWarnings({&quot;unchecked&quot;})
   protected final void execute(final Callback callback) throws MojoExecutionException, MojoFailureException {
-<span class="pc bpc" id="L489" title="1 of 2 branches missed.">    if (!skip) {</span>
+<span class="pc bpc" id="L494" title="1 of 2 branches missed.">    if (!skip) {</span>
+<span class="fc bfc" id="L495" title="All 4 branches covered.">      if (prohibitLegacyUse &amp;&amp; detectLegacyUse()) {</span>
+<span class="fc" id="L496">        throw new MojoExecutionException(&quot;Use of legacy parameters has been prohibited by configuration.&quot;);</span>
+      }
 
       // make default base dir canonical
-<span class="fc" id="L492">      this.defaultBasedir = this.getCanonicalFile(this.defaultBasedir, &quot;license.basedir&quot;);</span>
+<span class="fc" id="L500">      this.defaultBasedir = this.getCanonicalFile(this.defaultBasedir, &quot;license.basedir&quot;);</span>
 
       // collect all the license sets together
       final LicenseSet[] allLicenseSets;
 
       // if we abandon the legacy config this contiguous block can be removed
-<span class="fc" id="L498">      final LicenseSet legacyLicenseSet = convertLegacyConfigToLicenseSet();</span>
-<span class="fc bfc" id="L499" title="All 2 branches covered.">      if (legacyLicenseSet != null) {</span>
-<span class="pc bpc" id="L500" title="1 of 2 branches missed.">        if (licenseSets == null) {</span>
-<span class="fc" id="L501">          allLicenseSets = new LicenseSet[]{legacyLicenseSet};</span>
+<span class="fc" id="L506">      final LicenseSet legacyLicenseSet = convertLegacyConfigToLicenseSet();</span>
+<span class="fc bfc" id="L507" title="All 2 branches covered.">      if (legacyLicenseSet != null) {</span>
+<span class="pc bpc" id="L508" title="1 of 2 branches missed.">        if (licenseSets == null) {</span>
+<span class="fc" id="L509">          allLicenseSets = new LicenseSet[]{legacyLicenseSet};</span>
         } else {
-<span class="nc" id="L503">          allLicenseSets = Arrays.copyOf(licenseSets, licenseSets.length + 1);</span>
-<span class="nc" id="L504">          allLicenseSets[licenseSets.length] = legacyLicenseSet;</span>
+<span class="nc" id="L511">          allLicenseSets = Arrays.copyOf(licenseSets, licenseSets.length + 1);</span>
+<span class="nc" id="L512">          allLicenseSets[licenseSets.length] = legacyLicenseSet;</span>
         }
       } else {
-<span class="fc" id="L507">        allLicenseSets = licenseSets;</span>
+<span class="fc" id="L515">        allLicenseSets = licenseSets;</span>
       }
 
       // execute
-<span class="fc" id="L511">      executeForLicenseSets(allLicenseSets, callback);</span>
+<span class="fc" id="L519">      executeForLicenseSets(allLicenseSets, callback);</span>
 
-<span class="fc" id="L513">      report.exportTo(reportLocation);</span>
+<span class="fc" id="L521">      report.exportTo(reportLocation);</span>
     }
-<span class="fc" id="L515">  }</span>
+<span class="fc" id="L523">  }</span>
 
   private File getCanonicalFile(final File file, final String description) throws MojoFailureException {
-<span class="fc bfc" id="L518" title="All 2 branches covered.">    if (file == null) {</span>
-<span class="fc" id="L519">      return null;</span>
+<span class="fc bfc" id="L526" title="All 2 branches covered.">    if (file == null) {</span>
+<span class="fc" id="L527">      return null;</span>
     }
     try {
-<span class="fc" id="L522">      return file.getCanonicalFile();</span>
-<span class="nc" id="L523">    } catch (final IOException e) {</span>
-<span class="nc" id="L524">      throw new MojoFailureException(&quot;Could not get canonical path of &quot; + description, e);</span>
+<span class="fc" id="L530">      return file.getCanonicalFile();</span>
+<span class="nc" id="L531">    } catch (final IOException e) {</span>
+<span class="nc" id="L532">      throw new MojoFailureException(&quot;Could not get canonical path of &quot; + description, e);</span>
     }
   }
 
   private void executeForLicenseSets(final LicenseSet[] licenseSets, final Callback callback) throws MojoFailureException, MojoExecutionException {
-<span class="pc bpc" id="L529" title="1 of 4 branches missed.">    if (licenseSets == null || licenseSets.length == 0) {</span>
-<span class="fc" id="L530">      warn(&quot;At least one licenseSet must be specified&quot;);</span>
-<span class="fc" id="L531">      return;</span>
+<span class="pc bpc" id="L537" title="1 of 4 branches missed.">    if (licenseSets == null || licenseSets.length == 0) {</span>
+<span class="fc" id="L538">      warn(&quot;At least one licenseSet must be specified&quot;);</span>
+<span class="fc" id="L539">      return;</span>
     }
 
     // need to perform validation first
-<span class="fc bfc" id="L535" title="All 2 branches covered.">    for (int i = 0; i &lt; licenseSets.length; i++) {</span>
-<span class="fc" id="L536">      final LicenseSet licenseSet = licenseSets[i];</span>
-<span class="pc bpc" id="L537" title="1 of 2 branches missed.">      if (!hasHeader(licenseSet)) {</span>
-<span class="nc" id="L538">        warn(&quot;No header file specified to check for license in licenseSet: &quot; + i);</span>
-<span class="nc" id="L539">        return;</span>
+<span class="fc bfc" id="L543" title="All 2 branches covered.">    for (int i = 0; i &lt; licenseSets.length; i++) {</span>
+<span class="fc" id="L544">      final LicenseSet licenseSet = licenseSets[i];</span>
+<span class="pc bpc" id="L545" title="1 of 2 branches missed.">      if (!hasHeader(licenseSet)) {</span>
+<span class="nc" id="L546">        warn(&quot;No header file specified to check for license in licenseSet: &quot; + i);</span>
+<span class="nc" id="L547">        return;</span>
       }
       // make licenseSet baseDir canonical
-<span class="fc" id="L542">      licenseSet.basedir = this.getCanonicalFile(licenseSet.basedir, &quot;licenseSet[&quot; + i + &quot;].basedir&quot;);</span>
+<span class="fc" id="L550">      licenseSet.basedir = this.getCanonicalFile(licenseSet.basedir, &quot;licenseSet[&quot; + i + &quot;].basedir&quot;);</span>
     }
-<span class="fc bfc" id="L544" title="All 2 branches covered.">    if (!strictCheck) {</span>
-<span class="fc" id="L545">      warn(&quot;Property 'strictCheck' is not enabled. Please consider adding &lt;strictCheck&gt;true&lt;/strictCheck&gt; in your pom.xml file.&quot;);</span>
-<span class="fc" id="L546">      warn(&quot;See https://mycila.carbou.me/license-maven-plugin for more information.&quot;);</span>
+<span class="fc bfc" id="L552" title="All 2 branches covered.">    if (!strictCheck) {</span>
+<span class="fc" id="L553">      warn(&quot;Property 'strictCheck' is not enabled. Please consider adding &lt;strictCheck&gt;true&lt;/strictCheck&gt; in your pom.xml file.&quot;);</span>
+<span class="fc" id="L554">      warn(&quot;See https://mycila.carbou.me/license-maven-plugin for more information.&quot;);</span>
     }
 
     // then execute each license set
-<span class="fc bfc" id="L550" title="All 2 branches covered.">    for (final LicenseSet licenseSet : licenseSets) {</span>
-<span class="fc" id="L551">      executeForLicenseSet(licenseSet, callback);</span>
+<span class="fc bfc" id="L558" title="All 2 branches covered.">    for (final LicenseSet licenseSet : licenseSets) {</span>
+<span class="fc" id="L559">      executeForLicenseSet(licenseSet, callback);</span>
     }
-<span class="fc" id="L553">  }</span>
+<span class="fc" id="L561">  }</span>
+
+  private boolean detectLegacyUse() {
+<span class="pc bpc" id="L564" title="5 of 24 branches missed.">    return legacyConfigHeader != null</span>
+            || legacyConfigInlineHeader != null
+            || (legacyConfigValidHeaders != null &amp;&amp; legacyConfigValidHeaders.length &gt; 0)
+            || legacyConfigMulti != null
+            || (legacyConfigHeaderSections != null &amp;&amp; legacyConfigHeaderSections.length &gt; 0)
+            || (legacyConfigIncludes != null &amp;&amp; legacyConfigIncludes.length &gt; 0)
+            || (legacyConfigExcludes != null &amp;&amp; legacyConfigExcludes.length &gt; 0)
+<span class="fc bfc" id="L571" title="All 2 branches covered.">            || (legacyConfigKeywords != null &amp;&amp; !Arrays.equals(legacyConfigKeywords, DEFAULT_KEYWORDS));</span>
+  }
 
   private LicenseSet convertLegacyConfigToLicenseSet() {
-<span class="pc bpc" id="L556" title="1 of 6 branches missed.">    if (legacyConfigHeader == null &amp;&amp; (this.legacyConfigInlineHeader == null || this.legacyConfigInlineHeader.isEmpty())) {</span>
-<span class="fc" id="L557">      return null;</span>
+<span class="pc bpc" id="L575" title="1 of 6 branches missed.">    if (legacyConfigHeader == null &amp;&amp; (this.legacyConfigInlineHeader == null || this.legacyConfigInlineHeader.isEmpty())) {</span>
+<span class="fc" id="L576">      return null;</span>
     }
 
-<span class="fc" id="L560">    final LicenseSet legacyLicenseSet = new LicenseSet();</span>
-<span class="fc" id="L561">    legacyLicenseSet.header = legacyConfigHeader;</span>
-<span class="fc" id="L562">    legacyLicenseSet.inlineHeader = legacyConfigInlineHeader;</span>
-<span class="fc" id="L563">    legacyLicenseSet.validHeaders = legacyConfigValidHeaders;</span>
-<span class="fc" id="L564">    legacyLicenseSet.multi = legacyConfigMulti;</span>
-<span class="fc" id="L565">    legacyLicenseSet.headerSections = legacyConfigHeaderSections;</span>
-<span class="fc" id="L566">    legacyLicenseSet.includes = legacyConfigIncludes;</span>
-<span class="fc" id="L567">    legacyLicenseSet.excludes = legacyConfigExcludes;</span>
-<span class="fc" id="L568">    legacyLicenseSet.keywords = legacyConfigKeywords;</span>
-<span class="fc" id="L569">    return legacyLicenseSet;</span>
+<span class="fc" id="L579">    final LicenseSet legacyLicenseSet = new LicenseSet();</span>
+<span class="fc" id="L580">    legacyLicenseSet.header = legacyConfigHeader;</span>
+<span class="fc" id="L581">    legacyLicenseSet.inlineHeader = legacyConfigInlineHeader;</span>
+<span class="fc" id="L582">    legacyLicenseSet.validHeaders = legacyConfigValidHeaders;</span>
+<span class="fc" id="L583">    legacyLicenseSet.multi = legacyConfigMulti;</span>
+<span class="fc" id="L584">    legacyLicenseSet.headerSections = legacyConfigHeaderSections;</span>
+<span class="fc" id="L585">    legacyLicenseSet.includes = legacyConfigIncludes;</span>
+<span class="fc" id="L586">    legacyLicenseSet.excludes = legacyConfigExcludes;</span>
+<span class="fc" id="L587">    legacyLicenseSet.keywords = legacyConfigKeywords;</span>
+<span class="fc" id="L588">    return legacyLicenseSet;</span>
   }
 
   private void executeForLicenseSet(final LicenseSet licenseSet, final Callback callback) throws MojoExecutionException, MojoFailureException {
-<span class="fc" id="L573">    final ResourceFinder finder = new ResourceFinder(firstNonNull(asPath(licenseSet.basedir), asPath(defaultBasedir)));</span>
+<span class="fc" id="L592">    final ResourceFinder finder = new ResourceFinder(firstNonNull(asPath(licenseSet.basedir), asPath(defaultBasedir)));</span>
     try {
-<span class="fc" id="L575">      finder.setCompileClassPath(project.getCompileClasspathElements());</span>
-<span class="nc" id="L576">    } catch (DependencyResolutionRequiredException e) {</span>
-<span class="nc" id="L577">      throw new MojoExecutionException(e.getMessage(), e);</span>
-<span class="fc" id="L578">    }</span>
-<span class="fc" id="L579">    finder.setPluginClassPath(getClass().getClassLoader());</span>
+<span class="fc" id="L594">      finder.setCompileClassPath(project.getCompileClasspathElements());</span>
+<span class="nc" id="L595">    } catch (DependencyResolutionRequiredException e) {</span>
+<span class="nc" id="L596">      throw new MojoExecutionException(e.getMessage(), e);</span>
+<span class="fc" id="L597">    }</span>
+<span class="fc" id="L598">    finder.setPluginClassPath(getClass().getClassLoader());</span>
 
-<span class="fc" id="L581">    final HeaderSource headerSource = HeaderSource.of(licenseSet.multi, licenseSet.inlineHeader, licenseSet.header, this.encoding, finder);</span>
-<span class="fc" id="L582">    final Header h = new Header(headerSource, licenseSet.headerSections);</span>
-<span class="fc" id="L583">    debug(&quot;Header: %s&quot;, h.getLocation());</span>
+<span class="fc" id="L600">    final HeaderSource headerSource = HeaderSource.of(licenseSet.multi, licenseSet.inlineHeader, licenseSet.header, this.encoding, finder);</span>
+<span class="fc" id="L601">    final Header h = new Header(headerSource, licenseSet.headerSections);</span>
+<span class="fc" id="L602">    debug(&quot;Header: %s&quot;, h.getLocation());</span>
 
-<span class="pc bpc" id="L585" title="1 of 2 branches missed.">    if (licenseSet.validHeaders == null) {</span>
-<span class="nc" id="L586">      licenseSet.validHeaders = new String[0];</span>
+<span class="pc bpc" id="L604" title="1 of 2 branches missed.">    if (licenseSet.validHeaders == null) {</span>
+<span class="nc" id="L605">      licenseSet.validHeaders = new String[0];</span>
     }
-<span class="fc" id="L588">    final List&lt;Header&gt; validHeaders = new ArrayList&lt;&gt;(licenseSet.validHeaders.length);</span>
-<span class="fc bfc" id="L589" title="All 2 branches covered.">    for (final String validHeader : licenseSet.validHeaders) {</span>
-<span class="fc" id="L590">      final HeaderSource validHeaderSource = HeaderSource.of(null, null, validHeader, this.encoding,</span>
+<span class="fc" id="L607">    final List&lt;Header&gt; validHeaders = new ArrayList&lt;&gt;(licenseSet.validHeaders.length);</span>
+<span class="fc bfc" id="L608" title="All 2 branches covered.">    for (final String validHeader : licenseSet.validHeaders) {</span>
+<span class="fc" id="L609">      final HeaderSource validHeaderSource = HeaderSource.of(null, null, validHeader, this.encoding,</span>
           finder);
-<span class="fc" id="L592">      validHeaders.add(new Header(validHeaderSource, licenseSet.headerSections));</span>
+<span class="fc" id="L611">      validHeaders.add(new Header(validHeaderSource, licenseSet.headerSections));</span>
     }
 
-<span class="fc" id="L595">    Map&lt;String, String&gt; globalProperties = getDefaultProperties();</span>
+<span class="fc" id="L614">    Map&lt;String, String&gt; globalProperties = getDefaultProperties();</span>
 
     // we override by properties in the licenseSet
-<span class="pc bpc" id="L598" title="1 of 2 branches missed.">    if (licenseSet.properties != null) {</span>
-<span class="pc bpc" id="L599" title="1 of 2 branches missed.">      for (Map.Entry&lt;String, String&gt; entry : licenseSet.properties.entrySet()) {</span>
-<span class="nc bnc" id="L600" title="All 2 branches missed.">        if (!System.getProperties().contains(entry.getKey())) {</span>
-<span class="nc" id="L601">          globalProperties.put(entry.getKey(), entry.getValue());</span>
+<span class="pc bpc" id="L617" title="1 of 2 branches missed.">    if (licenseSet.properties != null) {</span>
+<span class="pc bpc" id="L618" title="1 of 2 branches missed.">      for (Map.Entry&lt;String, String&gt; entry : licenseSet.properties.entrySet()) {</span>
+<span class="nc bnc" id="L619" title="All 2 branches missed.">        if (!System.getProperties().contains(entry.getKey())) {</span>
+<span class="nc" id="L620">          globalProperties.put(entry.getKey(), entry.getValue());</span>
         }
-<span class="nc" id="L603">      }</span>
+<span class="nc" id="L622">      }</span>
     }
 
-<span class="fc bfc" id="L606" title="All 2 branches covered.">    if (getLog().isDebugEnabled()) {</span>
-<span class="fc" id="L607">      getLog().debug(</span>
-<span class="fc" id="L608">          &quot;global properties:\n - &quot; + globalProperties.entrySet().stream().map(Objects::toString)</span>
-<span class="fc" id="L609">              .collect(Collectors.joining(&quot;\n - &quot;)));</span>
+<span class="fc bfc" id="L625" title="All 2 branches covered.">    if (getLog().isDebugEnabled()) {</span>
+<span class="fc" id="L626">      getLog().debug(</span>
+<span class="fc" id="L627">          &quot;global properties:\n - &quot; + globalProperties.entrySet().stream().map(Objects::toString)</span>
+<span class="fc" id="L628">              .collect(Collectors.joining(&quot;\n - &quot;)));</span>
     }
 
-<span class="fc" id="L612">    final List&lt;PropertiesProvider&gt; propertiesProviders = new LinkedList&lt;&gt;();</span>
-<span class="fc" id="L613">    int threads = getNumberOfExecutorThreads();</span>
-<span class="fc" id="L614">    ExecutorService executorService = Executors.newFixedThreadPool(threads);</span>
+<span class="fc" id="L631">    final List&lt;PropertiesProvider&gt; propertiesProviders = new LinkedList&lt;&gt;();</span>
+<span class="fc" id="L632">    int threads = getNumberOfExecutorThreads();</span>
+<span class="fc" id="L633">    ExecutorService executorService = Executors.newFixedThreadPool(threads);</span>
 
     try {
 
-<span class="fc bfc" id="L618" title="All 2 branches covered.">      for (final PropertiesProvider provider : ServiceLoader.load(PropertiesProvider.class,</span>
-<span class="fc" id="L619">          Thread.currentThread().getContextClassLoader())) {</span>
-<span class="fc" id="L620">        provider.init(this, globalProperties);</span>
-<span class="fc" id="L621">        propertiesProviders.add(provider);</span>
-<span class="fc" id="L622">      }</span>
+<span class="fc bfc" id="L637" title="All 2 branches covered.">      for (final PropertiesProvider provider : ServiceLoader.load(PropertiesProvider.class,</span>
+<span class="fc" id="L638">          Thread.currentThread().getContextClassLoader())) {</span>
+<span class="fc" id="L639">        provider.init(this, globalProperties);</span>
+<span class="fc" id="L640">        propertiesProviders.add(provider);</span>
+<span class="fc" id="L641">      }</span>
 
-<span class="fc" id="L624">      final DocumentPropertiesLoader perDocumentProperties = new DocumentPropertiesLoader() {</span>
+<span class="fc" id="L643">      final DocumentPropertiesLoader perDocumentProperties = new DocumentPropertiesLoader() {</span>
         @Override
         public Map&lt;String, String&gt; load(final Document document) {
           // then add per document properties
-<span class="fc" id="L628">          Map&lt;String, String&gt; perDoc = new LinkedHashMap&lt;&gt;(globalProperties);</span>
-<span class="fc" id="L629">          perDoc.put(&quot;file.name&quot;, document.getFile().getName());</span>
+<span class="fc" id="L647">          Map&lt;String, String&gt; perDoc = new LinkedHashMap&lt;&gt;(globalProperties);</span>
+<span class="fc" id="L648">          perDoc.put(&quot;file.name&quot;, document.getFile().getName());</span>
 
-<span class="fc" id="L631">          Map&lt;String, String&gt; readOnly = Collections.unmodifiableMap(perDoc);</span>
+<span class="fc" id="L650">          Map&lt;String, String&gt; readOnly = Collections.unmodifiableMap(perDoc);</span>
 
-<span class="fc bfc" id="L633" title="All 2 branches covered.">          for (final PropertiesProvider provider : propertiesProviders) {</span>
+<span class="fc bfc" id="L652" title="All 2 branches covered.">          for (final PropertiesProvider provider : propertiesProviders) {</span>
             try {
-<span class="fc" id="L635">              final Map&lt;String, String&gt; adjustments = provider.adjustProperties(</span>
+<span class="fc" id="L654">              final Map&lt;String, String&gt; adjustments = provider.adjustProperties(</span>
                   AbstractLicenseMojo.this, readOnly, document);
-<span class="fc bfc" id="L637" title="All 2 branches covered.">              if (getLog().isDebugEnabled()) {</span>
-<span class="fc" id="L638">                getLog().debug(&quot;provider: &quot; + provider.getClass() + &quot; adjusted these properties:\n&quot;</span>
+<span class="fc bfc" id="L656" title="All 2 branches covered.">              if (getLog().isDebugEnabled()) {</span>
+<span class="fc" id="L657">                getLog().debug(&quot;provider: &quot; + provider.getClass() + &quot; adjusted these properties:\n&quot;</span>
                     + adjustments);
               }
-<span class="fc bfc" id="L641" title="All 2 branches covered.">              for (Map.Entry&lt;String, String&gt; entry : adjustments.entrySet()) {</span>
-<span class="pc bpc" id="L642" title="1 of 2 branches missed.">                if (entry.getValue() != null) {</span>
-<span class="fc" id="L643">                  perDoc.put(entry.getKey(), entry.getValue());</span>
+<span class="fc bfc" id="L660" title="All 2 branches covered.">              for (Map.Entry&lt;String, String&gt; entry : adjustments.entrySet()) {</span>
+<span class="pc bpc" id="L661" title="1 of 2 branches missed.">                if (entry.getValue() != null) {</span>
+<span class="fc" id="L662">                  perDoc.put(entry.getKey(), entry.getValue());</span>
                 } else {
-<span class="nc" id="L645">                  perDoc.remove(entry.getKey());</span>
+<span class="nc" id="L664">                  perDoc.remove(entry.getKey());</span>
                 }
-<span class="fc" id="L647">              }</span>
-<span class="nc" id="L648">            } catch (Exception e) {</span>
-<span class="nc" id="L649">              getLog().warn(&quot;failure occurred while calling &quot; + provider.getClass(), e);</span>
-<span class="fc" id="L650">            }</span>
-<span class="fc" id="L651">          }</span>
+<span class="fc" id="L666">              }</span>
+<span class="nc" id="L667">            } catch (Exception e) {</span>
+<span class="nc" id="L668">              getLog().warn(&quot;failure occurred while calling &quot; + provider.getClass(), e);</span>
+<span class="fc" id="L669">            }</span>
+<span class="fc" id="L670">          }</span>
 
-<span class="fc bfc" id="L653" title="All 2 branches covered.">          if (getLog().isDebugEnabled()) {</span>
-<span class="fc" id="L654">            getLog().debug(&quot;properties for &quot; + document + &quot;:\n - &quot; + perDoc.entrySet().stream()</span>
-<span class="fc" id="L655">                .map(Objects::toString).collect(Collectors.joining(&quot;\n - &quot;)));</span>
+<span class="fc bfc" id="L672" title="All 2 branches covered.">          if (getLog().isDebugEnabled()) {</span>
+<span class="fc" id="L673">            getLog().debug(&quot;properties for &quot; + document + &quot;:\n - &quot; + perDoc.entrySet().stream()</span>
+<span class="fc" id="L674">                .map(Objects::toString).collect(Collectors.joining(&quot;\n - &quot;)));</span>
           }
 
-<span class="fc" id="L658">          return perDoc;</span>
+<span class="fc" id="L677">          return perDoc;</span>
         }
       };
 
-<span class="fc" id="L662">      final DocumentFactory documentFactory = new DocumentFactory(</span>
-<span class="fc" id="L663">          firstNonNull(licenseSet.basedir, defaultBasedir), buildMapping(),</span>
-<span class="fc" id="L664">          buildHeaderDefinitions(licenseSet, finder), encoding, licenseSet.keywords,</span>
+<span class="fc" id="L681">      final DocumentFactory documentFactory = new DocumentFactory(</span>
+<span class="fc" id="L682">          firstNonNull(licenseSet.basedir, defaultBasedir), buildMapping(),</span>
+<span class="fc" id="L683">          buildHeaderDefinitions(licenseSet, finder), encoding, licenseSet.keywords,</span>
           perDocumentProperties);
 
-<span class="fc" id="L667">      CompletionService&lt;?&gt; completionService = new ExecutorCompletionService&lt;&gt;(executorService);</span>
-<span class="fc" id="L668">      int count = 0;</span>
-<span class="fc" id="L669">      debug(&quot;Number of execution threads: %s&quot;, threads);</span>
+<span class="fc" id="L686">      CompletionService&lt;?&gt; completionService = new ExecutorCompletionService&lt;&gt;(executorService);</span>
+<span class="fc" id="L687">      int count = 0;</span>
+<span class="fc" id="L688">      debug(&quot;Number of execution threads: %s&quot;, threads);</span>
 
-<span class="fc bfc" id="L671" title="All 2 branches covered.">      for (final String file : listSelectedFiles(licenseSet)) {</span>
-<span class="fc" id="L672">        completionService.submit(() -&gt; {</span>
-<span class="fc" id="L673">          Document document = documentFactory.createDocuments(file);</span>
-<span class="fc" id="L674">          debug(&quot;Selected file: %s [header style: %s]&quot;, document.getFilePath(),</span>
-<span class="fc" id="L675">              document.getHeaderDefinition());</span>
-<span class="fc bfc" id="L676" title="All 2 branches covered.">          if (document.isNotSupported()) {</span>
-<span class="fc" id="L677">            callback.onUnknownFile(document, h);</span>
-<span class="fc bfc" id="L678" title="All 2 branches covered.">          } else if (document.is(h)) {</span>
-<span class="fc" id="L679">            debug(&quot;Skipping header file: %s&quot;, document.getFilePath());</span>
-<span class="fc bfc" id="L680" title="All 2 branches covered.">          } else if (document.hasHeader(h, strictCheck)) {</span>
-<span class="fc" id="L681">            callback.onExistingHeader(document, h);</span>
+<span class="fc bfc" id="L690" title="All 2 branches covered.">      for (final String file : listSelectedFiles(licenseSet)) {</span>
+<span class="fc" id="L691">        completionService.submit(() -&gt; {</span>
+<span class="fc" id="L692">          Document document = documentFactory.createDocuments(file);</span>
+<span class="fc" id="L693">          debug(&quot;Selected file: %s [header style: %s]&quot;, document.getFilePath(),</span>
+<span class="fc" id="L694">              document.getHeaderDefinition());</span>
+<span class="fc bfc" id="L695" title="All 2 branches covered.">          if (document.isNotSupported()) {</span>
+<span class="fc" id="L696">            callback.onUnknownFile(document, h);</span>
+<span class="fc bfc" id="L697" title="All 2 branches covered.">          } else if (document.is(h)) {</span>
+<span class="fc" id="L698">            debug(&quot;Skipping header file: %s&quot;, document.getFilePath());</span>
+<span class="fc bfc" id="L699" title="All 2 branches covered.">          } else if (document.hasHeader(h, strictCheck)) {</span>
+<span class="fc" id="L700">            callback.onExistingHeader(document, h);</span>
           } else {
-<span class="fc" id="L683">            boolean headerFound = false;</span>
-<span class="fc bfc" id="L684" title="All 2 branches covered.">            for (final Header validHeader : validHeaders) {</span>
-<span class="fc" id="L685">              headerFound = document.hasHeader(validHeader, strictCheck);</span>
-<span class="pc bpc" id="L686" title="1 of 2 branches missed.">              if (headerFound) {</span>
-<span class="fc" id="L687">                callback.onExistingHeader(document, h);</span>
-<span class="fc" id="L688">                break;</span>
+<span class="fc" id="L702">            boolean headerFound = false;</span>
+<span class="fc bfc" id="L703" title="All 2 branches covered.">            for (final Header validHeader : validHeaders) {</span>
+<span class="fc" id="L704">              headerFound = document.hasHeader(validHeader, strictCheck);</span>
+<span class="pc bpc" id="L705" title="1 of 2 branches missed.">              if (headerFound) {</span>
+<span class="fc" id="L706">                callback.onExistingHeader(document, h);</span>
+<span class="fc" id="L707">                break;</span>
               }
-<span class="nc" id="L690">            }</span>
-<span class="fc bfc" id="L691" title="All 2 branches covered.">            if (!headerFound) {</span>
-<span class="fc" id="L692">              callback.onHeaderNotFound(document, h);</span>
+<span class="nc" id="L709">            }</span>
+<span class="fc bfc" id="L710" title="All 2 branches covered.">            if (!headerFound) {</span>
+<span class="fc" id="L711">              callback.onHeaderNotFound(document, h);</span>
             }
           }
-<span class="fc" id="L695">        }, null);</span>
-<span class="fc" id="L696">        count++;</span>
+<span class="fc" id="L714">        }, null);</span>
+<span class="fc" id="L715">        count++;</span>
       }
 
-<span class="fc bfc" id="L699" title="All 2 branches covered.">      while (count-- &gt; 0) {</span>
+<span class="fc bfc" id="L718" title="All 2 branches covered.">      while (count-- &gt; 0) {</span>
         try {
-<span class="fc" id="L701">          completionService.take().get();</span>
-<span class="nc" id="L702">        } catch (InterruptedException e) {</span>
-<span class="nc" id="L703">          Thread.currentThread().interrupt();</span>
-<span class="nc" id="L704">        } catch (ExecutionException e) {</span>
-<span class="nc" id="L705">          Throwable cause = e.getCause();</span>
-<span class="nc bnc" id="L706" title="All 2 branches missed.">          if (cause instanceof Error) {</span>
-<span class="nc" id="L707">            throw (Error) cause;</span>
+<span class="fc" id="L720">          completionService.take().get();</span>
+<span class="nc" id="L721">        } catch (InterruptedException e) {</span>
+<span class="nc" id="L722">          Thread.currentThread().interrupt();</span>
+<span class="nc" id="L723">        } catch (ExecutionException e) {</span>
+<span class="nc" id="L724">          Throwable cause = e.getCause();</span>
+<span class="nc bnc" id="L725" title="All 2 branches missed.">          if (cause instanceof Error) {</span>
+<span class="nc" id="L726">            throw (Error) cause;</span>
           }
-<span class="nc bnc" id="L709" title="All 2 branches missed.">          if (cause instanceof MojoExecutionException) {</span>
-<span class="nc" id="L710">            throw (MojoExecutionException) cause;</span>
+<span class="nc bnc" id="L728" title="All 2 branches missed.">          if (cause instanceof MojoExecutionException) {</span>
+<span class="nc" id="L729">            throw (MojoExecutionException) cause;</span>
           }
-<span class="nc bnc" id="L712" title="All 2 branches missed.">          if (cause instanceof MojoFailureException) {</span>
-<span class="nc" id="L713">            throw (MojoFailureException) cause;</span>
+<span class="nc bnc" id="L731" title="All 2 branches missed.">          if (cause instanceof MojoFailureException) {</span>
+<span class="nc" id="L732">            throw (MojoFailureException) cause;</span>
           }
-<span class="nc bnc" id="L715" title="All 2 branches missed.">          if (cause instanceof RuntimeException) {</span>
-<span class="nc" id="L716">            throw (RuntimeException) cause;</span>
+<span class="nc bnc" id="L734" title="All 2 branches missed.">          if (cause instanceof RuntimeException) {</span>
+<span class="nc" id="L735">            throw (RuntimeException) cause;</span>
           }
-<span class="nc" id="L718">          throw new RuntimeException(cause.getMessage(), cause);</span>
-<span class="pc" id="L719">        }</span>
+<span class="nc" id="L737">          throw new RuntimeException(cause.getMessage(), cause);</span>
+<span class="pc" id="L738">        }</span>
       }
 
     } finally {
-<span class="fc" id="L723">      executorService.shutdownNow();</span>
-<span class="fc" id="L724">      propertiesProviders.forEach(PropertiesProvider::close);</span>
+<span class="fc" id="L742">      executorService.shutdownNow();</span>
+<span class="fc" id="L743">      propertiesProviders.forEach(PropertiesProvider::close);</span>
     }
-<span class="fc" id="L726">  }</span>
+<span class="fc" id="L745">  }</span>
 
   private boolean hasHeader(final LicenseSet licenseSet) {
-<span class="pc bpc" id="L729" title="9 of 10 branches missed.">    return</span>
+<span class="pc bpc" id="L748" title="9 of 10 branches missed.">    return</span>
         (licenseSet.multi != null
             &amp;&amp; ((licenseSet.multi.headers != null &amp;&amp; licenseSet.multi.headers.length &gt; 0)
-<span class="pc bpc" id="L732" title="3 of 6 branches missed.">            || (licenseSet.multi.inlineHeaders != null &amp;&amp; licenseSet.multi.inlineHeaders.length &gt; 0 &amp;&amp; !licenseSet.multi.inlineHeaders[0].isEmpty()))</span>
-<span class="pc bpc" id="L733" title="1 of 2 branches missed.">        ) || (licenseSet.header != null || (licenseSet.inlineHeader != null &amp;&amp; !licenseSet.inlineHeader.isEmpty()));</span>
+<span class="pc bpc" id="L751" title="3 of 6 branches missed.">            || (licenseSet.multi.inlineHeaders != null &amp;&amp; licenseSet.multi.inlineHeaders.length &gt; 0 &amp;&amp; !licenseSet.multi.inlineHeaders[0].isEmpty()))</span>
+<span class="pc bpc" id="L752" title="1 of 2 branches missed.">        ) || (licenseSet.header != null || (licenseSet.inlineHeader != null &amp;&amp; !licenseSet.inlineHeader.isEmpty()));</span>
   }
 
   private int getNumberOfExecutorThreads() {
-<span class="pc bpc" id="L737" title="1 of 2 branches missed.">    return nThreads &gt; 0 ?</span>
-<span class="nc" id="L738">        nThreads :</span>
-<span class="fc" id="L739">        Math.max(1, (int) (Runtime.getRuntime().availableProcessors() * concurrencyFactor));</span>
+<span class="pc bpc" id="L756" title="1 of 2 branches missed.">    return nThreads &gt; 0 ?</span>
+<span class="nc" id="L757">        nThreads :</span>
+<span class="fc" id="L758">        Math.max(1, (int) (Runtime.getRuntime().availableProcessors() * concurrencyFactor));</span>
   }
 
   private Map&lt;String, String&gt; getDefaultProperties() {
     // first put system environment
-<span class="fc" id="L744">    Map&lt;String, String&gt; props = new TreeMap&lt;&gt;(</span>
-<span class="fc" id="L745">        System.getenv()); // treemap just to have nice debug logs</span>
+<span class="fc" id="L763">    Map&lt;String, String&gt; props = new TreeMap&lt;&gt;(</span>
+<span class="fc" id="L764">        System.getenv()); // treemap just to have nice debug logs</span>
     // then add ${project.XYZ} properties
-<span class="fc" id="L747">    props.put(&quot;project.groupId&quot;, project.getGroupId());</span>
-<span class="fc" id="L748">    props.put(&quot;project.artifactId&quot;, project.getArtifactId());</span>
-<span class="fc" id="L749">    props.put(&quot;project.version&quot;, project.getVersion());</span>
-<span class="fc" id="L750">    props.put(&quot;project.name&quot;, project.getName());</span>
-<span class="fc" id="L751">    props.put(&quot;project.description&quot;, project.getDescription());</span>
-<span class="fc" id="L752">    props.put(&quot;project.inceptionYear&quot;, project.getInceptionYear());</span>
-<span class="fc" id="L753">    props.put(&quot;year&quot;, project.getInceptionYear()); // maintains backward compatibility</span>
-<span class="fc" id="L754">    props.put(&quot;project.url&quot;, project.getUrl());</span>
-<span class="fc" id="L755">    Organization org = project.getOrganization();</span>
-<span class="pc bpc" id="L756" title="1 of 2 branches missed.">    if (org != null) {</span>
-<span class="nc" id="L757">      props.put(&quot;owner&quot;, org.getName()); // maintains backward compatibility</span>
-<span class="nc" id="L758">      props.put(&quot;project.organization.name&quot;, org.getName());</span>
-<span class="nc" id="L759">      props.put(&quot;project.organization.url&quot;, org.getUrl());</span>
+<span class="fc" id="L766">    props.put(&quot;project.groupId&quot;, project.getGroupId());</span>
+<span class="fc" id="L767">    props.put(&quot;project.artifactId&quot;, project.getArtifactId());</span>
+<span class="fc" id="L768">    props.put(&quot;project.version&quot;, project.getVersion());</span>
+<span class="fc" id="L769">    props.put(&quot;project.name&quot;, project.getName());</span>
+<span class="fc" id="L770">    props.put(&quot;project.description&quot;, project.getDescription());</span>
+<span class="fc" id="L771">    props.put(&quot;project.inceptionYear&quot;, project.getInceptionYear());</span>
+<span class="fc" id="L772">    props.put(&quot;year&quot;, project.getInceptionYear()); // maintains backward compatibility</span>
+<span class="fc" id="L773">    props.put(&quot;project.url&quot;, project.getUrl());</span>
+<span class="fc" id="L774">    Organization org = project.getOrganization();</span>
+<span class="pc bpc" id="L775" title="1 of 2 branches missed.">    if (org != null) {</span>
+<span class="nc" id="L776">      props.put(&quot;owner&quot;, org.getName()); // maintains backward compatibility</span>
+<span class="nc" id="L777">      props.put(&quot;project.organization.name&quot;, org.getName());</span>
+<span class="nc" id="L778">      props.put(&quot;project.organization.url&quot;, org.getUrl());</span>
     }
 
     // we override by properties in the POM
-<span class="pc bpc" id="L763" title="1 of 2 branches missed.">    if (this.defaultProperties != null) {</span>
-<span class="fc" id="L764">      props.putAll(this.defaultProperties);</span>
+<span class="pc bpc" id="L782" title="1 of 2 branches missed.">    if (this.defaultProperties != null) {</span>
+<span class="fc" id="L783">      props.putAll(this.defaultProperties);</span>
     }
 
     // then we override by java system properties (command-line -D...)
-<span class="fc bfc" id="L768" title="All 2 branches covered.">    for (String key : System.getProperties().stringPropertyNames()) {</span>
-<span class="fc" id="L769">      props.put(key, System.getProperty(key));</span>
-<span class="fc" id="L770">    }</span>
+<span class="fc bfc" id="L787" title="All 2 branches covered.">    for (String key : System.getProperties().stringPropertyNames()) {</span>
+<span class="fc" id="L788">      props.put(key, System.getProperty(key));</span>
+<span class="fc" id="L789">    }</span>
 
-<span class="fc" id="L772">    return props;</span>
+<span class="fc" id="L791">    return props;</span>
   }
 
   private String[] listSelectedFiles(final LicenseSet licenseSet) {
-<span class="pc bpc" id="L776" title="1 of 2 branches missed.">    final boolean useDefaultExcludes = (licenseSet.useDefaultExcludes != null ? licenseSet.useDefaultExcludes : defaultUseDefaultExcludes);</span>
-<span class="fc" id="L777">    final Selection selection = new Selection(</span>
-<span class="fc" id="L778">        firstNonNull(licenseSet.basedir, defaultBasedir), licenseSet.includes, buildExcludes(licenseSet), useDefaultExcludes,</span>
-<span class="fc" id="L779">        getLog());</span>
-<span class="fc" id="L780">    debug(&quot;From: %s&quot;, firstNonNull(licenseSet.basedir, defaultBasedir));</span>
-<span class="fc" id="L781">    debug(&quot;Including: %s&quot;, deepToString(selection.getIncluded()));</span>
-<span class="fc" id="L782">    debug(&quot;Excluding: %s&quot;, deepToString(selection.getExcluded()));</span>
-<span class="fc" id="L783">    return selection.getSelectedFiles();</span>
+<span class="pc bpc" id="L795" title="1 of 2 branches missed.">    final boolean useDefaultExcludes = (licenseSet.useDefaultExcludes != null ? licenseSet.useDefaultExcludes : defaultUseDefaultExcludes);</span>
+<span class="fc" id="L796">    final Selection selection = new Selection(</span>
+<span class="fc" id="L797">        firstNonNull(licenseSet.basedir, defaultBasedir), licenseSet.includes, buildExcludes(licenseSet), useDefaultExcludes,</span>
+<span class="fc" id="L798">        getLog());</span>
+<span class="fc" id="L799">    debug(&quot;From: %s&quot;, firstNonNull(licenseSet.basedir, defaultBasedir));</span>
+<span class="fc" id="L800">    debug(&quot;Including: %s&quot;, deepToString(selection.getIncluded()));</span>
+<span class="fc" id="L801">    debug(&quot;Excluding: %s&quot;, deepToString(selection.getExcluded()));</span>
+<span class="fc" id="L802">    return selection.getSelectedFiles();</span>
   }
 
   private String[] buildExcludes(final LicenseSet licenseSet) {
-<span class="fc" id="L787">    List&lt;String&gt; ex = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L788">    ex.addAll(asList(licenseSet.excludes));</span>
-<span class="pc bpc" id="L789" title="2 of 6 branches missed.">    if (project != null &amp;&amp; project.getModules() != null &amp;&amp; !aggregate) {</span>
-<span class="fc bfc" id="L790" title="All 2 branches covered.">      for (String module : project.getModules()) {</span>
-<span class="fc" id="L791">        ex.add(module + &quot;/**&quot;);</span>
-<span class="fc" id="L792">      }</span>
+<span class="fc" id="L806">    List&lt;String&gt; ex = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L807">    ex.addAll(asList(licenseSet.excludes));</span>
+<span class="pc bpc" id="L808" title="2 of 6 branches missed.">    if (project != null &amp;&amp; project.getModules() != null &amp;&amp; !aggregate) {</span>
+<span class="fc bfc" id="L809" title="All 2 branches covered.">      for (String module : project.getModules()) {</span>
+<span class="fc" id="L810">        ex.add(module + &quot;/**&quot;);</span>
+<span class="fc" id="L811">      }</span>
     }
-<span class="fc" id="L794">    return ex.toArray(new String[ex.size()]);</span>
+<span class="fc" id="L813">    return ex.toArray(new String[ex.size()]);</span>
   }
 
   public final void info(String format, Object... params) {
-<span class="pc bpc" id="L798" title="1 of 2 branches missed.">    if (!quiet) {</span>
-<span class="fc" id="L799">      getLog().info(format(format, params));</span>
+<span class="pc bpc" id="L817" title="1 of 2 branches missed.">    if (!quiet) {</span>
+<span class="fc" id="L818">      getLog().info(format(format, params));</span>
     }
-<span class="fc" id="L801">  }</span>
+<span class="fc" id="L820">  }</span>
 
   public final void debug(String format, Object... params) {
-<span class="fc bfc" id="L804" title="All 2 branches covered.">    if (!quiet) {</span>
-<span class="fc" id="L805">      getLog().debug(format(format, params));</span>
+<span class="fc bfc" id="L823" title="All 2 branches covered.">    if (!quiet) {</span>
+<span class="fc" id="L824">      getLog().debug(format(format, params));</span>
     }
-<span class="fc" id="L807">  }</span>
+<span class="fc" id="L826">  }</span>
 
   public final void warn(String format, Object... params) {
-<span class="fc bfc" id="L810" title="All 2 branches covered.">    if (!quiet) {</span>
-<span class="fc" id="L811">      getLog().warn(format(format, params));</span>
+<span class="fc bfc" id="L829" title="All 2 branches covered.">    if (!quiet) {</span>
+<span class="fc" id="L830">      getLog().warn(format(format, params));</span>
     }
-<span class="fc" id="L813">  }</span>
+<span class="fc" id="L832">  }</span>
 
   private Map&lt;String, String&gt; buildMapping() {
-<span class="fc" id="L816">    Map&lt;String, String&gt; extensionMapping = new LinkedHashMap&lt;&gt;();</span>
+<span class="fc" id="L835">    Map&lt;String, String&gt; extensionMapping = new LinkedHashMap&lt;&gt;();</span>
     // force inclusion of unknown item to manage unknown files
-<span class="fc" id="L818">    extensionMapping.put(DocumentType.UNKNOWN.getExtension(), DocumentType.UNKNOWN.getDefaultHeaderTypeName());</span>
-<span class="fc bfc" id="L819" title="All 2 branches covered.">    for (Map.Entry&lt;String, String&gt; entry : mapping.entrySet()) {</span>
-<span class="fc" id="L820">      extensionMapping.put(entry.getKey().toLowerCase(), entry.getValue().toLowerCase());</span>
-<span class="fc" id="L821">    }</span>
-<span class="fc bfc" id="L822" title="All 2 branches covered.">    if (useDefaultMapping) {</span>
-<span class="fc bfc" id="L823" title="All 2 branches covered.">      for (Map.Entry&lt;String, String&gt; entry : defaultMapping().entrySet()) {</span>
-<span class="fc bfc" id="L824" title="All 2 branches covered.">        if (!extensionMapping.containsKey(entry.getKey())) {</span>
-<span class="fc" id="L825">          extensionMapping.put(entry.getKey(), entry.getValue());</span>
+<span class="fc" id="L837">    extensionMapping.put(DocumentType.UNKNOWN.getExtension(), DocumentType.UNKNOWN.getDefaultHeaderTypeName());</span>
+<span class="fc bfc" id="L838" title="All 2 branches covered.">    for (Map.Entry&lt;String, String&gt; entry : mapping.entrySet()) {</span>
+<span class="fc" id="L839">      extensionMapping.put(entry.getKey().toLowerCase(), entry.getValue().toLowerCase());</span>
+<span class="fc" id="L840">    }</span>
+<span class="fc bfc" id="L841" title="All 2 branches covered.">    if (useDefaultMapping) {</span>
+<span class="fc bfc" id="L842" title="All 2 branches covered.">      for (Map.Entry&lt;String, String&gt; entry : defaultMapping().entrySet()) {</span>
+<span class="fc bfc" id="L843" title="All 2 branches covered.">        if (!extensionMapping.containsKey(entry.getKey())) {</span>
+<span class="fc" id="L844">          extensionMapping.put(entry.getKey(), entry.getValue());</span>
         }
-<span class="fc" id="L827">      }</span>
+<span class="fc" id="L846">      }</span>
     }
-<span class="fc" id="L829">    return extensionMapping;</span>
+<span class="fc" id="L848">    return extensionMapping;</span>
   }
 
   private Map&lt;String, HeaderDefinition&gt; buildHeaderDefinitions(final LicenseSet licenseSet, final ResourceFinder finder) throws MojoFailureException {
     // like mappings, first get default definitions
-<span class="fc" id="L834">    final Map&lt;String, HeaderDefinition&gt; headers = new HashMap&lt;&gt;(HeaderType.defaultDefinitions());</span>
+<span class="fc" id="L853">    final Map&lt;String, HeaderDefinition&gt; headers = new HashMap&lt;&gt;(HeaderType.defaultDefinitions());</span>
 
     // and then override them with those provided in base config
-<span class="fc bfc" id="L837" title="All 2 branches covered.">    for (final String headerDefiniton : defaultHeaderDefinitions) {</span>
-<span class="fc" id="L838">      headers.putAll(loadHeaderDefinition(headerDefiniton, finder));</span>
+<span class="fc bfc" id="L856" title="All 2 branches covered.">    for (final String headerDefiniton : defaultHeaderDefinitions) {</span>
+<span class="fc" id="L857">      headers.putAll(loadHeaderDefinition(headerDefiniton, finder));</span>
     }
 
     // then override by inline default styles
-<span class="fc bfc" id="L842" title="All 2 branches covered.">    for (HeaderStyle defaultInlineHeaderStyle : defaultInlineHeaderStyles) {</span>
-<span class="fc" id="L843">      headers.put(defaultInlineHeaderStyle.name, defaultInlineHeaderStyle.toHeaderDefinition());</span>
+<span class="fc bfc" id="L861" title="All 2 branches covered.">    for (HeaderStyle defaultInlineHeaderStyle : defaultInlineHeaderStyles) {</span>
+<span class="fc" id="L862">      headers.put(defaultInlineHeaderStyle.name, defaultInlineHeaderStyle.toHeaderDefinition());</span>
     }
 
     // and then override them with those provided in licenseSet config
-<span class="pc bpc" id="L847" title="1 of 2 branches missed.">    for (final String headerDefiniton : licenseSet.headerDefinitions) {</span>
-<span class="nc" id="L848">      headers.putAll(loadHeaderDefinition(headerDefiniton, finder));</span>
+<span class="pc bpc" id="L866" title="1 of 2 branches missed.">    for (final String headerDefiniton : licenseSet.headerDefinitions) {</span>
+<span class="nc" id="L867">      headers.putAll(loadHeaderDefinition(headerDefiniton, finder));</span>
     }
 
-<span class="pc bpc" id="L851" title="1 of 2 branches missed.">    for (HeaderStyle inlineHeaderStyle : licenseSet.inlineHeaderStyles) {</span>
-<span class="nc" id="L852">      headers.put(inlineHeaderStyle.name, inlineHeaderStyle.toHeaderDefinition());</span>
+<span class="pc bpc" id="L870" title="1 of 2 branches missed.">    for (HeaderStyle inlineHeaderStyle : licenseSet.inlineHeaderStyles) {</span>
+<span class="nc" id="L871">      headers.put(inlineHeaderStyle.name, inlineHeaderStyle.toHeaderDefinition());</span>
     }
 
     // force inclusion of unknown item to manage unknown files
-<span class="fc" id="L856">    headers.put(HeaderType.UNKNOWN.getDefinition().getType(), HeaderType.UNKNOWN.getDefinition());</span>
-<span class="fc" id="L857">    return headers;</span>
+<span class="fc" id="L875">    headers.put(HeaderType.UNKNOWN.getDefinition().getType(), HeaderType.UNKNOWN.getDefinition());</span>
+<span class="fc" id="L876">    return headers;</span>
   }
 
   private Map&lt;String, HeaderDefinition&gt; loadHeaderDefinition(final String headerDefinition, final ResourceFinder finder) throws MojoFailureException {
     try {
-<span class="fc" id="L862">      final InputSource source = new InputSource(finder.findResource(headerDefinition).openStream());</span>
-<span class="fc" id="L863">      source.setEncoding(encoding);</span>
-<span class="fc" id="L864">      final AdditionalHeaderDefinition fileDefinitions = new AdditionalHeaderDefinition(XMLDoc.from(source, true));</span>
-<span class="fc" id="L865">      final Map&lt;String, HeaderDefinition&gt; map = fileDefinitions.getDefinitions();</span>
-<span class="fc" id="L866">      debug(&quot;%d header definitions loaded from '%s'&quot;, map.size(), headerDefinition);</span>
-<span class="fc" id="L867">      return map;</span>
-<span class="nc" id="L868">    } catch (final IOException ex) {</span>
-<span class="nc" id="L869">      throw new MojoFailureException(&quot;Error reading header definition: &quot; + headerDefinition, ex);</span>
+<span class="fc" id="L881">      final InputSource source = new InputSource(finder.findResource(headerDefinition).openStream());</span>
+<span class="fc" id="L882">      source.setEncoding(encoding);</span>
+<span class="fc" id="L883">      final AdditionalHeaderDefinition fileDefinitions = new AdditionalHeaderDefinition(XMLDoc.from(source, true));</span>
+<span class="fc" id="L884">      final Map&lt;String, HeaderDefinition&gt; map = fileDefinitions.getDefinitions();</span>
+<span class="fc" id="L885">      debug(&quot;%d header definitions loaded from '%s'&quot;, map.size(), headerDefinition);</span>
+<span class="fc" id="L886">      return map;</span>
+<span class="nc" id="L887">    } catch (final IOException ex) {</span>
+<span class="nc" id="L888">      throw new MojoFailureException(&quot;Error reading header definition: &quot; + headerDefinition, ex);</span>
     }
   }
 
@@ -876,10 +895,10 @@ import static java.util.Arrays.deepToString;
    * @return list of servers with decrypted passwords.
    */
   List&lt;Server&gt; getDecryptedServers() {
-<span class="nc" id="L879">    final SettingsDecryptionRequest settingsDecryptionRequest = new DefaultSettingsDecryptionRequest();</span>
-<span class="nc" id="L880">    settingsDecryptionRequest.setServers(settings.getServers());</span>
-<span class="nc" id="L881">    final SettingsDecryptionResult decrypt = settingsDecrypter.decrypt(settingsDecryptionRequest);</span>
-<span class="nc" id="L882">    return decrypt.getServers();</span>
+<span class="nc" id="L898">    final SettingsDecryptionRequest settingsDecryptionRequest = new DefaultSettingsDecryptionRequest();</span>
+<span class="nc" id="L899">    settingsDecryptionRequest.setServers(settings.getServers());</span>
+<span class="nc" id="L900">    final SettingsDecryptionResult decrypt = settingsDecrypter.decrypt(settingsDecryptionRequest);</span>
+<span class="nc" id="L901">    return decrypt.getServers();</span>
   }
 
   /**
@@ -890,37 +909,37 @@ import static java.util.Arrays.deepToString;
    * @return
    */
   public Credentials findCredentials(String serverID) {
-<span class="nc bnc" id="L893" title="All 2 branches missed.">    if (serverID == null) {</span>
-<span class="nc" id="L894">      return null;</span>
+<span class="nc bnc" id="L912" title="All 2 branches missed.">    if (serverID == null) {</span>
+<span class="nc" id="L913">      return null;</span>
     }
 
-<span class="nc" id="L897">    List&lt;Server&gt; decryptedServers = getDecryptedServers();</span>
+<span class="nc" id="L916">    List&lt;Server&gt; decryptedServers = getDecryptedServers();</span>
 
-<span class="nc bnc" id="L899" title="All 2 branches missed.">    for (Server ds : decryptedServers) {</span>
-<span class="nc bnc" id="L900" title="All 2 branches missed.">      if (ds.getId().equals(serverID)) {</span>
-<span class="nc" id="L901">        getLog().debug(</span>
-<span class="nc" id="L902">            &quot;credentials have been found for server: &quot; + serverID + &quot;, login:&quot; + ds.getUsername()</span>
-<span class="nc" id="L903">                + &quot;, password:&quot; + starEncrypt(ds.getPassword()));</span>
-<span class="nc" id="L904">        return new Credentials(ds.getUsername(), ds.getPassword());</span>
+<span class="nc bnc" id="L918" title="All 2 branches missed.">    for (Server ds : decryptedServers) {</span>
+<span class="nc bnc" id="L919" title="All 2 branches missed.">      if (ds.getId().equals(serverID)) {</span>
+<span class="nc" id="L920">        getLog().debug(</span>
+<span class="nc" id="L921">            &quot;credentials have been found for server: &quot; + serverID + &quot;, login:&quot; + ds.getUsername()</span>
+<span class="nc" id="L922">                + &quot;, password:&quot; + starEncrypt(ds.getPassword()));</span>
+<span class="nc" id="L923">        return new Credentials(ds.getUsername(), ds.getPassword());</span>
       }
-<span class="nc" id="L906">    }</span>
+<span class="nc" id="L925">    }</span>
 
-<span class="nc" id="L908">    getLog().debug(&quot;no credentials found for server: &quot; + serverID);</span>
-<span class="nc" id="L909">    return null;</span>
+<span class="nc" id="L927">    getLog().debug(&quot;no credentials found for server: &quot; + serverID);</span>
+<span class="nc" id="L928">    return null;</span>
   }
 
   static String starEncrypt(String str) {
-<span class="fc bfc" id="L913" title="All 2 branches covered.">    if (str == null) {</span>
-<span class="fc" id="L914">      return null;</span>
+<span class="fc bfc" id="L932" title="All 2 branches covered.">    if (str == null) {</span>
+<span class="fc" id="L933">      return null;</span>
     }
-<span class="fc" id="L916">    return str.replaceAll(&quot;.&quot;, &quot;*&quot;);</span>
+<span class="fc" id="L935">    return str.replaceAll(&quot;.&quot;, &quot;*&quot;);</span>
   }
 
   private static &lt;T&gt; T firstNonNull(final T t1, final T t2) {
-<span class="fc bfc" id="L920" title="All 2 branches covered.">    if (t1 != null) {</span>
-<span class="fc" id="L921">      return t1;</span>
+<span class="fc bfc" id="L939" title="All 2 branches covered.">    if (t1 != null) {</span>
+<span class="fc" id="L940">      return t1;</span>
     }
-<span class="fc" id="L923">    return t2;</span>
+<span class="fc" id="L942">    return t2;</span>
   }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
