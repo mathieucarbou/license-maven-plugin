@@ -1,6 +1,6 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
-license-maven-plugin-git,com.mycila.maven.plugin.license.git,GitPathResolver,0,78,0,6,0,14,0,7,0,4
 license-maven-plugin-git,com.mycila.maven.plugin.license.git,CopyrightRangeProvider,59,112,4,8,10,25,4,6,0,4
+license-maven-plugin-git,com.mycila.maven.plugin.license.git,GitPathResolver,0,78,0,6,0,14,0,7,0,4
 license-maven-plugin-git,com.mycila.maven.plugin.license.git,CopyrightAuthorProvider,26,50,3,3,5,13,3,4,0,4
 license-maven-plugin-git,com.mycila.maven.plugin.license.git,GitLookup,27,448,5,22,3,116,5,27,0,18
 license-maven-plugin-git,com.mycila.maven.plugin.license.git,GitLookup.DateSource,0,15,0,0,0,2,0,1,0,1

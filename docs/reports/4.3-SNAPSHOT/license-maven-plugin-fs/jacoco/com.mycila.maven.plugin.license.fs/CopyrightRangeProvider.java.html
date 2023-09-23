@@ -80,7 +80,7 @@ import static java.time.ZoneOffset.UTC;
 <span class="fc" id="L80">      result.put(COPYRIGHT_YEARS_KEY, copyrightYears);</span>
 
 <span class="fc" id="L82">      return Collections.unmodifiableMap(result);</span>
-<span class="nc" id="L83">    } catch (Throwable e) {</span>
+<span class="nc" id="L83">    } catch (Exception e) {</span>
 <span class="nc" id="L84">      throw new RuntimeException(</span>
 <span class="nc" id="L85">          &quot;CopyrightRangeProvider error on file: &quot; + document.getFile().getAbsolutePath() + &quot;: &quot;</span>
 <span class="nc" id="L86">              + e.getMessage(), e);</span>
