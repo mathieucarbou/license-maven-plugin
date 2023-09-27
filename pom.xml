@@ -475,6 +475,21 @@ limitations under the License.
           <artifactId>jacoco-maven-plugin</artifactId>
           <version>0.8.10</version>
         </plugin>
+        <!--
+          fix for jacoco
+          https://stackoverflow.com/questions/76305897/maven-build-fails-after-upgrading-to-maven-source-plugin-from-3-2-1-to-3-3-0
+        -->
+        <plugin>
+          <artifactId>maven-source-plugin</artifactId>
+          <version>3.2.1</version>
+          <executions>
+            <execution>
+              <goals>
+                <goal>jar-no-fork</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
       </plugins>
     </pluginManagement>
 

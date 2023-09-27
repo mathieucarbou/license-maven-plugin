@@ -779,8 +779,12 @@ Example: `4.0`
 
 ```bash
 ./mvnw release:prepare -DreleaseVersion=4.0 -Dtag=license-maven-plugin-4.0 -DdevelopmentVersion=4.1-SNAPSHOT
-./mvnw release:perform -Darguments="-Dgpg.keyname=EDEA921A -Dmaven.site.deploy.skip=true"
+./mvnw release:perform -Darguments="-Dgpg.keyname=EDEA921A -Dmaven.site.deploy.skip=true -Dgpg.useAgent=true"
 ```
+
+If the release perform fails, restart it with (from the target/checkout folder: 
+
+`./mvnw deploy -Dgpg.keyname=EDEA921A -Dmaven.site.deploy.skip=true -Dgpg.useAgent=true -DperformRelease=true`
 
 Then, go to https://oss.sonatype.org/ to "close and release".
 Then you should see a few minutes later the new version at https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/
