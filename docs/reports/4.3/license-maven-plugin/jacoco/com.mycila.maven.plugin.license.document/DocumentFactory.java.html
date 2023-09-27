@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DocumentFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">license-maven-plugin</a> &gt; <a href="index.source.html" class="el_package">com.mycila.maven.plugin.license.document</a> &gt; <span class="el_source">DocumentFactory.java</span></div><h1>DocumentFactory.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2008-2023 Mycila (mathieu.carbou@gmail.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;).
+ * You may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.mycila.maven.plugin.license.document;
+
+import com.mycila.maven.plugin.license.header.HeaderDefinition;
+import org.codehaus.plexus.util.FileUtils;
+
+import java.io.File;
+import java.util.Map;
+
+/**
+ * &lt;b&gt;Date:&lt;/b&gt; 14-Feb-2008&lt;br&gt;
+ * &lt;b&gt;Author:&lt;/b&gt; Mathieu Carbou (mathieu.carbou@gmail.com)
+ */
+public final class DocumentFactory {
+  private final Map&lt;String, String&gt; mapping;
+  private final Map&lt;String, HeaderDefinition&gt; definitions;
+  private final File basedir;
+  private final String encoding;
+  private final String[] keywords;
+  private final DocumentPropertiesLoader documentPropertiesLoader;
+
+<span class="fc" id="L36">  public DocumentFactory(final File basedir, final Map&lt;String, String&gt; mapping, final Map&lt;String, HeaderDefinition&gt; definitions, final String encoding, final String[] keywords, final DocumentPropertiesLoader documentPropertiesLoader) {</span>
+<span class="fc" id="L37">    this.mapping = mapping;</span>
+<span class="fc" id="L38">    this.definitions = definitions;</span>
+<span class="fc" id="L39">    this.basedir = basedir;</span>
+<span class="fc" id="L40">    this.encoding = encoding;</span>
+<span class="fc" id="L41">    this.keywords = keywords.clone();</span>
+<span class="fc" id="L42">    this.documentPropertiesLoader = documentPropertiesLoader;</span>
+<span class="fc" id="L43">  }</span>
+
+  public Document createDocuments(final String file) {
+<span class="fc" id="L46">    return getWrapper(file);</span>
+  }
+
+  private Document getWrapper(final String file) {
+<span class="fc" id="L50">    String headerType = mapping.get(&quot;&quot;);</span>
+<span class="fc" id="L51">    String lowerFileName = FileUtils.filename(file).toLowerCase();</span>
+<span class="fc bfc" id="L52" title="All 2 branches covered.">    for (Map.Entry&lt;String, String&gt; entry : mapping.entrySet()) {</span>
+<span class="fc" id="L53">      String lowerKey = entry.getKey().toLowerCase();</span>
+<span class="fc bfc" id="L54" title="All 4 branches covered.">      if (lowerFileName.endsWith(&quot;.&quot; + lowerKey) || lowerFileName.equals(lowerKey)) {</span>
+<span class="fc" id="L55">        headerType = entry.getValue().toLowerCase();</span>
+<span class="fc" id="L56">        break;</span>
+      }
+<span class="fc" id="L58">    }</span>
+<span class="fc" id="L59">    return new Document(new File(basedir, file), definitions.get(headerType), encoding, keywords, documentPropertiesLoader);</span>
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

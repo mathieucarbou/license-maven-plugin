@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ResourceFinder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">license-maven-plugin</a> &gt; <a href="index.source.html" class="el_package">com.mycila.maven.plugin.license.util.resource</a> &gt; <span class="el_source">ResourceFinder.java</span></div><h1>ResourceFinder.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2008-2023 Mycila (mathieu.carbou@gmail.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;).
+ * You may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.mycila.maven.plugin.license.util.resource;
+
+import org.apache.maven.plugin.MojoFailureException;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+
+/**
+ * &lt;b&gt;Date:&lt;/b&gt; 26-Feb-2008&lt;br&gt;
+ * &lt;b&gt;Author:&lt;/b&gt; Mathieu Carbou (mathieu.carbou@gmail.com)
+ */
+public final class ResourceFinder {
+  private final Path basedir;
+  private CustomClassLoader compileClassPath;
+  private CustomClassLoader pluginClassPath;
+
+<span class="fc" id="L37">  public ResourceFinder(final Path basedir) {</span>
+<span class="fc" id="L38">    this.basedir = basedir;</span>
+<span class="fc" id="L39">  }</span>
+
+  public void setCompileClassPath(List&lt;String&gt; classpath) {
+<span class="fc" id="L42">    compileClassPath = new CustomClassLoader();</span>
+<span class="fc bfc" id="L43" title="All 2 branches covered.">    if (classpath != null) {</span>
+<span class="fc bfc" id="L44" title="All 2 branches covered.">      for (String absolutePath : classpath) {</span>
+<span class="fc" id="L45">        compileClassPath.addFolder(absolutePath);</span>
+<span class="fc" id="L46">      }</span>
+    }
+<span class="fc" id="L48">  }</span>
+
+  public void setPluginClassPath(ClassLoader classLoader) {
+<span class="fc" id="L51">    pluginClassPath = new CustomClassLoader(classLoader);</span>
+<span class="fc" id="L52">  }</span>
+
+  /**
+   * Find a resource by searching:
+   * 1. In the filesystem, relative to basedir
+   * 2. In the filesystem, as an absolute path (or relative to current execution directory)
+   * 3. In project classpath
+   * 4. In plugin classpath
+   * 5. As a URL
+   *
+   * @param resource The resource to get
+   * @return A valid URL
+   * @throws MojoFailureException If the resource is not found
+   */
+  public URL findResource(String resource) throws MojoFailureException {
+<span class="fc" id="L67">    URL res = null;</span>
+
+    // first search relatively to the base directory
+    try {
+<span class="fc" id="L71">      final Path p = basedir.resolve(resource);</span>
+<span class="fc" id="L72">      res = toURL(p.toAbsolutePath());</span>
+<span class="nc" id="L73">    } catch (final InvalidPathException e) {</span>
+      // no-op - can be caused by resource being a URI on windows when Path.resolve is called
+<span class="fc" id="L75">    }</span>
+<span class="fc bfc" id="L76" title="All 2 branches covered.">    if (res != null) {</span>
+<span class="fc" id="L77">      return res;</span>
+    }
+
+    // if not found, search for absolute location on file system, or relative to execution dir
+    try {
+<span class="fc" id="L82">      res = toURL(Paths.get(resource));</span>
+<span class="nc" id="L83">    } catch (final InvalidPathException e) {</span>
+      // no-op - can be caused by resource being a URI on windows when Paths.get is called
+<span class="fc" id="L85">    }</span>
+<span class="fc bfc" id="L86" title="All 2 branches covered.">    if (res != null) {</span>
+<span class="fc" id="L87">      return res;</span>
+    }
+
+    // if not found, try the classpaths
+<span class="fc bfc" id="L91" title="All 2 branches covered.">    final String cpResource = resource.startsWith(&quot;/&quot;) ? resource.substring(1) : resource;</span>
+
+    // tries compile claspath of project
+<span class="fc" id="L94">    res = compileClassPath.getResource(cpResource);</span>
+<span class="fc bfc" id="L95" title="All 2 branches covered.">    if (res != null) {</span>
+<span class="fc" id="L96">      return res;</span>
+    }
+
+    // tries this plugin classpath
+<span class="fc" id="L100">    res = pluginClassPath.getResource(cpResource);</span>
+<span class="fc bfc" id="L101" title="All 2 branches covered.">    if (res != null) {</span>
+<span class="fc" id="L102">      return res;</span>
+    }
+
+    // otherwise, tries to return a valid URL
+    try {
+<span class="fc" id="L107">      res = new URL(resource);</span>
+<span class="fc" id="L108">      res.openStream().close();</span>
+<span class="fc" id="L109">      return res;</span>
+<span class="fc" id="L110">    } catch (Exception e) {</span>
+<span class="fc" id="L111">      throw new MojoFailureException(&quot;Resource &quot; + resource + &quot; not found in file system, classpath or URL: &quot; + e.getMessage(), e);</span>
+    }
+  }
+
+  private URL toURL(final Path path) {
+<span class="pc bpc" id="L116" title="1 of 4 branches missed.">    if (Files.exists(path) &amp;&amp; Files.isReadable(path)) {</span>
+      try {
+<span class="fc" id="L118">        return path.toUri().toURL();</span>
+<span class="nc" id="L119">      } catch (MalformedURLException e) {</span>
+      }
+    }
+<span class="fc" id="L122">    return null;</span>
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

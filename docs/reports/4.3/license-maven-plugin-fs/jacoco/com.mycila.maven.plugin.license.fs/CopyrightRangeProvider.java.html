@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CopyrightRangeProvider.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">license-maven-plugin-fs</a> &gt; <a href="index.source.html" class="el_package">com.mycila.maven.plugin.license.fs</a> &gt; <span class="el_source">CopyrightRangeProvider.java</span></div><h1>CopyrightRangeProvider.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2008-2023 Mycila (mathieu.carbou@gmail.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;).
+ * You may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.mycila.maven.plugin.license.fs;
+
+import com.mycila.maven.plugin.license.AbstractLicenseMojo;
+import com.mycila.maven.plugin.license.PropertiesProvider;
+import com.mycila.maven.plugin.license.document.Document;
+
+import java.io.File;
+import java.time.Instant;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+import static java.time.ZoneOffset.UTC;
+
+/**
+ * An implementation of {@link PropertiesProvider} that adds {@value #COPYRIGHT_LAST_YEAR_KEY} and
+ * {@value #COPYRIGHT_YEARS_KEY} values - see {@link #adjustProperties(AbstractLicenseMojo, Map,
+ * Document)}.
+ */
+<span class="fc" id="L35">public class CopyrightRangeProvider implements PropertiesProvider {</span>
+
+  public static final String COPYRIGHT_LAST_YEAR_KEY = &quot;license.fs.copyrightLastYear&quot;;
+  public static final String COPYRIGHT_YEARS_KEY = &quot;license.fs.copyrightYears&quot;;
+  public static final String INCEPTION_YEAR_KEY = &quot;project.inceptionYear&quot;;
+
+  /**
+   * Returns an unmodifiable map containing the following entries, whose values are set based on inspecting the filesystem.
+   *
+   * &lt;ul&gt;
+   * &lt;li&gt;{@value #COPYRIGHT_LAST_YEAR_KEY} key stores the year from the file's last modification timestamp .&lt;/li&gt;
+   * &lt;li&gt;{@value #COPYRIGHT_YEARS_KEY} key stores the range from {@value #INCEPTION_YEAR_KEY} value to
+   * {@value #COPYRIGHT_LAST_YEAR_KEY} value. If both values a equal, only the {@value #INCEPTION_YEAR_KEY} value is
+   * returned; otherwise, the two values are combined using dash, so that the result is e.g. {@code &quot;2000-2010&quot;}.&lt;/li&gt;
+   * &lt;/ul&gt;
+   * The {@value #INCEPTION_YEAR_KEY} value is read from the supplied properties and it must available. Otherwise a
+   * {@link RuntimeException} is thrown.
+   */
+  @Override
+  public Map&lt;String, String&gt; adjustProperties(AbstractLicenseMojo mojo,
+                                              Map&lt;String, String&gt; properties, Document document) {
+<span class="fc" id="L56">    String inceptionYear = properties.get(INCEPTION_YEAR_KEY);</span>
+<span class="pc bpc" id="L57" title="1 of 2 branches missed.">    if (inceptionYear == null) {</span>
+<span class="nc" id="L58">      throw new RuntimeException(&quot;'&quot; + INCEPTION_YEAR_KEY + &quot;' must have a value for file &quot;</span>
+<span class="nc" id="L59">          + document.getFile().getAbsolutePath());</span>
+    }
+    final int inceptionYearInt;
+    try {
+<span class="fc" id="L63">      inceptionYearInt = Integer.parseInt(inceptionYear);</span>
+<span class="nc" id="L64">    } catch (NumberFormatException e1) {</span>
+<span class="nc" id="L65">      throw new RuntimeException(</span>
+          &quot;'&quot; + INCEPTION_YEAR_KEY + &quot;' must be an integer ; found = &quot; + inceptionYear + &quot; file: &quot;
+<span class="nc" id="L67">              + document.getFile().getAbsolutePath());</span>
+<span class="fc" id="L68">    }</span>
+    try {
+<span class="fc" id="L70">      Map&lt;String, String&gt; result = new HashMap&lt;&gt;(4);</span>
+
+<span class="fc" id="L72">      int copyrightEnd = getYearOfLastChange(document.getFile());</span>
+<span class="fc" id="L73">      result.put(COPYRIGHT_LAST_YEAR_KEY, Integer.toString(copyrightEnd));</span>
+      final String copyrightYears;
+<span class="fc bfc" id="L75" title="All 2 branches covered.">      if (inceptionYearInt &gt;= copyrightEnd) {</span>
+<span class="fc" id="L76">        copyrightYears = inceptionYear;</span>
+      } else {
+<span class="fc" id="L78">        copyrightYears = inceptionYear + &quot;-&quot; + copyrightEnd;</span>
+      }
+<span class="fc" id="L80">      result.put(COPYRIGHT_YEARS_KEY, copyrightYears);</span>
+
+<span class="fc" id="L82">      return Collections.unmodifiableMap(result);</span>
+<span class="nc" id="L83">    } catch (Exception e) {</span>
+<span class="nc" id="L84">      throw new RuntimeException(</span>
+<span class="nc" id="L85">          &quot;CopyrightRangeProvider error on file: &quot; + document.getFile().getAbsolutePath() + &quot;: &quot;</span>
+<span class="nc" id="L86">              + e.getMessage(), e);</span>
+    }
+  }
+
+  private static int getYearOfLastChange(File file) {
+<span class="fc" id="L91">    return Instant.ofEpochMilli(file.lastModified()).atOffset(UTC).getYear();</span>
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

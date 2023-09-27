@@ -81,6 +81,7 @@ Please let me know if your name is missing!
 
 Available in Maven Central Repository: [https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/)
 
+* [4.3](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/4.3/) (2023-09-27) - see [issues and pull requests](https://github.com/mathieucarbou/license-maven-plugin/milestone/20?closed=1)
 * [4.2](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/4.2/) (2023-03-23) - see [issues and pull requests](https://github.com/mathieucarbou/license-maven-plugin/milestone/18?closed=1)
 * [4.1](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/4.1/) (2021-04-23) - see [issues and pull requests](https://github.com/mathieucarbou/license-maven-plugin/milestone/17?closed=1)
 * [4.0](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/4.0/) (2021-03-30) - see [issues and pull requests](https://github.com/mathieucarbou/license-maven-plugin/milestone/16?closed=1)
@@ -96,7 +97,7 @@ Available in Maven Central Repository: [https://repo1.maven.org/maven2/com/mycil
 <plugin>
   <groupId>com.mycila</groupId>
   <artifactId>license-maven-plugin</artifactId>
-  <version>4.1</version>
+  <version>4.3</version>
   <configuration>
     <properties>
       <owner>Mycila</owner>
@@ -132,7 +133,7 @@ options are concatenated together to produce a header template.
 <plugin>
   <groupId>com.mycila</groupId>
   <artifactId>license-maven-plugin</artifactId>
-  <version>4.1</version>
+  <version>4.3</version>
   <configuration>
     <licenseSets>
       <licenseSet>
@@ -167,7 +168,7 @@ more license configurations in a single execution of the plugin. In simple terms
 wraps the previous configuration options for a license. The previous
 configuration syntax is still supported but deprecated, and may be removed in future.
 
-- [4.3-SNAPSHOT](https://mycila.carbou.me/license-maven-plugin/reports/4.3-SNAPSHOT/)
+- [4.3](https://mycila.carbou.me/license-maven-plugin/reports/4.3/)
 - [4.2](https://mycila.carbou.me/license-maven-plugin/reports/4.2/)
 - [4.2.rc3](https://mycila.carbou.me/license-maven-plugin/reports/4.2.rc3/)
 - [4.2.rc2](https://mycila.carbou.me/license-maven-plugin/reports/4.2.rc2/)

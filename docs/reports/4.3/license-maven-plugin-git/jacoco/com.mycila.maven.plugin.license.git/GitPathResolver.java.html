@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GitPathResolver.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">license-maven-plugin-git</a> &gt; <a href="index.source.html" class="el_package">com.mycila.maven.plugin.license.git</a> &gt; <span class="el_source">GitPathResolver.java</span></div><h1>GitPathResolver.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2008-2023 Mycila (mathieu.carbou@gmail.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;).
+ * You may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.mycila.maven.plugin.license.git;
+
+import java.io.File;
+
+/**
+ * A utility to transform native {@link File} paths to the form expected by jGit - i.e. relative to git working tree
+ * root directory and delimited by {@code '/'}.
+ */
+public class GitPathResolver {
+
+  /**
+   * The path separator expected by jGit.
+   */
+  private static final char CANONICAL_PATH_SEPARATOR = '/';
+
+  /**
+   * The file path separator used by the current platform, usually {@value File#separatorChar}.
+   */
+  private final char nativePathSeparator;
+
+  /**
+   * The native path to the root directory of the current git repository working tree.
+   */
+  private final String repositoryRootDir;
+
+  public GitPathResolver(String repositoryRootDir) {
+<span class="fc" id="L42">    this(repositoryRootDir, File.separatorChar);</span>
+<span class="fc" id="L43">  }</span>
+
+  /**
+   * Default visibility for testing purposes.
+   *
+   * @param repositoryRootDir
+   * @param nativePathSeparator
+   */
+  GitPathResolver(String repositoryRootDir, char nativePathSeparator) {
+<span class="fc" id="L52">    super();</span>
+<span class="fc bfc" id="L53" title="All 2 branches covered.">    this.repositoryRootDir = repositoryRootDir.charAt(repositoryRootDir.length() - 1) == nativePathSeparator ? repositoryRootDir</span>
+<span class="fc" id="L54">        : repositoryRootDir + nativePathSeparator;</span>
+<span class="fc" id="L55">    this.nativePathSeparator = nativePathSeparator;</span>
+<span class="fc" id="L56">  }</span>
+
+  /**
+   * With default visibility to be testable.
+   *
+   * @param absoluteNativePath
+   * @return
+   */
+  String relativize(String absoluteNativePath) {
+<span class="fc bfc" id="L65" title="All 2 branches covered.">    if (!absoluteNativePath.startsWith(repositoryRootDir)) {</span>
+<span class="fc" id="L66">      throw new RuntimeException(&quot;Cannot relativize path '&quot; + absoluteNativePath + &quot;' to directory '&quot;</span>
+          + repositoryRootDir + &quot;'&quot;);
+    }
+<span class="fc" id="L69">    String result = absoluteNativePath.substring(repositoryRootDir.length());</span>
+<span class="fc bfc" id="L70" title="All 2 branches covered.">    if (nativePathSeparator != CANONICAL_PATH_SEPARATOR) {</span>
+<span class="fc" id="L71">      result = result.replace(nativePathSeparator, CANONICAL_PATH_SEPARATOR);</span>
+    }
+<span class="fc" id="L73">    return result;</span>
+  }
+
+  /**
+   * Return a string representing the supplied {@code path} path relative to git working tree root directory and
+   * delimited by {@code '/'}.
+   *
+   * @param path the path to relativize
+   * @return the relativized path
+   */
+  public String relativize(File path) {
+<span class="fc" id="L84">    return relativize(path.getAbsolutePath());</span>
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HeaderParser.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">license-maven-plugin</a> &gt; <a href="index.source.html" class="el_package">com.mycila.maven.plugin.license.header</a> &gt; <span class="el_source">HeaderParser.java</span></div><h1>HeaderParser.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2008-2023 Mycila (mathieu.carbou@gmail.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;).
+ * You may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.mycila.maven.plugin.license.header;
+
+import com.mycila.maven.plugin.license.util.FileContent;
+import com.mycila.maven.plugin.license.util.StringUtils;
+
+/**
+ * The &lt;code&gt;HeaderParser&lt;/code&gt; class is used to get header information about the current header defined in the given
+ * file. The achieve this it will use the &lt;code&gt;HeaderDefinition&lt;/code&gt; associated to the type of the given file.
+ * &lt;p&gt;
+ * Important: is considered a license header a header which contains the word &lt;em&gt;copyright&lt;/em&gt; (case insensitive)
+ * within a section of the file which match the given &lt;code&gt;HeaderDefinition&lt;/code&gt; associated to this
+ * &lt;code&gt;HeaderParser&lt;/code&gt;.
+ *
+ * @see com.mycila.maven.plugin.license.header.HeaderDefinition
+ */
+public final class HeaderParser {
+
+  private final int beginPosition;
+  private final int endPosition;
+  private final boolean existingHeader;
+  private final FileContent fileContent;
+  private final String[] keywords;
+  private HeaderDefinition headerDefinition;
+
+  private String line;
+
+  /**
+   * Creates a &lt;code&gt;HeaderParser&lt;/code&gt; object linked to the given file content and the associated header definition
+   * based on the file type.
+   *
+   * @param fileContent      The file content.
+   * @param headerDefinition The associated header definition to use.
+   * @throws IllegalArgumentException If the file content is null or if the header definition is null.
+   */
+<span class="fc" id="L50">  public HeaderParser(FileContent fileContent, HeaderDefinition headerDefinition, String[] keywords) {</span>
+<span class="pc bpc" id="L51" title="1 of 2 branches missed.">    if (fileContent == null) {</span>
+<span class="nc" id="L52">      throw new IllegalArgumentException(&quot;Cannot create a header parser for null file content&quot;);</span>
+    }
+<span class="pc bpc" id="L54" title="1 of 2 branches missed.">    if (headerDefinition == null) {</span>
+<span class="nc" id="L55">      throw new IllegalArgumentException(&quot;Cannot work on file header if the header definition is null&quot;);</span>
+    }
+<span class="fc" id="L57">    this.keywords = keywords.clone();</span>
+<span class="fc" id="L58">    this.headerDefinition = headerDefinition;</span>
+<span class="fc" id="L59">    this.fileContent = fileContent;</span>
+<span class="fc" id="L60">    beginPosition = findBeginPosition();</span>
+<span class="fc" id="L61">    existingHeader = hasHeader();</span>
+<span class="fc bfc" id="L62" title="All 2 branches covered.">    endPosition = existingHeader ? findEndPosition() : -1;</span>
+<span class="fc" id="L63">  }</span>
+
+  /**
+   * Returns the index position in the content where the header effectively starts.
+   *
+   * @return The index in the content.
+   */
+  public int getBeginPosition() {
+<span class="fc" id="L71">    return beginPosition;</span>
+  }
+
+  /**
+   * Returns the index position in the content where the header effectively ends.
+   *
+   * @return The index in the content.
+   */
+  public int getEndPosition() {
+<span class="fc" id="L80">    return endPosition;</span>
+  }
+
+  /**
+   * Tells if the given file already contains a license header.
+   *
+   * @return true if a license header has been detect or false.
+   */
+  public boolean gotAnyHeader() {
+<span class="fc" id="L89">    return existingHeader;</span>
+  }
+
+  /**
+   * Returns the file content.
+   *
+   * @return The content.
+   */
+  public FileContent getFileContent() {
+<span class="fc" id="L98">    return fileContent;</span>
+  }
+
+  /**
+   * Returns the header definition associated to this header parser (itself bounded to a file).
+   *
+   * @return The associated header definition.
+   */
+  public HeaderDefinition getHeaderDefinition() {
+<span class="fc" id="L107">    return headerDefinition;</span>
+  }
+
+  private int findBeginPosition() {
+<span class="fc" id="L111">    int beginPos = 0;</span>
+<span class="fc" id="L112">    line = fileContent.nextLine();</span>
+<span class="fc bfc" id="L113" title="All 2 branches covered.">    if (headerDefinition.getSkipLinePattern() == null) {</span>
+<span class="fc" id="L114">      return beginPos;</span>
+    }
+
+    // the format expect to find lines to be skipped
+<span class="fc bfc" id="L118" title="All 4 branches covered.">    while (line != null &amp;&amp; !headerDefinition.isSkipLine(line)) {</span>
+<span class="fc" id="L119">      beginPos = fileContent.getPosition();</span>
+<span class="fc" id="L120">      line = fileContent.nextLine();</span>
+    }
+
+    // at least we have found the line to skip or we are the end of the file
+    // this time we are going to skip next lines if they match the skip pattern
+<span class="fc bfc" id="L125" title="All 4 branches covered.">    while (line != null &amp;&amp; headerDefinition.isSkipLine(line)) {</span>
+<span class="fc" id="L126">      beginPos = fileContent.getPosition();</span>
+<span class="fc" id="L127">      line = fileContent.nextLine();</span>
+    }
+
+<span class="fc bfc" id="L130" title="All 2 branches covered.">    if (line == null) {</span>
+      // After skipping everything we are at the end of the file
+      // Header has to be at the file beginning
+<span class="fc" id="L133">      beginPos = 0;</span>
+<span class="fc" id="L134">      fileContent.reset();</span>
+<span class="fc" id="L135">      line = fileContent.nextLine();</span>
+    }
+
+<span class="fc" id="L138">    return beginPos;</span>
+  }
+
+  private boolean hasHeader() {
+    // skip blank lines
+<span class="pc bpc" id="L143" title="1 of 4 branches missed.">    while (line != null &amp;&amp; &quot;&quot;.equals(line.trim())) {</span>
+<span class="fc" id="L144">      line = fileContent.nextLine();</span>
+    }
+    // check if there is already a header
+<span class="fc" id="L147">    boolean gotHeader = false;</span>
+<span class="fc bfc" id="L148" title="All 2 branches covered.">    if (headerDefinition.isFirstHeaderLine(line)) {</span>
+<span class="fc" id="L149">      StringBuilder inPlaceHeader = new StringBuilder();</span>
+<span class="fc" id="L150">      inPlaceHeader.append(line.toLowerCase());</span>
+
+<span class="fc" id="L152">      line = fileContent.nextLine();</span>
+
+      // skip blank lines before header text
+<span class="fc bfc" id="L155" title="All 2 branches covered.">      if (headerDefinition.allowBlankLines()) {</span>
+<span class="fc bfc" id="L156" title="All 4 branches covered.">        while (line != null &amp;&amp; &quot;&quot;.equals(line.trim())) {</span>
+<span class="fc" id="L157">          line = fileContent.nextLine();</span>
+        }
+      }
+
+      // first header detected line &amp; potential blank lines have been detected
+      // following lines should be header lines
+<span class="fc bfc" id="L163" title="All 2 branches covered.">      if (line == null) {</span>
+        // we detected previously a one line comment block that matches the header detection
+        // it is not an header it is a comment
+<span class="fc" id="L166">        return false;</span>
+
+      } else {
+<span class="fc" id="L169">        inPlaceHeader.append(line.toLowerCase());</span>
+      }
+
+<span class="fc" id="L172">      String before = StringUtils.rtrim(headerDefinition.getBeforeEachLine());</span>
+<span class="pc bpc" id="L173" title="1 of 4 branches missed.">      if (&quot;&quot;.equals(before) &amp;&amp; !headerDefinition.isMultiLine()) {</span>
+<span class="nc" id="L174">        before = headerDefinition.getBeforeEachLine();</span>
+      }
+
+<span class="fc" id="L177">      boolean foundEnd = false;</span>
+<span class="fc bfc" id="L178" title="All 4 branches covered.">      if (headerDefinition.isMultiLine() &amp;&amp; headerDefinition.isLastHeaderLine(line)) {</span>
+<span class="fc" id="L179">        foundEnd = true;</span>
+
+      } else {
+<span class="fc bfc" id="L182" title="All 4 branches covered.">        while ((line = fileContent.nextLine()) != null &amp;&amp; line.startsWith(before)) {</span>
+<span class="fc" id="L183">          inPlaceHeader.append(line.toLowerCase());</span>
+<span class="fc bfc" id="L184" title="All 4 branches covered.">          if (headerDefinition.isMultiLine() &amp;&amp; headerDefinition.isLastHeaderLine(line)) {</span>
+<span class="fc" id="L185">            foundEnd = true;</span>
+<span class="fc" id="L186">            break;</span>
+          }
+        }
+      }
+
+      // skip blank lines after header text
+<span class="fc bfc" id="L192" title="All 6 branches covered.">      if (headerDefinition.isMultiLine() &amp;&amp; headerDefinition.allowBlankLines() &amp;&amp; !foundEnd) {</span>
+        do {
+<span class="fc" id="L194">          line = fileContent.nextLine();</span>
+<span class="pc bpc" id="L195" title="2 of 4 branches missed.">        } while (line != null &amp;&amp; &quot;&quot;.equals(line.trim()));</span>
+<span class="fc" id="L196">        fileContent.rewind();</span>
+
+<span class="pc bpc" id="L198" title="1 of 4 branches missed.">      } else if (!headerDefinition.isMultiLine() &amp;&amp; !foundEnd) {</span>
+<span class="fc" id="L199">        fileContent.rewind();</span>
+      }
+
+<span class="fc bfc" id="L202" title="All 2 branches covered.">      if (!headerDefinition.isMultiLine()) {</span>
+        // keep track of the position for headers where the end line is the same as the before each line
+<span class="fc" id="L204">        int pos = fileContent.getPosition();</span>
+        // check if the line is the end line
+<span class="fc bfc" id="L206" title="All 2 branches covered.">        while (line != null</span>
+<span class="pc bpc" id="L207" title="1 of 2 branches missed.">            &amp;&amp; !headerDefinition.isLastHeaderLine(line)</span>
+<span class="pc bpc" id="L208" title="1 of 4 branches missed.">            &amp;&amp; (headerDefinition.allowBlankLines() || !&quot;&quot;.equals(line.trim()))</span>
+<span class="pc bpc" id="L209" title="1 of 2 branches missed.">            &amp;&amp; line.startsWith(before)) {</span>
+<span class="nc" id="L210">          line = fileContent.nextLine();</span>
+        }
+<span class="fc bfc" id="L212" title="All 2 branches covered.">        if (line == null) {</span>
+<span class="fc" id="L213">          fileContent.resetTo(pos);</span>
+        }
+<span class="pc bpc" id="L215" title="1 of 2 branches missed.">      } else if (line != null) {</span>
+        // we could end up there if we still have some lines, but not matching &quot;before&quot;.
+        // This can be the last line in a multi line header
+<span class="fc" id="L218">        int pos = fileContent.getPosition();</span>
+<span class="fc" id="L219">        line = fileContent.nextLine();</span>
+<span class="fc bfc" id="L220" title="All 4 branches covered.">        if (line == null || !headerDefinition.isLastHeaderLine(line)) {</span>
+<span class="fc" id="L221">          fileContent.resetTo(pos);</span>
+        }
+      }
+<span class="fc" id="L224">      gotHeader = true;</span>
+<span class="fc bfc" id="L225" title="All 2 branches covered.">      for (String keyword : keywords) {</span>
+<span class="fc bfc" id="L226" title="All 2 branches covered.">        if (inPlaceHeader.indexOf(keyword.toLowerCase()) == -1) {</span>
+<span class="fc" id="L227">          gotHeader = false;</span>
+<span class="fc" id="L228">          break;</span>
+        }
+      }
+    }
+<span class="fc" id="L232">    return gotHeader;</span>
+  }
+
+  private int findEndPosition() {
+    // we check if there is a header, if the next line is the blank line of the header
+<span class="fc" id="L237">    int end = fileContent.getPosition();</span>
+<span class="fc" id="L238">    line = fileContent.nextLine();</span>
+<span class="fc bfc" id="L239" title="All 2 branches covered.">    if (beginPosition == 0) {</span>
+<span class="fc bfc" id="L240" title="All 4 branches covered.">      while (line != null &amp;&amp; &quot;&quot;.equals(line.trim())) {</span>
+<span class="fc" id="L241">        end = fileContent.getPosition();</span>
+<span class="fc" id="L242">        line = fileContent.nextLine();</span>
+      }
+    }
+<span class="pc bpc" id="L245" title="1 of 6 branches missed.">    if (headerDefinition.getEndLine().endsWith(&quot;EOL&quot;) &amp;&amp; line != null &amp;&amp; &quot;&quot;.equals(line.trim())) {</span>
+<span class="fc" id="L246">      end = fileContent.getPosition();</span>
+    }
+<span class="fc" id="L248">    return end;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

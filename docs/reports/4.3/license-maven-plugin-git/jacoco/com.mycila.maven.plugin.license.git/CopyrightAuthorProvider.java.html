@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CopyrightAuthorProvider.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">license-maven-plugin-git</a> &gt; <a href="index.source.html" class="el_package">com.mycila.maven.plugin.license.git</a> &gt; <span class="el_source">CopyrightAuthorProvider.java</span></div><h1>CopyrightAuthorProvider.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2008-2023 Mycila (mathieu.carbou@gmail.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;).
+ * You may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.mycila.maven.plugin.license.git;
+
+import com.mycila.maven.plugin.license.AbstractLicenseMojo;
+import com.mycila.maven.plugin.license.PropertiesProvider;
+import com.mycila.maven.plugin.license.document.Document;
+
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * An implementation of {@link PropertiesProvider} that adds {@value
+ * #COPYRIGHT_CREATION_AUTHOR_NAME_KEY} and {@value #COPYRIGHT_CREATION_AUTHOR_EMAIL_KEY} values -
+ * see {@link #adjustProperties(AbstractLicenseMojo, Map, Document)}.
+ */
+<span class="fc" id="L33">public class CopyrightAuthorProvider implements PropertiesProvider {</span>
+
+  public static final String COPYRIGHT_CREATION_AUTHOR_NAME_KEY = &quot;license.git.CreationAuthorName&quot;;
+  public static final String COPYRIGHT_CREATION_AUTHOR_EMAIL_KEY = &quot;license.git.CreationAuthorEmail&quot;;
+
+  private GitLookup gitLookup;
+
+  @Override
+  public void init(AbstractLicenseMojo mojo, Map&lt;String, String&gt; currentProperties) {
+<span class="fc" id="L42">    gitLookup = GitLookup.create(mojo.defaultBasedir, currentProperties);</span>
+
+    // One-time warning for shallow repo
+<span class="pc bpc" id="L45" title="2 of 4 branches missed.">    if (mojo.warnIfShallow &amp;&amp; gitLookup.isShallowRepository()) {</span>
+<span class="nc" id="L46">      mojo.warn(&quot;Shallow git repository detected. Author property values may not be accurate.&quot;);</span>
+    }
+<span class="fc" id="L48">  }</span>
+
+  @Override
+  public void close() {
+<span class="pc bpc" id="L52" title="1 of 2 branches missed.">    if (gitLookup != null) {</span>
+<span class="fc" id="L53">      gitLookup.close();</span>
+    }
+<span class="fc" id="L55">  }</span>
+
+  /**
+   * Returns an unmodifiable map containing the two entries {@value #COPYRIGHT_CREATION_AUTHOR_NAME_KEY} and {@value #COPYRIGHT_CREATION_AUTHOR_EMAIL_KEY},
+   * , whose values are set based on inspecting git history.
+   *
+   * &lt;ul&gt;
+   * &lt;li&gt;{@value #COPYRIGHT_CREATION_AUTHOR_NAME_KEY} key stores the author name of the first git commit.
+   * &lt;li&gt;{@value #COPYRIGHT_CREATION_AUTHOR_EMAIL_KEY} key stores the author's email address of the first git commit.
+   * &lt;/ul&gt;
+   */
+  @Override
+  public Map&lt;String, String&gt; adjustProperties(AbstractLicenseMojo mojo,
+                                              Map&lt;String, String&gt; properties, Document document) {
+    try {
+<span class="fc" id="L70">      Map&lt;String, String&gt; result = new HashMap&lt;&gt;(3);</span>
+<span class="fc" id="L71">      result.put(COPYRIGHT_CREATION_AUTHOR_NAME_KEY,</span>
+<span class="fc" id="L72">          gitLookup.getAuthorNameOfCreation(document.getFile()));</span>
+<span class="fc" id="L73">      result.put(COPYRIGHT_CREATION_AUTHOR_EMAIL_KEY,</span>
+<span class="fc" id="L74">          gitLookup.getAuthorEmailOfCreation(document.getFile()));</span>
+<span class="fc" id="L75">      return Collections.unmodifiableMap(result);</span>
+<span class="nc" id="L76">    } catch (IOException e) {</span>
+<span class="nc" id="L77">      throw new UncheckedIOException(</span>
+<span class="nc" id="L78">          &quot;CopyrightAuthorProvider error on file: &quot; + document.getFile().getAbsolutePath() + &quot;: &quot;</span>
+<span class="nc" id="L79">              + e.getMessage(), e);</span>
+    }
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
