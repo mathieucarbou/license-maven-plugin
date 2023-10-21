@@ -1,0 +1,4 @@
+/***********************
+* Copyright ACME       *
+***********************/
+package com.mycila.maven.plugin.license.header;

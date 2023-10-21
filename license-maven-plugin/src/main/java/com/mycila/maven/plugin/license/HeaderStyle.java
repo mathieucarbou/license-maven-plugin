@@ -92,12 +92,18 @@ public class HeaderStyle {
   public String firstLineDetectionPattern;
 
   /**
+   * The regex used to detect the other lines of a header section or line
+   */
+  @Parameter(required = false)
+  public String otherLineDetectionPattern;
+
+  /**
    * The regex used to detect the end of a header section or line
    */
   @Parameter(required = true)
   public String lastLineDetectionPattern;
 
   public HeaderDefinition toHeaderDefinition() {
-    return new HeaderDefinition(name, firstLine, beforeEachLine, endLine, afterEachLine, skipLinePattern, firstLineDetectionPattern, lastLineDetectionPattern, allowBlankLines, multiLine, padLines);
+    return new HeaderDefinition(name != null ? name.toLowerCase() : null, firstLine, beforeEachLine, endLine, afterEachLine, skipLinePattern, firstLineDetectionPattern, otherLineDetectionPattern, lastLineDetectionPattern, allowBlankLines, multiLine, padLines);
   }
 }
