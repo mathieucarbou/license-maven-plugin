@@ -1,6 +1,5 @@
 # Table of contents
 
-- [Table of contents](#table-of-contents)
 - [Maven License Plugin (Official & Original)](#maven-license-plugin-official--original)
   - [Features](#features)
   - [Links](#links)
