@@ -551,7 +551,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
     }
     if (!strictCheck) {
       warn("Property 'strictCheck' is not enabled. Please consider adding <strictCheck>true</strictCheck> in your pom.xml file.");
-      warn("See https://mycila.carbou.me/license-maven-plugin for more information.");
+      warn("See https://oss.carbou.me/license-maven-plugin for more information.");
     }
 
     // then execute each license set

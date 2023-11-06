@@ -31,7 +31,7 @@
   <distributionManagement>
     <site>
       <id>report</id>
-      <url>https://mycila.carbou.me/license-maven-plugin/reports/${project.version}/${project.artifactId}</url>
+      <url>https://oss.carbou.me/license-maven-plugin/reports/${project.version}/${project.artifactId}</url>
     </site>
   </distributionManagement>
 
