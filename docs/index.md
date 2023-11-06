@@ -167,16 +167,16 @@ more license configurations in a single execution of the plugin. In simple terms
 wraps the previous configuration options for a license. The previous
 configuration syntax is still supported but deprecated, and may be removed in future.
 
-- [4.3](https://mycila.carbou.me/license-maven-plugin/reports/4.3/)
-- [4.2](https://mycila.carbou.me/license-maven-plugin/reports/4.2/)
-- [4.2.rc3](https://mycila.carbou.me/license-maven-plugin/reports/4.2.rc3/)
-- [4.2.rc2](https://mycila.carbou.me/license-maven-plugin/reports/4.2.rc2/)
-- [4.1](https://mycila.carbou.me/license-maven-plugin/reports/4.1/)
-- [4.0](https://mycila.carbou.me/license-maven-plugin/reports/4.0/)
-- [3.0](https://mycila.carbou.me/license-maven-plugin/reports/3.0/)
-- [2.3](https://mycila.carbou.me/license-maven-plugin/reports/2.3/)
-- [2.2](https://mycila.carbou.me/license-maven-plugin/reports/2.2/)
-- [2.0](https://mycila.carbou.me/license-maven-plugin/reports/2.0/)
+- [4.3](https://oss.carbou.me/license-maven-plugin/reports/4.3/)
+- [4.2](https://oss.carbou.me/license-maven-plugin/reports/4.2/)
+- [4.2.rc3](https://oss.carbou.me/license-maven-plugin/reports/4.2.rc3/)
+- [4.2.rc2](https://oss.carbou.me/license-maven-plugin/reports/4.2.rc2/)
+- [4.1](https://oss.carbou.me/license-maven-plugin/reports/4.1/)
+- [4.0](https://oss.carbou.me/license-maven-plugin/reports/4.0/)
+- [3.0](https://oss.carbou.me/license-maven-plugin/reports/3.0/)
+- [2.3](https://oss.carbou.me/license-maven-plugin/reports/2.3/)
+- [2.2](https://oss.carbou.me/license-maven-plugin/reports/2.2/)
+- [2.0](https://oss.carbou.me/license-maven-plugin/reports/2.0/)
 
 __WARNING__: there is good chances the latest version is greater than latest documentation, if nothing has changed concerning the plugin configurations.
 
