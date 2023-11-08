@@ -200,7 +200,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
    * in each LicenseSet by setting {@link LicenseSet#properties}.
    */
   @Parameter(alias = "properties")
-  public Map<String, String> defaultProperties = new HashMap<String, String>();
+  public Map<String, String> defaultProperties = new HashMap<>();
 
   /**
    * Specifies files, which are included in the check. By default, all files
@@ -252,7 +252,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
    * modules.
    */
   @Parameter(property = "license.aggregate", defaultValue = "false")
-  public boolean aggregate = false;
+  public boolean aggregate;
 
   /**
    * Set mapping between document mapping and a supported type to use. This
@@ -299,7 +299,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
    * Whether to skip the plugin execution
    */
   @Parameter(property = "license.skip", defaultValue = "false")
-  public boolean skip = false;
+  public boolean skip;
 
   /**
    * Determination of the year and author of the first commit and last change year
@@ -316,7 +316,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
    * can add the quiet flag that will shorten the output
    */
   @Parameter(property = "license.quiet", defaultValue = "false")
-  public boolean quiet = false;
+  public boolean quiet;
 
   /**
    * Set to true if you need a strict check against the headers. By default,
@@ -355,7 +355,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
    * @since 2.8
    */
   @Parameter(property = "license.failIfUnknown", defaultValue = "false")
-  public boolean failIfUnknown = false;
+  public boolean failIfUnknown;
 
   /**
    * If dryRun is enabled, calls to license:format and license:remove will not
@@ -363,13 +363,13 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
    * with the same name but ending with `.licensed`.
    */
   @Parameter(property = "license.dryRun", defaultValue = "false")
-  public boolean dryRun = false;
+  public boolean dryRun;
 
   /**
    * Skip the formatting of files which already contain a detected header.
    */
   @Parameter(property = "license.skipExistingHeaders", defaultValue = "false")
-  public boolean skipExistingHeaders = false;
+  public boolean skipExistingHeaders;
 
   /**
    * When enforcing licenses on dependencies, exclude all but these scopes.
@@ -455,10 +455,10 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
    * Skip the report generation. Default: false
    */
   @Parameter(property = "license.report.skip", defaultValue = "false")
-  public boolean reportSkipped = false;
+  public boolean reportSkipped;
 
   @Parameter(property = "license.prohibitLegacyUse", defaultValue = "false")
-  public boolean prohibitLegacyUse = false;
+  public boolean prohibitLegacyUse;
 
   protected Clock clock = Clock.systemUTC();
   protected Report report;
