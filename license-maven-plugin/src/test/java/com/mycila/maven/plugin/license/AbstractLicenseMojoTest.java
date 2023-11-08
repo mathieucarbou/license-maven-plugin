@@ -15,6 +15,6 @@ class AbstractLicenseMojoTest {
     Assertions.assertThat(AbstractLicenseMojo.starEncrypt(null)).isNull();
 
     String generatedPassword = UUID.randomUUID().toString();
-    Assertions.assertThat(AbstractLicenseMojo.starEncrypt(generatedPassword)).isEqualTo(Strings.repeat("*", generatedPassword.length()));
+    Assertions.assertThat(AbstractLicenseMojo.starEncrypt(generatedPassword)).isEqualTo(Strings.repeat("*", 5));
   }
 }
