@@ -485,7 +485,6 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
 
   }
 
-  @SuppressWarnings({"unchecked"})
   protected final void execute(final Callback callback) throws MojoExecutionException, MojoFailureException {
     if (skip) {
         getLog().info("License Plugin is Skipped");
@@ -638,42 +637,40 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
         propertiesProviders.add(provider);
       }
 
-      final DocumentPropertiesLoader perDocumentProperties = new DocumentPropertiesLoader() {
-        @Override
-        public Map<String, String> load(final Document document) {
-          // then add per document properties
-          Map<String, String> perDoc = new LinkedHashMap<>(globalProperties);
-          perDoc.put("file.name", document.getFile().getName());
+      final DocumentPropertiesLoader perDocumentProperties = document -> {
 
-          Map<String, String> readOnly = Collections.unmodifiableMap(perDoc);
+        // then add per document properties
+        Map<String, String> perDoc = new LinkedHashMap<>(globalProperties);
+        perDoc.put("file.name", document.getFile().getName());
 
-          for (final PropertiesProvider provider : propertiesProviders) {
-            try {
-              final Map<String, String> adjustments = provider.adjustProperties(
-                  AbstractLicenseMojo.this, readOnly, document);
-              if (getLog().isDebugEnabled()) {
-                getLog().debug("provider: " + provider.getClass() + " adjusted these properties:\n"
-                    + adjustments);
-              }
-              for (Map.Entry<String, String> entry : adjustments.entrySet()) {
-                if (entry.getValue() != null) {
-                  perDoc.put(entry.getKey(), entry.getValue());
-                } else {
-                  perDoc.remove(entry.getKey());
-                }
-              }
-            } catch (Exception e) {
-              getLog().warn("failure occurred while calling " + provider.getClass(), e);
+        Map<String, String> readOnly = Collections.unmodifiableMap(perDoc);
+
+        for (final PropertiesProvider provider : propertiesProviders) {
+          try {
+            final Map<String, String> adjustments = provider.adjustProperties(
+                AbstractLicenseMojo.this, readOnly, document);
+            if (getLog().isDebugEnabled()) {
+              getLog().debug("provider: " + provider.getClass() + " adjusted these properties:\n"
+                  + adjustments);
             }
+            for (Map.Entry<String, String> entry : adjustments.entrySet()) {
+              if (entry.getValue() != null) {
+                perDoc.put(entry.getKey(), entry.getValue());
+              } else {
+                perDoc.remove(entry.getKey());
+              }
+            }
+          } catch (Exception e) {
+            getLog().warn("failure occurred while calling " + provider.getClass(), e);
           }
-
-          if (getLog().isDebugEnabled()) {
-            getLog().debug("properties for " + document + ":\n - " + perDoc.entrySet().stream()
-                .map(Objects::toString).collect(Collectors.joining("\n - ")));
-          }
-
-          return perDoc;
         }
+
+        if (getLog().isDebugEnabled()) {
+          getLog().debug("properties for " + document + ":\n - " + perDoc.entrySet().stream()
+              .map(Objects::toString).collect(Collectors.joining("\n - ")));
+        }
+
+        return perDoc;
       };
 
       final DocumentFactory documentFactory = new DocumentFactory(
