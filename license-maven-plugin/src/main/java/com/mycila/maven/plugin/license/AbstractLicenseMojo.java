@@ -934,9 +934,6 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
   }
 
   private static <T> T firstNonNull(final T t1, final T t2) {
-    if (t1 != null) {
-      return t1;
-    }
-    return t2;
+    return t1 == null ? t2 : t1;
   }
 }
