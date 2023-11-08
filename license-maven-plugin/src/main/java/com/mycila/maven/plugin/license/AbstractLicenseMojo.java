@@ -927,7 +927,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
     if (str == null) {
       return null;
     }
-    return "********";
+    return "*****";
   }
 
   private static <T> T firstNonNull(final T t1, final T t2) {
