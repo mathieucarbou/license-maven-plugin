@@ -259,7 +259,10 @@ public final class Default {
       "**/*.stg",
 
       // Explicit Folder to Entirely Ignore
-      "**/unlicensed/**"
+      "**/unlicensed/**",
+
+      // EditorConfig
+      "**/.editorconfig"
   };
 
 }
