@@ -19,12 +19,13 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 
 class FileUtilsTest {
 
   @Test
   void test_read_first_lines() throws Exception {
-    String s = FileUtils.readFirstLines(new File("src/test/data/compileCP/test2.txt"), 3, "ISO-8859-1");
+    String s = FileUtils.readFirstLines(new File("src/test/data/compileCP/test2.txt"), 3, StandardCharsets.ISO_8859_1);
     Assertions.assertTrue(s.contains("c"));
     Assertions.assertFalse(s.contains("d"));
   }

@@ -19,6 +19,7 @@ import com.mycila.maven.plugin.license.header.HeaderDefinition;
 import org.codehaus.plexus.util.FileUtils;
 
 import java.io.File;
+import java.nio.charset.Charset;
 import java.util.Map;
 
 /**
@@ -29,11 +30,11 @@ public final class DocumentFactory {
   private final Map<String, String> mapping;
   private final Map<String, HeaderDefinition> definitions;
   private final File basedir;
-  private final String encoding;
+  private final Charset encoding;
   private final String[] keywords;
   private final DocumentPropertiesLoader documentPropertiesLoader;
 
-  public DocumentFactory(final File basedir, final Map<String, String> mapping, final Map<String, HeaderDefinition> definitions, final String encoding, final String[] keywords, final DocumentPropertiesLoader documentPropertiesLoader) {
+  public DocumentFactory(final File basedir, final Map<String, String> mapping, final Map<String, HeaderDefinition> definitions, final Charset encoding, final String[] keywords, final DocumentPropertiesLoader documentPropertiesLoader) {
     this.mapping = mapping;
     this.definitions = definitions;
     this.basedir = basedir;

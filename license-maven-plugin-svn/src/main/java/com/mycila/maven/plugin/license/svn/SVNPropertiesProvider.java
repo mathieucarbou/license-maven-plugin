@@ -43,7 +43,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class SVNPropertiesProvider implements PropertiesProvider {
 
-
   public static final String SVN_COPYRIGHT_LASTCHANGE_YEAR_KEY = "license.svn.lastchange.year";
   public static final String SVN_COPYRIGHT_LASTCHANGE_DATE_KEY = "license.svn.lastchange.date";
   public static final String SVN_COPYRIGHT_LASTCHANGE_TIMESTAMP_KEY = "license.svn.lastchange.timestamp";

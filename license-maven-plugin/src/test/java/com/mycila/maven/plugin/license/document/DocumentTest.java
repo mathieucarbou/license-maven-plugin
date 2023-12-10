@@ -21,6 +21,9 @@ import com.mycila.maven.plugin.license.util.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -46,8 +49,8 @@ class DocumentTest {
   };
 
   @BeforeAll
-  static void setup() throws IOException {
-    header = new Header(new UrlHeaderSource(new File("src/test/resources/test-header1.txt").toURI().toURL(), "UTF-8"), null);
+  static void setup() throws IOException, URISyntaxException {
+    header = new Header(new UrlHeaderSource(new File("src/test/resources/test-header1.txt").toURI().toURL(), StandardCharsets.UTF_8), null);
   }
 
   @Test
@@ -55,7 +58,7 @@ class DocumentTest {
     Document doc = new Document(
         new File("src/test/resources/doc/doc1.txt"),
         DocumentType.TXT.getDefaultHeaderType().getDefinition(),
-        System.getProperty("file.encoding"), new String[]{"copyright"},
+        Charset.defaultCharset(), new String[]{"copyright"},
         loader);
     Assertions.assertEquals("doc1.txt", doc.getFile().getName());
     Assertions.assertFalse(doc.isNotSupported());
@@ -66,7 +69,7 @@ class DocumentTest {
     Document doc = new Document(
         new File("src/test/resources/doc/doc1.txt"),
         DocumentType.UNKNOWN.getDefaultHeaderType().getDefinition(),
-        System.getProperty("file.encoding"), new String[]{"copyright"},
+        Charset.defaultCharset(), new String[]{"copyright"},
         loader);
     Assertions.assertEquals("doc1.txt", doc.getFile().getName());
     Assertions.assertTrue(doc.isNotSupported());
@@ -77,7 +80,7 @@ class DocumentTest {
     Document doc = new Document(
         new File("src/test/resources/doc/doc1.txt"),
         DocumentType.TXT.getDefaultHeaderType().getDefinition(),
-        System.getProperty("file.encoding"), new String[]{"copyright"},
+        Charset.defaultCharset(), new String[]{"copyright"},
         loader);
     Assertions.assertFalse(doc.hasHeader(header, true));
   }
@@ -87,14 +90,14 @@ class DocumentTest {
     Document doc = new Document(
         new File("src/test/resources/doc/doc1.txt"),
         DocumentType.TXT.getDefaultHeaderType().getDefinition(),
-        System.getProperty("file.encoding"), new String[]{"copyright"},
+        Charset.defaultCharset(), new String[]{"copyright"},
         loader);
     Assertions.assertFalse(doc.is(header));
 
     doc = new Document(
         new File("src/test/resources/test-header1.txt"),
         DocumentType.TXT.getDefaultHeaderType().getDefinition(),
-        System.getProperty("file.encoding"), new String[]{"copyright"},
+        Charset.defaultCharset(), new String[]{"copyright"},
         loader);
     Assertions.assertTrue(doc.is(header));
   }
@@ -104,12 +107,12 @@ class DocumentTest {
     Document doc = new Document(
         new File("src/test/resources/doc/doc1.txt"),
         DocumentType.TXT.getDefaultHeaderType().getDefinition(),
-        System.getProperty("file.encoding"), new String[]{"copyright"},
+        Charset.defaultCharset(), new String[]{"copyright"},
         loader);
     doc.parseHeader();
     doc.removeHeader();
     Assertions.assertEquals(doc.getContent(),
-        FileUtils.read(new File("src/test/resources/doc/doc1.txt"), System.getProperty("file.encoding")));
+        FileUtils.read(new File("src/test/resources/doc/doc1.txt"), Charset.defaultCharset()));
   }
 
   @Test
@@ -117,7 +120,7 @@ class DocumentTest {
     Document doc = new Document(
         new File("src/test/resources/doc/doc2.txt"),
         DocumentType.TXT.getDefaultHeaderType().getDefinition(),
-        System.getProperty("file.encoding"), new String[]{"copyright"},
+        Charset.defaultCharset(), new String[]{"copyright"},
         loader);
     doc.parseHeader();
     doc.removeHeader();
@@ -129,7 +132,7 @@ class DocumentTest {
     Document doc = new Document(
         new File("src/test/resources/doc/doc3.txt"),
         DocumentType.TXT.getDefaultHeaderType().getDefinition(),
-        System.getProperty("file.encoding"), new String[]{"copyright"},
+        Charset.defaultCharset(), new String[]{"copyright"},
         loader);
     doc.parseHeader();
     doc.removeHeader();
@@ -142,7 +145,7 @@ class DocumentTest {
     Document doc = new Document(
         new File(document),
         DocumentType.XML.getDefaultHeaderType().getDefinition(),
-        System.getProperty("file.encoding"), new String[]{"copyright"},
+        Charset.defaultCharset(), new String[]{"copyright"},
         loader);
     doc.parseHeader();
     doc.removeHeader();
@@ -163,7 +166,7 @@ class DocumentTest {
     Document doc = new Document(
         new File("src/test/resources/doc/doc8.xml"),
         DocumentType.XML.getDefaultHeaderType().getDefinition(),
-        System.getProperty("file.encoding"), new String[]{"copyright"},
+        Charset.defaultCharset(), new String[]{"copyright"},
         loader);
     doc.parseHeader();
     doc.removeHeader();
@@ -175,7 +178,7 @@ class DocumentTest {
     Document doc = new Document(
         new File("src/test/resources/doc/doc9.xml"),
         DocumentType.XML.getDefaultHeaderType().getDefinition(),
-        System.getProperty("file.encoding"), new String[]{"copyright"},
+        Charset.defaultCharset(), new String[]{"copyright"},
         loader);
     doc.parseHeader();
     doc.removeHeader();

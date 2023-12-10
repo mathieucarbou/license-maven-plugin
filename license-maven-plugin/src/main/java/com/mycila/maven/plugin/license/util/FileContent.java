@@ -17,6 +17,7 @@ package com.mycila.maven.plugin.license.util;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 import static com.mycila.maven.plugin.license.util.FileUtils.read;
 
@@ -27,7 +28,7 @@ public final class FileContent {
   private int oldPos;
   private int position;
 
-  public FileContent(File file, String encoding) {
+  public FileContent(File file, Charset encoding) {
     try {
       this.file = file;
       this.fileContent = new StringBuilder(read(file, encoding));

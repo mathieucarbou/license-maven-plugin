@@ -23,11 +23,14 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 class HeaderTest {
   @Test
   void test() throws Exception {
-    Header header = new Header(new UrlHeaderSource(getClass().getResource("/test-header1.txt"), "UTF-8"), null);
+    Header header = new Header(new UrlHeaderSource(getClass().getResource("/test-header1.txt"), StandardCharsets.UTF_8), null);
     Assertions.assertEquals(13, header.getLineCount());
     Assertions.assertTrue(header.asOneLineString().contains("${year}"));
     Assertions.assertTrue(header.getLocation().isFromUrl(getClass().getResource("/test-header1.txt")));
@@ -35,12 +38,12 @@ class HeaderTest {
     //FileUtils.write(new File("src/test/resources/test-header2.txt"), header.buildForDefinition(HeaderType.ASP.getDefinition(), false));
 
     final File file = new File("src/test/resources/test-header2.txt");
-    final String content = FileUtils.read(file, System.getProperty("file.encoding"));
+    final String content = FileUtils.read(file, Charset.defaultCharset());
     Assertions.assertEquals(content, header.buildForDefinition(HeaderType.ASP.getDefinition(), content.indexOf("\n") == -1));
   }
 
   @Test
-  void testHeaderSections() throws IOException {
+  void testHeaderSections() throws IOException, URISyntaxException {
 
     HeaderSection section = new HeaderSection();
     section.setKey("COPYRIGHT_SECTION");
@@ -49,7 +52,7 @@ class HeaderTest {
 
     HeaderSection[] sections = {section};
 
-    Header header = new Header(new UrlHeaderSource(getClass().getResource("/test-header5.txt"), "UTF-8"), sections);
+    Header header = new Header(new UrlHeaderSource(getClass().getResource("/test-header5.txt"), StandardCharsets.UTF_8), sections);
 
     HeaderDefinition headerDefinition = HeaderType.JAVADOC_STYLE.getDefinition();
 
@@ -98,7 +101,7 @@ class HeaderTest {
   }
 
   @Test
-  void testHeaderSectionsWithAmbiguousSeparation() throws IOException {
+  void testHeaderSectionsWithAmbiguousSeparation() throws IOException, URISyntaxException {
 
     HeaderSection sectionA = new HeaderSection();
     sectionA.setKey("COPYRIGHT_SECTION");
@@ -111,7 +114,7 @@ class HeaderTest {
 
     HeaderSection[] sections = {sectionA, sectionB};
 
-    Header header = new Header(new UrlHeaderSource(getClass().getResource("/test-header6.txt"), "UTF-8"), sections);
+    Header header = new Header(new UrlHeaderSource(getClass().getResource("/test-header6.txt"), StandardCharsets.UTF_8), sections);
 
     HeaderDefinition headerDefinition = HeaderType.JAVADOC_STYLE.getDefinition();
 
@@ -156,7 +159,7 @@ class HeaderTest {
   }
 
   @Test
-  void testHeaderSectionsWithMultiLineMatch() throws IOException {
+  void testHeaderSectionsWithMultiLineMatch() throws IOException, URISyntaxException {
 
     HeaderSection section = new HeaderSection();
     section.setKey("COPYRIGHT_SECTION");
@@ -166,7 +169,7 @@ class HeaderTest {
 
     HeaderSection[] sections = {section};
 
-    Header header = new Header(new UrlHeaderSource(getClass().getResource("/test-header5.txt"), "UTF-8"), sections);
+    Header header = new Header(new UrlHeaderSource(getClass().getResource("/test-header5.txt"), StandardCharsets.UTF_8), sections);
 
     HeaderDefinition headerDefinition = HeaderType.JAVADOC_STYLE.getDefinition();
 

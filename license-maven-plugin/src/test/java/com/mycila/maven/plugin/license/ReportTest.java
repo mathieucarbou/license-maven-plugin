@@ -25,6 +25,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.nio.charset.Charset;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneId;
@@ -65,8 +66,8 @@ class ReportTest {
     } catch (MojoExecutionException | MojoFailureException e) {
     }
 
-    String processed = unixify(FileUtils.read(plugin.reportLocation, System.getProperty("file.encoding")));
-    String expected = FileUtils.read(new File("src/test/resources/issues/issue-122/check.xml"), System.getProperty("file.encoding"));
+    String processed = unixify(FileUtils.read(plugin.reportLocation, Charset.defaultCharset()));
+    String expected = FileUtils.read(new File("src/test/resources/issues/issue-122/check.xml"), Charset.defaultCharset());
     assertThat(processed, is(equalTo(expected)));
   }
 
@@ -89,8 +90,8 @@ class ReportTest {
     } catch (MojoExecutionException | MojoFailureException e) {
     }
 
-    String processed = unixify(FileUtils.read(plugin.reportLocation, System.getProperty("file.encoding")));
-    String expected = FileUtils.read(new File("src/test/resources/issues/issue-122/check.json"), System.getProperty("file.encoding"));
+    String processed = unixify(FileUtils.read(plugin.reportLocation, Charset.defaultCharset()));
+    String expected = FileUtils.read(new File("src/test/resources/issues/issue-122/check.json"), Charset.defaultCharset());
     assertThat(processed, is(equalTo(expected)));
   }
 
@@ -109,8 +110,8 @@ class ReportTest {
 
     plugin.execute();
 
-    String processed = unixify(FileUtils.read(plugin.reportLocation, System.getProperty("file.encoding")));
-    String expected = FileUtils.read(new File("src/test/resources/issues/issue-122/format.xml"), System.getProperty("file.encoding"));
+    String processed = unixify(FileUtils.read(plugin.reportLocation, Charset.defaultCharset()));
+    String expected = FileUtils.read(new File("src/test/resources/issues/issue-122/format.xml"), Charset.defaultCharset());
     assertThat(processed, is(equalTo(expected)));
   }
 
@@ -129,8 +130,8 @@ class ReportTest {
 
     plugin.execute();
 
-    String processed = unixify(FileUtils.read(plugin.reportLocation, System.getProperty("file.encoding")));
-    String expected = FileUtils.read(new File("src/test/resources/issues/issue-122/format.json"), System.getProperty("file.encoding"));
+    String processed = unixify(FileUtils.read(plugin.reportLocation, Charset.defaultCharset()));
+    String expected = FileUtils.read(new File("src/test/resources/issues/issue-122/format.json"), Charset.defaultCharset());
     assertThat(processed, is(equalTo(expected)));
   }
 
@@ -149,8 +150,8 @@ class ReportTest {
 
     plugin.execute();
 
-    String processed = unixify(FileUtils.read(plugin.reportLocation, System.getProperty("file.encoding")));
-    String expected = FileUtils.read(new File("src/test/resources/issues/issue-122/remove.xml"), System.getProperty("file.encoding"));
+    String processed = unixify(FileUtils.read(plugin.reportLocation, Charset.defaultCharset()));
+    String expected = FileUtils.read(new File("src/test/resources/issues/issue-122/remove.xml"), Charset.defaultCharset());
     assertThat(processed, is(equalTo(expected)));
   }
 
@@ -169,8 +170,8 @@ class ReportTest {
 
     plugin.execute();
 
-    String processed = unixify(FileUtils.read(plugin.reportLocation, System.getProperty("file.encoding")));
-    String expected = FileUtils.read(new File("src/test/resources/issues/issue-122/remove.json"), System.getProperty("file.encoding"));
+    String processed = unixify(FileUtils.read(plugin.reportLocation, Charset.defaultCharset()));
+    String expected = FileUtils.read(new File("src/test/resources/issues/issue-122/remove.json"), Charset.defaultCharset());
     assertThat(processed, is(equalTo(expected)));
   }
 

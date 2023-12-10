@@ -25,6 +25,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -50,8 +51,8 @@ class UpdateMojoTest {
     updater.defaultProperties = ImmutableMap.of("year", "2008");
     updater.execute();
 
-    Assertions.assertEquals(FileUtils.read(new File(tmp, "doc1.txt"), System.getProperty("file.encoding")), "====\r\n    My @Copyright license 2 with my-custom-value and 2008 and doc1.txt\r\n====\r\n\r\nsome data\r\n");
-    Assertions.assertEquals(FileUtils.read(new File(tmp, "doc2.txt"), System.getProperty("file.encoding")), "====\r\n    My @Copyright license 2 with my-custom-value and 2008 and doc2.txt\r\n====\r\n\r\nsome data\r\n");
+    Assertions.assertEquals(FileUtils.read(new File(tmp, "doc1.txt"), Charset.defaultCharset()), "====\r\n    My @Copyright license 2 with my-custom-value and 2008 and doc1.txt\r\n====\r\n\r\nsome data\r\n");
+    Assertions.assertEquals(FileUtils.read(new File(tmp, "doc2.txt"), Charset.defaultCharset()), "====\r\n    My @Copyright license 2 with my-custom-value and 2008 and doc2.txt\r\n====\r\n\r\nsome data\r\n");
   }
 
   @Test
@@ -63,13 +64,13 @@ class UpdateMojoTest {
 
     LicenseFormatMojo updater = new LicenseFormatMojo();
     updater.defaultBasedir = tmp;
-    updater.legacyConfigInlineHeader = FileUtils.read(new File("src/test/resources/update/header.txt"), "utf-8");
+    updater.legacyConfigInlineHeader = FileUtils.read(new File("src/test/resources/update/header.txt"), StandardCharsets.UTF_8);
     updater.project = new MavenProjectStub();
     updater.defaultProperties = ImmutableMap.of("year", "2008");
     updater.execute();
 
-    Assertions.assertEquals("====\r\n    My @Copyright license 2 with my-custom-value and 2008 and doc1.txt\r\n====\r\n\r\nsome data\r\n", FileUtils.read(new File(tmp, "doc1.txt"), System.getProperty("file.encoding")));
-    Assertions.assertEquals("====\r\n    My @Copyright license 2 with my-custom-value and 2008 and doc2.txt\r\n====\r\n\r\nsome data\r\n", FileUtils.read(new File(tmp, "doc2.txt"), System.getProperty("file.encoding")));
+    Assertions.assertEquals("====\r\n    My @Copyright license 2 with my-custom-value and 2008 and doc1.txt\r\n====\r\n\r\nsome data\r\n", FileUtils.read(new File(tmp, "doc1.txt"), Charset.defaultCharset()));
+    Assertions.assertEquals("====\r\n    My @Copyright license 2 with my-custom-value and 2008 and doc2.txt\r\n====\r\n\r\nsome data\r\n", FileUtils.read(new File(tmp, "doc2.txt"), Charset.defaultCharset()));
   }
 
   @Test
@@ -88,8 +89,8 @@ class UpdateMojoTest {
     updater.skipExistingHeaders = true;
     updater.execute();
 
-    Assertions.assertEquals("====\r\n    My @Copyright license 2 with my-custom-value and 2008 and doc1.txt\r\n====\r\n\r\nsome data\r\n", FileUtils.read(new File(tmp, "doc1.txt"), System.getProperty("file.encoding")));
-    Assertions.assertEquals("====\r\n    Copyright license\r\n====\r\n\r\nsome data\r\n", FileUtils.read(new File(tmp, "doc2.txt"), System.getProperty("file.encoding")));
+    Assertions.assertEquals("====\r\n    My @Copyright license 2 with my-custom-value and 2008 and doc1.txt\r\n====\r\n\r\nsome data\r\n", FileUtils.read(new File(tmp, "doc1.txt"), Charset.defaultCharset()));
+    Assertions.assertEquals("====\r\n    Copyright license\r\n====\r\n\r\nsome data\r\n", FileUtils.read(new File(tmp, "doc2.txt"), Charset.defaultCharset()));
 
     // expect unchanged header to fail check against new header
     LicenseCheckMojo check = new LicenseCheckMojo();
@@ -130,9 +131,9 @@ class UpdateMojoTest {
     updater.project = new MavenProjectStub();
     updater.execute();
 
-    String test1 = FileUtils.read(new File(tmp, "test1.properties"), System.getProperty("file.encoding")).replaceAll("\\n", LS);
-    String test2 = FileUtils.read(new File(tmp, "test2.properties"), System.getProperty("file.encoding"));
-    String test3 = FileUtils.read(new File(tmp, "test3.properties"), System.getProperty("file.encoding"));
+    String test1 = FileUtils.read(new File(tmp, "test1.properties"), Charset.defaultCharset()).replaceAll("\\n", LS);
+    String test2 = FileUtils.read(new File(tmp, "test2.properties"), Charset.defaultCharset());
+    String test3 = FileUtils.read(new File(tmp, "test3.properties"), Charset.defaultCharset());
 
     Assertions.assertEquals(test1, test2.replace("test2.properties", "test1.properties"));
     Assertions.assertEquals(test1, test3.replace("test3.properties", "test1.properties"));
@@ -155,7 +156,7 @@ class UpdateMojoTest {
     updater.project = new MavenProjectStub();
     updater.execute();
 
-    Assertions.assertEquals(FileUtils.read(new File(tmp, "test1.php"), System.getProperty("file.encoding")), "\r\n" +
+    Assertions.assertEquals(FileUtils.read(new File(tmp, "test1.php"), Charset.defaultCharset()), "\r\n" +
         "\r\n" +
         "<?php\r\n" +
         "/*\r\n" +
@@ -165,7 +166,7 @@ class UpdateMojoTest {
         "class Conference extends Service {}\r\n" +
         "\r\n" +
         "?>\r\n");
-    Assertions.assertEquals(FileUtils.read(new File(tmp, "test2.php"), System.getProperty("file.encoding")), "\r\n" +
+    Assertions.assertEquals(FileUtils.read(new File(tmp, "test2.php"), Charset.defaultCharset()), "\r\n" +
         "\r\n" +
         "<?php\r\n" +
         "/*\r\n" +
@@ -191,14 +192,14 @@ class UpdateMojoTest {
     updater.project = new MavenProjectStub();
     updater.execute();
 
-    Assertions.assertEquals(FileUtils.read(new File(tmp, "issue44-3.rb"), System.getProperty("file.encoding")), "#" + LS + "" +
+    Assertions.assertEquals(FileUtils.read(new File(tmp, "issue44-3.rb"), Charset.defaultCharset()), "#" + LS + "" +
         "# My @Copyright license 2 with my-custom-value and 2008 and issue44-3.rb" + LS + "" +
         "#" + LS + "" +
         "" + LS + "" +
         "# code comment" + LS + "" +
         "ruby code here" + LS + "");
 
-    Assertions.assertEquals(FileUtils.read(new File(tmp, "test.asp"), System.getProperty("file.encoding")), "<%\n" +
+    Assertions.assertEquals(FileUtils.read(new File(tmp, "test.asp"), Charset.defaultCharset()), "<%\n" +
         "' My @Copyright license 2 with my-custom-value and 2008 and test.asp\n" +
         "%>" +
         "\n" +
@@ -238,7 +239,7 @@ class UpdateMojoTest {
         "seq.nodes=SELECT nextval('seq_nodes')" + LS + "" +
         "seq.triples=SELECT nextval('seq_triples')" + LS + "" +
         "seq.namespaces=SELECT nextval('seq_namespaces')" + LS + "";
-    final String readModifiedContent = FileUtils.read(new File(tmp, "test.properties"), System.getProperty("file.encoding"));
+    final String readModifiedContent = FileUtils.read(new File(tmp, "test.properties"), Charset.defaultCharset());
 
     Assertions.assertEquals(expectedString, readModifiedContent);
   }
@@ -278,7 +279,7 @@ class UpdateMojoTest {
     execution1.project = new MavenProjectStub();
     execution1.execute();
 
-    String execution1FileContent = FileUtils.read(new File(tmp, "xwiki.xml"), System.getProperty("file.encoding"));
+    String execution1FileContent = FileUtils.read(new File(tmp, "xwiki.xml"), Charset.defaultCharset());
 
     LicenseFormatMojo execution2 = new LicenseFormatMojo();
     execution2.defaultBasedir = tmp;
@@ -286,7 +287,7 @@ class UpdateMojoTest {
     execution2.project = new MavenProjectStub();
     execution2.execute();
 
-    String execution2FileContent = FileUtils.read(new File(tmp, "xwiki.xml"), System.getProperty("file.encoding"));
+    String execution2FileContent = FileUtils.read(new File(tmp, "xwiki.xml"), Charset.defaultCharset());
 
     assertThat(execution1FileContent, is(execution2FileContent));
   }
@@ -343,7 +344,7 @@ class UpdateMojoTest {
             "<top>\n" +
             "  <element>value</element>\n" +
             "</top>\n",
-        FileUtils.read(new File(tmp, "test.xml"), System.getProperty("file.encoding"))
+        FileUtils.read(new File(tmp, "test.xml"), Charset.defaultCharset())
     );
   }
 
@@ -363,8 +364,8 @@ class UpdateMojoTest {
 
     updater.execute();
 
-    String processed = FileUtils.read(new File(tmp, "Main.java"), System.getProperty("file.encoding"));
-    String expected = FileUtils.read(new File("src/test/resources/update/issue-187/expected.txt"), System.getProperty("file.encoding"));
+    String processed = FileUtils.read(new File(tmp, "Main.java"), Charset.defaultCharset());
+    String expected = FileUtils.read(new File("src/test/resources/update/issue-187/expected.txt"), Charset.defaultCharset());
 
     assertThat(processed, is(equalTo(expected)));
   }
