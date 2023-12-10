@@ -492,7 +492,9 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
 
   @SuppressWarnings({"unchecked"})
   protected final void execute(final Callback callback) throws MojoExecutionException, MojoFailureException {
-    if (!skip) {
+    if (skip) {
+        getLog().info("License Plugin is Skipped");
+    } else {
       if (prohibitLegacyUse && detectLegacyUse()) {
         throw new MojoExecutionException("Use of legacy parameters has been prohibited by configuration.");
       }
