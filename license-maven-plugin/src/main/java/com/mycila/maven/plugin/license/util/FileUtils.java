@@ -15,7 +15,7 @@
  */
 package com.mycila.maven.plugin.license.util;
 
-import org.codehaus.plexus.util.IOUtil;
+import org.apache.commons.io.IOUtils;
 import org.codehaus.plexus.util.InterpolationFilterReader;
 
 import java.io.BufferedReader;
@@ -59,13 +59,13 @@ public final class FileUtils {
 
   public static String read(URL location, Charset encoding, Map<String, Object> properties) throws IOException, URISyntaxException {
     try (Reader reader = new InterpolationFilterReader(Files.newBufferedReader(Paths.get(location.toURI()), encoding), properties)) {
-      return IOUtil.toString(reader);
+      return IOUtils.toString(reader);
     }
   }
 
   public static String read(URL location, Charset encoding) throws IOException, URISyntaxException {
     try (Reader reader = Files.newBufferedReader(Paths.get(location.toURI()), encoding)) {
-      return IOUtil.toString(reader);
+      return IOUtils.toString(reader);
     }
   }
 
@@ -73,7 +73,7 @@ public final class FileUtils {
     final String[] results = new String[locations.length];
     for (int i = 0; i < locations.length; i++) {
       try (Reader reader = Files.newBufferedReader(Paths.get(locations[i].toURI()), encoding)) {
-        results[i] = IOUtil.toString(reader);
+        results[i] = IOUtils.toString(reader);
       }
     }
     return results;
