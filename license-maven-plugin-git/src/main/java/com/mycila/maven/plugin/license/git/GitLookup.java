@@ -197,7 +197,7 @@ public class GitLookup implements Closeable {
    * year is taken either from the committer date or from the author identity depending on how {@link #dateSource} was
    * initialized.
    */
-  int getYearOfCreation(File file) throws IOException, GitAPIException {
+  int getYearOfCreation(File file) throws IOException {
     String repoRelativePath = pathResolver.relativize(file);
 
     int commitYear = 0;
