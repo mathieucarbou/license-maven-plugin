@@ -20,6 +20,7 @@ import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 
 class HeaderMojoTest {
 
@@ -87,7 +88,7 @@ class HeaderMojoTest {
     MavenProjectStub project = new MavenProjectStub();
     LicenseCheckMojo check = new LicenseCheckMojo();
     check.defaultBasedir = new File("src/test/resources/check");
-    check.legacyConfigInlineHeader = FileUtils.read(new File("src/test/resources/check/header.txt"), "utf-8");
+    check.legacyConfigInlineHeader = FileUtils.read(new File("src/test/resources/check/header.txt"), StandardCharsets.UTF_8);
     check.project = project;
     check.failIfMissing = false;
     check.strictCheck = true;
@@ -158,8 +159,8 @@ class HeaderMojoTest {
     check.defaultBasedir = new File("src/test/resources/check");
     final Multi multi = new Multi();
     multi.setInlineHeaders(new String[]{
-        FileUtils.read(new File("src/test/resources/check/header.txt"), "utf-8"),
-        FileUtils.read(new File("src/test/resources/check/header2.txt"), "utf-8")
+        FileUtils.read(new File("src/test/resources/check/header.txt"), StandardCharsets.UTF_8),
+        FileUtils.read(new File("src/test/resources/check/header2.txt"), StandardCharsets.UTF_8)
     });
     check.legacyConfigMulti = multi;
     check.project = project;

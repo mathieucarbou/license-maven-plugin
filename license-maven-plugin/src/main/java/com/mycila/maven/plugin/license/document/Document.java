@@ -24,6 +24,7 @@ import com.mycila.maven.plugin.license.util.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 import static com.mycila.maven.plugin.license.util.FileUtils.readFirstLines;
 import static com.mycila.maven.plugin.license.util.FileUtils.remove;
@@ -34,14 +35,14 @@ import static com.mycila.maven.plugin.license.util.FileUtils.remove;
 public final class Document {
   private final File file;
   private final HeaderDefinition headerDefinition;
-  private final String encoding;
+  private final Charset encoding;
   private final String[] keywords;
   private final DocumentPropertiesLoader documentPropertiesLoader;
   private final PropertyPlaceholderResolver placeholderResolver = new PropertyPlaceholderResolver();
   private HeaderParser parser;
 
 
-  public Document(File file, HeaderDefinition headerDefinition, String encoding, String[] keywords, DocumentPropertiesLoader documentPropertiesLoader) {
+  public Document(File file, HeaderDefinition headerDefinition, Charset encoding, String[] keywords, DocumentPropertiesLoader documentPropertiesLoader) {
     this.keywords = keywords.clone();
     this.file = file;
     this.headerDefinition = headerDefinition;
@@ -61,7 +62,7 @@ public final class Document {
     return getFile().getPath().replace('\\', '/');
   }
 
-  public String getEncoding() {
+  public Charset getEncoding() {
     return encoding;
   }
 

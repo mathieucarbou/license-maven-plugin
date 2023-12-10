@@ -21,6 +21,8 @@ import com.mycila.maven.plugin.license.util.resource.ResourceFinder;
 import org.apache.maven.plugin.MojoFailureException;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import static com.mycila.maven.plugin.license.Multi.DEFAULT_SEPARATOR;
@@ -59,7 +61,7 @@ public abstract class HeaderSource {
   public static class UrlHeaderSource extends HeaderSource {
     private final URL url;
 
-    public UrlHeaderSource(URL url, String encoding) throws IOException {
+    public UrlHeaderSource(URL url, Charset encoding) throws IOException, URISyntaxException {
       super(FileUtils.read(url, encoding), false);
       this.url = url;
     }
@@ -105,7 +107,7 @@ public abstract class HeaderSource {
   public static class MultiUrlHeaderSource extends HeaderSource {
     private final URL[] urls;
 
-    public MultiUrlHeaderSource(final String preamble, final URL[] urls, final String[] separators, final String encoding) throws IOException {
+    public MultiUrlHeaderSource(final String preamble, final URL[] urls, final String[] separators, final Charset encoding) throws IOException, URISyntaxException {
       super(combineHeaders(preamble, FileUtils.read(urls, encoding), separators), false);
       this.urls = urls;
     }
@@ -180,7 +182,7 @@ public abstract class HeaderSource {
     return builder.toString();
   }
 
-  public static HeaderSource of(String headerPath, String encoding, ResourceFinder finder) {
+  public static HeaderSource of(String headerPath, Charset encoding, ResourceFinder finder) {
     return of(null, encoding, finder);
   }
 
@@ -196,7 +198,7 @@ public abstract class HeaderSource {
    * @param finder       the {@link ResourceFinder} to use to resolve {@code headerPath}
    * @return a new {@link HeaderSource}
    */
-  public static HeaderSource of(Multi multi, String inlineHeader, String headerPath, String encoding, ResourceFinder finder) {
+  public static HeaderSource of(Multi multi, String inlineHeader, String headerPath, Charset encoding, ResourceFinder finder) {
     if (multi != null) {
       if (multi.getInlineHeaders() != null && multi.getInlineHeaders().length > 0) {
         return new MultiLiteralHeaderSource(multi.getPreamble(), multi.getInlineHeaders(), multi.getSeparators());
@@ -216,7 +218,7 @@ public abstract class HeaderSource {
         }
         try {
           return new MultiUrlHeaderSource(multi.getPreamble(), headerUrls, multi.getSeparators(), encoding);
-        } catch (final IOException e) {
+        } catch (final IOException | URISyntaxException e) {
           throw new IllegalArgumentException(
               "Cannot read multi header documents. Cause: " + e.getMessage(), e);
         }

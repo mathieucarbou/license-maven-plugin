@@ -24,6 +24,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -84,7 +85,7 @@ class CopyrightRangeProviderTest {
   private static Document newDocument(String relativePath) {
     Path path = Paths.get(fsRepoRoot + File.separator
         + relativePath.replace('/', File.separatorChar));
-    return new Document(path.toFile(), null, "utf-8", new String[0], null);
+    return new Document(path.toFile(), null, StandardCharsets.UTF_8, new String[0], null);
   }
 
   @BeforeAll

@@ -18,6 +18,7 @@ package com.mycila.maven.plugin.license.header;
 import com.mycila.maven.plugin.license.util.FileContent;
 
 import java.io.File;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
@@ -31,14 +32,14 @@ class HeaderParserTest {
 
   @Test
   void test_no_header() throws Exception {
-    HeaderParser parser = new HeaderParser(new FileContent(new File("src/test/resources/doc/doc1.txt"), System.getProperty("file.encoding")),
+    HeaderParser parser = new HeaderParser(new FileContent(new File("src/test/resources/doc/doc1.txt"), Charset.defaultCharset()),
         HeaderType.TEXT.getDefinition(), new String[]{"copyright"});
     Assertions.assertFalse(parser.gotAnyHeader());
   }
 
   @Test
   void test_has_header() throws Exception {
-    HeaderParser parser = new HeaderParser(new FileContent(new File("src/test/resources/doc/doc2.txt"), System.getProperty("file.encoding")),
+    HeaderParser parser = new HeaderParser(new FileContent(new File("src/test/resources/doc/doc2.txt"), Charset.defaultCharset()),
         HeaderType.TEXT.getDefinition(), new String[]{"copyright"});
     Assertions.assertTrue(parser.gotAnyHeader());
     Assertions.assertEquals(0, parser.getBeginPosition());
@@ -47,7 +48,7 @@ class HeaderParserTest {
 
   @Test
   void test_has_header2() throws Exception {
-    HeaderParser parser = new HeaderParser(new FileContent(new File("src/test/resources/doc/doc3.txt"), System.getProperty("file.encoding")),
+    HeaderParser parser = new HeaderParser(new FileContent(new File("src/test/resources/doc/doc3.txt"), Charset.defaultCharset()),
         HeaderType.TEXT.getDefinition(), new String[]{"copyright"});
     Assertions.assertTrue(parser.gotAnyHeader());
     Assertions.assertEquals(0, parser.getBeginPosition());
@@ -57,7 +58,7 @@ class HeaderParserTest {
   @ParameterizedTest
   @MethodSource("parameters")
   void test_parsing_xml(String document, int endPosition) throws Exception {
-    HeaderParser parser = new HeaderParser(new FileContent(new File(document), System.getProperty("file.encoding")),
+    HeaderParser parser = new HeaderParser(new FileContent(new File(document), Charset.defaultCharset()),
         HeaderType.XML_STYLE.getDefinition(), new String[]{"copyright"});
     if (document == "src/test/resources/doc/doc6.xml") {
       Assertions.assertFalse(parser.gotAnyHeader());
@@ -79,21 +80,21 @@ class HeaderParserTest {
 
   @Test
   void test_parsing_xml4() throws Exception {
-    HeaderParser parser = new HeaderParser(new FileContent(new File("src/test/resources/doc/doc7.xml"), System.getProperty("file.encoding")),
+    HeaderParser parser = new HeaderParser(new FileContent(new File("src/test/resources/doc/doc7.xml"), Charset.defaultCharset()),
         HeaderType.XML_STYLE.getDefinition(), new String[]{"copyright"});
     Assertions.assertFalse(parser.gotAnyHeader());
   }
 
   @Test
   void test_parsing_xml5() throws Exception {
-    HeaderParser parser = new HeaderParser(new FileContent(new File("src/test/resources/doc/doc8.xml"), System.getProperty("file.encoding")),
+    HeaderParser parser = new HeaderParser(new FileContent(new File("src/test/resources/doc/doc8.xml"), Charset.defaultCharset()),
         HeaderType.XML_STYLE.getDefinition(), new String[]{"copyright"});
     Assertions.assertFalse(parser.gotAnyHeader());
   }
 
   @Test
   void test_parsing_xml6() throws Exception {
-    HeaderParser parser = new HeaderParser(new FileContent(new File("src/test/resources/doc/doc9.xml"), System.getProperty("file.encoding")),
+    HeaderParser parser = new HeaderParser(new FileContent(new File("src/test/resources/doc/doc9.xml"), Charset.defaultCharset()),
         HeaderType.XML_STYLE.getDefinition(), new String[]{"copyright"});
     Assertions.assertTrue(parser.gotAnyHeader());
     Assertions.assertEquals(45, parser.getBeginPosition());

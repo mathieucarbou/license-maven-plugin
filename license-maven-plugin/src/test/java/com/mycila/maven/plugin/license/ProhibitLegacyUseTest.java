@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SuppressWarnings("deprecation")
-public class ProhibitLegacyUseTest {
+class ProhibitLegacyUseTest {
 
     @Test
     void test_defaultStubProject() throws Exception {

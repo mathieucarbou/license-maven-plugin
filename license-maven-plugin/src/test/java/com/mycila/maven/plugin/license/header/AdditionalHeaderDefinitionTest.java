@@ -23,6 +23,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 class AdditionalHeaderDefinitionTest {
   @Test
@@ -45,11 +47,11 @@ class AdditionalHeaderDefinitionTest {
     Assertions.assertEquals("xquery", loader.getDefinitions().get("xquery").getType());
     Assertions.assertNull(loader.getDefinitions().get("xquery").getSkipLinePattern());
 
-    Header header = new Header(new UrlHeaderSource(getClass().getResource("/test-header1.txt"), "UTF-8"), null);
+    Header header = new Header(new UrlHeaderSource(getClass().getResource("/test-header1.txt"), StandardCharsets.UTF_8), null);
 
     //FileUtils.write(new File("src/test/resources/test-header3.txt"), header.buildForDefinition(loader.getDefinitions().get("xquery")));
 
-    final String content = FileUtils.read(new File("src/test/resources/test-header3.txt"), System.getProperty("file.encoding"));
+    final String content = FileUtils.read(new File("src/test/resources/test-header3.txt"), Charset.defaultCharset());
     Assertions.assertEquals(header.buildForDefinition(loader.getDefinitions().get("xquery"), content.indexOf("\n") == -1),
         content);
   }
@@ -70,9 +72,9 @@ class AdditionalHeaderDefinitionTest {
 
     AdditionalHeaderDefinition loader = new AdditionalHeaderDefinition(def);
 
-    Header header = new Header(new UrlHeaderSource(getClass().getResource("/check/header.txt"), "UTF-8"), null);
+    Header header = new Header(new UrlHeaderSource(getClass().getResource("/check/header.txt"), StandardCharsets.UTF_8), null);
 
-    System.out.println(header.buildForDefinition(loader.getDefinitions().get("text"), false));
+    Assertions.assertNotNull(header.buildForDefinition(loader.getDefinitions().get("text"), false));
   }
 
   @Test
@@ -89,11 +91,11 @@ class AdditionalHeaderDefinitionTest {
 
     AdditionalHeaderDefinition loader = new AdditionalHeaderDefinition(def);
 
-    Header header = new Header(new UrlHeaderSource(getClass().getResource("/test-header1.txt"), "UTF-8"), null);
+    Header header = new Header(new UrlHeaderSource(getClass().getResource("/test-header1.txt"), StandardCharsets.UTF_8), null);
 
-    //FileUtils.write(new File("src/test/resources/test-header4.txt"), header.buildForDefinition(loader.getDefinitions().get("csregion"), false), System.getProperty("file.encoding"));
+    //FileUtils.write(new File("src/test/resources/test-header4.txt"), header.buildForDefinition(loader.getDefinitions().get("csregion"), false), Charset.defaultCharset());
 
-    final String content = FileUtils.read(new File("src/test/resources/test-header4.txt"), System.getProperty("file.encoding"));
+    final String content = FileUtils.read(new File("src/test/resources/test-header4.txt"), Charset.defaultCharset());
     Assertions.assertEquals(header.buildForDefinition(loader.getDefinitions().get("csregion"), content.indexOf("\n") == -1),
         content);
   }

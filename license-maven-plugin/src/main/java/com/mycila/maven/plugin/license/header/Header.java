@@ -20,6 +20,7 @@ import com.mycila.maven.plugin.license.document.Document;
 import com.mycila.maven.plugin.license.util.StringUtils;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -172,7 +173,7 @@ public final class Header {
     return recursivelyFindMatch(potentialFileHeader, headerDefinition, textBetweenSections, sectionsInOrder, 0, 0);
   }
 
-  public boolean isMatchForText(Document d, HeaderDefinition headerDefinition, boolean unix, String encoding) throws IOException {
+  public boolean isMatchForText(Document d, HeaderDefinition headerDefinition, boolean unix, Charset encoding) throws IOException {
     String fileHeader = readFirstLines(d.getFile(), getLineCount() + 10, encoding).replaceAll(" *\r?\n", "\n");
     String expected = buildForDefinition(headerDefinition, unix);
     expected = d.mergeProperties(expected);

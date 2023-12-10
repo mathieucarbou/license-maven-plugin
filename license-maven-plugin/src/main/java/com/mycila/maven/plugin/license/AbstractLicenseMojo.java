@@ -50,6 +50,7 @@ import org.xml.sax.InputSource;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.time.Clock;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -597,7 +598,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
     }
     finder.setPluginClassPath(getClass().getClassLoader());
 
-    final HeaderSource headerSource = HeaderSource.of(licenseSet.multi, licenseSet.inlineHeader, licenseSet.header, this.encoding, finder);
+    final HeaderSource headerSource = HeaderSource.of(licenseSet.multi, licenseSet.inlineHeader, licenseSet.header, Charset.forName(this.encoding), finder);
     final Header h = new Header(headerSource, licenseSet.headerSections);
     debug("Header: %s", h.getLocation());
 
@@ -606,7 +607,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
     }
     final List<Header> validHeaders = new ArrayList<>(licenseSet.validHeaders.length);
     for (final String validHeader : licenseSet.validHeaders) {
-      final HeaderSource validHeaderSource = HeaderSource.of(null, null, validHeader, this.encoding,
+      final HeaderSource validHeaderSource = HeaderSource.of(null, null, validHeader, Charset.forName(this.encoding),
           finder);
       validHeaders.add(new Header(validHeaderSource, licenseSet.headerSections));
     }
@@ -680,7 +681,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
 
       final DocumentFactory documentFactory = new DocumentFactory(
           firstNonNull(licenseSet.basedir, defaultBasedir), buildMapping(),
-          buildHeaderDefinitions(licenseSet, finder), encoding, licenseSet.keywords,
+          buildHeaderDefinitions(licenseSet, finder), Charset.forName(encoding), licenseSet.keywords,
           perDocumentProperties);
 
       CompletionService<?> completionService = new ExecutorCompletionService<>(executorService);

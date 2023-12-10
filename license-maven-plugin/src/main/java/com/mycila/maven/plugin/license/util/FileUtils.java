@@ -24,15 +24,17 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.UncheckedIOException;
 import java.net.URL;
+import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -45,31 +47,32 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 public final class FileUtils {
 
   private FileUtils() {
+    // Do not allow instantiation
   }
 
   @SuppressWarnings("resource")
-  public static void write(File file, String content, String encoding) throws IOException {
+  public static void write(File file, String content, Charset encoding) throws IOException {
     try (FileChannel channel = new FileOutputStream(file).getChannel()) {
       channel.write(ByteBuffer.wrap(content.getBytes(encoding)));
     }
   }
 
-  public static String read(URL location, String encoding, Map<String, Object> properties) throws IOException {
-    try (Reader reader = new InterpolationFilterReader(new BufferedReader(new InputStreamReader(location.openStream(), encoding)), properties)) {
+  public static String read(URL location, Charset encoding, Map<String, Object> properties) throws IOException, URISyntaxException {
+    try (Reader reader = new InterpolationFilterReader(Files.newBufferedReader(Paths.get(location.toURI()), encoding), properties)) {
       return IOUtil.toString(reader);
     }
   }
 
-  public static String read(URL location, String encoding) throws IOException {
-    try (Reader reader = new BufferedReader(new InputStreamReader(location.openStream(), encoding))) {
+  public static String read(URL location, Charset encoding) throws IOException, URISyntaxException {
+    try (Reader reader = Files.newBufferedReader(Paths.get(location.toURI()), encoding)) {
       return IOUtil.toString(reader);
     }
   }
 
-  public static String[] read(final URL[] locations, final String encoding) throws IOException {
+  public static String[] read(final URL[] locations, final Charset encoding) throws IOException, URISyntaxException {
     final String[] results = new String[locations.length];
     for (int i = 0; i < locations.length; i++) {
-      try (Reader reader = new BufferedReader(new InputStreamReader(locations[i].openStream(), encoding))) {
+      try (Reader reader = Files.newBufferedReader(Paths.get(locations[i].toURI()), encoding)) {
         results[i] = IOUtil.toString(reader);
       }
     }
@@ -77,16 +80,16 @@ public final class FileUtils {
   }
 
   @SuppressWarnings("resource")
-  public static String read(File file, String encoding) throws IOException {
+  public static String read(File file, Charset encoding) throws IOException {
     try (FileChannel in = new FileInputStream(file).getChannel()) {
       ByteArrayOutputStream baos = new ByteArrayOutputStream();
       in.transferTo(0, in.size(), Channels.newChannel(baos));
-      return baos.toString(encoding);
+      return baos.toString(encoding.name());
     }
   }
 
-  public static String readFirstLines(File file, int lineCount, String encoding) throws IOException {
-    try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), encoding))) {
+  public static String readFirstLines(File file, int lineCount, Charset encoding) throws IOException {
+    try (BufferedReader reader = Files.newBufferedReader(file.toPath(), encoding)) {
       String line;
       StringBuilder sb = new StringBuilder();
       while (lineCount > 0 && (line = reader.readLine()) != null) {

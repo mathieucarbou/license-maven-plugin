@@ -21,15 +21,17 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import static java.lang.String.format;
 
 class DefaultHeaderDefinitionTest {
   @Test
   void test_styles() throws Exception {
-    Header header = new Header(new UrlHeaderSource(getClass().getResource("/test-header1.txt"), "UTF-8"), null);
+    Header header = new Header(new UrlHeaderSource(getClass().getResource("/test-header1.txt"), StandardCharsets.UTF_8), null);
     for (HeaderDefinition definition : HeaderType.defaultDefinitions().values()) {
-      final String content = FileUtils.read(new File(format("src/test/resources/styles/%s.txt", definition.getType())), System.getProperty("file.encoding"));
+      final String content = FileUtils.read(new File(format("src/test/resources/styles/%s.txt", definition.getType())), Charset.defaultCharset());
       Assertions.assertEquals(content, header.buildForDefinition(definition, !containsWindowsLineEnding(content)), "Bad header for type: " + definition.getType());
     }
   }

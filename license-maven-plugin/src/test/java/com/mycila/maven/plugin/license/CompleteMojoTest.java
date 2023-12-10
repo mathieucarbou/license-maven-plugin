@@ -26,6 +26,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Collections;
@@ -141,8 +142,8 @@ class CompleteMojoTest {
 
     plugin.execute();
 
-    String processed = FileUtils.read(new File(tmp, "file." + extension), System.getProperty("file.encoding"));
-    String expected = FileUtils.read(new File("src/test/resources/complete/" + headerType + "/expected1." + extension), System.getProperty("file.encoding"));
+    String processed = FileUtils.read(new File(tmp, "file." + extension), Charset.defaultCharset());
+    String expected = FileUtils.read(new File("src/test/resources/complete/" + headerType + "/expected1." + extension), Charset.defaultCharset());
     assertThat(processed, is(equalTo(expected)));
   }
 
@@ -170,8 +171,8 @@ class CompleteMojoTest {
 
     plugin.execute();
 
-    String processed = FileUtils.read(new File(tmp, "file." + extension), System.getProperty("file.encoding"));
-    String expected = FileUtils.read(new File("src/test/resources/complete/" + headerType + "/expected2." + extension), System.getProperty("file.encoding"));
+    String processed = FileUtils.read(new File(tmp, "file." + extension), Charset.defaultCharset());
+    String expected = FileUtils.read(new File("src/test/resources/complete/" + headerType + "/expected2." + extension), Charset.defaultCharset());
     assertThat(processed, is(equalTo(expected)));
   }
 
@@ -200,8 +201,8 @@ class CompleteMojoTest {
 
     plugin.execute();
 
-    String processed = FileUtils.read(new File(tmp, "file." + extension), System.getProperty("file.encoding"));
-    String expected = FileUtils.read(new File("src/test/resources/complete/" + headerType + "/file." + extension), System.getProperty("file.encoding"));
+    String processed = FileUtils.read(new File(tmp, "file." + extension), Charset.defaultCharset());
+    String expected = FileUtils.read(new File("src/test/resources/complete/" + headerType + "/file." + extension), Charset.defaultCharset());
     assertThat(processed, is(equalTo(expected)));
   }
 
