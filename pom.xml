@@ -211,13 +211,7 @@
       <dependency>
         <groupId>org.apache.maven.plugin-testing</groupId>
         <artifactId>maven-plugin-testing-harness</artifactId>
-        <version>3.3.0</version>
-        <exclusions>
-          <exclusion>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-          </exclusion>
-        </exclusions>
+        <version>4.0.0-alpha-2</version>
       </dependency>
 
       <dependency>
