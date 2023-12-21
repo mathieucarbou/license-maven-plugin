@@ -414,7 +414,6 @@
           <version>${maven-plugin.version}</version>
           <configuration>
             <detail>true</detail>
-            <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
           </configuration>
         </plugin>
         <plugin>
@@ -623,24 +622,6 @@ limitations under the License.
               <goal>enforce</goal>
             </goals>
             <phase>pre-site</phase>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-plugin-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>generate-helpmojo</id>
-            <goals>
-               <goal>helpmojo</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>generate-descriptor</id>
-            <goals>
-              <goal>descriptor</goal>
-            </goals>
           </execution>
         </executions>
       </plugin>
