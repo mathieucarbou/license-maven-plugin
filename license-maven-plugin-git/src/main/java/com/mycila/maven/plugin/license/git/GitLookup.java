@@ -81,6 +81,10 @@ public class GitLookup implements Closeable {
   /**
    * Lazily initializes #gitLookup assuming that all subsequent calls to this method will be related
    * to the same git repository.
+   *
+   * @param file  the file to lookup in git
+   * @param props the properties used for license plugin
+   * @return      the git lookup
    */
   public static GitLookup create(File file, Map<String, String> props) {
     final GitLookup.DateSource dateSource = Optional.ofNullable(props.get(COPYRIGHT_LAST_YEAR_SOURCE_KEY))
