@@ -82,10 +82,7 @@ public class LicenseSet {
   @Parameter
   public HeaderStyle[] inlineHeaderStyles = new HeaderStyle[0];
 
-  /**
-   * HeadSections define special regions of a header that allow for dynamic
-   * substitution and validation
-   */
+  /** HeadSections define special regions of a header that allow for dynamic substitution and validation. */
   @Parameter
   public HeaderSection[] headerSections = new HeaderSection[0];
 

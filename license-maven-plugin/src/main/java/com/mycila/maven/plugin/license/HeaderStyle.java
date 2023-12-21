@@ -20,9 +20,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 
 public class HeaderStyle {
 
-  /**
-   * The name of this header style
-   */
+  /** The name of this header style. */
   @Parameter(required = true)
   public String name;
 
@@ -85,15 +83,11 @@ public class HeaderStyle {
   @Parameter
   public String skipLinePattern;
 
-  /**
-   * The regex used to detect the start of a header section or line
-   */
+  /** The regex used to detect the start of a header section or line. */
   @Parameter(required = true)
   public String firstLineDetectionPattern;
 
-  /**
-   * The regex used to detect the end of a header section or line
-   */
+  /** The regex used to detect the end of a header section or line. */
   @Parameter(required = true)
   public String lastLineDetectionPattern;
 

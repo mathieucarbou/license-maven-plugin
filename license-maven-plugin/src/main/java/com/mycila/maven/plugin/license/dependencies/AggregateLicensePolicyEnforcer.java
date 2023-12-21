@@ -29,8 +29,8 @@ import java.util.stream.Collectors;
  * <p>
  * Rules are applied in the following order:
  * 1) defaultPolicy: unless overridden via setDefaultPolicy, this will DENY all artifacts.
- * 2) APPROVE policies: any policy in the Set which have {@link LicensePolicy.Rule.APPROVE}
- * 3) DENY policies: any policy in the Set which have {@link LIcensePolicy.Rule.DENY}
+ * 2) APPROVE policies: any policy in the Set which have {@link LicensePolicy.Rule#APPROVE}
+ * 3) DENY policies: any policy in the Set which have {@link LicensePolicy.Rule#DENY}
  */
 @SuppressWarnings("rawtypes")
 public class AggregateLicensePolicyEnforcer {
@@ -149,6 +149,7 @@ public class AggregateLicensePolicyEnforcer {
    * applying the internal set of {@link LicensePolicyEnforcer} implementations on them,
    * and returning a mapping of Artifact keys to the boolean enforcement decision made.
    *
+   * @param licenseMap the license map
    * @return final policy decision map on each artifact
    */
   public Map<Artifact, LicensePolicyEnforcerResult> apply(final LicenseMap licenseMap) {

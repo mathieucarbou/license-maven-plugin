@@ -24,7 +24,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 import java.io.File;
 
 /**
- * Remove the specified header from source files
+ * Remove the specified header from source files.
  */
 @Mojo(name = "remove", threadSafe = true)
 public final class LicenseRemoveMojo extends AbstractLicenseMojo {

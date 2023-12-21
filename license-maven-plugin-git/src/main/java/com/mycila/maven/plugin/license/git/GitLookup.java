@@ -129,7 +129,6 @@ public class GitLookup implements Closeable {
    *                          otherwise must be {@code null}.
    * @param checkCommitsCount the number of historical commits, per file, to check
    * @param commitsToIgnore   the commits to ignore while inspecting the history for {@code anyFile}
-   * @throws IOException
    */
   private GitLookup(File anyFile, DateSource dateSource, TimeZone timeZone, int checkCommitsCount, Set<ObjectId> commitsToIgnore) {
     requireNonNull(anyFile);
@@ -192,8 +191,8 @@ public class GitLookup implements Closeable {
     return commitYear;
   }
 
-  /*
-   * Returns the year of creation for the given {@code file) based on the history of the present git branch. The
+  /**
+   * Returns the year of creation for the given {@code file} based on the history of the present git branch. The
    * year is taken either from the committer date or from the author identity depending on how {@link #dateSource} was
    * initialized.
    */

@@ -26,8 +26,7 @@ import java.nio.file.Paths;
 import java.util.List;
 
 /**
- * <b>Date:</b> 26-Feb-2008<br>
- * <b>Author:</b> Mathieu Carbou (mathieu.carbou@gmail.com)
+ * The Class ResourceFinder.
  */
 public final class ResourceFinder {
   private final Path basedir;

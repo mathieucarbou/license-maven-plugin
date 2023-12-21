@@ -75,8 +75,11 @@ public class MavenProjectLicenses implements LicenseMap, LicenseMessage {
 
   /**
    * @param session        the current {@link MavenSession}
+   * @param project        the project {@link MavenProject}
    * @param graph          the {@link DependencyGraphBuilder} implementation
    * @param projectBuilder the maven {@link ProjectBuilder} implementation
+   * @param scopes         the maven scopes
+   * @param log            the maven logger
    */
   public MavenProjectLicenses(final MavenSession session, MavenProject project, final DependencyGraphBuilder graph,
                               final ProjectBuilder projectBuilder, final List<String> scopes, final Log log) {
@@ -85,6 +88,9 @@ public class MavenProjectLicenses implements LicenseMap, LicenseMessage {
 
   /**
    * Return a set of licenses attributed to a single artifact.
+   *
+   * @param artifact the artifact that contains the licenses
+   * @return         the licenses from artifact
    */
   protected Set<License> getLicensesFromArtifact(final Artifact artifact) {
     Set<License> licenses = new HashSet<>();

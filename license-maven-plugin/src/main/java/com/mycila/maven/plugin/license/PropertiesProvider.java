@@ -37,6 +37,13 @@ public interface PropertiesProvider extends Closeable {
   }
 
   /**
+   * Gets the additional properties.
+   *
+   * @param mojo              the maven mojo
+   * @param currentProperties the current properties
+   * @param document          the document to process
+   * @return the additional properties
+   *
    * @deprecated Use instead {@link #adjustProperties(AbstractLicenseMojo, Map, Document)}
    */
   @Deprecated
@@ -47,5 +54,6 @@ public interface PropertiesProvider extends Closeable {
 
   @Override
   default void close() {
+      // Do nothing on default
   }
 }
