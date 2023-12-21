@@ -19,21 +19,13 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>com.mycila</groupId>
-    <artifactId>mycila-pom</artifactId>
-    <version>13</version>
-    <relativePath />
-  </parent>
-
+  <groupId>com.mycila</groupId>
   <artifactId>license-maven-plugin-parent</artifactId>
   <version>4.4-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>license-maven-plugin-parent</name>
-  <description>Contains a Maven 2 plugin to check and update license headers in source files and its optional
-    dependencies
-  </description>
+  <description>Contains a Maven 2 plugin to check and update license headers in source files and its optional dependencies</description>
   <inceptionYear>2008</inceptionYear>
   <url>https://oss.carbou.me/license-maven-plugin/reports/${project.version}</url>
 
@@ -87,6 +79,11 @@
     <module>license-maven-plugin-svn</module>
     <module>license-maven-plugin-fs</module>
   </modules>
+
+  <organization>
+    <name>Mathieu Carbou</name>
+    <url>https://oss.carbou.me/</url>
+  </organization>
 
   <developers>
     <developer>
@@ -168,6 +165,14 @@
       </roles>
     </contributor>
   </contributors>
+
+  <licenses>
+    <license>
+      <name>Apache License 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
 
   <scm>
     <connection>scm:git:https://github.com/mathieucarbou/${mycila.github.name}.git</connection>
@@ -261,6 +266,15 @@
   </reporting>
 
   <distributionManagement>
+    <repository>
+      <id>mycila-oss-staging</id>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
+    <snapshotRepository>
+      <id>mycila-oss-snapshots</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+      <uniqueVersion>false</uniqueVersion>
+    </snapshotRepository>
     <site>
       <id>report</id>
       <url>https://oss.carbou.me/license-maven-plugin/reports/${project.version}</url>
@@ -271,6 +285,11 @@
 
     <pluginManagement>
       <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>3.3.2</version>
+        </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-deploy-plugin</artifactId>
@@ -285,6 +304,10 @@
               <enforceBytecodeVersion>
                 <maxJdkVersion>${java.version}</maxJdkVersion>
               </enforceBytecodeVersion>
+              <requireMavenVersion>
+                <version>(3.2.5,)</version>
+                <message>Require maven 3.2.5 or better.</message>
+              </requireMavenVersion>
             </rules>
           </configuration>
           <dependencies>
@@ -309,6 +332,18 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
           <version>3.6.3</version>
+          <configuration>
+            <additionalOptions>
+              <additionalOption>-html5</additionalOption>
+            </additionalOptions>
+            <legacyMode>true</legacyMode>
+            <notimestamp>true</notimestamp>
+            <release>${java.release.version}</release>
+            <source>${java.version}</source>
+            <links>
+                <link>https://docs.oracle.com/javase/8/docs/api/</link>
+            </links>
+          </configuration>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -377,6 +412,10 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-plugin-plugin</artifactId>
           <version>${maven-plugin.version}</version>
+          <configuration>
+            <detail>true</detail>
+            <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
+          </configuration>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -439,7 +478,9 @@ limitations under the License.
           <artifactId>maven-release-plugin</artifactId>
           <version>3.0.1</version>
           <configuration>
+            <arguments>-Daether.checksums.algorithms=SHA-512,SHA-256,SHA-1,MD5</arguments>
             <autoVersionSubmodules>true</autoVersionSubmodules>
+            <releaseProfiles>release</releaseProfiles>
           </configuration>
         </plugin>
         <plugin>
@@ -454,6 +495,10 @@ limitations under the License.
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.12.0</version>
+          <configuration>
+            <showDeprecation>true</showDeprecation>
+            <showWarnings>true</showWarnings>
+          </configuration>
           <dependencies>
             <dependency>
               <groupId>org.codehaus.groovy</groupId>
@@ -472,20 +517,10 @@ limitations under the License.
           <artifactId>jacoco-maven-plugin</artifactId>
           <version>0.8.11</version>
         </plugin>
-        <!--
-          fix for jacoco
-          https://stackoverflow.com/questions/76305897/maven-build-fails-after-upgrading-to-maven-source-plugin-from-3-2-1-to-3-3-0
-        -->
         <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-source-plugin</artifactId>
-          <version>3.2.1</version>
-          <executions>
-            <execution>
-              <goals>
-                <goal>jar-no-fork</goal>
-              </goals>
-            </execution>
-          </executions>
+          <version>3.3.0</version>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -591,32 +626,28 @@ limitations under the License.
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-plugin-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>generate-helpmojo</id>
+            <goals>
+               <goal>helpmojo</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>generate-descriptor</id>
+            <goals>
+              <goal>descriptor</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 
   <profiles>
-    <profile>
-      <!-- activate release flag for Eclipse compiler compliance when in Eclipse environment -->
-      <id>m2e</id>
-      <activation>
-        <property>
-          <name>m2e.version</name>
-        </property>
-      </activation>
-      <properties>
-        <maven.compiler.release>8</maven.compiler.release>
-      </properties>
-    </profile>
-    <profile>
-      <!-- activate release flag for compiler compliance when building with JDK 9 or later -->
-      <id>jdk-release-flag</id>
-      <activation>
-        <jdk>[9,)</jdk>
-      </activation>
-      <properties>
-        <maven.compiler.release>8</maven.compiler.release>
-      </properties>
-    </profile>
     <profile>
       <id>report</id>
       <activation>
@@ -627,6 +658,34 @@ limitations under the License.
       <reporting>
         <outputDirectory>docs/reports/${project.version}</outputDirectory>
       </reporting>
+    </profile>
+    <profile>
+      <id>release</id>
+      <build>
+        <plugins>
+          <!-- Skip license plugin during release as maven release is now shallow cloned -->
+          <plugin>
+            <groupId>com.mycila</groupId>
+            <artifactId>license-maven-plugin</artifactId>
+            <configuration>
+              <skip>true</skip>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
   </profiles>
 
