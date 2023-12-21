@@ -340,6 +340,7 @@
             <notimestamp>true</notimestamp>
             <release>${java.release.version}</release>
             <source>${java.version}</source>
+            <quiet>true</quiet>
             <links>
                 <link>https://docs.oracle.com/javase/8/docs/api/</link>
             </links>
