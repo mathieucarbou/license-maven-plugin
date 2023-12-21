@@ -79,8 +79,6 @@
                 <exclude>src/it/**</exclude>
                 <exclude>src/main/resources/**</exclude>
                 <exclude>**/PropertyPlaceholderResolver.java</exclude>
-                <!-- TODO: Remove after 4.4 release -->
-                <exclude>**/*.checkstyle</exclude>
               </excludes>
             </licenseSet>
           </licenseSets>

@@ -467,6 +467,8 @@ limitations under the License.
                   <exclude>**/release-pom.xml</exclude>
                   <exclude>docs/**</exclude>
                   <exclude>.config/**</exclude>
+                  <!-- TODO: Remove after 4.4 release -->
+                  <exclude>**/*.checkstyle</exclude>
                 </excludes>
               </licenseSet>
             </licenseSets>
