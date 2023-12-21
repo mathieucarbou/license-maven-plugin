@@ -37,7 +37,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Collectors;
 
 /**
- * Check if the source files of the project have a valid license header
+ * Check if the source files of the project have a valid license header.
  */
 @Mojo(name = "check", defaultPhase = LifecyclePhase.VERIFY, threadSafe = true)
 public final class LicenseCheckMojo extends AbstractLicenseMojo {

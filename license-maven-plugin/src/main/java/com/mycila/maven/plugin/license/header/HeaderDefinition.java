@@ -51,6 +51,9 @@ public final class HeaderDefinition {
    *                                  if it can be outputted from the line of the file.
    * @param firstLineDetectionPattern The pattern to detect the first line of a previous header.
    * @param lastLineDetectionPattern  The pattern to detect the last line of a previous header.
+   * @param allowBlankLines           The allow blank lines flag.
+   * @param multiLine                 The multi line flag.
+   * @param padLines                  The pad lines flag.
    * @throws IllegalArgumentException If the type name is null.
    */
   public HeaderDefinition(String type,

@@ -24,7 +24,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 import java.io.File;
 
 /**
- * Reformat files with a missing header to add it
+ * Reformat files with a missing header to add it.
  */
 @Mojo(name = "format", threadSafe = true)
 public final class LicenseFormatMojo extends AbstractLicenseMojo {

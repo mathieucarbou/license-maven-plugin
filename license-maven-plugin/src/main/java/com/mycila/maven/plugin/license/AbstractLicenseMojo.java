@@ -180,7 +180,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
 
   /**
    * HeadSections define special regions of a header that allow for dynamic
-   * substitution and validation
+   * substitution and validation.
    *
    * @deprecated use {@link LicenseSet#headerSections}
    */
@@ -295,9 +295,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
   @Parameter(property = "license.nThreads", defaultValue = "0")
   public int nThreads;
 
-  /**
-   * Whether to skip the plugin execution
-   */
+  /** Whether to skip the plugin execution. */
   @Parameter(property = "license.skip", defaultValue = "false")
   public boolean skip;
 
@@ -311,10 +309,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
   @Parameter(property = "license.warnIfShallow", defaultValue = "true")
   public boolean warnIfShallow = true;
 
-  /**
-   * If you do not want to see the list of file having a missing header, you
-   * can add the quiet flag that will shorten the output
-   */
+  /** If you do not want to see the list of file having a missing header, you can add the quiet flag that will shorten the output. */
   @Parameter(property = "license.quiet", defaultValue = "false")
   public boolean quiet;
 
@@ -906,7 +901,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
 
   /**
    * Retrieves the credentials for the given server or null if none could be
-   * found
+   * found.
    *
    * @param serverID
    * @return

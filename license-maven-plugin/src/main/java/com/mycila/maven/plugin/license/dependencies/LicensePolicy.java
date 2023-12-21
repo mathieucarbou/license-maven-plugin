@@ -39,7 +39,7 @@ public class LicensePolicy {
     /**
      * Get a boolean form of a rule.
      *
-     * @return
+     * @return the predicate
      */
     public boolean getPredicate() {
       return allowed;

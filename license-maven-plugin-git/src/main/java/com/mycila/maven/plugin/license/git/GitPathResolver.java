@@ -23,9 +23,7 @@ import java.io.File;
  */
 public class GitPathResolver {
 
-  /**
-   * The path separator expected by jGit.
-   */
+  /** The path separator expected by jGit. */
   private static final char CANONICAL_PATH_SEPARATOR = '/';
 
   /**
