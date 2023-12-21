@@ -74,7 +74,7 @@
         <configuration>
           <licenseSets>
             <licenseSet>
-              <excludes>
+              <excludes combine.children="append">
                 <exclude>src/test/**</exclude>
                 <exclude>src/it/**</exclude>
                 <exclude>src/main/resources/**</exclude>
