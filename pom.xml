@@ -31,12 +31,12 @@
 
   <issueManagement>
     <system>GitHub</system>
-    <url>https://github.com/mathieucarbou/${mycila.github.name}/issues</url>
+    <url>https://github.com/mathieucarbou/license-maven-plugin/issues</url>
   </issueManagement>
 
   <ciManagement>
     <system>GitHub</system>
-    <url>https://github.com/mathieucarbou/${mycila.github.name}/actions</url>
+    <url>https://github.com/mathieucarbou/license-maven-plugin/actions</url>
   </ciManagement>
 
   <properties>
@@ -62,8 +62,6 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
-    <mycila.github.name>license-maven-plugin</mycila.github.name>
 
     <groovy.version>4.0.16</groovy.version>
     <jacoco.minimum.coverage>1.00</jacoco.minimum.coverage>
@@ -175,9 +173,9 @@
   </licenses>
 
   <scm>
-    <connection>scm:git:https://github.com/mathieucarbou/${mycila.github.name}.git</connection>
-    <developerConnection>scm:git:git@github.com:mycila/${mycila.github.name}.git</developerConnection>
-    <url>https://github.com/mathieucarbou/${mycila.github.name}</url>
+    <connection>scm:git:https://github.com/mathieucarbou/license-maven-plugin.git</connection>
+    <developerConnection>scm:git:git@github.com:mycila/license-maven-plugin.git</developerConnection>
+    <url>https://github.com/mathieucarbou/license-maven-plugin</url>
     <tag>HEAD</tag>
   </scm>
 
