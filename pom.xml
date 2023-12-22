@@ -112,57 +112,6 @@
       </properties>
     </developer>
   </developers>
-  <contributors>
-    <contributor>
-      <name>Peter Palaga</name>
-      <email>ppalaga@redhat.com</email>
-      <roles>
-        <role>Developer</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>masakimu</name>
-      <roles>
-        <role>Developer</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>Matthieu Brouillard</name>
-      <roles>
-        <role>Developer</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>Royce Remer</name>
-      <roles>
-        <role>Developer</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>Juergen Hoeller</name>
-      <roles>
-        <role>Developer</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>Rob Harrop</name>
-      <roles>
-        <role>Developer</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>Cedric Pronzato</name>
-      <roles>
-        <role>Developer</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>Michael J. Simons</name>
-      <roles>
-        <role>Developer</role>
-      </roles>
-    </contributor>
-  </contributors>
 
   <licenses>
     <license>
