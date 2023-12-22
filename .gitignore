@@ -6,6 +6,9 @@ pom.xml.versionsBackup
 pom.xml.next
 release.properties
 
+# Checkstyle
+.checkstyle
+
 # Eclipse
 .project
 .classpath

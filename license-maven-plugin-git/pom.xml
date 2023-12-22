@@ -28,6 +28,13 @@
   <name>license-maven-plugin-git</name>
   <description>An optional module for license-maven-plugin adding git related functionality</description>
 
+  <scm>
+    <connection>scm:git:https://github.com/mathieucarbou/license-maven-plugin.git</connection>
+    <developerConnection>scm:git:git@github.com:mycila/license-maven-plugin.git</developerConnection>
+    <url>https://github.com/mathieucarbou/license-maven-plugin</url>
+    <tag>HEAD</tag>
+  </scm>
+
   <distributionManagement>
     <site>
       <id>report</id>

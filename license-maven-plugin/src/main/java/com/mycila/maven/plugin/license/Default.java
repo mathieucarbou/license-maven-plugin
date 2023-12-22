@@ -33,6 +33,9 @@ public final class Default {
       "**/.repository/**",
       "**/*.lck",
 
+      // Checkstyle
+      "**/*.checkstyle",
+
       // CVS
       "**/CVS",
       "**/CVS/**",

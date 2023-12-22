@@ -26,6 +26,13 @@
   <artifactId>license-maven-plugin-svn</artifactId>
   <packaging>jar</packaging>
 
+  <scm>
+    <connection>scm:git:https://github.com/mathieucarbou/license-maven-plugin.git</connection>
+    <developerConnection>scm:git:git@github.com:mycila/license-maven-plugin.git</developerConnection>
+    <url>https://github.com/mathieucarbou/license-maven-plugin</url>
+    <tag>HEAD</tag>
+  </scm>
+
   <distributionManagement>
     <site>
       <id>report</id>
