@@ -20,35 +20,18 @@ import com.mycila.maven.plugin.license.document.Document;
 import java.io.Closeable;
 import java.util.Collections;
 import java.util.Map;
-import java.util.Properties;
 
 /**
  */
 public interface PropertiesProvider extends Closeable {
 
   default void init(AbstractLicenseMojo mojo, Map<String, String> currentProperties) {
+      // Do nothing on default
   }
 
   default Map<String, String> adjustProperties(AbstractLicenseMojo mojo,
                                                Map<String, String> currentProperties, Document document) {
-    Properties properties = new Properties();
-    properties.putAll(currentProperties);
-    return getAdditionalProperties(mojo, properties, document);
-  }
-
-  /**
-   * Gets the additional properties.
-   *
-   * @param mojo              the maven mojo
-   * @param currentProperties the current properties
-   * @param document          the document to process
-   * @return the additional properties
-   *
-   * @deprecated Use instead {@link #adjustProperties(AbstractLicenseMojo, Map, Document)}
-   */
-  @Deprecated
-  default Map<String, String> getAdditionalProperties(AbstractLicenseMojo mojo,
-                                                      Properties currentProperties, Document document) {
+    // Return empty collection on default
     return Collections.emptyMap();
   }
 
