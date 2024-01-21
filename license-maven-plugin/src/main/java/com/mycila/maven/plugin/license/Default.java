@@ -36,6 +36,10 @@ public final class Default {
       // Checkstyle
       "**/*.checkstyle",
 
+      // PMD
+      "**/*.pmd",
+      "**/*.pmdruleset.xml",
+
       // CVS
       "**/CVS",
       "**/CVS/**",
