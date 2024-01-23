@@ -1,4 +1,8 @@
-# Table of contents
+# Maven License Plugin (Official & Original)
+
+Basically, when you are developing a project either in open source or in a company, you often need to add at the top of your source files a license to protect your work. I didn't find any maven plugin on Internet to help you maintain these license headers. By maintaining, i mean checking if the header is here or not, generating a report and of course having the possibility to update / reformat missing license headers.
+
+## Table of contents
 
 - [Maven License Plugin (Official & Original)](#maven-license-plugin-official--original)
   - [Features](#features)
@@ -19,10 +23,6 @@
     - [Requirements](#requirements)
     - [Releasing a version](#releasing-a-version)
     - [Generate site from any branch or tag](#generate-site-from-any-branch-or-tag)
-
-# Maven License Plugin (Official & Original)
-
-Basically, when you are developing a project either in open source or in a company, you often need to add at the top of your source files a license to protect your work. I didn't find any maven plugin on Internet to help you maintain these license headers. By maintaining, i mean checking if the header is here or not, generating a report and of course having the possibility to update / reformat missing license headers.
 
 ## Features
 
