@@ -913,21 +913,13 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
     for (Server ds : decryptedServers) {
       if (ds.getId().equals(serverID)) {
         getLog().debug(
-            "credentials have been found for server: " + serverID + ", login:" + ds.getUsername()
-                + ", password:" + starEncrypt(ds.getPassword()));
+            "credentials have been found for server: " + serverID + ", login:" + ds.getUsername());
         return new Credentials(ds.getUsername(), ds.getPassword());
       }
     }
 
     getLog().debug("no credentials found for server: " + serverID);
     return null;
-  }
-
-  static String starEncrypt(String str) {
-    if (str == null) {
-      return null;
-    }
-    return "*****";
   }
 
   private static <T> T firstNonNull(final T t1, final T t2) {
