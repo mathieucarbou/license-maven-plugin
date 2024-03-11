@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LicenseFormatMojo.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">license-maven-plugin</a> &gt; <a href="index.source.html" class="el_package">com.mycila.maven.plugin.license</a> &gt; <span class="el_source">LicenseFormatMojo.java</span></div><h1>LicenseFormatMojo.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2008-2023 Mycila (mathieu.carbou@gmail.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;).
+ * You may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.mycila.maven.plugin.license;
+
+import com.mycila.maven.plugin.license.document.Document;
+import com.mycila.maven.plugin.license.header.Header;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Mojo;
+
+import java.io.File;
+
+/**
+ * Reformat files with a missing header to add it.
+ */
+@Mojo(name = &quot;format&quot;, threadSafe = true)
+<span class="fc" id="L30">public final class LicenseFormatMojo extends AbstractLicenseMojo {</span>
+
+  @Override
+  public void execute() throws MojoExecutionException, MojoFailureException {
+<span class="fc" id="L34">    report = new Report(reportFormat, Report.Action.FORMAT, project, clock, reportSkipped);</span>
+
+<span class="pc bpc" id="L36" title="1 of 2 branches missed.">    if (!skip) {</span>
+<span class="fc" id="L37">      getLog().info(&quot;Updating license headers...&quot;);</span>
+    }
+
+<span class="fc" id="L40">    AbstractCallback callback = new AbstractCallback() {</span>
+      @Override
+      public void onHeaderNotFound(Document document, Header header) {
+<span class="fc" id="L43">        document.parseHeader();</span>
+<span class="fc bfc" id="L44" title="All 2 branches covered.">        if (document.headerDetected()) {</span>
+<span class="fc bfc" id="L45" title="All 2 branches covered.">          if (skipExistingHeaders) {</span>
+<span class="fc" id="L46">            debug(&quot;Keeping license header in: %s&quot;, document.getFilePath());</span>
+<span class="fc" id="L47">            report.add(document.getFile(), Report.Result.NOOP);</span>
+<span class="fc" id="L48">            return;</span>
+          }
+<span class="fc" id="L50">          document.removeHeader();</span>
+<span class="fc" id="L51">          report.add(document.getFile(), Report.Result.REPLACED);</span>
+        } else {
+<span class="fc" id="L53">          report.add(document.getFile(), Report.Result.ADDED);</span>
+        }
+<span class="fc" id="L55">        info(&quot;Updating license header in: %s&quot;, document.getFilePath());</span>
+<span class="fc" id="L56">        document.updateHeader(header);</span>
+<span class="pc bpc" id="L57" title="1 of 2 branches missed.">        if (!dryRun) {</span>
+<span class="fc" id="L58">          document.save();</span>
+        } else {
+<span class="nc" id="L60">          String name = document.getFile().getName() + &quot;.licensed&quot;;</span>
+<span class="nc" id="L61">          File copy = new File(document.getFile().getParentFile(), name);</span>
+<span class="nc" id="L62">          info(&quot;Result saved to: %s&quot;, copy);</span>
+<span class="nc" id="L63">          document.saveTo(copy);</span>
+        }
+<span class="fc" id="L65">      }</span>
+
+      @Override
+      public void onExistingHeader(Document document, Header header) {
+<span class="fc" id="L69">        debug(&quot;Header OK in: %s&quot;, document.getFilePath());</span>
+<span class="fc" id="L70">        report.add(document.getFile(), Report.Result.NOOP);</span>
+<span class="fc" id="L71">      }</span>
+    };
+
+<span class="fc" id="L74">    execute(callback);</span>
+
+<span class="fc" id="L76">    callback.checkUnknown();</span>
+<span class="fc" id="L77">  }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

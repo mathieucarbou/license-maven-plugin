@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HeaderDefinition.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">license-maven-plugin</a> &gt; <a href="index.source.html" class="el_package">com.mycila.maven.plugin.license.header</a> &gt; <span class="el_source">HeaderDefinition.java</span></div><h1>HeaderDefinition.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2008-2023 Mycila (mathieu.carbou@gmail.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;).
+ * You may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.mycila.maven.plugin.license.header;
+
+import java.util.regex.Pattern;
+
+/**
+ * The &lt;code&gt;HeaderDefinition&lt;/code&gt; class defines what is needed to output a header text into the of the given file
+ * type and what is needed to match the first line as well as the last line of a previous header of the given file
+ * type. Optionally you can define the lines you want to skip before outputting the header.
+ */
+public final class HeaderDefinition {
+  private final String type;
+<span class="fc" id="L27">  private String firstLine = &quot;&quot;;</span>
+<span class="fc" id="L28">  private String beforeEachLine = &quot;&quot;;</span>
+<span class="fc" id="L29">  private String endLine = &quot;&quot;;</span>
+<span class="fc" id="L30">  private String afterEachLine = &quot;&quot;;</span>
+  private Boolean allowBlankLines;
+
+  private Pattern skipLinePattern;
+  private Pattern firstLineDetectionPattern;
+  private Pattern lastLineDetectionPattern;
+  private Boolean multiLine;
+
+  private boolean padLines;
+
+  /**
+   * Constructs a new &lt;code&gt;HeaderDefinition&lt;/code&gt; object with every header definition properties.
+   *
+   * @param type                      The type name for this header definition.
+   * @param firstLine                 The string to output before the content of the first line of this header.
+   * @param beforeEachLine            The string to output before the content of each line of this header (except
+   *                                  firstLine and endLine).
+   * @param endLine                   The string to output before the content of the last line of this header.
+   * @param afterEachLine             The string to output after the content of each line of this header (except
+   *                                  firstLine and endLine).
+   * @param skipLinePattern           The pattern of lines to skip before being allowed to output this header or null
+   *                                  if it can be outputted from the line of the file.
+   * @param firstLineDetectionPattern The pattern to detect the first line of a previous header.
+   * @param lastLineDetectionPattern  The pattern to detect the last line of a previous header.
+   * @param allowBlankLines           The allow blank lines flag.
+   * @param multiLine                 The multi line flag.
+   * @param padLines                  The pad lines flag.
+   * @throws IllegalArgumentException If the type name is null.
+   */
+  public HeaderDefinition(String type,
+                          String firstLine, String beforeEachLine,
+                          String endLine, String afterEachLine,
+                          String skipLinePattern,
+                          String firstLineDetectionPattern, String lastLineDetectionPattern,
+                          boolean allowBlankLines, boolean multiLine, boolean padLines) {
+<span class="fc" id="L65">    this(type);</span>
+<span class="fc" id="L66">    this.firstLine = firstLine;</span>
+<span class="fc" id="L67">    this.beforeEachLine = beforeEachLine;</span>
+<span class="fc" id="L68">    this.endLine = endLine;</span>
+<span class="fc" id="L69">    this.afterEachLine = afterEachLine;</span>
+<span class="fc" id="L70">    this.skipLinePattern = compile(skipLinePattern);</span>
+<span class="fc" id="L71">    this.firstLineDetectionPattern = compile(firstLineDetectionPattern);</span>
+<span class="fc" id="L72">    this.lastLineDetectionPattern = compile(lastLineDetectionPattern);</span>
+<span class="fc" id="L73">    this.allowBlankLines = allowBlankLines;</span>
+<span class="fc" id="L74">    this.multiLine = multiLine;</span>
+<span class="fc" id="L75">    this.padLines = padLines;</span>
+<span class="fc bfc" id="L76" title="All 2 branches covered.">    if (!&quot;unknown&quot;.equals(type)) {</span>
+<span class="fc" id="L77">      validate();</span>
+    }
+<span class="pc bpc" id="L79" title="1 of 4 branches missed.">    if (allowBlankLines &amp;&amp; !multiLine) {</span>
+<span class="nc" id="L80">      throw new IllegalArgumentException(&quot;Header style &quot; + type + &quot; is configured to allow blank lines, so it should be set as a multi-line header style&quot;);</span>
+    }
+<span class="fc" id="L82">  }</span>
+
+  /**
+   * Constructs a new &lt;code&gt;HeaderDefinition&lt;/code&gt; with only initializing the header type. You must then set all the
+   * other definitions properties manually in order to have a coherent object.
+   *
+   * @param type The type name for this header definition.
+   * @throws IllegalArgumentException If the type name is null.
+   * @see #check(String, String)
+   * @see #setPropertyFromString(String, String)
+   */
+<span class="fc" id="L93">  public HeaderDefinition(String type) {</span>
+<span class="pc bpc" id="L94" title="1 of 2 branches missed.">    if (type == null) {</span>
+<span class="nc" id="L95">      throw new IllegalArgumentException(&quot;The type of a header definition cannot be null&quot;);</span>
+    }
+<span class="fc" id="L97">    this.type = type.toLowerCase();</span>
+<span class="fc" id="L98">  }</span>
+
+  private Pattern compile(String regexp) {
+<span class="fc bfc" id="L101" title="All 2 branches covered.">    return regexp == null ? null : Pattern.compile(regexp);</span>
+  }
+
+  public String getFirstLine() {
+<span class="fc" id="L105">    return firstLine;</span>
+  }
+
+  public String getBeforeEachLine() {
+<span class="fc" id="L109">    return beforeEachLine;</span>
+  }
+
+  public String getEndLine() {
+<span class="fc" id="L113">    return endLine;</span>
+  }
+
+  public String getAfterEachLine() {
+<span class="fc" id="L117">    return afterEachLine;</span>
+  }
+
+  public String getType() {
+<span class="fc" id="L121">    return type;</span>
+  }
+
+  public boolean allowBlankLines() {
+<span class="fc" id="L125">    return allowBlankLines;</span>
+  }
+
+  public boolean isPadLines() {
+<span class="fc" id="L129">    return padLines;</span>
+  }
+
+  /**
+   * Tells if the given content line must be skipped according to this header definition. The header is outputted
+   * after any skipped line if any pattern defined on this point or on the first line if not pattern defined.
+   *
+   * @param line The line to test.
+   * @return true if this line must be skipped or false.
+   */
+  public boolean isSkipLine(String line) {
+<span class="pc bpc" id="L140" title="2 of 6 branches missed.">    return skipLinePattern != null &amp;&amp; line != null &amp;&amp; skipLinePattern.matcher(line).matches();</span>
+  }
+
+  /**
+   * Tells if the given content line is the first line of a possible header of this definition kind.
+   *
+   * @param line The line to test.
+   * @return true if the first line of a header have been recognized or false.
+   */
+  public boolean isFirstHeaderLine(String line) {
+<span class="pc bpc" id="L150" title="2 of 6 branches missed.">    return firstLineDetectionPattern != null &amp;&amp; line != null &amp;&amp; firstLineDetectionPattern.matcher(line).matches();</span>
+  }
+
+  /**
+   * Tells if the given content line is the last line of a possible header of this definition kind.
+   *
+   * @param line The line to test.
+   * @return true if the last line of a header have been recognized or false.
+   */
+  public boolean isLastHeaderLine(String line) {
+<span class="pc bpc" id="L160" title="2 of 6 branches missed.">    return lastLineDetectionPattern != null &amp;&amp; line != null &amp;&amp; lastLineDetectionPattern.matcher(line).matches();</span>
+  }
+
+  protected Pattern getSkipLinePattern() {
+<span class="fc" id="L164">    return skipLinePattern;</span>
+  }
+
+  /**
+   * Sets header definition properties using its property name and its string value.&lt;br&gt; If you want to set a property
+   * to null you must not call this function. This function is mainly used while parsing properties from the XML
+   * configuration file.
+   *
+   * @param property The property name.
+   * @param value    The property value.
+   * @throws IllegalArgumentException If the property value is null.
+   */
+  public void setPropertyFromString(String property, String value) {
+<span class="pc bpc" id="L177" title="1 of 2 branches missed.">    if (isEmpty(value)) {</span>
+<span class="nc" id="L178">      throw new IllegalArgumentException(&quot;The value cannot be empty for XML tag &quot; + property + &quot; for type &quot; + type);</span>
+    }
+<span class="fc bfc" id="L180" title="All 2 branches covered.">    if (&quot;firstLine&quot;.equalsIgnoreCase(property)) {</span>
+<span class="fc" id="L181">      firstLine = value;</span>
+<span class="fc bfc" id="L182" title="All 2 branches covered.">    } else if (&quot;allowBlankLines&quot;.equalsIgnoreCase(property)) {</span>
+<span class="fc" id="L183">      allowBlankLines = Boolean.valueOf(value);</span>
+<span class="pc bpc" id="L184" title="1 of 4 branches missed.">    } else if (&quot;multiLine&quot;.equalsIgnoreCase(property) || &quot;isMultiline&quot;.equalsIgnoreCase(property)) {</span>
+<span class="fc" id="L185">      multiLine = Boolean.valueOf(value);</span>
+<span class="fc bfc" id="L186" title="All 2 branches covered.">    } else if (&quot;beforeEachLine&quot;.equalsIgnoreCase(property)) {</span>
+<span class="fc" id="L187">      beforeEachLine = value;</span>
+<span class="fc bfc" id="L188" title="All 2 branches covered.">    } else if (&quot;endLine&quot;.equalsIgnoreCase(property)) {</span>
+<span class="fc" id="L189">      endLine = value;</span>
+<span class="pc bpc" id="L190" title="1 of 2 branches missed.">    } else if (&quot;afterEachLine&quot;.equalsIgnoreCase(property)) {</span>
+<span class="nc" id="L191">      afterEachLine = value;</span>
+<span class="fc bfc" id="L192" title="All 2 branches covered.">    } else if (&quot;skipLine&quot;.equalsIgnoreCase(property)) {</span>
+<span class="fc" id="L193">      skipLinePattern = compile(value);</span>
+<span class="fc bfc" id="L194" title="All 2 branches covered.">    } else if (&quot;padLines&quot;.equalsIgnoreCase(property)) {</span>
+<span class="fc" id="L195">      padLines = Boolean.parseBoolean(value);</span>
+<span class="fc bfc" id="L196" title="All 2 branches covered.">    } else if (&quot;firstLineDetectionPattern&quot;.equalsIgnoreCase(property)) {</span>
+<span class="fc" id="L197">      firstLineDetectionPattern = compile(value);</span>
+<span class="pc bpc" id="L198" title="1 of 2 branches missed.">    } else if (&quot;lastLineDetectionPattern&quot;.equalsIgnoreCase(property)) {</span>
+<span class="fc" id="L199">      lastLineDetectionPattern = compile(value);</span>
+    }
+<span class="fc" id="L201">  }</span>
+
+  /**
+   * Checks this header definition consistency, in other words if all the mandatory properties of the definition have
+   * been set.
+   *
+   * @throws IllegalStateException If a mandatory property has not been set.
+   */
+  public void validate() {
+<span class="fc" id="L210">    check(&quot;firstLine&quot;, this.firstLine);</span>
+<span class="fc" id="L211">    check(&quot;beforeEachLine&quot;, this.beforeEachLine);</span>
+<span class="fc" id="L212">    check(&quot;endLine&quot;, this.endLine);</span>
+<span class="fc" id="L213">    check(&quot;afterEachLine&quot;, this.afterEachLine);</span>
+<span class="fc" id="L214">    check(&quot;firstLineDetectionPattern&quot;, this.firstLineDetectionPattern);</span>
+<span class="fc" id="L215">    check(&quot;lastLineDetectionPattern&quot;, this.lastLineDetectionPattern);</span>
+<span class="fc" id="L216">    check(&quot;multiLine&quot;, this.multiLine);</span>
+<span class="fc" id="L217">    check(&quot;allowBlankLines&quot;, this.allowBlankLines);</span>
+    // skip line can be null
+<span class="fc" id="L219">  }</span>
+
+  private void check(String name, Boolean value) {
+<span class="pc bpc" id="L222" title="1 of 2 branches missed.">    if (value == null) {</span>
+<span class="nc" id="L223">      throw new IllegalStateException(String.format(&quot;The property '%s' is missing for header definition '%s'&quot;, name, type));</span>
+    }
+<span class="fc" id="L225">  }</span>
+
+  private void check(String name, String value) {
+<span class="fc bfc" id="L228" title="All 2 branches covered.">    if (value == null) {</span>
+<span class="fc" id="L229">      throw new IllegalStateException(String.format(&quot;The property '%s' is missing for header definition '%s'&quot;, name, type));</span>
+    }
+<span class="fc" id="L231">  }</span>
+
+  private void check(String name, Pattern value) {
+<span class="fc bfc" id="L234" title="All 2 branches covered.">    if (isEmpty(value.pattern())) {</span>
+<span class="fc" id="L235">      throw new IllegalStateException(String.format(&quot;The property '%s' is missing for header definition '%s'&quot;, name, type));</span>
+    }
+<span class="fc" id="L237">  }</span>
+
+  private boolean isEmpty(String s) {
+<span class="pc bpc" id="L240" title="1 of 4 branches missed.">    return s == null || &quot;&quot;.equals(s);</span>
+  }
+
+  @Override
+  public boolean equals(Object o) {
+<span class="nc bnc" id="L245" title="All 2 branches missed.">    if (this == o) {</span>
+<span class="nc" id="L246">      return true;</span>
+    }
+<span class="nc bnc" id="L248" title="All 4 branches missed.">    if (o == null || getClass() != o.getClass()) {</span>
+<span class="nc" id="L249">      return false;</span>
+    }
+<span class="nc" id="L251">    HeaderDefinition that = (HeaderDefinition) o;</span>
+<span class="nc bnc" id="L252" title="All 6 branches missed.">    return !(type != null ? !type.equals(that.type) : that.type != null);</span>
+  }
+
+  @Override
+  public int hashCode() {
+<span class="nc bnc" id="L257" title="All 2 branches missed.">    return type != null ? type.hashCode() : 0;</span>
+  }
+
+  @Override
+  public String toString() {
+<span class="fc" id="L262">    return type;</span>
+  }
+
+  public boolean isMultiLine() {
+<span class="fc" id="L266">    return multiLine;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
