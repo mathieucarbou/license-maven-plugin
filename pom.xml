@@ -67,7 +67,7 @@
     <jacoco.minimum.coverage>1.00</jacoco.minimum.coverage>
     <junit.version>5.10.2</junit.version>
     <maven.version>3.9.6</maven.version>
-    <maven-plugin.version>3.11.0</maven-plugin.version>
+    <maven-plugin.version>3.12.0</maven-plugin.version>
     <surefire.version>3.2.5</surefire.version>
   </properties>
 
