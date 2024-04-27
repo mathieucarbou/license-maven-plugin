@@ -33,6 +33,10 @@
   <inceptionYear>2008</inceptionYear>
   <url>https://oss.carbou.me/license-maven-plugin</url>
 
+  <prerequisites>
+    <maven>3.6.3</maven>
+  </prerequisites>
+
   <scm>
     <connection>scm:git:https://github.com/mathieucarbou/license-maven-plugin.git</connection>
     <developerConnection>scm:git:git@github.com:mycila/license-maven-plugin.git</developerConnection>
