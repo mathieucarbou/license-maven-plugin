@@ -33,6 +33,6 @@ jobs:
           java-version: 8
           distribution: ${{ matrix.distribution }}
       - name: Load Maven 3.2.5 Integration Run (Consumer Run) using GitHub Provided Maven
-        run: mvn org.apache.maven.plugins:maven-wrapper-plugin:3.2.0:wrapper -V -B -D"maven=3.2.5"
+        run: mvn org.apache.maven.plugins:maven-wrapper-plugin:3.3.1:wrapper -V -B -D"maven=3.2.5"
       - name: Test with Maven 3.2.5 Java 8 (Consumer Run)
         run: ./mvnw invoker:run -V -B -D"maven.artifact.threads=64" -D"org.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
