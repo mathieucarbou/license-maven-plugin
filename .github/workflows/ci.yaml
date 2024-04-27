@@ -31,7 +31,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: 8
-          distribution: ${{ matrix.distribution }}
+          distribution: ${{ runner.os == 'macOS' && 'zulu' || 'temurin' }}
       - name: Load Maven 3.6.3 Integration Run (Consumer Run) using GitHub Provided Maven
         run: mvn org.apache.maven.plugins:maven-wrapper-plugin:3.3.1:wrapper -V -B -D"maven=3.6.3"
       - name: Test with Maven 3.6.3 Java 8 (Consumer Run)
