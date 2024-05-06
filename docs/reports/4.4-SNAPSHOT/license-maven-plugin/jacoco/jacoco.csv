@@ -1,0 +1,54 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+license-maven-plugin,com.mycila.maven.plugin.license.dependencies,LicensePolicy.Type,0,21,0,0,0,2,0,1,0,1
+license-maven-plugin,com.mycila.maven.plugin.license.dependencies,LicensePolicy,6,85,2,2,3,18,3,10,1,10
+license-maven-plugin,com.mycila.maven.plugin.license.dependencies,LicensePolicyEnforcerResult,8,76,2,2,2,14,3,8,1,8
+license-maven-plugin,com.mycila.maven.plugin.license.dependencies,DefaultLicensePolicyEnforcer,0,9,0,0,0,2,0,1,0,1
+license-maven-plugin,com.mycila.maven.plugin.license.dependencies,LicenseURLLicensePolicyEnforcer,2,19,0,0,1,4,1,2,1,2
+license-maven-plugin,com.mycila.maven.plugin.license.dependencies,AbstractLicensePolicyEnforcer,0,9,0,0,0,4,0,2,0,2
+license-maven-plugin,com.mycila.maven.plugin.license.dependencies,LicensePolicy.Rule,3,39,0,4,1,9,1,6,1,4
+license-maven-plugin,com.mycila.maven.plugin.license.dependencies,MavenProjectLicenses,277,0,0,0,61,0,22,0,22,0
+license-maven-plugin,com.mycila.maven.plugin.license.dependencies,AggregateLicensePolicyEnforcer,31,216,3,7,10,37,9,17,6,14
+license-maven-plugin,com.mycila.maven.plugin.license.dependencies,LicenseNameLicensePolicyEnforcer,0,21,0,0,0,5,0,3,0,3
+license-maven-plugin,com.mycila.maven.plugin.license.dependencies,ArtifactLicensePolicyEnforcer,7,25,0,0,3,6,1,3,1,3
+license-maven-plugin,com.mycila.maven.plugin.license.util,FileUtils,21,192,0,10,4,37,1,15,1,10
+license-maven-plugin,com.mycila.maven.plugin.license.util,StringUtils,0,53,1,9,0,10,1,6,0,2
+license-maven-plugin,com.mycila.maven.plugin.license.util,Selection.new ScanConductor() {...},0,21,0,2,0,5,0,4,0,3
+license-maven-plugin,com.mycila.maven.plugin.license.util,Selection,5,271,4,26,1,51,5,22,1,11
+license-maven-plugin,com.mycila.maven.plugin.license.util,FileContent,23,197,5,21,3,43,6,20,1,12
+license-maven-plugin,com.mycila.maven.plugin.license,LicenseSet,0,40,0,0,0,9,0,1,0,1
+license-maven-plugin,com.mycila.maven.plugin.license,LicenseRemoveMojo.new AbstractLicenseMojo.AbstractCallback() {...},0,39,0,0,0,7,0,3,0,3
+license-maven-plugin,com.mycila.maven.plugin.license,Report.Action,0,21,0,0,0,1,0,1,0,1
+license-maven-plugin,com.mycila.maven.plugin.license,HeaderSection,0,31,0,0,0,13,0,9,0,9
+license-maven-plugin,com.mycila.maven.plugin.license,AbstractLicenseMojo.AbstractCallback,0,57,0,4,0,12,0,5,0,3
+license-maven-plugin,com.mycila.maven.plugin.license,HelpMojo,864,0,112,0,156,0,72,0,16,0
+license-maven-plugin,com.mycila.maven.plugin.license,AbstractLicenseMojo,307,1213,53,117,53,213,42,67,2,22
+license-maven-plugin,com.mycila.maven.plugin.license,LicenseRemoveMojo,31,62,2,4,4,16,2,4,0,3
+license-maven-plugin,com.mycila.maven.plugin.license,Credentials,15,0,0,0,6,0,3,0,3,0
+license-maven-plugin,com.mycila.maven.plugin.license,LicenseFormatMojo,0,35,1,1,0,8,1,2,0,2
+license-maven-plugin,com.mycila.maven.plugin.license,PropertiesProvider,4,0,0,0,3,0,3,0,3,0
+license-maven-plugin,com.mycila.maven.plugin.license,LicenseCheckMojo.new AbstractLicenseMojo.AbstractCallback() {...},0,80,1,3,0,14,1,4,0,3
+license-maven-plugin,com.mycila.maven.plugin.license,LicenseFormatMojo.new AbstractLicenseMojo.AbstractCallback() {...},32,93,1,5,4,18,1,5,0,3
+license-maven-plugin,com.mycila.maven.plugin.license,Default,0,607,0,0,0,2,0,1,0,1
+license-maven-plugin,com.mycila.maven.plugin.license,Report,49,309,12,15,8,59,13,8,1,6
+license-maven-plugin,com.mycila.maven.plugin.license,HeaderStyle,0,44,0,0,0,7,0,2,0,2
+license-maven-plugin,com.mycila.maven.plugin.license,Multi,103,27,6,0,17,11,7,8,4,8
+license-maven-plugin,com.mycila.maven.plugin.license,LicenseCheckMojo,69,67,4,6,13,16,5,4,2,2
+license-maven-plugin,com.mycila.maven.plugin.license,Report.Result,0,45,0,0,0,8,0,1,0,1
+license-maven-plugin,com.mycila.maven.plugin.license.header,HeaderSource.UrlHeaderSource,0,28,0,0,0,5,0,3,0,3
+license-maven-plugin,com.mycila.maven.plugin.license.header,HeaderSource.LiteralHeaderSource,0,17,0,0,0,4,0,3,0,3
+license-maven-plugin,com.mycila.maven.plugin.license.header,Header,53,722,7,75,10,144,10,50,3,16
+license-maven-plugin,com.mycila.maven.plugin.license.header,AdditionalHeaderDefinition.FeedProperty,3,20,1,1,1,7,1,2,0,2
+license-maven-plugin,com.mycila.maven.plugin.license.header,HeaderSource.MultiUrlHeaderSource,72,13,8,0,12,3,6,1,2,1
+license-maven-plugin,com.mycila.maven.plugin.license.header,AdditionalHeaderDefinition.new CallBack() {...},0,42,1,1,0,9,1,2,0,2
+license-maven-plugin,com.mycila.maven.plugin.license.header,HeaderParser,20,427,12,86,4,87,12,46,0,9
+license-maven-plugin,com.mycila.maven.plugin.license.header,HeaderType,25,606,4,2,4,44,3,5,1,4
+license-maven-plugin,com.mycila.maven.plugin.license.header,HeaderSource.MultiLiteralHeaderSource,12,8,0,0,2,2,2,1,2,1
+license-maven-plugin,com.mycila.maven.plugin.license.header,AdditionalHeaderDefinition,5,21,1,1,1,6,1,2,0,2
+license-maven-plugin,com.mycila.maven.plugin.license.header,HeaderDefinition,100,347,28,48,12,76,23,39,2,22
+license-maven-plugin,com.mycila.maven.plugin.license.header,HeaderSource,74,192,6,28,14,44,6,17,1,5
+license-maven-plugin,com.mycila.maven.plugin.license.util.resource,CustomClassLoader,8,29,1,1,2,10,1,4,0,4
+license-maven-plugin,com.mycila.maven.plugin.license.util.resource,ResourceFinder,3,136,1,17,3,36,1,13,0,5
+license-maven-plugin,com.mycila.maven.plugin.license.document,Document,90,261,4,10,9,38,5,19,1,16
+license-maven-plugin,com.mycila.maven.plugin.license.document,DocumentFactory,0,97,0,6,0,18,0,6,0,3
+license-maven-plugin,com.mycila.maven.plugin.license.document,PropertyPlaceholderResolver,58,206,9,19,13,43,8,12,0,6
+license-maven-plugin,com.mycila.maven.plugin.license.document,DocumentType,0,705,0,2,0,94,0,7,0,6
