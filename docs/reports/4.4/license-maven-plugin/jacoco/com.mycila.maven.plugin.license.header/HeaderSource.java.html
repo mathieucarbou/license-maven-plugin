@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HeaderSource.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">license-maven-plugin</a> &gt; <a href="index.source.html" class="el_package">com.mycila.maven.plugin.license.header</a> &gt; <span class="el_source">HeaderSource.java</span></div><h1>HeaderSource.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2008-2023 Mycila (mathieu.carbou@gmail.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;).
+ * You may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.mycila.maven.plugin.license.header;
+
+import com.mycila.maven.plugin.license.Multi;
+import com.mycila.maven.plugin.license.util.FileUtils;
+import com.mycila.maven.plugin.license.util.resource.ResourceFinder;
+import org.apache.maven.plugin.MojoFailureException;
+
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.net.URISyntaxException;
+import java.net.URL;
+
+import static com.mycila.maven.plugin.license.Multi.DEFAULT_SEPARATOR;
+
+/**
+ * Provides an access to the license template text.
+ */
+public abstract class HeaderSource {
+
+  /**
+   * A {@link HeaderSource} built from a license header template literal.
+   */
+  public static class LiteralHeaderSource extends HeaderSource {
+    public LiteralHeaderSource(String content) {
+<span class="fc" id="L40">      super(content, true);</span>
+<span class="fc" id="L41">    }</span>
+
+    /**
+     * @return always {@code false} because this {@link LiteralHeaderSource} was not loaded from any {@link URL}
+     */
+    @Override
+    public boolean isFromUrl(URL location) {
+<span class="fc" id="L48">      return false;</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="fc" id="L53">      return &quot;inline: &quot; + content;</span>
+    }
+
+  }
+
+  /**
+   * A {@link HeaderSource} loaded from a {@link URL}.
+   */
+  public static class UrlHeaderSource extends HeaderSource {
+    private final URL url;
+
+    public UrlHeaderSource(URL url, Charset encoding) throws IOException, URISyntaxException {
+<span class="fc" id="L65">      super(FileUtils.read(url, encoding), false);</span>
+<span class="fc" id="L66">      this.url = url;</span>
+<span class="fc" id="L67">    }</span>
+
+    @Override
+    public boolean isFromUrl(URL location) {
+<span class="fc" id="L71">      return this.url.equals(location);</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="fc" id="L76">      return url + &quot;: &quot; + content;</span>
+    }
+
+  }
+
+  /**
+   * A {@link HeaderSource} built from multiple license header template literals.
+   */
+  public static class MultiLiteralHeaderSource extends HeaderSource {
+    public MultiLiteralHeaderSource(final String preamble, final String[] contents, final String[] separators) {
+<span class="fc" id="L86">      super(combineHeaders(preamble, contents, separators), true);</span>
+<span class="fc" id="L87">    }</span>
+
+    /**
+     * @return always {@code false} because this {@link LiteralHeaderSource} was not loaded from any {@link URL}
+     */
+    @Override
+    public boolean isFromUrl(final URL location) {
+<span class="nc" id="L94">      return false;</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="nc" id="L99">      return &quot;inline: &quot; + content;</span>
+    }
+
+  }
+
+  /**
+   * A {@link HeaderSource} loaded from multiple {@link URL}.
+   */
+  public static class MultiUrlHeaderSource extends HeaderSource {
+    private final URL[] urls;
+
+    public MultiUrlHeaderSource(final String preamble, final URL[] urls, final String[] separators, final Charset encoding) throws IOException, URISyntaxException {
+<span class="fc" id="L111">      super(combineHeaders(preamble, FileUtils.read(urls, encoding), separators), false);</span>
+<span class="fc" id="L112">      this.urls = urls;</span>
+<span class="fc" id="L113">    }</span>
+
+    @Override
+    public boolean isFromUrl(final URL location) {
+<span class="nc bnc" id="L117" title="All 2 branches missed.">      for (final URL url : urls) {</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">        if (url.equals(location)) {</span>
+<span class="nc" id="L119">          return true;</span>
+        }
+      }
+<span class="nc" id="L122">      return false;</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="nc" id="L127">      final StringBuilder builder = new StringBuilder();</span>
+<span class="nc" id="L128">      builder.append('[');</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">      for (final URL url : urls) {</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">        if (builder.length() &gt; 1) {</span>
+<span class="nc" id="L131">          builder.append(&quot;, &quot;);</span>
+        }
+<span class="nc" id="L133">        builder.append(url);</span>
+      }
+<span class="nc" id="L135">      builder.append(&quot;] : &quot;).append(content);</span>
+<span class="nc" id="L136">      return builder.toString();</span>
+    }
+
+  }
+
+  private static String combineHeaders(final String preamble, final String[] headers, final String[] separators) {
+<span class="fc" id="L142">    final StringBuilder builder = new StringBuilder();</span>
+
+    // preamble
+<span class="pc bpc" id="L145" title="1 of 2 branches missed.">    if (preamble != null) {</span>
+<span class="nc" id="L146">      builder.append(preamble);</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">      if (!preamble.endsWith(&quot;\n&quot;)) {</span>
+<span class="nc" id="L148">        builder.append('\n');</span>
+      }
+<span class="nc" id="L150">      builder.append('\n');</span>
+    }
+
+<span class="fc bfc" id="L153" title="All 2 branches covered.">    for (int i = 0; i &lt; headers.length; i++) {</span>
+
+      // separator
+<span class="fc" id="L156">      String separator = null;</span>
+<span class="fc bfc" id="L157" title="All 2 branches covered.">      if (i &gt; 0) {</span>
+<span class="fc bfc" id="L158" title="All 2 branches covered.">        if (separators == null) {</span>
+<span class="fc" id="L159">          separator = DEFAULT_SEPARATOR;</span>
+<span class="fc bfc" id="L160" title="All 2 branches covered.">        } else if (separators.length == 1) {</span>
+<span class="fc" id="L161">          separator = separators[0];</span>
+        } else {
+<span class="fc" id="L163">          separator = separators[i - 1];</span>
+        }
+
+<span class="pc bpc" id="L166" title="1 of 2 branches missed.">        if (builder.charAt(builder.length() - 1) != '\n') {</span>
+<span class="fc" id="L167">          builder.append('\n');</span>
+        }
+<span class="fc" id="L169">        builder.append('\n');</span>
+<span class="fc" id="L170">        builder.append(separator);</span>
+<span class="pc bpc" id="L171" title="1 of 2 branches missed.">        if (!separator.endsWith(&quot;\n&quot;)) {</span>
+<span class="fc" id="L172">          builder.append('\n');</span>
+        }
+<span class="fc" id="L174">        builder.append('\n');</span>
+      }
+
+      // header
+<span class="fc" id="L178">      final String header = headers[i];</span>
+<span class="fc" id="L179">      builder.append(header);</span>
+    }
+
+<span class="fc" id="L182">    return builder.toString();</span>
+  }
+
+  public static HeaderSource of(String headerPath, Charset encoding, ResourceFinder finder) {
+<span class="nc" id="L186">    return of(null, encoding, finder);</span>
+  }
+
+  /**
+   * Checking the params left to right, returns the first available {@link HeaderSource} that can be created. If
+   * {@code inlineHeader} is not {@code null} returns a new {@link LiteralHeaderSource}. Otherwise attempts to create a
+   * new {@link UrlHeaderSource} out of {@code headerPath} and {@code encoding}.
+   *
+   * @param multi        container for multi license, or null if single license
+   * @param inlineHeader the text of a license header template
+   * @param headerPath   a path resolvable by the {@code finder}
+   * @param encoding     the encoding to use when reading {@code headerPath}
+   * @param finder       the {@link ResourceFinder} to use to resolve {@code headerPath}
+   * @return a new {@link HeaderSource}
+   */
+  public static HeaderSource of(Multi multi, String inlineHeader, String headerPath, Charset encoding, ResourceFinder finder) {
+<span class="fc bfc" id="L202" title="All 2 branches covered.">    if (multi != null) {</span>
+<span class="fc bfc" id="L203" title="All 4 branches covered.">      if (multi.getInlineHeaders() != null &amp;&amp; multi.getInlineHeaders().length &gt; 0) {</span>
+<span class="fc" id="L204">        return new MultiLiteralHeaderSource(multi.getPreamble(), multi.getInlineHeaders(), multi.getSeparators());</span>
+<span class="pc bpc" id="L205" title="1 of 4 branches missed.">      } else if (multi.getHeaders() == null || multi.getHeaders().length == 0) {</span>
+<span class="fc" id="L206">        throw new IllegalArgumentException(&quot;Either multi/inlineHeader or multi/header path needs to be specified&quot;);</span>
+      } else {
+<span class="fc" id="L208">        final URL[] headerUrls = new URL[multi.getHeaders().length];</span>
+<span class="fc bfc" id="L209" title="All 2 branches covered.">        for (int i = 0; i &lt; multi.getHeaders().length; i++) {</span>
+          try {
+<span class="fc" id="L211">            headerPath = multi.getHeaders()[i];</span>
+<span class="fc" id="L212">            final URL headerUrl = finder.findResource(headerPath);</span>
+<span class="fc" id="L213">            headerUrls[i] = headerUrl;</span>
+<span class="nc" id="L214">          } catch (final MojoFailureException e) {</span>
+<span class="nc" id="L215">            throw new IllegalArgumentException(</span>
+<span class="nc" id="L216">                &quot;Cannot read header document &quot; + headerPath + &quot;. Cause: &quot; + e.getMessage(), e);</span>
+<span class="fc" id="L217">          }</span>
+        }
+        try {
+<span class="fc" id="L220">          return new MultiUrlHeaderSource(multi.getPreamble(), headerUrls, multi.getSeparators(), encoding);</span>
+<span class="nc" id="L221">        } catch (final IOException | URISyntaxException e) {</span>
+<span class="nc" id="L222">          throw new IllegalArgumentException(</span>
+<span class="nc" id="L223">              &quot;Cannot read multi header documents. Cause: &quot; + e.getMessage(), e);</span>
+        }
+      }
+    } else {
+<span class="fc bfc" id="L227" title="All 4 branches covered.">      if (inlineHeader != null &amp;&amp; !inlineHeader.isEmpty()) {</span>
+<span class="fc" id="L228">        return new LiteralHeaderSource(inlineHeader);</span>
+<span class="fc bfc" id="L229" title="All 2 branches covered.">      } else if (headerPath == null) {</span>
+<span class="fc" id="L230">        throw new IllegalArgumentException(&quot;Either inlineHeader or header path needs to be specified&quot;);</span>
+      } else {
+        try {
+<span class="fc" id="L233">          final URL headerUrl = finder.findResource(headerPath);</span>
+<span class="fc" id="L234">          return new UrlHeaderSource(headerUrl, encoding);</span>
+<span class="nc" id="L235">        } catch (Exception e) {</span>
+<span class="nc" id="L236">          throw new IllegalArgumentException(</span>
+<span class="nc" id="L237">              &quot;Cannot read header document &quot; + headerPath + &quot;. Cause: &quot; + e.getMessage(), e);</span>
+        }
+      }
+    }
+  }
+
+  protected final String content;
+  private final boolean inline;
+
+  protected HeaderSource(String content, boolean inline) {
+<span class="fc" id="L247">    super();</span>
+<span class="fc" id="L248">    this.content = content;</span>
+<span class="fc" id="L249">    this.inline = inline;</span>
+<span class="fc" id="L250">  }</span>
+
+  /**
+   * @return the text of the license template
+   */
+  public String getContent() {
+<span class="fc" id="L256">    return content;</span>
+  }
+
+  /**
+   * @return {@code true} if this {@link HeaderSource} was created from a string rather by loading the bits from an
+   * URL; {@code false} otherwise
+   */
+  public boolean isInline() {
+<span class="fc" id="L264">    return inline;</span>
+  }
+
+  /**
+   * Retuns {@code true} if this {@link HeaderSource} was loaded from the URL given in the {@code location} parameter
+   * or {@code false} otherwise.
+   *
+   * @param location the URL to tell if this {@link HeaderSource} was loaded from it
+   * @return {@code true} if this {@link HeaderSource} was loaded from the URL given in the {@code location} parameter
+   * or {@code false} otherwise
+   */
+  public abstract boolean isFromUrl(URL location);
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
