@@ -23,6 +23,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStreamReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.UncheckedIOException;
@@ -34,7 +35,6 @@ import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -57,14 +57,18 @@ public final class FileUtils {
     }
   }
 
+  private static Reader urlToReader(URL url, Charset encoding) throws IOException {
+    return new BufferedReader(new InputStreamReader(url.openStream(), encoding));
+  }
+
   public static String read(URL location, Charset encoding, Map<String, Object> properties) throws IOException, URISyntaxException {
-    try (Reader reader = new InterpolationFilterReader(Files.newBufferedReader(Paths.get(location.toURI()), encoding), properties)) {
+    try (Reader reader = new InterpolationFilterReader(urlToReader(location, encoding), properties)) {
       return IOUtils.toString(reader);
     }
   }
 
   public static String read(URL location, Charset encoding) throws IOException, URISyntaxException {
-    try (Reader reader = Files.newBufferedReader(Paths.get(location.toURI()), encoding)) {
+    try (Reader reader = urlToReader(location, encoding)) {
       return IOUtils.toString(reader);
     }
   }
@@ -72,9 +76,7 @@ public final class FileUtils {
   public static String[] read(final URL[] locations, final Charset encoding) throws IOException, URISyntaxException {
     final String[] results = new String[locations.length];
     for (int i = 0; i < locations.length; i++) {
-      try (Reader reader = Files.newBufferedReader(Paths.get(locations[i].toURI()), encoding)) {
-        results[i] = IOUtils.toString(reader);
-      }
+      results[i] = read(locations[i], encoding);
     }
     return results;
   }

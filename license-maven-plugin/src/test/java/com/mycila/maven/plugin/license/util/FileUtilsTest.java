@@ -19,9 +19,31 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.net.URL;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 
 class FileUtilsTest {
+  @Test
+  void test_jar_url_read() {
+    // the assumption here is, that junit's @Test class is within a jar on the classpath
+    URL resourceUrl = Test.class.getResource("/" + Test.class.getName().replace('.', '/') + ".class");
+    final Charset encoding = StandardCharsets.US_ASCII;
+    final String magic = encoding.decode(ByteBuffer.wrap(new byte[]{(byte) 0xCA, (byte) 0xFE, (byte) 0xBA, (byte) 0xBE})).toString();
+
+    String singlePlainContent = Assertions.assertDoesNotThrow(() -> FileUtils.read(resourceUrl, encoding));
+    Assertions.assertEquals(magic, singlePlainContent.substring(0, 4));
+
+    String[] multipleContents = Assertions.assertDoesNotThrow(() -> FileUtils.read(new URL[]{ resourceUrl, resourceUrl }, encoding));
+    Assertions.assertEquals(2, multipleContents.length);
+    Assertions.assertEquals(magic, multipleContents[0].substring(0, 4));
+    Assertions.assertEquals(magic, multipleContents[1].substring(0, 4));
+
+    String interpolatedContent = Assertions.assertDoesNotThrow(() -> FileUtils.read(resourceUrl, encoding, new HashMap<>()));
+    Assertions.assertEquals(magic, interpolatedContent.substring(0, 4));
+  }
 
   @Test
   void test_read_first_lines() throws Exception {
