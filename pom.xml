@@ -21,7 +21,7 @@
 
   <groupId>com.mycila</groupId>
   <artifactId>license-maven-plugin-parent</artifactId>
-  <version>4.5-SNAPSHOT</version>
+  <version>4.5</version>
   <packaging>pom</packaging>
 
   <name>license-maven-plugin-parent</name>
@@ -125,7 +125,7 @@
     <connection>scm:git:https://github.com/mathieucarbou/license-maven-plugin.git</connection>
     <developerConnection>scm:git:git@github.com:mycila/license-maven-plugin.git</developerConnection>
     <url>https://github.com/mathieucarbou/license-maven-plugin</url>
-    <tag>HEAD</tag>
+    <tag>license-maven-plugin-4.5</tag>
   </scm>
 
   <dependencyManagement>
