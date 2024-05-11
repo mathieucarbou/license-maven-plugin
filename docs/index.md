@@ -80,6 +80,7 @@ Please let me know if your name is missing!
 
 Available in Maven Central Repository: [https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/)
 
+* [4.5](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/4.5/) (2024-05-11) - see [issues and pull requests](https://github.com/mathieucarbou/license-maven-plugin/milestone/21?closed=1)
 * [4.4](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/4.4/) (2024-05-07) - see [issues and pull requests](https://github.com/mathieucarbou/license-maven-plugin/milestone/19?closed=1)
 * [4.3](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/4.3/) (2023-09-27) - see [issues and pull requests](https://github.com/mathieucarbou/license-maven-plugin/milestone/20?closed=1)
 * [4.2](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/4.2/) (2023-03-23) - see [issues and pull requests](https://github.com/mathieucarbou/license-maven-plugin/milestone/18?closed=1)
@@ -97,7 +98,7 @@ Available in Maven Central Repository: [https://repo1.maven.org/maven2/com/mycil
 <plugin>
   <groupId>com.mycila</groupId>
   <artifactId>license-maven-plugin</artifactId>
-  <version>4.4</version>
+  <version>4.5</version>
   <configuration>
     <properties>
       <owner>Mycila</owner>
@@ -133,7 +134,7 @@ options are concatenated together to produce a header template.
 <plugin>
   <groupId>com.mycila</groupId>
   <artifactId>license-maven-plugin</artifactId>
-  <version>4.4</version>
+  <version>4.5</version>
   <configuration>
     <licenseSets>
       <licenseSet>
@@ -168,6 +169,7 @@ more license configurations in a single execution of the plugin. In simple terms
 wraps the previous configuration options for a license. The previous
 configuration syntax is still supported but deprecated, and may be removed in future.
 
+- [4.5](https://oss.carbou.me/license-maven-plugin/reports/4.5/)
 - [4.4](https://oss.carbou.me/license-maven-plugin/reports/4.4/)
 - [4.3](https://oss.carbou.me/license-maven-plugin/reports/4.3/)
 - [4.2](https://oss.carbou.me/license-maven-plugin/reports/4.2/)
@@ -774,10 +776,10 @@ Then:
 
 ```bash
 export MAVEN_GPG_PASSPHRASE=...
-./mvnw release:perform -Darguments="-Dgpg.keyname=EDEA921A -Dmaven.site.deploy.skip=true"
+./mvnw release:perform -Darguments="-Dgpg.keyname=EDEA921A"
 
 # If the release perform fails, restart it with (from the target/checkout folder):
-`./mvnw deploy -Dgpg.keyname=EDEA921A -Dmaven.site.deploy.skip=true -DperformRelease=true`
+`./mvnw deploy -Dgpg.keyname=EDEA921A -DperformRelease=true`
 ```
 
 Then, go to https://oss.sonatype.org/ to "close and release".
