@@ -613,6 +613,9 @@ limitations under the License.
           <value>true</value>
         </property>
       </activation>
+      <reporting>
+        <outputDirectory>docs/reports/${project.version}</outputDirectory>
+      </reporting>
       <build>
         <plugins>
           <!-- Skip license plugin during release as maven release is now shallow cloned -->
