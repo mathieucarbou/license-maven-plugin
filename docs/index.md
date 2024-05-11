@@ -762,30 +762,23 @@ When developing, build fast with:
 
 ### Releasing a version
 
-Example: `4.0.rc1`
-
 ```bash
+# Example: 4.0.rc1
 ./mvnw release:prepare -DreleaseVersion=4.0.rc1 -Dtag=license-maven-plugin-4.0.rc1 -DdevelopmentVersion=4.0-SNAPSHOT
-./mvnw release:perform -Darguments="-Dgpg.keyname=EDEA921A -Dmaven.site.deploy.skip=true"
-```
 
-Example: `4.2.rc2`
-
-```bash
-./mvnw release:prepare -DreleaseVersion=4.2.rc2 -Dtag=license-maven-plugin-4.2.rc2 -DdevelopmentVersion=4.2-SNAPSHOT
-./mvnw release:perform -Darguments="-Dgpg.keyname=EDEA921A -Dmaven.site.deploy.skip=true"
-```
-
-Example: `4.0`
-
-```bash
+# Example: 4.0
 ./mvnw release:prepare -DreleaseVersion=4.0 -Dtag=license-maven-plugin-4.0 -DdevelopmentVersion=4.1-SNAPSHOT
-./mvnw release:perform -Darguments="-Dgpg.keyname=EDEA921A -Dmaven.site.deploy.skip=true -Dgpg.useAgent=true"
 ```
 
-If the release perform fails, restart it with (from the target/checkout folder): 
+Then:
 
-`./mvnw deploy -Prelease -Dgpg.keyname=EDEA921A -Dmaven.site.deploy.skip=true -Dgpg.useAgent=false -DperformRelease=true -Dgpg.passphrase=...`
+```bash
+export MAVEN_GPG_PASSPHRASE=...
+./mvnw release:perform -Darguments="-Dgpg.keyname=EDEA921A -Dmaven.site.deploy.skip=true"
+
+# If the release perform fails, restart it with (from the target/checkout folder):
+`./mvnw deploy -Dgpg.keyname=EDEA921A -Dmaven.site.deploy.skip=true -DperformRelease=true`
+```
 
 Then, go to https://oss.sonatype.org/ to "close and release".
 Then you should see a few minutes later the new version at https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/
