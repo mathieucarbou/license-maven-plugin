@@ -356,6 +356,7 @@
             <useAgent>true</useAgent>
             <keyname>${gpg.keyname}</keyname>
             <passphrase>${gpg.passphrase}</passphrase>
+            <useAgent>false</useAgent>
           </configuration>
         </plugin>
         <plugin>
