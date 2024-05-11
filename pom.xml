@@ -606,6 +606,12 @@ limitations under the License.
     </profile>
     <profile>
       <id>release</id>
+      <activation>
+        <property>
+          <name>performRelease</name>
+          <value>true</value>
+        </property>
+      </activation>
       <build>
         <plugins>
           <!-- Skip license plugin during release as maven release is now shallow cloned -->
