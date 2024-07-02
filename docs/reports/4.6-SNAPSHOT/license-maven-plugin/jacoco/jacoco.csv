@@ -43,8 +43,8 @@ license-maven-plugin,com.mycila.maven.plugin.license.header,AdditionalHeaderDefi
 license-maven-plugin,com.mycila.maven.plugin.license.header,HeaderParser,20,427,12,86,4,87,12,46,0,9
 license-maven-plugin,com.mycila.maven.plugin.license.header,HeaderType,25,606,4,2,4,44,3,5,1,4
 license-maven-plugin,com.mycila.maven.plugin.license.header,HeaderSource.MultiLiteralHeaderSource,12,8,0,0,2,2,2,1,2,1
-license-maven-plugin,com.mycila.maven.plugin.license.header,AdditionalHeaderDefinition,5,21,1,1,1,6,1,2,0,2
 license-maven-plugin,com.mycila.maven.plugin.license.header,HeaderDefinition,100,347,28,48,12,76,23,39,2,22
+license-maven-plugin,com.mycila.maven.plugin.license.header,AdditionalHeaderDefinition,5,21,1,1,1,6,1,2,0,2
 license-maven-plugin,com.mycila.maven.plugin.license.header,HeaderSource,74,192,6,28,14,44,6,17,1,5
 license-maven-plugin,com.mycila.maven.plugin.license.util.resource,CustomClassLoader,8,29,1,1,2,10,1,4,0,4
 license-maven-plugin,com.mycila.maven.plugin.license.util.resource,ResourceFinder,3,136,1,17,3,36,1,13,0,5
