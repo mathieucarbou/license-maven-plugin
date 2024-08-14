@@ -65,7 +65,7 @@
 
     <groovy.version>4.0.22</groovy.version>
     <jacoco.minimum.coverage>1.00</jacoco.minimum.coverage>
-    <junit.version>5.10.3</junit.version>
+    <junit.version>5.11.0</junit.version>
     <maven.version>3.9.8</maven.version>
     <maven-plugin.version>3.13.1</maven-plugin.version>
     <surefire.version>3.3.1</surefire.version>
