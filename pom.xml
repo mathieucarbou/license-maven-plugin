@@ -68,7 +68,7 @@
     <junit.version>5.11.0</junit.version>
     <maven.version>3.9.9</maven.version>
     <maven-plugin.version>3.14.0</maven-plugin.version>
-    <surefire.version>3.4.0</surefire.version>
+    <surefire.version>3.5.0</surefire.version>
   </properties>
 
   <modules>
