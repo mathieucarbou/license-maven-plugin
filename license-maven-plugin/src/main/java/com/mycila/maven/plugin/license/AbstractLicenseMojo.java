@@ -35,7 +35,6 @@ import org.apache.maven.model.Organization;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.ProjectBuilder;
@@ -72,6 +71,8 @@ import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
+
+import javax.inject.Inject;
 
 import static com.mycila.maven.plugin.license.document.DocumentType.defaultMapping;
 import static com.mycila.maven.plugin.license.util.FileUtils.asPath;
@@ -402,13 +403,13 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
   /**
    * The decrypter for passwords.
    */
-  @Component
+  @Inject
   private SettingsDecrypter settingsDecrypter;
 
-  @Component(hint = "default")
+  @Inject
   protected DependencyGraphBuilder dependencyGraphBuilder;
 
-  @Component
+  @Inject
   protected ProjectBuilder projectBuilder;
 
   @Parameter(defaultValue = "${session}")
