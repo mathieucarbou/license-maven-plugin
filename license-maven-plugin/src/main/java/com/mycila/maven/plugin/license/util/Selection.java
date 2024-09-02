@@ -28,10 +28,6 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 
-/**
- * <b>Date:</b> 16-Feb-2008<br>
- * <b>Author:</b> Mathieu Carbou (mathieu.carbou@gmail.com)
- */
 public final class Selection {
 
   private final File basedir;

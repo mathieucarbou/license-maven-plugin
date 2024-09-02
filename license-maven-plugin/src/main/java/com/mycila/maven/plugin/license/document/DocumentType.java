@@ -21,10 +21,6 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/**
- * <b>Date:</b> 16-Feb-2008<br>
- * <b>Author:</b> Mathieu Carbou (mathieu.carbou@gmail.com)
- */
 public enum DocumentType {
   ////////// Document types ordered alphabetically //////////
 

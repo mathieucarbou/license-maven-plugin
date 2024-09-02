@@ -22,10 +22,6 @@ import java.io.File;
 import java.nio.charset.Charset;
 import java.util.Map;
 
-/**
- * <b>Date:</b> 14-Feb-2008<br>
- * <b>Author:</b> Mathieu Carbou (mathieu.carbou@gmail.com)
- */
 public final class DocumentFactory {
   private final Map<String, String> mapping;
   private final Map<String, HeaderDefinition> definitions;

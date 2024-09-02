@@ -80,10 +80,6 @@ import static java.lang.String.format;
 import static java.util.Arrays.asList;
 import static java.util.Arrays.deepToString;
 
-/**
- * <b>Date:</b> 18-Feb-2008<br> <b>Author:</b> Mathieu Carbou
- * (mathieu.carbou@gmail.com)
- */
 public abstract class AbstractLicenseMojo extends AbstractMojo {
 
   private static final String[] DEFAULT_KEYWORDS = {"copyright"};
