@@ -29,9 +29,6 @@ import java.nio.charset.Charset;
 import static com.mycila.maven.plugin.license.util.FileUtils.readFirstLines;
 import static com.mycila.maven.plugin.license.util.FileUtils.remove;
 
-/**
- * <b>Date:</b> 16-Feb-2008<br> <b>Author:</b> Mathieu Carbou (mathieu.carbou@gmail.com)
- */
 public final class Document {
   private final File file;
   private final HeaderDefinition headerDefinition;

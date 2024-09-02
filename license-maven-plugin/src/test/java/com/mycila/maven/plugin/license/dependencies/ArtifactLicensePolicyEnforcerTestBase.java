@@ -41,7 +41,6 @@ class ArtifactLicensePolicyEnforcerTestBase {
   protected Artifact getArtifact(final String gav) {
     final String[] gavParts = gav.split(":");
     return new DefaultArtifact(gavParts[0], gavParts[1], gavParts[3], "runtime", gavParts[2], "", new DefaultArtifactHandler());
-
   }
 
   /**
@@ -53,7 +52,6 @@ class ArtifactLicensePolicyEnforcerTestBase {
   protected License getLicense(final URL url) {
     final License license = new License();
     license.setUrl(url.toString());
-    ;
     return license;
   }
 

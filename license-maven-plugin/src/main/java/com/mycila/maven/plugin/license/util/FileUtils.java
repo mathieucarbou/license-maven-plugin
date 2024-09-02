@@ -40,10 +40,6 @@ import java.util.stream.Stream;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
-/**
- * <b>Date:</b> 16-Feb-2008<br>
- * <b>Author:</b> Mathieu Carbou (mathieu.carbou@gmail.com)
- */
 public final class FileUtils {
 
   private FileUtils() {
