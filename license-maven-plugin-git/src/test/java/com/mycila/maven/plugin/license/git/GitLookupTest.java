@@ -66,16 +66,10 @@ class GitLookupTest {
           unzippedFile.toFile().mkdirs();
         } else {
           unzippedFile.toFile().getParentFile().mkdirs();
-          OutputStream out = null;
-          try {
-            out = new BufferedOutputStream(new FileOutputStream(unzippedFile.toFile()), 2048);
+          try (OutputStream out = new BufferedOutputStream(new FileOutputStream(unzippedFile.toFile()), 2048)) {
             int len;
             while ((len = zipInputStream.read(buffer)) != -1) {
               out.write(buffer, 0, len);
-            }
-          } finally {
-            if (out != null) {
-              out.close();
             }
           }
         }
