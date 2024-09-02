@@ -253,6 +253,7 @@
             <rules>
               <enforceBytecodeVersion>
                 <maxJdkVersion>${java.version}</maxJdkVersion>
+                <ignoredScopes>test</ignoredScopes>
               </enforceBytecodeVersion>
               <requireMavenVersion>
                 <version>(3.6.3,)</version>
