@@ -592,8 +592,8 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
     finder.setPluginClassPath(getClass().getClassLoader());
 
     final HeaderSource headerSource = HeaderSource.of(licenseSet.multi, licenseSet.inlineHeader, licenseSet.header, Charset.forName(this.encoding), finder);
-    final Header h = new Header(headerSource, licenseSet.headerSections);
-    debug("Header: %s", h.getLocation());
+    final Header header = new Header(headerSource, licenseSet.headerSections);
+    debug("Header: %s", header.getLocation());
 
     if (licenseSet.validHeaders == null) {
       licenseSet.validHeaders = new String[0];
@@ -685,22 +685,22 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
           debug("Selected file: %s [header style: %s]", document.getFilePath(),
               document.getHeaderDefinition());
           if (document.isNotSupported()) {
-            callback.onUnknownFile(document, h);
-          } else if (document.is(h)) {
+            callback.onUnknownFile(document, header);
+          } else if (document.is(header)) {
             debug("Skipping header file: %s", document.getFilePath());
-          } else if (document.hasHeader(h, strictCheck)) {
-            callback.onExistingHeader(document, h);
+          } else if (document.hasHeader(header, strictCheck)) {
+            callback.onExistingHeader(document, header);
           } else {
             boolean headerFound = false;
             for (final Header validHeader : validHeaders) {
               headerFound = document.hasHeader(validHeader, strictCheck);
               if (headerFound) {
-                callback.onExistingHeader(document, h);
+                callback.onExistingHeader(document, header);
                 break;
               }
             }
             if (!headerFound) {
-              callback.onHeaderNotFound(document, h);
+              callback.onHeaderNotFound(document, header);
             }
           }
         }, null);
