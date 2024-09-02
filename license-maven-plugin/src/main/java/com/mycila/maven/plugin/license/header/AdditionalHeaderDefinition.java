@@ -71,18 +71,15 @@ public final class AdditionalHeaderDefinition {
     if (doc == null) {
       throw new IllegalArgumentException("The header definition XML document cannot be null");
     }
-    doc.gotoRoot().forEachChild(new CallBack() {
-      @Override
-      public void execute(XMLTag doc) {
-        final String type = doc.getCurrentTagName().toLowerCase();
-        HeaderDefinition definition = definitions.get(type);
-        if (definition == null) {
-          definition = new HeaderDefinition(type);
-          definitions.put(type, definition);
-        }
-        doc.forEachChild(new FeedProperty(definition));
-        definition.validate();
+    doc.gotoRoot().forEachChild(doc1 -> {
+      final String type = doc1.getCurrentTagName().toLowerCase();
+      HeaderDefinition definition = definitions.get(type);
+      if (definition == null) {
+        definition = new HeaderDefinition(type);
+        definitions.put(type, definition);
       }
+      doc1.forEachChild(new FeedProperty(definition));
+      definition.validate();
     });
   }
 
