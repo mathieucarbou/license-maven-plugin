@@ -38,12 +38,14 @@ class QuietMojoTest {
     check.setLog(new DefaultLog(logger));
 
     check.execute();
-    Assertions.assertTrue(logger.getLogEntries() > 2);
+    // Includes debug statements
+    Assertions.assertTrue(logger.getLogEntries() > 48);
 
     logger.clear();
 
     check.quiet = true;
     check.execute();
-    Assertions.assertEquals(2, logger.getLogEntries());
+    // Includes debug statements excluding quiet
+    Assertions.assertEquals(48, logger.getLogEntries());
   }
 }

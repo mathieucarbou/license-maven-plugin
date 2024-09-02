@@ -111,7 +111,9 @@ public class SVNPropertiesProvider implements PropertiesProvider {
         newProperties.put(SVN_COPYRIGHT_LASTCHANGE_REVISION_KEY, "" + logEntry.getRevision());
         newProperties.put(SVN_COPYRIGHT_LASTCHANGE_YEAR_KEY, year);
 
-        mojo.getLog().debug("found " + logEntry.getDate() + " as last modified date for file: " + documentFile);
+        if (mojo.getLog().isDebugEnabled()) {
+          mojo.getLog().debug("found " + logEntry.getDate() + " as last modified date for file: " + documentFile);
+        }
 
         if (year.equals(inceptionYear) || inceptionYear == null) {
           newProperties.put(SVN_COPYRIGHT_YEARS_RANGE_KEY, year);

@@ -658,7 +658,9 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
               }
             }
           } catch (Exception e) {
-            getLog().warn("failure occurred while calling " + provider.getClass(), e);
+            if (getLog().isWarnEnabled()) {
+              getLog().warn("failure occurred while calling " + provider.getClass(), e);
+            }
           }
         }
 
@@ -806,19 +808,19 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
   }
 
   public final void info(String format, Object... params) {
-    if (!quiet) {
+    if (!quiet && getLog().isInfoEnabled()) {
       getLog().info(format(format, params));
     }
   }
 
   public final void debug(String format, Object... params) {
-    if (!quiet) {
+    if (!quiet && getLog().isDebugEnabled()) {
       getLog().debug(format(format, params));
     }
   }
 
   public final void warn(String format, Object... params) {
-    if (!quiet) {
+    if (!quiet && getLog().isWarnEnabled()) {
       getLog().warn(format(format, params));
     }
   }
@@ -909,13 +911,17 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
 
     for (Server ds : decryptedServers) {
       if (ds.getId().equals(serverID)) {
-        getLog().debug(
-            "credentials have been found for server: " + serverID + ", login:" + ds.getUsername());
+        if (getLog().isDebugEnabled()) {
+          getLog().debug(
+              "credentials have been found for server: " + serverID + ", login:" + ds.getUsername());
+        }
         return new Credentials(ds.getUsername(), ds.getPassword());
       }
     }
 
-    getLog().debug("no credentials found for server: " + serverID);
+    if (getLog().isDebugEnabled()) {
+        getLog().debug("no credentials found for server: " + serverID);
+    }
     return null;
   }
 
