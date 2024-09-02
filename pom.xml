@@ -254,8 +254,8 @@
                 <maxJdkVersion>${java.version}</maxJdkVersion>
               </enforceBytecodeVersion>
               <requireMavenVersion>
-                <version>(3.2.5,)</version>
-                <message>Require maven 3.2.5 or better.</message>
+                <version>(3.6.3,)</version>
+                <message>Require maven 3.6.3 or better.</message>
               </requireMavenVersion>
             </rules>
           </configuration>
