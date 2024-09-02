@@ -31,6 +31,7 @@ import static com.mycila.maven.plugin.license.util.FileUtils.remove;
 
 public final class Document {
   private final File file;
+  private final String filePath;
   private final HeaderDefinition headerDefinition;
   private final Charset encoding;
   private final String[] keywords;
@@ -42,6 +43,7 @@ public final class Document {
   public Document(File file, HeaderDefinition headerDefinition, Charset encoding, String[] keywords, DocumentPropertiesLoader documentPropertiesLoader) {
     this.keywords = keywords.clone();
     this.file = file;
+    this.filePath = file.getPath().replace('\\', '/');
     this.headerDefinition = headerDefinition;
     this.encoding = encoding;
     this.documentPropertiesLoader = documentPropertiesLoader;
@@ -56,7 +58,7 @@ public final class Document {
   }
 
   public String getFilePath() {
-    return getFile().getPath().replace('\\', '/');
+    return filePath;
   }
 
   public Charset getEncoding() {
@@ -75,13 +77,13 @@ public final class Document {
         String headerOnOnelIne = mergeProperties(header.asOneLineString());
         return fileHeaderOneLine.contains(remove(headerOnOnelIne, headerDefinition.getFirstLine().trim(), headerDefinition.getEndLine().trim(), headerDefinition.getBeforeEachLine().trim()));
       } catch (IOException e) {
-        throw new IllegalStateException("Cannot read file " + getFilePath() + ". Cause: " + e.getMessage(), e);
+        throw new IllegalStateException("Cannot read file " + filePath + ". Cause: " + e.getMessage(), e);
       }
     }
     try {
       return header.isMatchForText(this, headerDefinition, true, encoding);
     } catch (IOException e) {
-      throw new IllegalStateException("Cannot read file " + getFilePath() + ". Cause: " + e.getMessage(), e);
+      throw new IllegalStateException("Cannot read file " + filePath + ". Cause: " + e.getMessage(), e);
     }
   }
 
@@ -103,7 +105,7 @@ public final class Document {
       try {
         FileUtils.write(dest, parser.getFileContent().getContent(), encoding);
       } catch (IOException e) {
-        throw new IllegalStateException("Cannot write new header in file " + getFilePath() + ". Cause: " + e.getMessage(), e);
+        throw new IllegalStateException("Cannot write new header in file " + filePath + ". Cause: " + e.getMessage(), e);
       }
     }
   }
@@ -138,6 +140,6 @@ public final class Document {
 
   @Override
   public String toString() {
-    return "Document " + getFilePath();
+    return "Document " + filePath;
   }
 }
