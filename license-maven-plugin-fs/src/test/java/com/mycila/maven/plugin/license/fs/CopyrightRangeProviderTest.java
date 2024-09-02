@@ -41,12 +41,10 @@ class CopyrightRangeProviderTest {
 
   @Test
   void copyrightRange() {
-    CopyrightRangeProvider provider = new CopyrightRangeProvider();
-
     Map<String, String> props = new HashMap<>();
     final LicenseCheckMojo mojo = new LicenseCheckMojo();
     mojo.defaultBasedir = fsRepoRoot.toFile();
-    try {
+    try (CopyrightRangeProvider provider = new CopyrightRangeProvider()) {
       provider.init(mojo, props);
 
       assertRange(provider, "dir1/file1.txt", "2023", "1999-2023");
@@ -59,9 +57,6 @@ class CopyrightRangeProviderTest {
        * However for existence years always report the actual year regardless
        * of the inception year so expect 1999 for that */
       assertRange(provider, "dir2/file3.txt", "2000", "1999", "2000");
-
-    } finally {
-      provider.close();
     }
   }
 

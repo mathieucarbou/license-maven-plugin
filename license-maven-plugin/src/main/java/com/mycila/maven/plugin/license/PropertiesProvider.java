@@ -17,13 +17,12 @@ package com.mycila.maven.plugin.license;
 
 import com.mycila.maven.plugin.license.document.Document;
 
-import java.io.Closeable;
 import java.util.Collections;
 import java.util.Map;
 
 /**
  */
-public interface PropertiesProvider extends Closeable {
+public interface PropertiesProvider extends AutoCloseable {
 
   default void init(AbstractLicenseMojo mojo, Map<String, String> currentProperties) {
       // Do nothing on default

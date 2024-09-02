@@ -40,13 +40,11 @@ class CopyrightAuthorProviderTest {
 
   @Test
   void copyrightAuthor() {
-    CopyrightAuthorProvider provider = new CopyrightAuthorProvider();
-
     Map<String, String> props = new HashMap<>();
     final LicenseCheckMojo mojo = new LicenseCheckMojo();
     mojo.defaultBasedir = gitRepoRoot.toFile();
 
-    try {
+    try (CopyrightAuthorProvider provider = new CopyrightAuthorProvider()) {
       provider.init(mojo, props);
 
       String path = "dir1/file1.txt";
@@ -60,8 +58,6 @@ class CopyrightAuthorProviderTest {
           "ppalaga@redhat.com");
       Assertions.assertEquals(expected, actual, "for file '" + path + "': ");
 
-    } finally {
-      provider.close();
     }
   }
 
