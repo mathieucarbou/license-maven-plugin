@@ -40,12 +40,10 @@ class CopyrightRangeProviderTest {
 
   @Test
   void copyrightRange() {
-    CopyrightRangeProvider provider = new CopyrightRangeProvider();
-
     Map<String, String> props = new HashMap<>();
     final LicenseCheckMojo mojo = new LicenseCheckMojo();
     mojo.defaultBasedir = gitRepoRoot.toFile();
-    try {
+    try (CopyrightRangeProvider provider = new CopyrightRangeProvider()) {
       provider.init(mojo, props);
 
       assertRange(provider, "dir1/file1.txt", "2000", "2006", "1999-2006", "2000-2006");
@@ -61,8 +59,6 @@ class CopyrightRangeProviderTest {
        * of the inception year so expect 1999 for that */
       assertRange(provider, "dir2/file4.txt", "2000", "1999", "1999", "2000", "1999");
 
-    } finally {
-      provider.close();
     }
   }
 
@@ -95,7 +91,7 @@ class CopyrightRangeProviderTest {
 
   @BeforeAll
   static void beforeClass() throws IOException {
-    URL url = GitLookupTest.class.getResource("git-test-repo.zip");
+    URL url = CopyrightAuthorProviderTest.class.getResource("git-test-repo.zip");
     gitRepoRoot = Paths.get(tempFolder.toPath() + File.separator + "git-test-repo");
 
     GitLookupTest.unzip(url, tempFolder.toPath());

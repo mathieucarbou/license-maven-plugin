@@ -34,7 +34,6 @@ import org.eclipse.jgit.treewalk.filter.AndTreeFilter;
 import org.eclipse.jgit.treewalk.filter.PathFilter;
 import org.eclipse.jgit.treewalk.filter.TreeFilter;
 
-import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -55,7 +54,7 @@ import static java.util.Objects.requireNonNull;
 /**
  * A jGit library wrapper to query the date of the last commit.
  */
-public class GitLookup implements Closeable {
+public class GitLookup implements AutoCloseable {
 
   public static final TimeZone DEFAULT_ZONE = TimeZone.getTimeZone("GMT");
 

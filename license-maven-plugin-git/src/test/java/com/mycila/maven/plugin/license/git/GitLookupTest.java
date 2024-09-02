@@ -66,16 +66,10 @@ class GitLookupTest {
           unzippedFile.toFile().mkdirs();
         } else {
           unzippedFile.toFile().getParentFile().mkdirs();
-          OutputStream out = null;
-          try {
-            out = new BufferedOutputStream(new FileOutputStream(unzippedFile.toFile()), 2048);
+          try (OutputStream out = new BufferedOutputStream(new FileOutputStream(unzippedFile.toFile()), 2048)) {
             int len;
             while ((len = zipInputStream.read(buffer)) != -1) {
               out.write(buffer, 0, len);
-            }
-          } finally {
-            if (out != null) {
-              out.close();
             }
           }
         }
@@ -146,35 +140,41 @@ class GitLookupTest {
 
   @Test
   void reuseProvider() throws GitAPIException, IOException {
-    GitLookup provider = newAuthorLookup();
-    assertLastChange(provider, "dir1/file1.txt", 2006);
-    assertLastChange(provider, "dir2/file2.txt", 2007);
-    assertLastChange(provider, "dir1/file3.txt", 2009);
+    try (GitLookup provider = newAuthorLookup()) {
+        assertLastChange(provider, "dir1/file1.txt", 2006);
+        assertLastChange(provider, "dir2/file2.txt", 2007);
+        assertLastChange(provider, "dir1/file3.txt", 2009);
+    }
   }
 
   @Test
   void timezone() throws GitAPIException, IOException {
     // do not fail if a tz is./mv  set, it will just be unused
     // it allows parent poms to pre-defined properties and let sub modules use them if needed
-    GitLookup.create(gitRepoRoot.toFile(), buildProps(DateSource.AUTHOR, "GMT", "10", null));
+    try (GitLookup gitLookup = GitLookup.create(gitRepoRoot.toFile(), buildProps(DateSource.AUTHOR, "GMT", "10", null))) {
+        // do nothing
+    }
 
     /* null is GMT */
-    GitLookup nullTzLookup = GitLookup.create(gitRepoRoot.toFile(),
-        buildProps(DateSource.COMMITER, null, "10", null));
-    assertLastChange(nullTzLookup, "dir1/file3.txt", 2010);
+    try (GitLookup nullTzLookup = GitLookup.create(gitRepoRoot.toFile(),
+        buildProps(DateSource.COMMITER, null, "10", null))) {
+        assertLastChange(nullTzLookup, "dir1/file3.txt", 2010);
+    }
 
     /* explicit GMT */
-    GitLookup gmtLookup = GitLookup.create(gitRepoRoot.toFile(),
-        buildProps(DateSource.COMMITER, "GMT", "10", null));
-    assertLastChange(gmtLookup, "dir1/file3.txt", 2010);
+    try (GitLookup gmtLookup = GitLookup.create(gitRepoRoot.toFile(),
+        buildProps(DateSource.COMMITER, "GMT", "10", null))) {
+        assertLastChange(gmtLookup, "dir1/file3.txt", 2010);
+    }
 
     /*
      * explicit non-GMT zome. Note that the relevant commit's (GMT) time stamp is 2010-12-31T23:30:00 which yealds
      * 2011 in the CET (+01:00) time zone
      */
-    GitLookup cetLookup = GitLookup.create(gitRepoRoot.toFile(),
-        buildProps(DateSource.COMMITER, "CET", "10", null));
-    assertLastChange(cetLookup, "dir1/file3.txt", 2011);
+    try (GitLookup cetLookup = GitLookup.create(gitRepoRoot.toFile(),
+        buildProps(DateSource.COMMITER, "CET", "10", null))) {
+        assertLastChange(cetLookup, "dir1/file3.txt", 2011);
+    }
 
   }
 
