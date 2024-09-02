@@ -47,7 +47,6 @@ public class GitPathResolver {
    * @param nativePathSeparator
    */
   GitPathResolver(String repositoryRootDir, char nativePathSeparator) {
-    super();
     this.repositoryRootDir = repositoryRootDir.charAt(repositoryRootDir.length() - 1) == nativePathSeparator ? repositoryRootDir
         : repositoryRootDir + nativePathSeparator;
     this.nativePathSeparator = nativePathSeparator;
