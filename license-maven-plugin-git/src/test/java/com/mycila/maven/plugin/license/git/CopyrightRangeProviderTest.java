@@ -91,7 +91,7 @@ class CopyrightRangeProviderTest {
 
   @BeforeAll
   static void beforeClass() throws IOException {
-    URL url = GitLookupTest.class.getResource("git-test-repo.zip");
+    URL url = CopyrightAuthorProviderTest.class.getResource("git-test-repo.zip");
     gitRepoRoot = Paths.get(tempFolder.toPath() + File.separator + "git-test-repo");
 
     GitLookupTest.unzip(url, tempFolder.toPath());
