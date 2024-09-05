@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Selection.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">license-maven-plugin</a> &gt; <a href="index.source.html" class="el_package">com.mycila.maven.plugin.license.util</a> &gt; <span class="el_source">Selection.java</span></div><h1>Selection.java</h1><pre class="source lang-java linenums">/*
- * Copyright (C) 2008-2023 Mycila (mathieu.carbou@gmail.com)
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Selection.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">license-maven-plugin</a> &gt; <a href="index.source.html" class="el_package">com.mycila.maven.plugin.license.util</a> &gt; <span class="el_source">Selection.java</span></div><h1>Selection.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2008-2024 Mycila (mathieu.carbou@gmail.com)
  *
  * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;).
  * You may not use this file except in compliance with the License.
@@ -28,10 +28,6 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 
-/**
- * &lt;b&gt;Date:&lt;/b&gt; 16-Feb-2008&lt;br&gt;
- * &lt;b&gt;Author:&lt;/b&gt; Mathieu Carbou (mathieu.carbou@gmail.com)
- */
 public final class Selection {
 
   private final File basedir;
@@ -43,115 +39,115 @@ public final class Selection {
   private DirectoryScanner scanner;
 
   public Selection(File basedir, String[] included, String[] excluded, boolean useDefaultExcludes,
-<span class="fc" id="L46">                   final Log log) {</span>
-<span class="fc" id="L47">    this.basedir = basedir;</span>
-<span class="fc" id="L48">    this.log = log;</span>
-<span class="fc" id="L49">    String[] overrides = buildOverrideInclusions(useDefaultExcludes, included);</span>
-<span class="fc" id="L50">    this.included = buildInclusions(included, overrides);</span>
-<span class="fc" id="L51">    this.userExcluded = excluded;</span>
-<span class="fc" id="L52">    this.excluded = buildExclusions(useDefaultExcludes, excluded, overrides);</span>
-<span class="fc" id="L53">  }</span>
+<span class="fc" id="L42">                   final Log log) {</span>
+<span class="fc" id="L43">    this.basedir = basedir;</span>
+<span class="fc" id="L44">    this.log = log;</span>
+<span class="fc" id="L45">    String[] overrides = buildOverrideInclusions(useDefaultExcludes, included);</span>
+<span class="fc" id="L46">    this.included = buildInclusions(included, overrides);</span>
+<span class="fc" id="L47">    this.userExcluded = excluded;</span>
+<span class="fc" id="L48">    this.excluded = buildExclusions(useDefaultExcludes, excluded, overrides);</span>
+<span class="fc" id="L49">  }</span>
 
   public String[] getSelectedFiles() {
-<span class="fc" id="L56">    scanIfneeded();</span>
-<span class="fc" id="L57">    return scanner.getIncludedFiles();</span>
+<span class="fc" id="L52">    scanIfneeded();</span>
+<span class="fc" id="L53">    return scanner.getIncludedFiles();</span>
   }
 
   // for tests
   DirectoryScanner getScanner() {
-<span class="fc" id="L62">    return scanner;</span>
+<span class="fc" id="L58">    return scanner;</span>
   }
 
   public File getBasedir() {
-<span class="nc" id="L66">    return basedir;</span>
+<span class="nc" id="L62">    return basedir;</span>
   }
 
   public String[] getIncluded() {
-<span class="fc" id="L70">    return included;</span>
+<span class="fc" id="L66">    return included;</span>
   }
 
   public String[] getExcluded() {
-<span class="fc" id="L74">    return excluded;</span>
+<span class="fc" id="L70">    return excluded;</span>
   }
 
   private void scanIfneeded() {
-<span class="fc bfc" id="L78" title="All 2 branches covered.">    if (scanner == null) {</span>
-<span class="fc" id="L79">      final boolean debugEnabled = log.isDebugEnabled();</span>
-<span class="fc" id="L80">      final String[] folderExcludes = findFolderExcludes();</span>
-<span class="fc" id="L81">      final MatchPatterns excludePatterns = MatchPatterns.from(folderExcludes);</span>
-<span class="fc bfc" id="L82" title="All 2 branches covered.">      if (debugEnabled) {</span>
-<span class="fc" id="L83">        log.debug(&quot;Starting to visit &quot; + basedir + &quot;, excluding directories: &quot; + asList(folderExcludes));</span>
+<span class="fc bfc" id="L74" title="All 2 branches covered.">    if (scanner == null) {</span>
+<span class="fc" id="L75">      final boolean debugEnabled = log.isDebugEnabled();</span>
+<span class="fc" id="L76">      final String[] folderExcludes = findFolderExcludes();</span>
+<span class="fc" id="L77">      final MatchPatterns excludePatterns = MatchPatterns.from(folderExcludes);</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">      if (debugEnabled) {</span>
+<span class="fc" id="L79">        log.debug(&quot;Starting to visit &quot; + basedir + &quot;, excluding directories: &quot; + asList(folderExcludes));</span>
       }
-<span class="fc" id="L85">      scanner = new DirectoryScanner();</span>
-<span class="fc" id="L86">      scanner.setScanConductor(new ScanConductor() {</span>
+<span class="fc" id="L81">      scanner = new DirectoryScanner();</span>
+<span class="fc" id="L82">      scanner.setScanConductor(new ScanConductor() {</span>
         @Override
         public ScanAction visitDirectory(final String name, final File directory) {
-<span class="fc bfc" id="L89" title="All 2 branches covered.">          if (excludePatterns.matches(name, true)) {</span>
-<span class="fc" id="L90">            return ScanAction.NO_RECURSE;</span>
+<span class="fc bfc" id="L85" title="All 2 branches covered.">          if (excludePatterns.matches(name, true)) {</span>
+<span class="fc" id="L86">            return ScanAction.NO_RECURSE;</span>
           }
-<span class="fc" id="L92">          return ScanAction.CONTINUE;</span>
+<span class="fc" id="L88">          return ScanAction.CONTINUE;</span>
         }
 
         @Override
         public ScanAction visitFile(final String name, final File file) {
-<span class="fc" id="L97">          return ScanAction.CONTINUE;</span>
+<span class="fc" id="L93">          return ScanAction.CONTINUE;</span>
         }
       });
-<span class="fc" id="L100">      scanner.setBasedir(basedir);</span>
-<span class="fc" id="L101">      scanner.setIncludes(included);</span>
-<span class="fc" id="L102">      scanner.setExcludes(excluded);</span>
-<span class="fc" id="L103">      scanner.scan();</span>
+<span class="fc" id="L96">      scanner.setBasedir(basedir);</span>
+<span class="fc" id="L97">      scanner.setIncludes(included);</span>
+<span class="fc" id="L98">      scanner.setExcludes(excluded);</span>
+<span class="fc" id="L99">      scanner.scan();</span>
     }
-<span class="fc" id="L105">  }</span>
+<span class="fc" id="L101">  }</span>
 
   private String[] findFolderExcludes() { // less we keep, less overhead we get so we only use user excludes there
-<span class="fc" id="L108">    final List&lt;String&gt; excludes = new ArrayList&lt;&gt;(excluded.length / 2 /*estimate*/);</span>
-<span class="pc bpc" id="L109" title="1 of 4 branches missed.">    for (final String exclude : (userExcluded != null ? userExcluded : excluded)) {</span>
-<span class="fc bfc" id="L110" title="All 2 branches covered.">      if (isFolderExclusion(exclude)) {</span>
-<span class="fc" id="L111">        excludes.add(exclude);</span>
+<span class="fc" id="L104">    final List&lt;String&gt; excludes = new ArrayList&lt;&gt;(excluded.length / 2 /*estimate*/);</span>
+<span class="pc bpc" id="L105" title="1 of 4 branches missed.">    for (final String exclude : (userExcluded != null ? userExcluded : excluded)) {</span>
+<span class="fc bfc" id="L106" title="All 2 branches covered.">      if (isFolderExclusion(exclude)) {</span>
+<span class="fc" id="L107">        excludes.add(exclude);</span>
       }
     }
-<span class="fc" id="L114">    Collections.reverse(excludes); // assume user ones are more important than the set of defaults we appended</span>
-<span class="fc" id="L115">    return excludes.toArray(new String[0]);</span>
+<span class="fc" id="L110">    Collections.reverse(excludes); // assume user ones are more important than the set of defaults we appended</span>
+<span class="fc" id="L111">    return excludes.toArray(new String[0]);</span>
   }
 
   private boolean isFolderExclusion(final String exclude) {
-<span class="fc" id="L119">    return exclude.endsWith(File.separator + &quot;**&quot;);</span>
+<span class="fc" id="L115">    return exclude.endsWith(File.separator + &quot;**&quot;);</span>
   }
 
   private static String[] buildExclusions(boolean useDefaultExcludes, String[] excludes, String[] overrides) {
-<span class="fc" id="L123">    List&lt;String&gt; exclusions = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L124" title="All 2 branches covered.">    if (useDefaultExcludes) {</span>
-<span class="fc" id="L125">      exclusions.addAll(asList(Default.EXCLUDES));</span>
+<span class="fc" id="L119">    List&lt;String&gt; exclusions = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L120" title="All 2 branches covered.">    if (useDefaultExcludes) {</span>
+<span class="fc" id="L121">      exclusions.addAll(asList(Default.EXCLUDES));</span>
     }
     // Remove from the default exclusion list the patterns that have been explicitly included
-<span class="fc bfc" id="L128" title="All 2 branches covered.">    for (String override : overrides) {</span>
-<span class="fc" id="L129">      exclusions.remove(override);</span>
+<span class="fc bfc" id="L124" title="All 2 branches covered.">    for (String override : overrides) {</span>
+<span class="fc" id="L125">      exclusions.remove(override);</span>
     }
-<span class="pc bpc" id="L131" title="1 of 4 branches missed.">    if (excludes != null &amp;&amp; excludes.length &gt; 0) {</span>
-<span class="fc" id="L132">      exclusions.addAll(asList(excludes));</span>
+<span class="pc bpc" id="L127" title="1 of 4 branches missed.">    if (excludes != null &amp;&amp; excludes.length &gt; 0) {</span>
+<span class="fc" id="L128">      exclusions.addAll(asList(excludes));</span>
     }
-<span class="fc" id="L134">    return exclusions.toArray(new String[exclusions.size()]);</span>
+<span class="fc" id="L130">    return exclusions.toArray(new String[exclusions.size()]);</span>
   }
 
   private static String[] buildInclusions(String[] includes, String[] overrides) {
     // if we use the default exclusion list, we just remove
-<span class="pc bpc" id="L139" title="1 of 4 branches missed.">    List&lt;String&gt; inclusions = new ArrayList&lt;&gt;(asList(includes != null &amp;&amp; includes.length &gt; 0 ? includes : Default.INCLUDE));</span>
-<span class="fc" id="L140">    inclusions.removeAll(asList(overrides));</span>
-<span class="fc bfc" id="L141" title="All 2 branches covered.">    if (inclusions.isEmpty()) {</span>
-<span class="fc" id="L142">      inclusions.addAll(asList(Default.INCLUDE));</span>
+<span class="pc bpc" id="L135" title="1 of 4 branches missed.">    List&lt;String&gt; inclusions = new ArrayList&lt;&gt;(asList(includes != null &amp;&amp; includes.length &gt; 0 ? includes : Default.INCLUDE));</span>
+<span class="fc" id="L136">    inclusions.removeAll(asList(overrides));</span>
+<span class="fc bfc" id="L137" title="All 2 branches covered.">    if (inclusions.isEmpty()) {</span>
+<span class="fc" id="L138">      inclusions.addAll(asList(Default.INCLUDE));</span>
     }
-<span class="fc" id="L144">    return inclusions.toArray(new String[inclusions.size()]);</span>
+<span class="fc" id="L140">    return inclusions.toArray(new String[inclusions.size()]);</span>
   }
 
   private static String[] buildOverrideInclusions(boolean useDefaultExcludes, String[] includes) {
     // return the list of patterns that we have explicitly included when using default exclude list
-<span class="pc bpc" id="L149" title="1 of 6 branches missed.">    if (!useDefaultExcludes || includes == null || includes.length == 0) {</span>
-<span class="fc" id="L150">      return new String[0];</span>
+<span class="pc bpc" id="L145" title="1 of 6 branches missed.">    if (!useDefaultExcludes || includes == null || includes.length == 0) {</span>
+<span class="fc" id="L146">      return new String[0];</span>
     }
-<span class="fc" id="L152">    List&lt;String&gt; overrides = new ArrayList&lt;&gt;(asList(Default.EXCLUDES));</span>
-<span class="fc" id="L153">    overrides.retainAll(asList(includes));</span>
-<span class="fc" id="L154">    return overrides.toArray(new String[0]);</span>
+<span class="fc" id="L148">    List&lt;String&gt; overrides = new ArrayList&lt;&gt;(asList(Default.EXCLUDES));</span>
+<span class="fc" id="L149">    overrides.retainAll(asList(includes));</span>
+<span class="fc" id="L150">    return overrides.toArray(new String[0]);</span>
   }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

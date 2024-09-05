@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AdditionalHeaderDefinition.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">license-maven-plugin</a> &gt; <a href="index.source.html" class="el_package">com.mycila.maven.plugin.license.header</a> &gt; <span class="el_source">AdditionalHeaderDefinition.java</span></div><h1>AdditionalHeaderDefinition.java</h1><pre class="source lang-java linenums">/*
- * Copyright (C) 2008-2023 Mycila (mathieu.carbou@gmail.com)
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AdditionalHeaderDefinition.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">license-maven-plugin</a> &gt; <a href="index.source.html" class="el_package">com.mycila.maven.plugin.license.header</a> &gt; <span class="el_source">AdditionalHeaderDefinition.java</span></div><h1>AdditionalHeaderDefinition.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2008-2024 Mycila (mathieu.carbou@gmail.com)
  *
  * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;).
  * You may not use this file except in compliance with the License.
@@ -71,20 +71,17 @@ public final class AdditionalHeaderDefinition {
 <span class="pc bpc" id="L71" title="1 of 2 branches missed.">    if (doc == null) {</span>
 <span class="nc" id="L72">      throw new IllegalArgumentException(&quot;The header definition XML document cannot be null&quot;);</span>
     }
-<span class="fc" id="L74">    doc.gotoRoot().forEachChild(new CallBack() {</span>
-      @Override
-      public void execute(XMLTag doc) {
-<span class="fc" id="L77">        final String type = doc.getCurrentTagName().toLowerCase();</span>
-<span class="fc" id="L78">        HeaderDefinition definition = definitions.get(type);</span>
-<span class="pc bpc" id="L79" title="1 of 2 branches missed.">        if (definition == null) {</span>
-<span class="fc" id="L80">          definition = new HeaderDefinition(type);</span>
-<span class="fc" id="L81">          definitions.put(type, definition);</span>
-        }
-<span class="fc" id="L83">        doc.forEachChild(new FeedProperty(definition));</span>
-<span class="fc" id="L84">        definition.validate();</span>
-<span class="fc" id="L85">      }</span>
-    });
-<span class="fc" id="L87">  }</span>
+<span class="fc" id="L74">    doc.gotoRoot().forEachChild(doc1 -&gt; {</span>
+<span class="fc" id="L75">      final String type = doc1.getCurrentTagName().toLowerCase();</span>
+<span class="fc" id="L76">      HeaderDefinition definition = definitions.get(type);</span>
+<span class="pc bpc" id="L77" title="1 of 2 branches missed.">      if (definition == null) {</span>
+<span class="fc" id="L78">        definition = new HeaderDefinition(type);</span>
+<span class="fc" id="L79">        definitions.put(type, definition);</span>
+      }
+<span class="fc" id="L81">      doc1.forEachChild(new FeedProperty(definition));</span>
+<span class="fc" id="L82">      definition.validate();</span>
+<span class="fc" id="L83">    });</span>
+<span class="fc" id="L84">  }</span>
 
   /**
    * Returns the header definitions declared by the external header definition as a map using the header type name as
@@ -93,25 +90,25 @@ public final class AdditionalHeaderDefinition {
    * @return The header definitions declared.
    */
   public Map&lt;String, HeaderDefinition&gt; getDefinitions() {
-<span class="fc" id="L96">    return definitions;</span>
+<span class="fc" id="L93">    return definitions;</span>
   }
 
   private static final class FeedProperty implements CallBack {
     private final HeaderDefinition definition;
 
-<span class="fc" id="L102">    private FeedProperty(HeaderDefinition definition) {</span>
-<span class="fc" id="L103">      this.definition = definition;</span>
-<span class="fc" id="L104">    }</span>
+<span class="fc" id="L99">    private FeedProperty(HeaderDefinition definition) {</span>
+<span class="fc" id="L100">      this.definition = definition;</span>
+<span class="fc" id="L101">    }</span>
 
     @Override
     public void execute(XMLTag xmlDocument) {
-<span class="fc" id="L108">      String value = xmlDocument.getText();</span>
+<span class="fc" id="L105">      String value = xmlDocument.getText();</span>
       // value can't be null
-<span class="pc bpc" id="L110" title="1 of 2 branches missed.">      if (&quot;&quot;.equals(value)) {</span>
-<span class="nc" id="L111">        value = xmlDocument.getCDATA();</span>
+<span class="pc bpc" id="L107" title="1 of 2 branches missed.">      if (&quot;&quot;.equals(value)) {</span>
+<span class="nc" id="L108">        value = xmlDocument.getCDATA();</span>
       }
-<span class="fc" id="L113">      definition.setPropertyFromString(xmlDocument.getCurrentTagName(), value);</span>
-<span class="fc" id="L114">    }</span>
+<span class="fc" id="L110">      definition.setPropertyFromString(xmlDocument.getCurrentTagName(), value);</span>
+<span class="fc" id="L111">    }</span>
   }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
