@@ -61,6 +61,36 @@ final class MockedLog extends AbstractLogger {
     return this;
   }
 
+  @Override
+  public boolean isDebugEnabled() {
+    // Tests Expect this enabled due to overrides
+    return true;
+  }
+
+  @Override
+  public boolean isInfoEnabled() {
+    // Tests Expect this enabled due to overrides
+    return true;
+  }
+
+  @Override
+  public boolean isWarnEnabled() {
+    // Tests Expect this enabled due to overrides
+    return true;
+  }
+
+  @Override
+  public boolean isErrorEnabled() {
+    // Tests Expect this enabled due to overrides
+    return true;
+  }
+
+  @Override
+  public boolean isFatalErrorEnabled() {
+    // Tests Expect this enabled due to overrides
+    return true;
+  }
+
   private void log(String message, Throwable throwable) {
     logEntries++;
     pw.println(message);

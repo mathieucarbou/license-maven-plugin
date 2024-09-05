@@ -97,7 +97,9 @@ public class MavenProjectLicenses implements LicenseMap, LicenseMessage {
       MavenProject project = getProjectBuilder().build(artifact, getBuildingRequest()).getProject();
       licenses.addAll(project.getLicenses());
     } catch (ProjectBuildingException ex) {
-      getLog().warn(String.format("Could not get project from dependency's artifact: %s", artifact.getFile()));
+      if (getLog().isWarnEnabled()) {
+        getLog().warn(String.format("Could not get project from dependency's artifact: %s", artifact.getFile()));
+      }
     }
 
     return licenses;
@@ -139,23 +141,29 @@ public class MavenProjectLicenses implements LicenseMap, LicenseMessage {
 
     // build the set of maven dependencies for each module in the reactor (might
     // only be the single one) and all its transitives
-    getLog().debug(String.format("Building dependency graphs for %d projects", getProjects().size()));
+    if (getLog().isDebugEnabled()) {
+      getLog().debug(String.format("Building dependency graphs for %d projects", getProjects().size()));
+    }
     getProjects().parallelStream().forEach(project -> {
       try {
         DefaultProjectBuildingRequest buildingRequest = new DefaultProjectBuildingRequest(getBuildingRequest());
         buildingRequest.setProject(project);
         dependencies.addAll(getGraph().buildDependencyGraph(buildingRequest, getFilter()).getChildren());
       } catch (DependencyGraphBuilderException ex) {
-        getLog().warn(
-            String.format("Could not get children from project %s, it's dependencies will not be checked!",
-                project.getId()));
+        if (getLog().isWarnEnabled()) {
+          getLog().warn(
+              String.format("Could not get children from project %s, it's dependencies will not be checked!",
+                  project.getId()));
+        }
       }
     });
 
     // build the complete set of direct+transitive dependent artifacts in all
     // modules in the reactor
     dependencies.parallelStream().forEach(d -> artifacts.add(d.getArtifact()));
-    getLog().info(String.format("%s: %d", INFO_DEPS_DISCOVERED, dependencies.size()));
+    if (getLog().isInfoEnabled()) {
+      getLog().info(String.format("%s: %d", INFO_DEPS_DISCOVERED, dependencies.size()));
+    }
 
     return artifacts;
 
