@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MavenProjectLicenses.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">license-maven-plugin</a> &gt; <a href="index.source.html" class="el_package">com.mycila.maven.plugin.license.dependencies</a> &gt; <span class="el_source">MavenProjectLicenses.java</span></div><h1>MavenProjectLicenses.java</h1><pre class="source lang-java linenums">/*
- * Copyright (C) 2008-2023 Mycila (mathieu.carbou@gmail.com)
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MavenProjectLicenses.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">license-maven-plugin</a> &gt; <a href="index.source.html" class="el_package">com.mycila.maven.plugin.license.dependencies</a> &gt; <span class="el_source">MavenProjectLicenses.java</span></div><h1>MavenProjectLicenses.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2008-2024 Mycila (mathieu.carbou@gmail.com)
  *
  * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;).
  * You may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
  */
 package com.mycila.maven.plugin.license.dependencies;
 
-import org.apache.maven.Maven;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
 import org.apache.maven.artifact.resolver.filter.CumulativeScopeArtifactFilter;
@@ -62,16 +61,16 @@ public class MavenProjectLicenses implements LicenseMap, LicenseMessage {
    */
   MavenProjectLicenses(final MavenSession session, final Set&lt;MavenProject&gt; projects, final DependencyGraphBuilder graph,
                               final ProjectBuilder projectBuilder,
-<span class="nc" id="L65">                              final ArtifactFilter filter, final Log log) {</span>
-<span class="nc" id="L66">    this.setSession(session);</span>
-<span class="nc" id="L67">    this.setProjects(projects);</span>
-<span class="nc" id="L68">    this.setGraph(graph);</span>
-<span class="nc" id="L69">    this.setFilter(filter);</span>
-<span class="nc" id="L70">    this.setProjectBuilder(projectBuilder);</span>
-<span class="nc" id="L71">    this.setLog(log);</span>
+<span class="nc" id="L64">                              final ArtifactFilter filter, final Log log) {</span>
+<span class="nc" id="L65">    this.setSession(session);</span>
+<span class="nc" id="L66">    this.setProjects(projects);</span>
+<span class="nc" id="L67">    this.setGraph(graph);</span>
+<span class="nc" id="L68">    this.setFilter(filter);</span>
+<span class="nc" id="L69">    this.setProjectBuilder(projectBuilder);</span>
+<span class="nc" id="L70">    this.setLog(log);</span>
 
-<span class="nc" id="L73">    log.info(String.format(&quot;%s %s&quot;, INFO_LICENSE_IMPL, this.getClass()));</span>
-<span class="nc" id="L74">  }</span>
+<span class="nc" id="L72">    log.info(String.format(&quot;%s %s&quot;, INFO_LICENSE_IMPL, this.getClass()));</span>
+<span class="nc" id="L73">  }</span>
 
   /**
    * @param session        the current {@link MavenSession}
@@ -83,8 +82,8 @@ public class MavenProjectLicenses implements LicenseMap, LicenseMessage {
    */
   public MavenProjectLicenses(final MavenSession session, MavenProject project, final DependencyGraphBuilder graph,
                               final ProjectBuilder projectBuilder, final List&lt;String&gt; scopes, final Log log) {
-<span class="nc" id="L86">    this(session, Collections.singleton(project), graph, projectBuilder, new CumulativeScopeArtifactFilter(scopes), log);</span>
-<span class="nc" id="L87">  }</span>
+<span class="nc" id="L85">    this(session, Collections.singleton(project), graph, projectBuilder, new CumulativeScopeArtifactFilter(scopes), log);</span>
+<span class="nc" id="L86">  }</span>
 
   /**
    * Return a set of licenses attributed to a single artifact.
@@ -93,15 +92,17 @@ public class MavenProjectLicenses implements LicenseMap, LicenseMessage {
    * @return         the licenses from artifact
    */
   protected Set&lt;License&gt; getLicensesFromArtifact(final Artifact artifact) {
-<span class="nc" id="L96">    Set&lt;License&gt; licenses = new HashSet&lt;&gt;();</span>
+<span class="nc" id="L95">    Set&lt;License&gt; licenses = new HashSet&lt;&gt;();</span>
     try {
-<span class="nc" id="L98">      MavenProject project = getProjectBuilder().build(artifact, getBuildingRequest()).getProject();</span>
-<span class="nc" id="L99">      licenses.addAll(project.getLicenses());</span>
-<span class="nc" id="L100">    } catch (ProjectBuildingException ex) {</span>
-<span class="nc" id="L101">      getLog().warn(String.format(&quot;Could not get project from dependency's artifact: %s&quot;, artifact.getFile()));</span>
-<span class="nc" id="L102">    }</span>
+<span class="nc" id="L97">      MavenProject project = getProjectBuilder().build(artifact, getBuildingRequest()).getProject();</span>
+<span class="nc" id="L98">      licenses.addAll(project.getLicenses());</span>
+<span class="nc" id="L99">    } catch (ProjectBuildingException ex) {</span>
+<span class="nc bnc" id="L100" title="All 2 branches missed.">      if (getLog().isWarnEnabled()) {</span>
+<span class="nc" id="L101">        getLog().warn(String.format(&quot;Could not get project from dependency's artifact: %s&quot;, artifact.getFile()));</span>
+      }
+<span class="nc" id="L103">    }</span>
 
-<span class="nc" id="L104">    return licenses;</span>
+<span class="nc" id="L105">    return licenses;</span>
   }
 
   /**
@@ -111,54 +112,60 @@ public class MavenProjectLicenses implements LicenseMap, LicenseMessage {
    * @return the same artifacts passed in, keyed by license
    */
   protected Map&lt;License, Set&lt;Artifact&gt;&gt; getLicenseMapFromArtifacts(final Set&lt;Artifact&gt; dependencies) {
-<span class="nc" id="L114">    final ConcurrentMap&lt;License, Set&lt;Artifact&gt;&gt; map = new ConcurrentHashMap&lt;&gt;();</span>
+<span class="nc" id="L115">    final ConcurrentMap&lt;License, Set&lt;Artifact&gt;&gt; map = new ConcurrentHashMap&lt;&gt;();</span>
 
     // license:artifact is a many-to-many relationship.
     // Each artifact may have several licenses.
     // Each artifact may appear multiple times in the map.
-<span class="nc" id="L119">    dependencies.parallelStream().forEach(artifact -&gt; getLicensesFromArtifact(artifact).forEach(license -&gt; {</span>
-<span class="nc" id="L120">      map.putIfAbsent(license, new HashSet&lt;&gt;());</span>
-<span class="nc" id="L121">      Set&lt;Artifact&gt; artifacts = map.get(license);</span>
-<span class="nc" id="L122">      artifacts.add(artifact);</span>
-<span class="nc" id="L123">      map.put(license, artifacts);</span>
-<span class="nc" id="L124">    }));</span>
+<span class="nc" id="L120">    dependencies.parallelStream().forEach(artifact -&gt; getLicensesFromArtifact(artifact).forEach(license -&gt; {</span>
+<span class="nc" id="L121">      map.putIfAbsent(license, new HashSet&lt;&gt;());</span>
+<span class="nc" id="L122">      Set&lt;Artifact&gt; artifacts = map.get(license);</span>
+<span class="nc" id="L123">      artifacts.add(artifact);</span>
+<span class="nc" id="L124">      map.put(license, artifacts);</span>
+<span class="nc" id="L125">    }));</span>
 
-<span class="nc" id="L126">    return map;</span>
+<span class="nc" id="L127">    return map;</span>
   }
 
   @Override
   public Map&lt;License, Set&lt;Artifact&gt;&gt; getLicenseMap() {
-<span class="nc" id="L131">    return getLicenseMapFromArtifacts(getDependencies());</span>
+<span class="nc" id="L132">    return getLicenseMapFromArtifacts(getDependencies());</span>
   }
 
   /**
    * Return the Set of all direct and transitive Artifact dependencies.
    */
   private Set&lt;Artifact&gt; getDependencies() {
-<span class="nc" id="L138">    final Set&lt;Artifact&gt; artifacts = new HashSet&lt;&gt;();</span>
-<span class="nc" id="L139">    final Set&lt;DependencyNode&gt; dependencies = new HashSet&lt;&gt;();</span>
+<span class="nc" id="L139">    final Set&lt;Artifact&gt; artifacts = new HashSet&lt;&gt;();</span>
+<span class="nc" id="L140">    final Set&lt;DependencyNode&gt; dependencies = new HashSet&lt;&gt;();</span>
 
     // build the set of maven dependencies for each module in the reactor (might
     // only be the single one) and all its transitives
-<span class="nc" id="L143">    getLog().debug(String.format(&quot;Building dependency graphs for %d projects&quot;, getProjects().size()));</span>
-<span class="nc" id="L144">    getProjects().parallelStream().forEach(project -&gt; {</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">    if (getLog().isDebugEnabled()) {</span>
+<span class="nc" id="L145">      getLog().debug(String.format(&quot;Building dependency graphs for %d projects&quot;, getProjects().size()));</span>
+    }
+<span class="nc" id="L147">    getProjects().parallelStream().forEach(project -&gt; {</span>
       try {
-<span class="nc" id="L146">        DefaultProjectBuildingRequest buildingRequest = new DefaultProjectBuildingRequest(getBuildingRequest());</span>
-<span class="nc" id="L147">        buildingRequest.setProject(project);</span>
-<span class="nc" id="L148">        dependencies.addAll(getGraph().buildDependencyGraph(buildingRequest, getFilter()).getChildren());</span>
-<span class="nc" id="L149">      } catch (DependencyGraphBuilderException ex) {</span>
-<span class="nc" id="L150">        getLog().warn(</span>
-<span class="nc" id="L151">            String.format(&quot;Could not get children from project %s, it's dependencies will not be checked!&quot;,</span>
-<span class="nc" id="L152">                project.getId()));</span>
-<span class="nc" id="L153">      }</span>
-<span class="nc" id="L154">    });</span>
+<span class="nc" id="L149">        DefaultProjectBuildingRequest buildingRequest = new DefaultProjectBuildingRequest(getBuildingRequest());</span>
+<span class="nc" id="L150">        buildingRequest.setProject(project);</span>
+<span class="nc" id="L151">        dependencies.addAll(getGraph().buildDependencyGraph(buildingRequest, getFilter()).getChildren());</span>
+<span class="nc" id="L152">      } catch (DependencyGraphBuilderException ex) {</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">        if (getLog().isWarnEnabled()) {</span>
+<span class="nc" id="L154">          getLog().warn(</span>
+<span class="nc" id="L155">              String.format(&quot;Could not get children from project %s, it's dependencies will not be checked!&quot;,</span>
+<span class="nc" id="L156">                  project.getId()));</span>
+        }
+<span class="nc" id="L158">      }</span>
+<span class="nc" id="L159">    });</span>
 
     // build the complete set of direct+transitive dependent artifacts in all
     // modules in the reactor
-<span class="nc" id="L158">    dependencies.parallelStream().forEach(d -&gt; artifacts.add(d.getArtifact()));</span>
-<span class="nc" id="L159">    getLog().info(String.format(&quot;%s: %d&quot;, INFO_DEPS_DISCOVERED, dependencies.size()));</span>
+<span class="nc" id="L163">    dependencies.parallelStream().forEach(d -&gt; artifacts.add(d.getArtifact()));</span>
+<span class="nc bnc" id="L164" title="All 2 branches missed.">    if (getLog().isInfoEnabled()) {</span>
+<span class="nc" id="L165">      getLog().info(String.format(&quot;%s: %d&quot;, INFO_DEPS_DISCOVERED, dependencies.size()));</span>
+    }
 
-<span class="nc" id="L161">    return artifacts;</span>
+<span class="nc" id="L168">    return artifacts;</span>
 
     // tempting, but does not resolve dependencies after the scope in which this
     // plugin is invoked
@@ -166,52 +173,52 @@ public class MavenProjectLicenses implements LicenseMap, LicenseMessage {
   }
 
   protected Set&lt;MavenProject&gt; getProjects() {
-<span class="nc" id="L169">    return projects;</span>
+<span class="nc" id="L176">    return projects;</span>
   }
 
   private void setSession(MavenSession session) {
-<span class="nc" id="L173">    this.session = session;</span>
-<span class="nc" id="L174">  }</span>
+<span class="nc" id="L180">    this.session = session;</span>
+<span class="nc" id="L181">  }</span>
 
   protected void setProjects(final Set&lt;MavenProject&gt; projects) {
-<span class="nc" id="L177">    this.projects = Optional.ofNullable(projects).orElse(new HashSet&lt;&gt;());</span>
-<span class="nc" id="L178">  }</span>
+<span class="nc" id="L184">    this.projects = Optional.ofNullable(projects).orElse(new HashSet&lt;&gt;());</span>
+<span class="nc" id="L185">  }</span>
 
   private DependencyGraphBuilder getGraph() {
-<span class="nc" id="L181">    return graph;</span>
+<span class="nc" id="L188">    return graph;</span>
   }
 
   private void setGraph(DependencyGraphBuilder graph) {
-<span class="nc" id="L185">    this.graph = graph;</span>
-<span class="nc" id="L186">  }</span>
+<span class="nc" id="L192">    this.graph = graph;</span>
+<span class="nc" id="L193">  }</span>
 
   private ProjectBuilder getProjectBuilder() {
-<span class="nc" id="L189">    return projectBuilder;</span>
+<span class="nc" id="L196">    return projectBuilder;</span>
   }
 
   private void setProjectBuilder(ProjectBuilder projectBuilder) {
-<span class="nc" id="L193">    this.projectBuilder = Optional.ofNullable(projectBuilder).orElse(new DefaultProjectBuilder());</span>
-<span class="nc" id="L194">  }</span>
+<span class="nc" id="L200">    this.projectBuilder = Optional.ofNullable(projectBuilder).orElse(new DefaultProjectBuilder());</span>
+<span class="nc" id="L201">  }</span>
 
   private ArtifactFilter getFilter() {
-<span class="nc" id="L197">    return filter;</span>
+<span class="nc" id="L204">    return filter;</span>
   }
 
   private void setFilter(ArtifactFilter filter) {
-<span class="nc" id="L201">    this.filter = filter;</span>
-<span class="nc" id="L202">  }</span>
+<span class="nc" id="L208">    this.filter = filter;</span>
+<span class="nc" id="L209">  }</span>
 
   private Log getLog() {
-<span class="nc" id="L205">    return log;</span>
+<span class="nc" id="L212">    return log;</span>
   }
 
   private void setLog(Log log) {
-<span class="nc" id="L209">    this.log = log;</span>
-<span class="nc" id="L210">  }</span>
+<span class="nc" id="L216">    this.log = log;</span>
+<span class="nc" id="L217">  }</span>
 
   private ProjectBuildingRequest getBuildingRequest() {
     // There's an odd comment on the below used method, pretty sure it is not as stable as one likes it to be
-<span class="nc" id="L214">    return session.getProjectBuildingRequest();</span>
+<span class="nc" id="L221">    return session.getProjectBuildingRequest();</span>
   }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
