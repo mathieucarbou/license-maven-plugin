@@ -44,8 +44,8 @@
     <maven.compiler.parameters>true</maven.compiler.parameters>
 
     <!-- Maven compiler options -->
-    <java.version>8</java.version>
-    <java.release.version>8</java.release.version>
+    <java.version>11</java.version>
+    <java.release.version>11</java.release.version>
     <java.test.version>${java.version}</java.test.version>
     <java.test.release.version>${java.release.version}</java.test.release.version>
 

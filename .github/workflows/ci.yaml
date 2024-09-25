@@ -27,12 +27,12 @@ jobs:
           distribution: ${{ matrix.distribution }}
       - name: Test with Maven Using Project Maven Wrapper
         run: ./mvnw clean install site -V -B -D"maven.artifact.threads=64" -D"org.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
-      - name: Set up JDK 8 Integration Run (Consumer Run)
+      - name: Set up JDK 11 Integration Run (Consumer Run)
         uses: actions/setup-java@v4
         with:
-          java-version: 8
+          java-version: 11
           distribution: ${{ runner.os == 'macOS' && 'zulu' || 'temurin' }}
       - name: Load Maven 3.6.3 Integration Run (Consumer Run) using GitHub Provided Maven
         run: mvn org.apache.maven.plugins:maven-wrapper-plugin:3.3.1:wrapper -V -B -D"maven=3.6.3"
-      - name: Test with Maven 3.6.3 Java 8 (Consumer Run)
+      - name: Test with Maven 3.6.3 Java 11 (Consumer Run)
         run: ./mvnw invoker:run -V -B -D"maven.artifact.threads=64" -D"org.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
