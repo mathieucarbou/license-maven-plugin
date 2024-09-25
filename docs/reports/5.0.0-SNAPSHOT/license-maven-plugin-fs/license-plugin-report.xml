@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<licensePluginReport goal="CHECK" timestamp="1727255592572">
+    <module artifactId="license-maven-plugin-fs" groupId="com.mycila" version="5.0.0-SNAPSHOT"/>
+    <files>
+        <file path="pom.xml" result="PRESENT"/>
+        <file path="src/main/java/com/mycila/maven/plugin/license/fs/CopyrightRangeProvider.java" result="PRESENT"/>
+        <file path="src/test/java/com/mycila/maven/plugin/license/fs/CopyrightRangeProviderTest.java" result="PRESENT"/>
+    </files>
+</licensePluginReport>

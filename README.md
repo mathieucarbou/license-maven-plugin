@@ -16,3 +16,11 @@
 Often necessary to exclude a number of files that would otherwise grow the exclusion list on setup and do not fit with the default exclusions provided by this plugin.  To exclude complete sections, please into a special folder to do exactly that.
 
 ```**/unlicensed/**```
+
+## WARNING ABOUT JAVA 8 ##
+
+**Version 4.6 is the latest release compatible with Java 8.**
+
+Version >= 5.0.0 will require Java 11.
+
+Version >= 6.0.0 will require Java 17.

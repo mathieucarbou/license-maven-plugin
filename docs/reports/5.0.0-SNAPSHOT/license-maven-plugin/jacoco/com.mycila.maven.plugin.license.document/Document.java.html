@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Document.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">license-maven-plugin</a> &gt; <a href="index.source.html" class="el_package">com.mycila.maven.plugin.license.document</a> &gt; <span class="el_source">Document.java</span></div><h1>Document.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2008-2024 Mycila (mathieu.carbou@gmail.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;).
+ * You may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.mycila.maven.plugin.license.document;
+
+import com.mycila.maven.plugin.license.header.Header;
+import com.mycila.maven.plugin.license.header.HeaderDefinition;
+import com.mycila.maven.plugin.license.header.HeaderParser;
+import com.mycila.maven.plugin.license.header.HeaderType;
+import com.mycila.maven.plugin.license.util.FileContent;
+import com.mycila.maven.plugin.license.util.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
+
+import static com.mycila.maven.plugin.license.util.FileUtils.readFirstLines;
+import static com.mycila.maven.plugin.license.util.FileUtils.remove;
+
+public final class Document {
+  private final File file;
+  private final String filePath;
+  private final HeaderDefinition headerDefinition;
+  private final Charset encoding;
+  private final String[] keywords;
+  private final DocumentPropertiesLoader documentPropertiesLoader;
+<span class="fc" id="L39">  private final PropertyPlaceholderResolver placeholderResolver = new PropertyPlaceholderResolver();</span>
+  private HeaderParser parser;
+
+
+<span class="fc" id="L43">  public Document(File file, HeaderDefinition headerDefinition, Charset encoding, String[] keywords, DocumentPropertiesLoader documentPropertiesLoader) {</span>
+<span class="fc" id="L44">    this.keywords = keywords.clone();</span>
+<span class="fc" id="L45">    this.file = file;</span>
+<span class="fc" id="L46">    this.filePath = file.getPath().replace('\\', '/');</span>
+<span class="fc" id="L47">    this.headerDefinition = headerDefinition;</span>
+<span class="fc" id="L48">    this.encoding = encoding;</span>
+<span class="fc" id="L49">    this.documentPropertiesLoader = documentPropertiesLoader;</span>
+<span class="fc" id="L50">  }</span>
+
+  public HeaderDefinition getHeaderDefinition() {
+<span class="fc" id="L53">    return headerDefinition;</span>
+  }
+
+  public File getFile() {
+<span class="fc" id="L57">    return file;</span>
+  }
+
+  public String getFilePath() {
+<span class="fc" id="L61">    return filePath;</span>
+  }
+
+  public Charset getEncoding() {
+<span class="nc" id="L65">    return encoding;</span>
+  }
+
+  public boolean isNotSupported() {
+<span class="pc bpc" id="L69" title="1 of 4 branches missed.">    return headerDefinition == null || HeaderType.UNKNOWN.getDefinition().getType().equals(headerDefinition.getType());</span>
+  }
+
+  public boolean hasHeader(Header header, boolean strictCheck) {
+<span class="fc bfc" id="L73" title="All 2 branches covered.">    if (!strictCheck) {</span>
+      try {
+<span class="fc" id="L75">        String fileHeader = readFirstLines(file, header.getLineCount() + 10, encoding);</span>
+<span class="fc" id="L76">        String fileHeaderOneLine = remove(fileHeader, headerDefinition.getFirstLine().trim(), headerDefinition.getEndLine().trim(), headerDefinition.getBeforeEachLine().trim(), &quot;\n&quot;, &quot;\r&quot;, &quot;\t&quot;, &quot; &quot;);</span>
+<span class="fc" id="L77">        String headerOnOnelIne = mergeProperties(header.asOneLineString());</span>
+<span class="fc" id="L78">        return fileHeaderOneLine.contains(remove(headerOnOnelIne, headerDefinition.getFirstLine().trim(), headerDefinition.getEndLine().trim(), headerDefinition.getBeforeEachLine().trim()));</span>
+<span class="nc" id="L79">      } catch (IOException e) {</span>
+<span class="nc" id="L80">        throw new IllegalStateException(&quot;Cannot read file &quot; + filePath + &quot;. Cause: &quot; + e.getMessage(), e);</span>
+      }
+    }
+    try {
+<span class="fc" id="L84">      return header.isMatchForText(this, headerDefinition, true, encoding);</span>
+<span class="nc" id="L85">    } catch (IOException e) {</span>
+<span class="nc" id="L86">      throw new IllegalStateException(&quot;Cannot read file &quot; + filePath + &quot;. Cause: &quot; + e.getMessage(), e);</span>
+    }
+  }
+
+  public void updateHeader(Header header) {
+<span class="fc" id="L91">    String headerStr = header.applyDefinitionAndSections(parser.getHeaderDefinition(), parser.getFileContent().isUnix());</span>
+<span class="fc" id="L92">    parser.getFileContent().insert(parser.getBeginPosition(), mergeProperties(headerStr));</span>
+<span class="fc" id="L93">  }</span>
+
+  public String mergeProperties(String str) {
+<span class="fc" id="L96">    return placeholderResolver.replacePlaceholders(str, documentPropertiesLoader.load(this));</span>
+  }
+
+  public void save() {
+<span class="fc" id="L100">    saveTo(file);</span>
+<span class="fc" id="L101">  }</span>
+
+  public void saveTo(File dest) {
+<span class="pc bpc" id="L104" title="1 of 2 branches missed.">    if (parser != null) {</span>
+      try {
+<span class="fc" id="L106">        FileUtils.write(dest, parser.getFileContent().getContent(), encoding);</span>
+<span class="nc" id="L107">      } catch (IOException e) {</span>
+<span class="nc" id="L108">        throw new IllegalStateException(&quot;Cannot write new header in file &quot; + filePath + &quot;. Cause: &quot; + e.getMessage(), e);</span>
+<span class="fc" id="L109">      }</span>
+    }
+<span class="fc" id="L111">  }</span>
+
+  public String getContent() {
+<span class="pc bpc" id="L114" title="1 of 2 branches missed.">    return parser == null ? &quot;&quot; : parser.getFileContent().getContent();</span>
+  }
+
+  public void removeHeader() {
+<span class="fc bfc" id="L118" title="All 2 branches covered.">    if (headerDetected()) {</span>
+<span class="fc" id="L119">      parser.getFileContent().delete(parser.getBeginPosition(), parser.getEndPosition());</span>
+    }
+<span class="fc" id="L121">  }</span>
+
+  public boolean is(Header header) {
+    try {
+<span class="fc" id="L125">      return header.getLocation().isFromUrl(this.file.toURI().toURL());</span>
+<span class="nc" id="L126">    } catch (Exception e) {</span>
+<span class="nc" id="L127">      throw new IllegalStateException(&quot;Error comparing document &quot; + this.file + &quot; with file &quot; + file + &quot;. Cause: &quot; + e.getMessage(), e);</span>
+    }
+  }
+
+  public void parseHeader() {
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">    if (parser == null) {</span>
+<span class="fc" id="L133">      parser = new HeaderParser(new FileContent(file, encoding), headerDefinition, keywords);</span>
+    }
+<span class="fc" id="L135">  }</span>
+
+  public boolean headerDetected() {
+<span class="fc" id="L138">    return parser.gotAnyHeader();</span>
+  }
+
+  @Override
+  public String toString() {
+<span class="fc" id="L143">    return &quot;Document &quot; + filePath;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

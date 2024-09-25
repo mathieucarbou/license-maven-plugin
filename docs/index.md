@@ -9,9 +9,10 @@ Basically, when you are developing a project either in open source or in a compa
   - [Links](#links)
   - [Contributors](#contributors)
   - [Releases](#releases)
+  - [Reports](#reports)
+  - [WARNING : Java version compatibility](#warning--java-version-compatibility)
   - [Documentation](#documentation)
     - [Plugin declaration](#plugin-declaration)
-    - [Reports](#reports)
     - [Goals](#goals)
     - [Configuration](#configuration)
     - [License templates](#license-templates)
@@ -26,53 +27,53 @@ Basically, when you are developing a project either in open source or in a compa
 
 ## Features
 
-* Check if header is missing in some source file (`check` goal).
-* Add headers if missing (`format` goal).
-* Update existing header with the new one (`format` goal).
-* Remove existing header (`remove` goal).
-* Custom mappings: enables easy support of new file extensions.
-* Variable replacement: you can add some variable in your header, such as ${year} or ${owner} and they will be replaced by the corresponding values taken from the pom or system properties.
-* Dependency enforcement: optionally fail the build if the dependencies do not meet your license policies
+- Check if header is missing in some source file (`check` goal).
+- Add headers if missing (`format` goal).
+- Update existing header with the new one (`format` goal).
+- Remove existing header (`remove` goal).
+- Custom mappings: enables easy support of new file extensions.
+- Variable replacement: you can add some variable in your header, such as ${year} or ${owner} and they will be replaced by the corresponding values taken from the pom or system properties.
+- Dependency enforcement: optionally fail the build if the dependencies do not meet your license policies
 
 ## Links
 
-- __Build Status:__ [![Java CI](https://github.com/mathieucarbou/license-maven-plugin/actions/workflows/ci.yaml/badge.svg)](https://github.com/mathieucarbou/license-maven-plugin/actions/workflows/ci.yaml)
-- __Issues:__ [https://github.com/mathieucarbou/license-maven-plugin/issues](https://github.com/mathieucarbou/license-maven-plugin/issues)
-- __License:__ [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0)
+- **Build Status:** [![Java CI](https://github.com/mathieucarbou/license-maven-plugin/actions/workflows/ci.yaml/badge.svg)](https://github.com/mathieucarbou/license-maven-plugin/actions/workflows/ci.yaml)
+- **Issues:** [https://github.com/mathieucarbou/license-maven-plugin/issues](https://github.com/mathieucarbou/license-maven-plugin/issues)
+- **License:** [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0)
 
 ## Contributors
 
-* [@Flamenco](https://github.com/Flamenco)
-* [@McFoggy](https://github.com/McFoggy)
-* [@adamretter](https://github.com/adamretter)
-* [@akomakom](https://github.com/akomakom)
-* [@ankon](https://github.com/ankon)
-* [@christopherlakey](https://github.com/christopherlakey)
-* [@dbwiddis](https://github.com/dbwiddis)
-* [@eincs](https://github.com/eincs)
-* [@geoff-wasilwa](https://github.com/geoff-wasilwa)
-* [@hazendaz](https://github.com/hazendaz)
-* [@hgschmie](https://github.com/hgschmie)
-* [@jdhoek](https://github.com/jdhoek)
-* [@jfim](https://github.com/jfim)
-* [@jgerken](https://github.com/jgerken)
-* [@liry](https://github.com/liry)
-* [@masakimu](https://github.com/masakimu)
-* [@mathieucarbou](https://github.com/mathieucarbou)
-* [@mcculls](https://github.com/mcculls)
-* [@mirabilos](https://github.com/mirabilos)
-* [@peterlynch](https://github.com/peterlynch)
-* [@ppalaga](https://github.com/ppalaga)
-* [@rhuss](https://github.com/rhuss)
-* [@rmannibucau](https://github.com/rmannibucau)
-* [@rnc](https://github.com/rnc)
-* [@rremer](https://github.com/rremer)
-* [@sebhoss](https://github.com/sebhoss)
-* [@shane-hp](https://github.com/shane-hp)
-* [@stain](https://github.com/stain)
-* [@vromero](https://github.com/vromero)
-* [@yoosiba](https://github.com/yoosiba)
-* [@philippn](https://github.com/philippn)
+- [@Flamenco](https://github.com/Flamenco)
+- [@McFoggy](https://github.com/McFoggy)
+- [@adamretter](https://github.com/adamretter)
+- [@akomakom](https://github.com/akomakom)
+- [@ankon](https://github.com/ankon)
+- [@christopherlakey](https://github.com/christopherlakey)
+- [@dbwiddis](https://github.com/dbwiddis)
+- [@eincs](https://github.com/eincs)
+- [@geoff-wasilwa](https://github.com/geoff-wasilwa)
+- [@hazendaz](https://github.com/hazendaz)
+- [@hgschmie](https://github.com/hgschmie)
+- [@jdhoek](https://github.com/jdhoek)
+- [@jfim](https://github.com/jfim)
+- [@jgerken](https://github.com/jgerken)
+- [@liry](https://github.com/liry)
+- [@masakimu](https://github.com/masakimu)
+- [@mathieucarbou](https://github.com/mathieucarbou)
+- [@mcculls](https://github.com/mcculls)
+- [@mirabilos](https://github.com/mirabilos)
+- [@peterlynch](https://github.com/peterlynch)
+- [@ppalaga](https://github.com/ppalaga)
+- [@rhuss](https://github.com/rhuss)
+- [@rmannibucau](https://github.com/rmannibucau)
+- [@rnc](https://github.com/rnc)
+- [@rremer](https://github.com/rremer)
+- [@sebhoss](https://github.com/sebhoss)
+- [@shane-hp](https://github.com/shane-hp)
+- [@stain](https://github.com/stain)
+- [@vromero](https://github.com/vromero)
+- [@yoosiba](https://github.com/yoosiba)
+- [@philippn](https://github.com/philippn)
 
 Please let me know if your name is missing!
 
@@ -80,15 +81,50 @@ Please let me know if your name is missing!
 
 Available in Maven Central Repository: [https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/)
 
-* [4.5](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/4.5/) (2024-05-11) - see [issues and pull requests](https://github.com/mathieucarbou/license-maven-plugin/milestone/21?closed=1)
-* [4.4](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/4.4/) (2024-05-07) - see [issues and pull requests](https://github.com/mathieucarbou/license-maven-plugin/milestone/19?closed=1)
-* [4.3](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/4.3/) (2023-09-27) - see [issues and pull requests](https://github.com/mathieucarbou/license-maven-plugin/milestone/20?closed=1)
-* [4.2](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/4.2/) (2023-03-23) - see [issues and pull requests](https://github.com/mathieucarbou/license-maven-plugin/milestone/18?closed=1)
-* [4.1](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/4.1/) (2021-04-23) - see [issues and pull requests](https://github.com/mathieucarbou/license-maven-plugin/milestone/17?closed=1)
-* [4.0](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/4.0/) (2021-03-30) - see [issues and pull requests](https://github.com/mathieucarbou/license-maven-plugin/milestone/16?closed=1)
-* [3.0](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/3.0/) (2016-08-20) - see [issues and pull requests](https://github.com/mathieucarbou/license-maven-plugin/issues?q=milestone%3A3.0)
-* [2.11](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/2.11/) (2015-04-20) - see [issues and pull requests](https://github.com/mathieucarbou/license-maven-plugin/issues?q=milestone%3A2.11)
-* [2.10](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/2.10/) (2015-03-16) - see [issues and pull requests](https://github.com/mathieucarbou/license-maven-plugin/issues?q=milestone%3A2.8)
+- [4.6](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/4.6/) (2024-09-25) - see [issues and pull requests](https://github.com/mathieucarbou/license-maven-plugin/milestone/22?closed=1)
+- [4.5](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/4.5/) (2024-05-11) - see [issues and pull requests](https://github.com/mathieucarbou/license-maven-plugin/milestone/21?closed=1)
+- [4.4](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/4.4/) (2024-05-07) - see [issues and pull requests](https://github.com/mathieucarbou/license-maven-plugin/milestone/19?closed=1)
+- [4.3](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/4.3/) (2023-09-27) - see [issues and pull requests](https://github.com/mathieucarbou/license-maven-plugin/milestone/20?closed=1)
+- [4.2](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/4.2/) (2023-03-23) - see [issues and pull requests](https://github.com/mathieucarbou/license-maven-plugin/milestone/18?closed=1)
+- [4.1](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/4.1/) (2021-04-23) - see [issues and pull requests](https://github.com/mathieucarbou/license-maven-plugin/milestone/17?closed=1)
+- [4.0](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/4.0/) (2021-03-30) - see [issues and pull requests](https://github.com/mathieucarbou/license-maven-plugin/milestone/16?closed=1)
+- [3.0](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/3.0/) (2016-08-20) - see [issues and pull requests](https://github.com/mathieucarbou/license-maven-plugin/issues?q=milestone%3A3.0)
+- [2.11](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/2.11/) (2015-04-20) - see [issues and pull requests](https://github.com/mathieucarbou/license-maven-plugin/issues?q=milestone%3A2.11)
+- [2.10](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/2.10/) (2015-03-16) - see [issues and pull requests](https://github.com/mathieucarbou/license-maven-plugin/issues?q=milestone%3A2.8)
+
+## Reports
+
+The detailed Maven Plugin Documentation generated for each build is available here:
+
+**NOTE**: Between versions 4.0 and 3.0 the configuration syntax has been changed. The
+plugin now has the concept of _License Sets_, which allow you to work with one or
+more license configurations in a single execution of the plugin. In simple terms, a `<licenseSet>`
+wraps the previous configuration options for a license. The previous
+configuration syntax is still supported but deprecated, and may be removed in future.
+
+- [4.6](https://oss.carbou.me/license-maven-plugin/reports/4.6/)
+- [4.5](https://oss.carbou.me/license-maven-plugin/reports/4.5/)
+- [4.4](https://oss.carbou.me/license-maven-plugin/reports/4.4/)
+- [4.3](https://oss.carbou.me/license-maven-plugin/reports/4.3/)
+- [4.2](https://oss.carbou.me/license-maven-plugin/reports/4.2/)
+- [4.2.rc3](https://oss.carbou.me/license-maven-plugin/reports/4.2.rc3/)
+- [4.2.rc2](https://oss.carbou.me/license-maven-plugin/reports/4.2.rc2/)
+- [4.1](https://oss.carbou.me/license-maven-plugin/reports/4.1/)
+- [4.0](https://oss.carbou.me/license-maven-plugin/reports/4.0/)
+- [3.0](https://oss.carbou.me/license-maven-plugin/reports/3.0/)
+- [2.3](https://oss.carbou.me/license-maven-plugin/reports/2.3/)
+- [2.2](https://oss.carbou.me/license-maven-plugin/reports/2.2/)
+- [2.0](https://oss.carbou.me/license-maven-plugin/reports/2.0/)
+
+**WARNING**: there is good chances the latest version is greater than latest documentation, if nothing has changed concerning the plugin configurations.
+
+## WARNING : Java version compatibility
+
+**Version 4.6 is the latest release compatible with Java 8.**
+
+Version >= 5.0.0 will require Java 11.
+
+Version >= 6.0.0 will require Java 17.
 
 ## Documentation
 
@@ -98,7 +134,7 @@ Available in Maven Central Repository: [https://repo1.maven.org/maven2/com/mycil
 <plugin>
   <groupId>com.mycila</groupId>
   <artifactId>license-maven-plugin</artifactId>
-  <version>4.5</version>
+  <version>4.6</version>
   <configuration>
     <properties>
       <owner>Mycila</owner>
@@ -120,7 +156,7 @@ Available in Maven Central Repository: [https://repo1.maven.org/maven2/com/mycil
 
 Note: `inlineHeader` can also be used instead of `header` to specify directly the header content in the POM.
 
-__For [Multi-Licensing](https://en.wikipedia.org/wiki/Multi-licensing)__
+**For [Multi-Licensing](https://en.wikipedia.org/wiki/Multi-licensing)**
 
 If your source code makes use of multi-licensing, then instead of
 a `<header>` or `<inlineHeader>` element in the configuration
@@ -134,7 +170,7 @@ options are concatenated together to produce a header template.
 <plugin>
   <groupId>com.mycila</groupId>
   <artifactId>license-maven-plugin</artifactId>
-  <version>4.5</version>
+  <version>4.6</version>
   <configuration>
     <licenseSets>
       <licenseSet>
@@ -159,37 +195,11 @@ options are concatenated together to produce a header template.
 </plugin>
 ```
 
-### Reports
-
-The detailed Maven Plugin Documentation generated for each build is available here:
-
-__NOTE__: Between versions 4.0 and 3.0 the configuration syntax has been changed. The
-plugin now has the concept of *License Sets*, which allow you to work with one or
-more license configurations in a single execution of the plugin. In simple terms, a `<licenseSet>`
-wraps the previous configuration options for a license. The previous
-configuration syntax is still supported but deprecated, and may be removed in future.
-
-- [4.5](https://oss.carbou.me/license-maven-plugin/reports/4.5/)
-- [4.4](https://oss.carbou.me/license-maven-plugin/reports/4.4/)
-- [4.3](https://oss.carbou.me/license-maven-plugin/reports/4.3/)
-- [4.2](https://oss.carbou.me/license-maven-plugin/reports/4.2/)
-- [4.2.rc3](https://oss.carbou.me/license-maven-plugin/reports/4.2.rc3/)
-- [4.2.rc2](https://oss.carbou.me/license-maven-plugin/reports/4.2.rc2/)
-- [4.1](https://oss.carbou.me/license-maven-plugin/reports/4.1/)
-- [4.0](https://oss.carbou.me/license-maven-plugin/reports/4.0/)
-- [3.0](https://oss.carbou.me/license-maven-plugin/reports/3.0/)
-- [2.3](https://oss.carbou.me/license-maven-plugin/reports/2.3/)
-- [2.2](https://oss.carbou.me/license-maven-plugin/reports/2.2/)
-- [2.0](https://oss.carbou.me/license-maven-plugin/reports/2.0/)
-
-__WARNING__: there is good chances the latest version is greater than latest documentation, if nothing has changed concerning the plugin configurations.
-
 ### Goals
 
-* `license:check`: verify if some files miss license header. This goal is attached to the verify phase if declared in your pom.xml like above.
-* `license:format`: add the license header when missing. If a header is existing, it is updated to the new one.
-* `license:remove`: remove existing license header
-
+- `license:check`: verify if some files miss license header. This goal is attached to the verify phase if declared in your pom.xml like above.
+- `license:format`: add the license header when missing. If a header is existing, it is updated to the new one.
+- `license:remove`: remove existing license header
 
 ### Configuration
 
@@ -227,17 +237,17 @@ Properties which can be used as placeholder comes from:
 
 - Environment variables
 - POM properties
-    - `project.groupId`
-    - `project.artifactId`
-    - `project.version`
-    - `project.name`
-    - `project.description`
-    - `project.inceptionYear`
-    - `project.url`
-    - `project.organization.name`
-    - `project.organization.url`
+  - `project.groupId`
+  - `project.artifactId`
+  - `project.version`
+  - `project.name`
+  - `project.description`
+  - `project.inceptionYear`
+  - `project.url`
+  - `project.organization.name`
+  - `project.organization.url`
 - Per-Document properties
-    - `file.name`
+  - `file.name`
 - Plugin configuration properties (from `<properties>` tag)
 - System properties
 
@@ -251,270 +261,268 @@ public interface PropertiesProvider {
 
 You have access to the Mojo, the current built properties and the document being checked or formatted. The plugin uses the JDK ServiceLoader mechanism to find all `PropertiesProvider` implementations on the plugin classpath and execute them. Thus, just add the implementation class name in the file `META-INF/services/com.mycila.maven.plugin.license.PropertiesProvider` in your JAR file.
 
-
 ### Supported comment types
 
 The plugin has been designed so that it is very easy to add new supports for new sorts of comment. The plugin currently support these types of comment:
 
-- `JAVADOC_STYLE` (Java-like comments): *.css, *.cs, *.as, *.aj, *.c, *.h, *.cpp
+- `JAVADOC_STYLE` (Java-like comments): _.css, _.cs, _.as, _.aj, _.c, _.h, \*.cpp
 
-   ```java
-   /**
-    * My comment
-    */
-   ```
+  ```java
+  /**
+   * My comment
+   */
+  ```
 
-- `JAVAPKG_STYLE` (like Javadoc, but only for files that are in a Java package, skips the first line): not assigned to a file extension by default (see __Java packages__ below for how to enable it)
+- `JAVAPKG_STYLE` (like Javadoc, but only for files that are in a Java package, skips the first line): not assigned to a file extension by default (see **Java packages** below for how to enable it)
 
-   ```java
-   package com.example;
-   /*-
-    * My comment
-    */
-   ```
+  ```java
+  package com.example;
+  /*-
+   * My comment
+   */
+  ```
 
-- `XML_STYLE` (XML-like comments): *.pom, *.xml, *.xhtml, *.mxml, *.dtd, *.xsd, *.jspx, *.fml, *.xsl, *.html, *.htm, *.kml, *.gsp, *.tld
+- `XML_STYLE` (XML-like comments): _.pom, _.xml, _.xhtml, _.mxml, _.dtd, _.xsd, _.jspx, _.fml, _.xsl, _.html, _.htm, _.kml, _.gsp, _.tld
 
-   ```xml
-   <!--
-     My comment
-   -->
-   ```
+  ```xml
+  <!--
+    My comment
+  -->
+  ```
 
 - `XML_PER_LINE` (alternate XML-like comments)
 
-   ```xml
-   <!-- My first comment  -->
-   <!-- My second comment -->
-   ```
+  ```xml
+  <!-- My first comment  -->
+  <!-- My second comment -->
+  ```
 
 (automatically right-adjusts the closing comment)
 
+- `DOUBLETILDE_STYLE` (APT-like comments): \*.apt
 
-- `DOUBLETILDE_STYLE` (APT-like comments): *.apt
+  ```
+  ~~ My comment
+  ```
 
-   ```
-   ~~ My comment
-   ```
+- `SCRIPT_STYLE` (Property file or shell comments): _.properties, _.sh, _.py, _.rb, _.pl, _.pm, _.yml, _.yaml
 
-- `SCRIPT_STYLE` (Property file or shell comments): *.properties, *.sh, *.py, *.rb, *.pl, *.pm, *.yml, *.yaml
+  ```bash
+  # My comment
+  ```
 
-   ```bash
-   # My comment
-   ```
+- `HAML_STYLE`: _.haml, _.scaml
 
-- `HAML_STYLE`: *.haml, *.scaml
+  ```haml
+  -# My comment
+  ```
 
-   ```haml
-   -# My comment
-   ```
+- `BATCH` (Windows batch comments): _.bat, _.cmd
 
-- `BATCH` (Windows batch comments): *.bat, *.cmd
+  ```batch
+  @REM My comment
+  ```
 
-   ```batch
-   @REM My comment
-   ```
+- `TEXT` (Text like comments): \*.txt
 
-- `TEXT` (Text like comments): *.txt
-
-   ```
-   ====
-       My comment
-   ====
-   ```
+  ```
+  ====
+      My comment
+  ====
+  ```
 
 (4 spaces, then the lines of the header)
 
-- `DOUBLEDASHES_STYLE` (Sql like comments): *.sql, *.adb, *.ads, *.e
+- `DOUBLEDASHES_STYLE` (Sql like comments): _.sql, _.adb, _.ads, _.e
 
-   ```sql
-   --
-   -- test comment
-   --
-   ```
+  ```sql
+  --
+  -- test comment
+  --
+  ```
 
-- `DYNASCRIPT_STYLE` (JSP like comments): *.jsp
+- `DYNASCRIPT_STYLE` (JSP like comments): \*.jsp
 
-   ```jsp
-   <%--
-       comment
-   --%>
-   ```
+  ```jsp
+  <%--
+      comment
+  --%>
+  ```
 
-- `FTL` (FreeMarker like comments): *.ftl
+- `FTL` (FreeMarker like comments): \*.ftl
 
-   ```
-   <#--
-       comment
-   -->
-   ```
+  ```
+  <#--
+      comment
+  -->
+  ```
 
 - `FTL_ALT` (FreeMarker Alternative Syntax comments)
 
-   ```
-   [#ftl ...]
-   [#--
-       comment
-   --]
-   ```
+  ```
+  [#ftl ...]
+  [#--
+      comment
+  --]
+  ```
 
-- `SHARPSTAR_STYLE` (Velocity templates comments): *.vm
+- `SHARPSTAR_STYLE` (Velocity templates comments): \*.vm
 
-   ```
-   #*
-       comment
-   *#
-   ```
+  ```
+  #*
+      comment
+  *#
+  ```
 
-- `SEMICOLON_STYLE` (Assembler like comments): *.asm
+- `SEMICOLON_STYLE` (Assembler like comments): \*.asm
 
-   ```
-   ;
-   ; comment
-   ;
-   ```
+  ```
+  ;
+  ; comment
+  ;
+  ```
 
-- `BRACESSTAR_STYLE` (Delphi like comments): *.pas
+- `BRACESSTAR_STYLE` (Delphi like comments): \*.pas
 
-   ```pascal
-   {*
-    * comment
-    *}
-   ```
+  ```pascal
+  {*
+   * comment
+   *}
+  ```
 
-- `APOSTROPHE_STYLE` (VisualBasic like comments): *.bas
+- `APOSTROPHE_STYLE` (VisualBasic like comments): \*.bas
 
-   ```basic
-   '
-   ' comment
-   '
-   ```
+  ```basic
+  '
+  ' comment
+  '
+  ```
 
-- `EXCLAMATION_STYLE` (Fortran like comments): *.f
+- `EXCLAMATION_STYLE` (Fortran like comments): \*.f
 
-   ```fortran
-   !
-   ! comment
-   !
-   ```
+  ```fortran
+  !
+  ! comment
+  !
+  ```
 
-- `SLASHSTAR_STYLE` (JavaScript like comments): *.js, *.fx, *.java, *.groovy, *.kt, *.scala
+- `SLASHSTAR_STYLE` (JavaScript like comments): _.js, _.fx, _.java, _.groovy, _.kt, _.scala
 
-   ```javascript
-   /*
-    * comment
-    */
-   ```
+  ```javascript
+  /*
+   * comment
+   */
+  ```
 
-- `DYNASCRIPT3_STYLE` (Coldfusion like comments): *.cfc, *.cfm
+- `DYNASCRIPT3_STYLE` (Coldfusion like comments): _.cfc, _.cfm
 
-   ```
-   <!---
-       comment
-   --->
-   ```
+  ```
+  <!---
+      comment
+  --->
+  ```
 
-- `PERCENT_STYLE` (Teχ like comments): *.cls, *.sty, *.tex
+- `PERCENT_STYLE` (Teχ like comments): _.cls, _.sty, \*.tex
 
-   ```tex
-   % comment
-   ```
+  ```tex
+  % comment
+  ```
 
-- `PERCENT3_STYLE` (Erlang like comments): *.erl, *.hrl
+- `PERCENT3_STYLE` (Erlang like comments): _.erl, _.hrl
 
-   ```erlang
-   %%%
-   %%% comment
-   %%%
-   ```
+  ```erlang
+  %%%
+  %%% comment
+  %%%
+  ```
 
-- `EXCLAMATION3_STYLE` (Lisp like comments): *.el
+- `EXCLAMATION3_STYLE` (Lisp like comments): \*.el
 
-   ```elisp
-   !!!
-   !!! comment
-   !!!
-   ```
+  ```elisp
+  !!!
+  !!! comment
+  !!!
+  ```
 
-- `LUA` (Lua like comments): *.lua
+- `LUA` (Lua like comments): \*.lua
 
-   ```lua
-   --[[
-   comment
-   ]]
-   ```
+  ```lua
+  --[[
+  comment
+  ]]
+  ```
 
-- `ASP` (Asp like comments): *.asp
+- `ASP` (Asp like comments): \*.asp
 
-   ```asp
-   <%
-   ' comment
-   %>
-   ```
+  ```asp
+  <%
+  ' comment
+  %>
+  ```
 
-- `PHP` (PHP comments): *.php
+- `PHP` (PHP comments): \*.php
 
-   ```php
-   /*
-    * comment
-    */
-   ```
+  ```php
+  /*
+   * comment
+   */
+  ```
 
 (inserted after the <?php> tag)
 
 - `DOUBLESLASH_STYLE` (often used comments style)
 
-   ```php
-   //
-   // comment
-   //
-   ```
+  ```php
+  //
+  // comment
+  //
+  ```
 
 - `MVEL_STYLE`
 
-   ```mvel
-   @comment{
-     Copyright (C) ${year} http://code.google.com/p/maven-license-plugin/
+  ```mvel
+  @comment{
+    Copyright (C) ${year} http://code.google.com/p/maven-license-plugin/
 
-     Licensed under the Apache License, Version 2.0 (the "License");
-     you may not use this file except in compliance with the License.
-     You may obtain a copy of the License at
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
 
-               http://www.apache.org/licenses/LICENSE-2.0
+              http://www.apache.org/licenses/LICENSE-2.0
 
-     Unless required by applicable law or agreed to in writing, software
-     distributed under the License is distributed on an "AS IS" BASIS,
-     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-     See the License for the specific language governing permissions and
-     limitations under the License.
-    }
-   ```
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+   }
+  ```
 
 - `ASCIIDOC_STYLE`
 
-   ```asciidoc
-   ////
-     // Copyright (C) ${year} http://code.google.com/p/maven-license-plugin/
-     //
-     // Licensed under the Apache License, Version 2.0 (the "License");
-     // you may not use this file except in compliance with the License.
-     // You may obtain a copy of the License at
-     //
-     //         http://www.apache.org/licenses/LICENSE-2.0
-     //
-     // Unless required by applicable law or agreed to in writing, software
-     // distributed under the License is distributed on an "AS IS" BASIS,
-     // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-     // See the License for the specific language governing permissions and
-     // limitations under the License.
-   ////
-   ```
+  ```asciidoc
+  ////
+    // Copyright (C) ${year} http://code.google.com/p/maven-license-plugin/
+    //
+    // Licensed under the Apache License, Version 2.0 (the "License");
+    // you may not use this file except in compliance with the License.
+    // You may obtain a copy of the License at
+    //
+    //         http://www.apache.org/licenses/LICENSE-2.0
+    //
+    // Unless required by applicable law or agreed to in writing, software
+    // distributed under the License is distributed on an "AS IS" BASIS,
+    // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    // See the License for the specific language governing permissions and
+    // limitations under the License.
+  ////
+  ```
 
 All the styles can be found here: https://github.com/mathieucarbou/license-maven-plugin/tree/master/license-maven-plugin/src/test/resources/styles
 
-__Custom mapping__
+**Custom mapping**
 
-The plugin enables you to add any other mapping you want.* I.e., if you are developing a Tapestry web application, you may need to add license header in .jwc files and .application files. since these files are xml files, you only need to add in your project pom the following mapping for the license-maven-plugin:
+The plugin enables you to add any other mapping you want.\* I.e., if you are developing a Tapestry web application, you may need to add license header in .jwc files and .application files. since these files are xml files, you only need to add in your project pom the following mapping for the license-maven-plugin:
 
 ```xml
 <mapping>
@@ -526,11 +534,11 @@ The plugin enables you to add any other mapping you want.* I.e., if you are deve
 </mapping>
 ```
 
-You can use composed-extensions like *.apt.vm and redefine them, but you will have to make sure that the mapping of `apt.vm` is _before_ the mapping of the `vm` extension. The order in the mapping section is important: extensions seen first take precedence.
+You can use composed-extensions like \*.apt.vm and redefine them, but you will have to make sure that the mapping of `apt.vm` is _before_ the mapping of the `vm` extension. The order in the mapping section is important: extensions seen first take precedence.
 
-__Java packages__
+**Java packages**
 
-Another use case for custom mappings is when writing Java code in packages; the licence header should come *after* the package declaration line in this case. Simply add this to the plugin configuration:
+Another use case for custom mappings is when writing Java code in packages; the licence header should come _after_ the package declaration line in this case. Simply add this to the plugin configuration:
 
 ```xml
 <mapping>
@@ -582,7 +590,7 @@ And for XML:
 
 With the `headerDefinitions` option, you can redefine existing header styles and also add some if we do not support the styles you want yet. You just have to provide a list of `headerDefinition` containing a resource name. Like the header, the resource is searched on the file system, in the classpath of the project, the plugin and also as a URL.
 
-__Full Example__
+**Full Example**
 
 This page will show you how you can define extended header definitions to fit your needs. The next example will define headers in a _region_ area allowed in C# source files:
 
@@ -601,10 +609,10 @@ This page will show you how you can define extended header definitions to fit yo
 </additionalHeaders>
 ```
 
-* The `EOL` string will be replaced with the proper end of line depending the file format your are processing.
-* We also have defined the _skipLine_ attribute to skip the region tags (which starts with a '#')
-* `allowBlankLines` allows you to define if this header style supports blank lines in it or not. In example, in XML headers, you could have blank lines after the <!-- and before --> because XML delimiters delimit a multiline block. When you work with script style comments like in Ruby, Porperties files, the # character delimit a comment for only one line. So when you create the header, for it to be uniform, you place # on each line. So allowBlankLines will be false.
-* `multiline` specifies if your header has tokens to delimit a multiline comment of if the tokens are a one-line comment. I.E.: XML style comments are multiline whereas script style comment where each line starts with # are not multiline
+- The `EOL` string will be replaced with the proper end of line depending the file format your are processing.
+- We also have defined the _skipLine_ attribute to skip the region tags (which starts with a '#')
+- `allowBlankLines` allows you to define if this header style supports blank lines in it or not. In example, in XML headers, you could have blank lines after the <!-- and before --> because XML delimiters delimit a multiline block. When you work with script style comments like in Ruby, Porperties files, the # character delimit a comment for only one line. So when you create the header, for it to be uniform, you place # on each line. So allowBlankLines will be false.
+- `multiline` specifies if your header has tokens to delimit a multiline comment of if the tokens are a one-line comment. I.E.: XML style comments are multiline whereas script style comment where each line starts with # are not multiline
 
 You now have to add this new header definition file to the plugin configuration. It is done as the following in your pom:
 
@@ -644,7 +652,7 @@ And it should generate headers like:
     #endregion
 ```
 
-__Inline styles__
+**Inline styles**
 
 This is also possible to configure new header style inline within the POM without using external files. This is a useful feature for module inheritance.
 
@@ -732,12 +740,11 @@ There is also an implicit default deny artifact pattern policy, so if you enable
 
 Given the above configuration example, you could state:
 
-* the allow rule for com.example.subpackage:other-artifact:jar:1.0.0 will never do anything, because there is a deny rule for com.example.*
-* all com.mycila artifacts will be allowed, regardless of their license
-* any other artifact with a license name of 'Public Domain' will be allowed
-* any other artifact with a license URL of explicitely 'https://www.apache.org/licenses/LICENSE-2.0.txt' will be allowed
-* all other artifacts will fail the build with the following message header: "A custom error message for how to handle approvals in your organization" along with the list of artifacts which violated the policies
-
+- the allow rule for com.example.subpackage:other-artifact:jar:1.0.0 will never do anything, because there is a deny rule for com.example.\*
+- all com.mycila artifacts will be allowed, regardless of their license
+- any other artifact with a license name of 'Public Domain' will be allowed
+- any other artifact with a license URL of explicitely 'https://www.apache.org/licenses/LICENSE-2.0.txt' will be allowed
+- all other artifacts will fail the build with the following message header: "A custom error message for how to handle approvals in your organization" along with the list of artifacts which violated the policies
 
 ## Development
 
@@ -760,7 +767,6 @@ When developing, build fast with:
 ```bash
 ./mvnw clean install -Dfast
 ```
-
 
 ### Releasing a version
 

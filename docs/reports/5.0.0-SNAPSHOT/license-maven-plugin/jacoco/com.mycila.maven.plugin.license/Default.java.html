@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Default.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">license-maven-plugin</a> &gt; <a href="index.source.html" class="el_package">com.mycila.maven.plugin.license</a> &gt; <span class="el_source">Default.java</span></div><h1>Default.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2008-2024 Mycila (mathieu.carbou@gmail.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;).
+ * You may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.mycila.maven.plugin.license;
+
+public final class Default {
+
+  private Default() {
+    // Prevent Instantiation
+  }
+
+<span class="fc" id="L24">  public static final String[] INCLUDE = new String[]{&quot;**&quot;};</span>
+
+<span class="fc" id="L26">  public static final String[] EXCLUDES = {</span>
+      // Miscellaneous typical temporary files
+      &quot;**/*~&quot;,
+      &quot;**/#*#&quot;,
+      &quot;**/.#*&quot;,
+      &quot;**/%*%&quot;,
+      &quot;**/._*&quot;,
+      &quot;**/.repository/**&quot;,
+      &quot;**/*.lck&quot;,
+
+      // Checkstyle
+      &quot;**/*.checkstyle&quot;,
+
+      // PMD
+      &quot;**/*.pmd&quot;,
+      &quot;**/*.pmdruleset.xml&quot;,
+
+      // CVS
+      &quot;**/CVS&quot;,
+      &quot;**/CVS/**&quot;,
+      &quot;**/.cvsignore&quot;,
+
+      // RCS
+      &quot;**/RCS&quot;,
+      &quot;**/RCS/**&quot;,
+
+      // SCCS
+      &quot;**/SCCS&quot;,
+      &quot;**/SCCS/**&quot;,
+
+      // Visual SourceSafe
+      &quot;**/vssver.scc&quot;,
+
+      // Subversion
+      &quot;**/.svn&quot;,
+      &quot;**/.svn/**&quot;,
+
+      // Arch
+      &quot;**/.arch-ids&quot;,
+      &quot;**/.arch-ids/**&quot;,
+
+      // Bazaar
+      &quot;**/.bzr&quot;,
+      &quot;**/.bzr/**&quot;,
+
+      // SurroundSCM
+      &quot;**/.MySCMServerInfo&quot;,
+
+      // Mac
+      &quot;**/.DS_Store&quot;,
+
+      // Serena Dimensions Version 10
+      &quot;**/.metadata&quot;,
+      &quot;**/.metadata/**&quot;,
+
+      // Mercurial
+      &quot;**/.hg&quot;,
+      &quot;**/.hg/**&quot;,
+      &quot;**/.hgignore&quot;,
+
+      // git
+      &quot;**/.git&quot;,
+      &quot;**/.git/**&quot;,
+      &quot;**/.gitattributes&quot;,
+      &quot;**/.gitignore&quot;,
+      &quot;**/.gitkeep&quot;,
+      &quot;**/.gitmodules&quot;,
+
+      // GitHub
+      &quot;**/.github&quot;,
+      &quot;**/.github/**&quot;,
+
+      // BitKeeper
+      &quot;**/BitKeeper&quot;,
+      &quot;**/BitKeeper/**&quot;,
+      &quot;**/ChangeSet&quot;,
+      &quot;**/ChangeSet/**&quot;,
+
+      // darcs
+      &quot;**/_darcs&quot;,
+      &quot;**/_darcs/**&quot;,
+      &quot;**/.darcsrepo&quot;,
+      &quot;**/.darcsrepo/**&quot;,
+      &quot;**/-darcs-backup*&quot;,
+      &quot;**/.darcs-temp-mail&quot;,
+
+      // maven project's temporary files
+      &quot;**/target/**&quot;,
+      &quot;**/test-output/**&quot;,
+      &quot;**/release.properties&quot;,
+      &quot;**/dependency-reduced-pom.xml&quot;,
+      &quot;**/release-pom.xml&quot;,
+      &quot;**/pom.xml.releaseBackup&quot;,
+      &quot;**/pom.xml.versionsBackup&quot;,
+
+      // Node
+      &quot;**/node/**&quot;,
+      &quot;**/node_modules/**&quot;,
+
+      // code coverage tools
+      &quot;**/cobertura.ser&quot;,
+      &quot;**/.clover/**&quot;,
+      &quot;**/jacoco.exec&quot;,
+
+      // eclipse project files
+      &quot;**/.classpath&quot;,
+      &quot;**/.project&quot;,
+      &quot;**/.settings/**&quot;,
+
+      // IDEA projet files
+      &quot;**/*.iml&quot;,
+      &quot;**/*.ipr&quot;,
+      &quot;**/*.iws&quot;,
+      &quot;**/.idea/**&quot;,
+
+      // Netbeans
+      &quot;**/nb-configuration.xml&quot;,
+
+      // Hibernate Validator Annotation Processor
+      &quot;**/.factorypath&quot;,
+
+      // descriptors
+      &quot;**/MANIFEST.MF&quot;,
+
+      // License files
+      &quot;**/LICENSE&quot;,
+      &quot;**/LICENSE_HEADER&quot;,
+
+      // binary files - images
+      &quot;**/*.jpg&quot;,
+      &quot;**/*.png&quot;,
+      &quot;**/*.gif&quot;,
+      &quot;**/*.ico&quot;,
+      &quot;**/*.bmp&quot;,
+      &quot;**/*.tiff&quot;,
+      &quot;**/*.tif&quot;,
+      &quot;**/*.cr2&quot;,
+      &quot;**/*.xcf&quot;,
+
+      // binary files - programs
+      &quot;**/*.class&quot;,
+      &quot;**/*.exe&quot;,
+      &quot;**/*.dll&quot;,
+      &quot;**/*.so&quot;,
+
+      // checksum files
+      &quot;**/*.md5&quot;,
+      &quot;**/*.sha1&quot;,
+      &quot;**/*.sha256&quot;,
+      &quot;**/*.sha512&quot;,
+
+      // Security files
+      &quot;**/*.asc&quot;,
+      &quot;**/*.cer&quot;,
+      &quot;**/*.der&quot;,
+      &quot;**/*.jks&quot;,
+      &quot;**/*.keytab&quot;,
+      &quot;**/*.lic&quot;,
+      &quot;**/*.p12&quot;,
+      &quot;**/*.pub&quot;,
+
+      // binary files - archives
+      &quot;**/*.ear&quot;,
+      &quot;**/*.jar&quot;,
+      &quot;**/*.war&quot;,
+      &quot;**/*.zip&quot;,
+      &quot;**/*.rar&quot;,
+      &quot;**/*.tar&quot;,
+      &quot;**/*.tar.gz&quot;,
+      &quot;**/*.tar.bz2&quot;,
+      &quot;**/*.tar.bz3&quot;,
+      &quot;**/*.tar.xz&quot;,
+      &quot;**/*.gz&quot;,
+      &quot;**/*.7z&quot;,
+
+      // ServiceLoader files
+      &quot;**/META-INF/services/**&quot;,
+
+      // Markdown files
+      &quot;**/*.md&quot;,
+
+      // Office documents
+      &quot;**/*.xls&quot;,
+      &quot;**/*.doc&quot;,
+      &quot;**/*.odt&quot;,
+      &quot;**/*.ods&quot;,
+      &quot;**/*.pdf&quot;,
+
+      // Travis
+      &quot;**/.travis.yml&quot;,
+
+      // AppVeyor
+      &quot;**/.appveyor.yml&quot;,
+      &quot;**/appveyor.yml&quot;,
+
+      // CircleCI
+      &quot;**/.circleci&quot;,
+      &quot;**/.circleci/**&quot;,
+
+      // SourceHut
+      &quot;**/.build.yml&quot;,
+
+      // Maven 3.3+ configs
+      &quot;**/jvm.config&quot;,
+      &quot;**/maven.config&quot;,
+
+      // Wrappers
+      &quot;**/gradlew&quot;,
+      &quot;**/gradlew.bat&quot;,
+      &quot;**/gradle-wrapper.properties&quot;,
+      &quot;**/mvnw&quot;,
+      &quot;**/mvnw.cmd&quot;,
+      &quot;**/maven-wrapper.properties&quot;,
+      &quot;**/MavenWrapperDownloader.java&quot;,
+
+      // flash
+      &quot;**/*.swf&quot;,
+
+      // json files
+      &quot;**/*.json&quot;,
+
+      // fonts
+      &quot;**/*.svg&quot;,
+      &quot;**/*.eot&quot;,
+      &quot;**/*.otf&quot;,
+      &quot;**/*.ttf&quot;,
+      &quot;**/*.woff&quot;,
+      &quot;**/*.woff2&quot;,
+
+      // logs
+      &quot;**/*.log&quot;,
+
+      // office documents
+      &quot;**/*.xlsx&quot;,
+      &quot;**/*.docx&quot;,
+      &quot;**/*.ppt&quot;,
+      &quot;**/*.pptx&quot;,
+
+      // String Template
+      &quot;**/*.st&quot;,
+      &quot;**/*.stg&quot;,
+
+      // Explicit Folder to Entirely Ignore
+      &quot;**/unlicensed/**&quot;,
+
+      // EditorConfig
+      &quot;**/.editorconfig&quot;
+  };
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

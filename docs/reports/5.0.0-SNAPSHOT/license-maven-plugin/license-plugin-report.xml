@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<licensePluginReport goal="CHECK" timestamp="1727255571509">
+    <module artifactId="license-maven-plugin" groupId="com.mycila" version="5.0.0-SNAPSHOT"/>
+    <files>
+        <file path="pom.xml" result="PRESENT"/>
+        <file path="src/main/java/com/mycila/maven/plugin/license/AbstractLicenseMojo.java" result="PRESENT"/>
+        <file path="src/main/java/com/mycila/maven/plugin/license/Callback.java" result="PRESENT"/>
+        <file path="src/main/java/com/mycila/maven/plugin/license/Credentials.java" result="PRESENT"/>
+        <file path="src/main/java/com/mycila/maven/plugin/license/Default.java" result="PRESENT"/>
+        <file path="src/main/java/com/mycila/maven/plugin/license/HeaderSection.java" result="PRESENT"/>
+        <file path="src/main/java/com/mycila/maven/plugin/license/HeaderStyle.java" result="PRESENT"/>
+        <file path="src/main/java/com/mycila/maven/plugin/license/LicenseCheckMojo.java" result="PRESENT"/>
+        <file path="src/main/java/com/mycila/maven/plugin/license/LicenseFormatMojo.java" result="PRESENT"/>
+        <file path="src/main/java/com/mycila/maven/plugin/license/LicenseRemoveMojo.java" result="PRESENT"/>
+        <file path="src/main/java/com/mycila/maven/plugin/license/LicenseSet.java" result="PRESENT"/>
+        <file path="src/main/java/com/mycila/maven/plugin/license/Multi.java" result="PRESENT"/>
+        <file path="src/main/java/com/mycila/maven/plugin/license/PropertiesProvider.java" result="PRESENT"/>
+        <file path="src/main/java/com/mycila/maven/plugin/license/Report.java" result="PRESENT"/>
+        <file path="src/main/java/com/mycila/maven/plugin/license/dependencies/AbstractLicensePolicyEnforcer.java" result="PRESENT"/>
+        <file path="src/main/java/com/mycila/maven/plugin/license/dependencies/AggregateLicensePolicyEnforcer.java" result="PRESENT"/>
+        <file path="src/main/java/com/mycila/maven/plugin/license/dependencies/ArtifactLicensePolicyEnforcer.java" result="PRESENT"/>
+        <file path="src/main/java/com/mycila/maven/plugin/license/dependencies/DefaultLicensePolicyEnforcer.java" result="PRESENT"/>
+        <file path="src/main/java/com/mycila/maven/plugin/license/dependencies/LicenseMap.java" result="PRESENT"/>
+        <file path="src/main/java/com/mycila/maven/plugin/license/dependencies/LicenseMessage.java" result="PRESENT"/>
+        <file path="src/main/java/com/mycila/maven/plugin/license/dependencies/LicenseNameLicensePolicyEnforcer.java" result="PRESENT"/>
+        <file path="src/main/java/com/mycila/maven/plugin/license/dependencies/LicensePolicy.java" result="PRESENT"/>
+        <file path="src/main/java/com/mycila/maven/plugin/license/dependencies/LicensePolicyEnforcer.java" result="PRESENT"/>
+        <file path="src/main/java/com/mycila/maven/plugin/license/dependencies/LicensePolicyEnforcerResult.java" result="PRESENT"/>
+        <file path="src/main/java/com/mycila/maven/plugin/license/dependencies/LicenseURLLicensePolicyEnforcer.java" result="PRESENT"/>
+        <file path="src/main/java/com/mycila/maven/plugin/license/dependencies/MavenProjectLicenses.java" result="PRESENT"/>
+        <file path="src/main/java/com/mycila/maven/plugin/license/document/Document.java" result="PRESENT"/>
+        <file path="src/main/java/com/mycila/maven/plugin/license/document/DocumentFactory.java" result="PRESENT"/>
+        <file path="src/main/java/com/mycila/maven/plugin/license/document/DocumentPropertiesLoader.java" result="PRESENT"/>
+        <file path="src/main/java/com/mycila/maven/plugin/license/document/DocumentType.java" result="PRESENT"/>
+        <file path="src/main/java/com/mycila/maven/plugin/license/header/AdditionalHeaderDefinition.java" result="PRESENT"/>
+        <file path="src/main/java/com/mycila/maven/plugin/license/header/Header.java" result="PRESENT"/>
+        <file path="src/main/java/com/mycila/maven/plugin/license/header/HeaderDefinition.java" result="PRESENT"/>
+        <file path="src/main/java/com/mycila/maven/plugin/license/header/HeaderParser.java" result="PRESENT"/>
+        <file path="src/main/java/com/mycila/maven/plugin/license/header/HeaderSource.java" result="PRESENT"/>
+        <file path="src/main/java/com/mycila/maven/plugin/license/header/HeaderType.java" result="PRESENT"/>
+        <file path="src/main/java/com/mycila/maven/plugin/license/util/FileContent.java" result="PRESENT"/>
+        <file path="src/main/java/com/mycila/maven/plugin/license/util/FileUtils.java" result="PRESENT"/>
+        <file path="src/main/java/com/mycila/maven/plugin/license/util/Selection.java" result="PRESENT"/>
+        <file path="src/main/java/com/mycila/maven/plugin/license/util/StringUtils.java" result="PRESENT"/>
+        <file path="src/main/java/com/mycila/maven/plugin/license/util/resource/CustomClassLoader.java" result="PRESENT"/>
+        <file path="src/main/java/com/mycila/maven/plugin/license/util/resource/ResourceFinder.java" result="PRESENT"/>
+    </files>
+</licensePluginReport>
