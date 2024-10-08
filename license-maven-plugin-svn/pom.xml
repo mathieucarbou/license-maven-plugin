@@ -36,7 +36,7 @@
   <distributionManagement>
     <site>
       <id>report</id>
-      <url>https://oss.carbou.me/license-maven-plugin/reports/${project.version}/${project.artifactId}</url>
+      <url>https://mathieu.carbou.me/license-maven-plugin/reports/${project.version}/${project.artifactId}</url>
     </site>
   </distributionManagement>
 

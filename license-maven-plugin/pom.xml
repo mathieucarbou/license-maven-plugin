@@ -31,7 +31,7 @@
   <name>license-maven-plugin</name>
   <description>Maven 2 plugin to check and update license headers in source files</description>
   <inceptionYear>2008</inceptionYear>
-  <url>https://oss.carbou.me/license-maven-plugin</url>
+  <url>https://mathieu.carbou.me/license-maven-plugin</url>
 
   <prerequisites>
     <maven>3.6.3</maven>
@@ -172,7 +172,7 @@
   <distributionManagement>
     <site>
       <id>report</id>
-      <url>https://oss.carbou.me/license-maven-plugin/reports/${project.version}/${project.artifactId}</url>
+      <url>https://mathieu.carbou.me/license-maven-plugin/reports/${project.version}/${project.artifactId}</url>
     </site>
   </distributionManagement>
 

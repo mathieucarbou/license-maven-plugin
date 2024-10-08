@@ -20,7 +20,7 @@ under the License.
 <rss version="0.91">
   <channel>
     <title>license-maven-plugin-git - Checkstyle report</title>
-    <link>https://oss.carbou.me/license-maven-plugin/reports/4.2.rc3/license-maven-plugin-git</link>
+    <link>https://mathieu.carbou.me/license-maven-plugin/reports/4.2.rc3/license-maven-plugin-git</link>
     <description>license-maven-plugin-git - Checkstyle report</description>
     <language>en-us</language>
     <copyright>&#169;2008 - 2022 Mycila</copyright>
@@ -30,9 +30,9 @@ under the License.
              Warnings: 0,
              Infos: 0
       </title>
-            <link>https://oss.carbou.me/license-maven-plugin/reports/4.2.rc3/license-maven-plugin-git/checkstyle.html</link>
+            <link>https://mathieu.carbou.me/license-maven-plugin/reports/4.2.rc3/license-maven-plugin-git/checkstyle.html</link>
       <description>
-        <p>Click <a href="https://oss.carbou.me/license-maven-plugin/reports/4.2.rc3/license-maven-plugin-git/checkstyle.html">here</a> for the full Checkstyle report.</p>
+        <p>Click <a href="https://mathieu.carbou.me/license-maven-plugin/reports/4.2.rc3/license-maven-plugin-git/checkstyle.html">here</a> for the full Checkstyle report.</p>
 
         <table summary="Files" boder="1">
           <thead>

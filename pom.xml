@@ -27,7 +27,7 @@
   <name>license-maven-plugin-parent</name>
   <description>Contains a Maven 2 plugin to check and update license headers in source files and its optional dependencies</description>
   <inceptionYear>2008</inceptionYear>
-  <url>https://oss.carbou.me/license-maven-plugin/reports/${project.version}</url>
+  <url>https://mathieu.carbou.me/license-maven-plugin/reports/${project.version}</url>
 
   <issueManagement>
     <system>GitHub</system>
@@ -80,7 +80,7 @@
 
   <organization>
     <name>Mathieu Carbou</name>
-    <url>https://oss.carbou.me/</url>
+    <url>https://mathieu.carbou.me/</url>
   </organization>
 
   <developers>
@@ -227,7 +227,7 @@
     </snapshotRepository>
     <site>
       <id>report</id>
-      <url>https://oss.carbou.me/license-maven-plugin/reports/${project.version}</url>
+      <url>https://mathieu.carbou.me/license-maven-plugin/reports/${project.version}</url>
     </site>
   </distributionManagement>
 
