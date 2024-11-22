@@ -118,6 +118,10 @@ public final class Default {
       "**/pom.xml.releaseBackup",
       "**/pom.xml.versionsBackup",
 
+      // gradle files
+      "**/.gradle/**",
+      "**/build/**",
+
       // Node
       "**/node/**",
       "**/node_modules/**",
