@@ -1,2 +1,2 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
-license-maven-plugin-fs,com.mycila.maven.plugin.license.fs,CopyrightRangeProvider,54,61,1,3,9,14,1,4,0,3
+license-maven-plugin-fs,com.mycila.maven.plugin.license.fs,CopyrightRangeProvider,30,54,1,3,9,14,1,4,0,3
