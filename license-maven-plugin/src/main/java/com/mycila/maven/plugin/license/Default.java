@@ -118,6 +118,9 @@ public final class Default {
       "**/pom.xml.releaseBackup",
       "**/pom.xml.versionsBackup",
 
+      // angular files
+      "**/.angular/**",
+
       // gradle files
       "**/.gradle/**",
       "**/build/**",
