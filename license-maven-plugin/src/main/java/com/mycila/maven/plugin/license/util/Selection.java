@@ -117,6 +117,7 @@ public final class Selection {
   }
 
   private boolean isFolderExclusion(final String exclude) {
+    // Exclude is hard-coded values
     return exclude.endsWith("/**");
   }
 
