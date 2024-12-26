@@ -100,19 +100,24 @@ public final class Selection {
     }
   }
 
-  private String[] findFolderExcludes() { // less we keep, less overhead we get so we only use user excludes there
-    final List<String> excludes = new ArrayList<>(excluded.length / 2 /*estimate*/);
-    for (final String exclude : (userExcluded != null ? userExcluded : excluded)) {
+  private String[] findFolderExcludes() {
+    /* Estimate size of folder exclusions at half of the exclusion list. */
+    final List<String> excludes = new ArrayList<>(excluded.length / 2);
+    // Search all exclusions which includes user exclusions
+    for (final String exclude : excluded) {
       if (isFolderExclusion(exclude)) {
-        excludes.add(exclude);
+        // Replace file separator here
+        excludes.add(exclude.replace("/", File.separator));
       }
     }
-    Collections.reverse(excludes); // assume user ones are more important than the set of defaults we appended
+
+    // assume user ones are more important than the set of defaults we appended
+    Collections.reverse(excludes);
     return excludes.toArray(new String[0]);
   }
 
   private boolean isFolderExclusion(final String exclude) {
-    return exclude.endsWith(File.separator + "**");
+    return exclude.endsWith("/**");
   }
 
   private static String[] buildExclusions(boolean useDefaultExcludes, String[] excludes, String[] overrides) {
