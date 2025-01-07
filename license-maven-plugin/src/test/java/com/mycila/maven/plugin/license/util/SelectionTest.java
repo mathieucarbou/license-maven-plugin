@@ -134,4 +134,26 @@ class SelectionTest {
     }
     log.debug("Created '" + newFile.getAbsolutePath() + "'");
   }
+
+  @Test
+  void test_exclusions_respect_with_files_to_check() throws IOException {
+    SystemStreamLog log = new SystemStreamLog() {
+      @Override
+      public boolean isDebugEnabled() {
+        return true;
+      }
+    };
+    File root = createAFakeProject(log);
+    Selection selection = new Selection(
+        new String[] {"module/target/ignored.txt", "module/src/main/java/not-ignored.txt"},
+        new String[]{"**" + File.separator + "*.txt"},
+        new String[]{"target" + File.separator + "**", "module" + File.separator + "**" + File.separator + "target" + File.separator + "**"}, false,
+        log);
+
+    String[] selectedFiles = selection.getSelectedFiles(); // triggers scan and scanner build
+    org.assertj.core.api.Assertions.assertThat(selectedFiles)
+        .hasSize(1)
+        .allMatch(f -> f.equals("module/src/main/java/not-ignored.txt"));
+  }
+
 }

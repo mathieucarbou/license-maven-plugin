@@ -1,0 +1,15 @@
+{
+  "timestamp": "1631615047644",
+  "goal": "CHECK",
+  "module": {
+    "groupId": "com.mycila",
+    "artifactId": "license-maven-plugin",
+    "version": "4.2-SNAPSHOT"
+  },
+  "files": [
+    {
+      "path": "target/test/issues/issue-122/test_check_json_with_checkFiles/file2.mv",
+      "result": "MISSING"
+    }
+  ]
+}

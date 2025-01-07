@@ -23,6 +23,7 @@ import org.apache.maven.shared.utils.io.ScanConductor;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -35,22 +36,43 @@ public final class Selection {
   private final String[] excluded;
   private final Log log;
   private final String[] userExcluded;
+  private final String[] filesToCheck;
 
   private DirectoryScanner scanner;
 
   public Selection(File basedir, String[] included, String[] excluded, boolean useDefaultExcludes,
-                   final Log log) {
+      final Log log) {
     this.basedir = basedir;
     this.log = log;
     String[] overrides = buildOverrideInclusions(useDefaultExcludes, included);
     this.included = buildInclusions(included, overrides);
     this.userExcluded = excluded;
     this.excluded = buildExclusions(useDefaultExcludes, excluded, overrides);
+    this.filesToCheck = null;
+  }
+
+  public Selection(String[] filesToCheck, String[] included, String[] excluded, boolean useDefaultExcludes,
+  final Log log) {
+    this.basedir = null;
+    this.log = log;
+    String[] overrides = buildOverrideInclusions(useDefaultExcludes, included);
+    this.included = buildInclusions(included, overrides);
+    this.userExcluded = excluded;
+    this.excluded = buildExclusions(useDefaultExcludes, excluded, overrides);
+    this.filesToCheck = filesToCheck;
   }
 
   public String[] getSelectedFiles() {
-    scanIfneeded();
-    return scanner.getIncludedFiles();
+    if (filesToCheck == null) {
+      scanIfneeded();
+      return scanner.getIncludedFiles();
+    } else {
+      final MatchPatterns includePatterns = MatchPatterns.from(included);
+      final MatchPatterns excludePatterns = MatchPatterns.from(excluded);
+      return Arrays.stream(filesToCheck)
+        .filter(f -> includePatterns.matches(f, true) && !excludePatterns.matches(f, true))
+        .toArray(String[]::new);
+    }
   }
 
   // for tests

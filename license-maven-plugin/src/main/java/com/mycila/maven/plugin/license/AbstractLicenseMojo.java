@@ -200,6 +200,15 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
   public Map<String, String> defaultProperties = new HashMap<>();
 
   /**
+   * Specifies files, which files are to check. By default, all files
+   * are included.
+   *
+   */
+  @Parameter(alias = "filesToCheck", property = "license.filesToCheck")
+  public String[] filesToCheck = new String[0];
+
+
+  /**
    * Specifies files, which are included in the check. By default, all files
    * are included.
    *
@@ -786,14 +795,22 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
   }
 
   private String[] listSelectedFiles(final LicenseSet licenseSet) {
-    final boolean useDefaultExcludes = (licenseSet.useDefaultExcludes != null ? licenseSet.useDefaultExcludes : defaultUseDefaultExcludes);
-    final Selection selection = new Selection(
-        firstNonNull(licenseSet.basedir, defaultBasedir), licenseSet.includes, buildExcludes(licenseSet), useDefaultExcludes,
-        getLog());
-    debug("From: %s", firstNonNull(licenseSet.basedir, defaultBasedir));
-    debug("Including: %s", deepToString(selection.getIncluded()));
-    debug("Excluding: %s", deepToString(selection.getExcluded()));
-    return selection.getSelectedFiles();
+    final boolean useDefaultExcludes = (licenseSet.useDefaultExcludes != null ? licenseSet.useDefaultExcludes
+        : defaultUseDefaultExcludes);
+    if (filesToCheck == null || filesToCheck.length == 0) {
+      final Selection selection = new Selection(firstNonNull(licenseSet.basedir, defaultBasedir), licenseSet.includes, buildExcludes(licenseSet),
+          useDefaultExcludes, getLog());
+      debug("From: %s", firstNonNull(licenseSet.basedir, defaultBasedir));
+      debug("Including: %s", deepToString(selection.getIncluded()));
+      debug("Excluding: %s", deepToString(selection.getExcluded()));
+      return selection.getSelectedFiles();
+    } else {
+      final Selection selection = new Selection(filesToCheck, licenseSet.includes, buildExcludes(licenseSet),
+          useDefaultExcludes, getLog());
+      debug("Including: %s", deepToString(selection.getIncluded()));
+      debug("Excluding: %s", deepToString(selection.getExcluded()));
+      return selection.getSelectedFiles();
+    }
   }
 
   private String[] buildExcludes(final LicenseSet licenseSet) {

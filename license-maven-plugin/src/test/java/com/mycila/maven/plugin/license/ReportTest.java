@@ -57,7 +57,7 @@ class ReportTest {
     plugin.project = mavenProjectStub;
     plugin.defaultBasedir = tmp;
     plugin.legacyConfigHeader = "src/test/resources/issues/issue-122/header.txt";
-    plugin.legacyConfigIncludes = new String[]{"file*.*"};
+    plugin.legacyConfigIncludes = new String[] { "file*.*" };
     plugin.reportLocation = new File(tmp, "report/license-plugin-report.xml");
 
     try {
@@ -67,9 +67,35 @@ class ReportTest {
     }
 
     String processed = unixify(FileUtils.read(plugin.reportLocation, Charset.defaultCharset()));
-    String expected = FileUtils.read(new File("src/test/resources/issues/issue-122/check.xml"), Charset.defaultCharset());
+    String expected = FileUtils.read(new File("src/test/resources/issues/issue-122/check.xml"),
+        Charset.defaultCharset());
     assertThat(processed, is(equalTo(expected)));
   }
+
+  @Test
+  void test_check_xml_with_checkFiles() throws Exception {
+    File tmp = new File("target/test/issues/issue-122/test_check_xml_with_checkFiles");
+    FileUtils.copyFilesToFolder(new File("src/test/resources/issues/issue-122"), tmp);
+
+    AbstractLicenseMojo plugin = new LicenseCheckMojo();
+    plugin.clock = Clock.fixed(Instant.ofEpochMilli(1631615047644L), ZoneId.systemDefault());
+    plugin.project = mavenProjectStub;
+    plugin.defaultBasedir = tmp;
+    plugin.legacyConfigHeader = "src/test/resources/issues/issue-122/header.txt";
+    plugin.filesToCheck = new String[]{"file2.mv"};
+    plugin.reportLocation = new File(tmp, "report/license-plugin-report.xml");
+
+    try {
+      plugin.execute();
+      Assertions.fail();
+    } catch (MojoExecutionException | MojoFailureException e) {
+    }
+
+    String processed = unixify(FileUtils.read(plugin.reportLocation, Charset.defaultCharset()));
+    String expected = FileUtils.read(new File("src/test/resources/issues/issue-122/check_checkFiles.xml"), Charset.defaultCharset());
+    assertThat(processed, is(equalTo(expected)));
+  }
+
 
   @Test
   void test_check_json() throws Exception {
@@ -94,6 +120,31 @@ class ReportTest {
     String expected = FileUtils.read(new File("src/test/resources/issues/issue-122/check.json"), Charset.defaultCharset());
     assertThat(processed, is(equalTo(expected)));
   }
+
+  @Test
+  void test_check_json_with_checkFiles() throws Exception {
+    File tmp = new File("target/test/issues/issue-122/test_check_json_with_checkFiles");
+    FileUtils.copyFilesToFolder(new File("src/test/resources/issues/issue-122"), tmp);
+
+    AbstractLicenseMojo plugin = new LicenseCheckMojo();
+    plugin.clock = Clock.fixed(Instant.ofEpochMilli(1631615047644L), ZoneId.systemDefault());
+    plugin.project = mavenProjectStub;
+    plugin.defaultBasedir = tmp;
+    plugin.legacyConfigHeader = "src/test/resources/issues/issue-122/header.txt";
+    plugin.filesToCheck = new String[]{"file2.mv"};
+    plugin.reportLocation = new File(tmp, "report/license-plugin-report.json");
+
+    try {
+      plugin.execute();
+      Assertions.fail();
+    } catch (MojoExecutionException | MojoFailureException e) {
+    }
+
+    String processed = unixify(FileUtils.read(plugin.reportLocation, Charset.defaultCharset()));
+    String expected = FileUtils.read(new File("src/test/resources/issues/issue-122/check_checkFiles.json"), Charset.defaultCharset());
+    assertThat(processed, is(equalTo(expected)));
+  }
+
 
   @Test
   void test_format_xml() throws Exception {
@@ -165,13 +216,14 @@ class ReportTest {
     plugin.project = mavenProjectStub;
     plugin.defaultBasedir = tmp;
     plugin.legacyConfigHeader = "src/test/resources/issues/issue-122/header.txt";
-    plugin.legacyConfigIncludes = new String[]{"file*.*"};
+    plugin.legacyConfigIncludes = new String[] { "file*.*" };
     plugin.reportLocation = new File(tmp, "report/license-plugin-report.json");
 
     plugin.execute();
 
     String processed = unixify(FileUtils.read(plugin.reportLocation, Charset.defaultCharset()));
-    String expected = FileUtils.read(new File("src/test/resources/issues/issue-122/remove.json"), Charset.defaultCharset());
+    String expected = FileUtils.read(new File("src/test/resources/issues/issue-122/remove.json"),
+        Charset.defaultCharset());
     assertThat(processed, is(equalTo(expected)));
   }
 

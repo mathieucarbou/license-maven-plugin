@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<licensePluginReport goal="CHECK" timestamp="1631615047644">
+    <module artifactId="license-maven-plugin" groupId="com.mycila" version="4.2-SNAPSHOT"/>
+    <files>
+        <file path="target/test/issues/issue-122/test_check_xml_with_checkFiles/file2.mv" result="MISSING"/>
+    </files>
+</licensePluginReport>
