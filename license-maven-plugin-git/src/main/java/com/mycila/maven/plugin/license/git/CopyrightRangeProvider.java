@@ -15,15 +15,17 @@
  */
 package com.mycila.maven.plugin.license.git;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
+
+import org.eclipse.jgit.api.errors.GitAPIException;
+
 import com.mycila.maven.plugin.license.AbstractLicenseMojo;
 import com.mycila.maven.plugin.license.PropertiesProvider;
 import com.mycila.maven.plugin.license.document.Document;
-import org.eclipse.jgit.api.errors.GitAPIException;
-
-import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * An implementation of {@link PropertiesProvider} that adds {@value #COPYRIGHT_LAST_YEAR_KEY} and
@@ -58,7 +60,8 @@ public class CopyrightRangeProvider implements PropertiesProvider {
   }
 
   /**
-   * Returns an unmodifiable map containing the following entries, whose values are set based on inspecting git history.
+   * Returns an unmodifiable map containing the following entries, whose values
+   * are set based on inspecting git history.
    *
    * <ul>
    * <li>{@value #COPYRIGHT_LAST_YEAR_KEY} key stores the year from the committer date of the last git commit that has
@@ -76,50 +79,72 @@ public class CopyrightRangeProvider implements PropertiesProvider {
    * {@link RuntimeException} is thrown.
    */
   @Override
-  public Map<String, String> adjustProperties(AbstractLicenseMojo mojo,
-                                              Map<String, String> properties, Document document) {
+  public Map<String, Supplier<String>> adjustLazyProperties(AbstractLicenseMojo mojo, Map<String, String> properties, Document document) {
     String inceptionYear = properties.get(INCEPTION_YEAR_KEY);
     if (inceptionYear == null) {
-      throw new RuntimeException("'" + INCEPTION_YEAR_KEY + "' must have a value for file "
-          + document.getFile().getAbsolutePath());
+      throw new RuntimeException("'" + INCEPTION_YEAR_KEY + "' must have a value for file " + document.getFile().getAbsolutePath());
     }
     final int inceptionYearInt;
     try {
       inceptionYearInt = Integer.parseInt(inceptionYear);
     } catch (NumberFormatException e1) {
       throw new RuntimeException(
-          "'" + INCEPTION_YEAR_KEY + "' must be an integer ; found = " + inceptionYear + " file: "
-              + document.getFile().getAbsolutePath());
+          "'" + INCEPTION_YEAR_KEY + "' must be an integer ; found = " + inceptionYear + " file: " + document.getFile().getAbsolutePath());
     }
-    try {
-      Map<String, String> result = new HashMap<>(4);
 
-      int copyrightEnd = gitLookup.getYearOfLastChange(document.getFile());
-      result.put(COPYRIGHT_LAST_YEAR_KEY, Integer.toString(copyrightEnd));
-      final String copyrightYears;
-      if (inceptionYearInt >= copyrightEnd) {
-        copyrightYears = inceptionYear;
-      } else {
-        copyrightYears = inceptionYear + "-" + copyrightEnd;
+    var memoedGetYearOfLastChange = memoized(() -> {
+      try {
+        return gitLookup.getYearOfLastChange(document.getFile());
+      } catch (IOException | GitAPIException e) {
+        throw toRuntimeException(document.getFile(), e);
       }
-      result.put(COPYRIGHT_YEARS_KEY, copyrightYears);
+    });
 
-      int copyrightStart = gitLookup.getYearOfCreation(document.getFile());
-      result.put(COPYRIGHT_CREATION_YEAR_KEY, Integer.toString(copyrightStart));
-
-      final String copyrightExistenceYears;
-      if (copyrightStart >= copyrightEnd) {
-        copyrightExistenceYears = Integer.toString(copyrightStart);
-      } else {
-        copyrightExistenceYears = copyrightStart + "-" + copyrightEnd;
+    var memoedGetYearOfCreation = memoized(() -> {
+      try {
+        return gitLookup.getYearOfCreation(document.getFile());
+      } catch (IOException e) {
+        throw toRuntimeException(document.getFile(), e);
       }
-      result.put(COPYRIGHT_EXISTENCE_YEARS_KEY, copyrightExistenceYears);
+    });
 
-      return Collections.unmodifiableMap(result);
-    } catch (IOException | GitAPIException e) {
-      throw new RuntimeException(
-          "CopyrightRangeProvider error on file: " + document.getFile().getAbsolutePath() + ": "
-              + e.getMessage(), e);
-    }
+    return Map.of(
+        COPYRIGHT_LAST_YEAR_KEY, () -> {
+          return memoedGetYearOfLastChange.get().toString();
+        }, COPYRIGHT_YEARS_KEY, () -> {
+          int copyrightEnd = memoedGetYearOfLastChange.get();
+          final String copyrightYears;
+          if (inceptionYearInt >= copyrightEnd) {
+            copyrightYears = inceptionYear;
+          } else {
+            copyrightYears = inceptionYear + "-" + copyrightEnd;
+          }
+          return copyrightYears;
+        }, COPYRIGHT_CREATION_YEAR_KEY, () -> {
+          return memoedGetYearOfCreation.get().toString();
+        }, COPYRIGHT_EXISTENCE_YEARS_KEY, () -> {
+          int copyrightEnd = memoedGetYearOfLastChange.get();
+          int copyrightStart = memoedGetYearOfCreation.get();
+          final String copyrightExistenceYears;
+          if (copyrightStart >= copyrightEnd) {
+            copyrightExistenceYears = Integer.toString(copyrightStart);
+          } else {
+            copyrightExistenceYears = copyrightStart + "-" + copyrightEnd;
+          }
+          return copyrightExistenceYears;
+        });
   }
+
+  static <E extends Exception, T> Supplier<T> memoized(Supplier<T> supplier) {
+    var cached = new AtomicReference<T>();
+    return () -> {
+      return cached.updateAndGet(v -> v == null ? supplier.get() : v);
+    };
+  }
+
+  static <E extends Exception> RuntimeException toRuntimeException(File file, E e) {
+    return new RuntimeException(
+        "CopyrightRangeProvider error on file: " + file.getAbsolutePath() + ": " + e.getMessage(), e);
+  }
+
 }

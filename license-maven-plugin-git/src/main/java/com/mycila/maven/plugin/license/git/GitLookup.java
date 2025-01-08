@@ -93,8 +93,8 @@ public class GitLookup implements AutoCloseable {
         .orElse(GitLookup.DateSource.AUTHOR);
 
     final int checkCommitsCount = Stream.of(
-            MAX_COMMITS_LOOKUP_KEY,
-            COPYRIGHT_LAST_YEAR_MAX_COMMITS_LOOKUP_KEY) // Backwards compatibility
+        MAX_COMMITS_LOOKUP_KEY,
+        COPYRIGHT_LAST_YEAR_MAX_COMMITS_LOOKUP_KEY) // Backwards compatibility
         .map(props::get)
         .filter(Objects::nonNull)
         .map(String::trim)

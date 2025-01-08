@@ -70,6 +70,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
@@ -642,19 +643,20 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
 
         Map<String, String> readOnly = Collections.unmodifiableMap(perDoc);
 
+        Map<String, Supplier<String>> perDocAdjustments = new LinkedHashMap<>();
         for (final PropertiesProvider provider : propertiesProviders) {
           try {
-            final Map<String, String> adjustments = provider.adjustProperties(
+            final Map<String, Supplier<String>> adjustments = provider.adjustLazyProperties(
                 AbstractLicenseMojo.this, readOnly, document);
             if (getLog().isDebugEnabled()) {
               getLog().debug("provider: " + provider.getClass() + " adjusted these properties:\n"
                   + adjustments);
             }
-            for (Map.Entry<String, String> entry : adjustments.entrySet()) {
+            for (Map.Entry<String, Supplier<String>> entry : adjustments.entrySet()) {
               if (entry.getValue() != null) {
-                perDoc.put(entry.getKey(), entry.getValue());
+                perDocAdjustments.put(entry.getKey(), entry.getValue());
               } else {
-                perDoc.remove(entry.getKey());
+                perDocAdjustments.remove(entry.getKey());
               }
             }
           } catch (Exception e) {
@@ -669,7 +671,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
               .map(Objects::toString).collect(Collectors.joining("\n - ")));
         }
 
-        return perDoc;
+        return new ForwardingMap<>(readOnly, perDocAdjustments);
       };
 
       final DocumentFactory documentFactory = new DocumentFactory(
@@ -927,5 +929,26 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
 
   private static <T> T firstNonNull(final T t1, final T t2) {
     return t1 == null ? t2 : t1;
+  }
+
+  static class ForwardingMap<K, V> extends HashMap<K, V> {
+    private Map<K, V> base;
+    private Map<K, Supplier<V>> adjustments;
+
+    ForwardingMap(Map<K, V> base, Map<K, Supplier<V>> adjustments) {
+      this.base = base;
+      this.adjustments = adjustments;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public V get(Object key) {
+      return super.compute(
+          (K) key,
+          (K k, V v) -> v != null ? v
+              : adjustments.containsKey(key)
+              ? adjustments.get(key).get()
+              : base.get(key));
+    }
   }
 }
