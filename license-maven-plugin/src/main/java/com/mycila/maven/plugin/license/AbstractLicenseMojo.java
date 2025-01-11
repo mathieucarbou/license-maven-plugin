@@ -84,7 +84,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
 
   private static final String[] DEFAULT_KEYWORDS = {"copyright"};
 
-  @Parameter
+  @Parameter(property = "license.licenseSets", alias = "licenseSets")
   public LicenseSet[] licenseSets;
 
   /**

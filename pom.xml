@@ -421,6 +421,7 @@ limitations under the License.
                   <exclude>.config/**</exclude>
                   <!-- TODO: Remove after 4.4 release -->
                   <exclude>**/*.checkstyle</exclude>
+                  <exclude>.vscode/**</exclude>
                 </excludes>
               </licenseSet>
             </licenseSets>
