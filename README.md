@@ -24,3 +24,7 @@ Often necessary to exclude a number of files that would otherwise grow the exclu
 Version >= 5.0.0 will require Java 11.
 
 Version >= 6.0.0 will require Java 17.
+
+### Supported by
+
+[![JetBrains logo.](https://resources.jetbrains.com/storage/products/company/brand/logos/jetbrains.svg)](https://jb.gg/OpenSourceSupport)

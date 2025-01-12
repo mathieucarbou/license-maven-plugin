@@ -24,6 +24,7 @@ Basically, when you are developing a project either in open source or in a compa
     - [Requirements](#requirements)
     - [Releasing a version](#releasing-a-version)
     - [Generate site from any branch or tag](#generate-site-from-any-branch-or-tag)
+  - [Supported by](#supported-by)
 
 ## Features
 
@@ -796,3 +797,8 @@ Then you should see a few minutes later the new version at https://repo1.maven.o
 ```bash
 ./mvnw clean install site
 ```
+
+### Supported by
+
+[![JetBrains logo.](https://resources.jetbrains.com/storage/products/company/brand/logos/jetbrains.svg)](https://jb.gg/OpenSourceSupport)
+

@@ -126,4 +126,8 @@ public class LicenseSet {
   @Parameter(property = "license.useDefaultExcludes")
   public Boolean useDefaultExcludes;
 
+  @Override
+  public String toString() {
+    return header;
+  }
 }
