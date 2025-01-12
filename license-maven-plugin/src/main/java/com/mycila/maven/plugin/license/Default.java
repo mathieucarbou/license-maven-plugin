@@ -150,6 +150,9 @@ public final class Default {
       // Netbeans
       "**/nb-configuration.xml",
 
+      // VSCode
+      "**/.vscode/**",
+
       // Hibernate Validator Annotation Processor
       "**/.factorypath",
 
