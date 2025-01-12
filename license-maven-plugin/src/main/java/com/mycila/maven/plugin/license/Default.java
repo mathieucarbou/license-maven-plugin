@@ -249,6 +249,9 @@ public final class Default {
       "**/maven-wrapper.properties",
       "**/MavenWrapperDownloader.java",
 
+      // Profiler
+      "**/.profiler/**"
+
       // flash
       "**/*.swf",
 
