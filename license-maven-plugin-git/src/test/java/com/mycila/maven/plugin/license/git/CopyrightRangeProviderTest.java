@@ -30,8 +30,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 class CopyrightRangeProviderTest {
 
@@ -74,8 +72,7 @@ class CopyrightRangeProviderTest {
     props.put(CopyrightRangeProvider.INCEPTION_YEAR_KEY, inceptionYear);
 
     Document document = newDocument(path);
-    Map<String, Supplier<String>> lazy = provider.adjustLazyProperties(new LicenseCheckMojo(), props, document);
-    Map<String, String> actual = lazy.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().get(), (a, b) -> a));
+    Map<String, String> actual = provider.adjustProperties(new LicenseCheckMojo(), props, document);
 
     HashMap<String, String> expected = new HashMap<String, String>();
     expected.put(CopyrightRangeProvider.COPYRIGHT_CREATION_YEAR_KEY, copyrightStart);

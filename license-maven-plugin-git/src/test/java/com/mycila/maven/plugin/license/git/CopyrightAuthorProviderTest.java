@@ -30,8 +30,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 class CopyrightAuthorProviderTest {
 
@@ -52,12 +50,12 @@ class CopyrightAuthorProviderTest {
       String path = "dir1/file1.txt";
 
       Document document = newDocument(path);
-      Map<String, Supplier<String>> lazy = provider.adjustLazyProperties(mojo, props, document);
-      Map<String, String> actual = lazy.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().get(), (a, b) -> a));
+      Map<String, String> actual = provider.adjustProperties(mojo, props, document);
 
       HashMap<String, String> expected = new HashMap<String, String>();
       expected.put(CopyrightAuthorProvider.COPYRIGHT_CREATION_AUTHOR_NAME_KEY, "Peter Palaga");
-      expected.put(CopyrightAuthorProvider.COPYRIGHT_CREATION_AUTHOR_EMAIL_KEY, "ppalaga@redhat.com");
+      expected.put(CopyrightAuthorProvider.COPYRIGHT_CREATION_AUTHOR_EMAIL_KEY,
+          "ppalaga@redhat.com");
       Assertions.assertEquals(expected, actual, "for file '" + path + "': ");
 
     }

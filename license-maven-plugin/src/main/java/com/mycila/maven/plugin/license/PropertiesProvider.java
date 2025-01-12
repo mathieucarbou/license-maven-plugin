@@ -19,8 +19,6 @@ import com.mycila.maven.plugin.license.document.Document;
 
 import java.util.Collections;
 import java.util.Map;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 /**
  */
@@ -36,15 +34,8 @@ public interface PropertiesProvider extends AutoCloseable {
     return Collections.emptyMap();
   }
 
-    default Map<String, Supplier<String>> adjustLazyProperties(AbstractLicenseMojo mojo, Map<String, String> currentProperties, Document document) {
-        return adjustProperties(mojo, null, document).entrySet().stream().collect(Collectors.toMap(
-                Map.Entry::getKey, e -> () -> e.getValue(), (a, b) -> {
-                    throw new UnsupportedOperationException();
-                }));
-    }
-
-    @Override
-    default void close() {
-        // Do nothing on default
-    }
+  @Override
+  default void close() {
+      // Do nothing on default
+  }
 }

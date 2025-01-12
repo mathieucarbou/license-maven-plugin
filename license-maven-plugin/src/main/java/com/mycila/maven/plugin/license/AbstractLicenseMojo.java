@@ -26,6 +26,8 @@ import com.mycila.maven.plugin.license.header.Header;
 import com.mycila.maven.plugin.license.header.HeaderDefinition;
 import com.mycila.maven.plugin.license.header.HeaderSource;
 import com.mycila.maven.plugin.license.header.HeaderType;
+import com.mycila.maven.plugin.license.util.Fn;
+import com.mycila.maven.plugin.license.util.LazyMap;
 import com.mycila.maven.plugin.license.util.Selection;
 import com.mycila.maven.plugin.license.util.resource.ResourceFinder;
 import com.mycila.xmltool.XMLDoc;
@@ -638,26 +640,22 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
       final DocumentPropertiesLoader perDocumentProperties = document -> {
 
         // then add per document properties
-        Map<String, String> perDoc = new LinkedHashMap<>(globalProperties);
-        perDoc.put("file.name", document.getFile().getName());
+        LazyMap<String, String> perDoc = new LazyMap<>(key -> {
+          return Objects.equals(key, "file.name") ? document.getFile().getName() : globalProperties.get(key);
+        });
 
         Map<String, String> readOnly = Collections.unmodifiableMap(perDoc);
 
-        Map<String, Supplier<String>> perDocAdjustments = new LinkedHashMap<>();
         for (final PropertiesProvider provider : propertiesProviders) {
           try {
-            final Map<String, Supplier<String>> adjustments = provider.adjustLazyProperties(
+            final Map<String, String> adjustments = provider.adjustProperties(
                 AbstractLicenseMojo.this, readOnly, document);
             if (getLog().isDebugEnabled()) {
               getLog().debug("provider: " + provider.getClass() + " adjusted these properties:\n"
                   + adjustments);
             }
-            for (Map.Entry<String, Supplier<String>> entry : adjustments.entrySet()) {
-              if (entry.getValue() != null) {
-                perDocAdjustments.put(entry.getKey(), entry.getValue());
-              } else {
-                perDocAdjustments.remove(entry.getKey());
-              }
+            for (String key : adjustments.keySet()) {
+              perDoc.putSupplier(key, () -> adjustments.get(key));
             }
           } catch (Exception e) {
             if (getLog().isWarnEnabled()) {
@@ -671,7 +669,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
               .map(Objects::toString).collect(Collectors.joining("\n - ")));
         }
 
-        return new ForwardingMap<>(readOnly, perDocAdjustments);
+        return perDoc;
       };
 
       final DocumentFactory documentFactory = new DocumentFactory(
@@ -929,26 +927,5 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
 
   private static <T> T firstNonNull(final T t1, final T t2) {
     return t1 == null ? t2 : t1;
-  }
-
-  static class ForwardingMap<K, V> extends HashMap<K, V> {
-    private Map<K, V> base;
-    private Map<K, Supplier<V>> adjustments;
-
-    ForwardingMap(Map<K, V> base, Map<K, Supplier<V>> adjustments) {
-      this.base = base;
-      this.adjustments = adjustments;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public V get(Object key) {
-      return super.compute(
-          (K) key,
-          (K k, V v) -> v != null ? v
-              : adjustments.containsKey(key)
-              ? adjustments.get(key).get()
-              : base.get(key));
-    }
   }
 }

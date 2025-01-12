@@ -18,11 +18,13 @@ package com.mycila.maven.plugin.license.git;
 import com.mycila.maven.plugin.license.AbstractLicenseMojo;
 import com.mycila.maven.plugin.license.PropertiesProvider;
 import com.mycila.maven.plugin.license.document.Document;
+import com.mycila.maven.plugin.license.util.LazyMap;
+import com.mycila.maven.plugin.license.util.Fn;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.util.Collections;
 import java.util.Map;
-import java.util.function.Supplier;
 
 /**
  * An implementation of {@link PropertiesProvider} that adds {@value
@@ -63,23 +65,23 @@ public class CopyrightAuthorProvider implements PropertiesProvider {
    * </ul>
    */
   @Override
-  public Map<String, Supplier<String>> adjustLazyProperties(AbstractLicenseMojo mojo, Map<String, String> properties, Document document) {
-
-    return Map.of(
-        COPYRIGHT_CREATION_AUTHOR_NAME_KEY, () -> {
-          try {
-            return gitLookup.getAuthorNameOfCreation(document.getFile());
-          } catch (IOException e) {
-            throw new UncheckedIOException(
-                "CopyrightAuthorProvider error on file: " + document.getFile().getAbsolutePath() + ": " + e.getMessage(), e);
-          }
-        }, COPYRIGHT_CREATION_AUTHOR_EMAIL_KEY, () -> {
-          try {
-            return gitLookup.getAuthorEmailOfCreation(document.getFile());
-          } catch (IOException e) {
-            throw new UncheckedIOException(
-                "CopyrightAuthorProvider error on file: " + document.getFile().getAbsolutePath() + ": " + e.getMessage(), e);
-          }
-        });
+  public Map<String, String> adjustProperties(AbstractLicenseMojo mojo,
+                                              Map<String, String> properties, Document document) {
+    LazyMap<String, String> result = new LazyMap<>(2);
+    result.putSupplier(COPYRIGHT_CREATION_AUTHOR_NAME_KEY, Fn.memoize(() -> {
+      try {
+        return gitLookup.getAuthorNameOfCreation(document.getFile());
+      } catch (IOException e) {
+        throw new UncheckedIOException("CopyrightAuthorProvider error on file: " + document.getFile().getAbsolutePath() + ": " + e.getMessage(), e);
+      }
+    }));
+    result.putSupplier(COPYRIGHT_CREATION_AUTHOR_EMAIL_KEY, Fn.memoize(() -> {
+      try {
+        return gitLookup.getAuthorEmailOfCreation(document.getFile());
+      } catch (IOException e) {
+        throw new UncheckedIOException("CopyrightAuthorProvider error on file: " + document.getFile().getAbsolutePath() + ": " + e.getMessage(), e);
+      }
+    }));
+    return Collections.unmodifiableMap(result);
   }
 }
