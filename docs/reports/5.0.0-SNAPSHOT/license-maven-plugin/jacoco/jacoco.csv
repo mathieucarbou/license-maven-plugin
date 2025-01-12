@@ -10,6 +10,9 @@ license-maven-plugin,com.mycila.maven.plugin.license.dependencies,LicensePolicy.
 license-maven-plugin,com.mycila.maven.plugin.license.dependencies,AggregateLicensePolicyEnforcer,31,216,3,7,10,37,9,17,6,14
 license-maven-plugin,com.mycila.maven.plugin.license.dependencies,LicenseNameLicensePolicyEnforcer,0,21,0,0,0,5,0,3,0,3
 license-maven-plugin,com.mycila.maven.plugin.license.dependencies,ArtifactLicensePolicyEnforcer,7,25,0,0,3,6,1,3,1,3
+license-maven-plugin,com.mycila.maven.plugin.license.util,LazyMap,247,51,24,2,65,9,33,6,21,5
+license-maven-plugin,com.mycila.maven.plugin.license.util,Fn.new Supplier() {...},20,0,2,0,5,0,3,0,2,0
+license-maven-plugin,com.mycila.maven.plugin.license.util,Fn,8,0,0,0,2,0,2,0,2,0
 license-maven-plugin,com.mycila.maven.plugin.license.util,FileUtils,6,208,0,10,2,39,0,17,0,12
 license-maven-plugin,com.mycila.maven.plugin.license.util,StringUtils,0,53,1,9,0,10,1,6,0,2
 license-maven-plugin,com.mycila.maven.plugin.license.util,Selection.new ScanConductor() {...},0,21,0,2,0,5,0,4,0,3
@@ -21,7 +24,7 @@ license-maven-plugin,com.mycila.maven.plugin.license,Report.Action,0,21,0,0,0,1,
 license-maven-plugin,com.mycila.maven.plugin.license,HeaderSection,0,31,0,0,0,13,0,9,0,9
 license-maven-plugin,com.mycila.maven.plugin.license,AbstractLicenseMojo.AbstractCallback,0,57,0,4,0,12,0,5,0,3
 license-maven-plugin,com.mycila.maven.plugin.license,HelpMojo,773,0,112,0,156,0,72,0,16,0
-license-maven-plugin,com.mycila.maven.plugin.license,AbstractLicenseMojo,281,1190,63,119,56,213,49,66,2,22
+license-maven-plugin,com.mycila.maven.plugin.license,AbstractLicenseMojo,276,1196,62,120,55,212,48,69,2,24
 license-maven-plugin,com.mycila.maven.plugin.license,LicenseRemoveMojo,25,62,2,4,4,16,2,4,0,3
 license-maven-plugin,com.mycila.maven.plugin.license,Credentials,15,0,0,0,6,0,3,0,3,0
 license-maven-plugin,com.mycila.maven.plugin.license,LicenseFormatMojo,0,35,1,1,0,8,1,2,0,2
