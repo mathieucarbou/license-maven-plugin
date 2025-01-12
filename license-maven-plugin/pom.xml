@@ -228,11 +228,6 @@
       <artifactId>plexus-utils</artifactId>
       <version>4.0.2</version>
     </dependency>
-    <dependency>
-      <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-xml</artifactId>
-      <version>3.0.1</version>
-    </dependency>
 
     <dependency>
       <groupId>com.mycila</groupId>
