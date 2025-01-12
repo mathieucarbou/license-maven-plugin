@@ -169,14 +169,14 @@ public final class Default {
       "**/LICENSE_HEADER",
 
       // binary files - images
-      "**/*.jpg",
-      "**/*.png",
+      "**/*.bmp",
+      "**/*.cr2",
       "**/*.gif",
       "**/*.ico",
-      "**/*.bmp",
+      "**/*.jpg",
+      "**/*.png",
       "**/*.tiff",
       "**/*.tif",
-      "**/*.cr2",
       "**/*.xcf",
 
       // binary files - programs
@@ -202,17 +202,17 @@ public final class Default {
       "**/*.pub",
 
       // binary files - archives
+      "**/*.7z",
       "**/*.ear",
+      "**/*.gz",
       "**/*.jar",
-      "**/*.war",
-      "**/*.zip",
       "**/*.rar",
       "**/*.tar",
       "**/*.tar.bz2",
       "**/*.tar.bz3",
       "**/*.tar.xz",
-      "**/*.gz",
-      "**/*.7z",
+      "**/*.war",
+      "**/*.zip",
 
       // ServiceLoader files
       "**/META-INF/services/**",
@@ -221,11 +221,11 @@ public final class Default {
       "**/*.md",
 
       // Office documents
-      "**/*.xls",
       "**/*.doc",
       "**/*.odt",
       "**/*.ods",
       "**/*.pdf",
+      "**/*.xls",
 
       // Travis
       "**/.travis.yml",
@@ -264,9 +264,9 @@ public final class Default {
       "**/*.json",
 
       // fonts
-      "**/*.svg",
       "**/*.eot",
       "**/*.otf",
+      "**/*.svg",
       "**/*.ttf",
       "**/*.woff",
       "**/*.woff2",
@@ -275,10 +275,10 @@ public final class Default {
       "**/*.log",
 
       // office documents
-      "**/*.xlsx",
       "**/*.docx",
       "**/*.ppt",
       "**/*.pptx",
+      "**/*.xlsx",
 
       // String Template
       "**/*.st",
