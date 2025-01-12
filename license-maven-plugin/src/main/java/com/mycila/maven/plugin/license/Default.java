@@ -203,7 +203,6 @@ public final class Default {
       "**/*.jar",
       "**/*.rar",
       "**/*.tar",
-      "**/*.tar.gz",
       "**/*.tar.bz2",
       "**/*.tar.bz3",
       "**/*.tar.xz",
