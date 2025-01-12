@@ -416,7 +416,6 @@ limitations under the License.
                 </properties>
                 <excludes>
                   <exclude>src/test/resources/**</exclude>
-                  <exclude>**/release-pom.xml</exclude>
                   <exclude>docs/**</exclude>
                   <exclude>.config/**</exclude>
                   <!-- TODO: Remove after 5.0.0 release -->
