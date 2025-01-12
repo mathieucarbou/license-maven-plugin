@@ -22,7 +22,6 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 /**
@@ -78,9 +77,9 @@ public final class ResourceFinder {
 
     // if not found, search for absolute location on file system, or relative to execution dir
     try {
-      res = toURL(Paths.get(resource));
+      res = toURL(Path.of(resource));
     } catch (final InvalidPathException e) {
-      // no-op - can be caused by resource being a URI on windows when Paths.get is called
+      // no-op - can be caused by resource being a URI on windows when Path.of is called
     }
     if (res != null) {
       return res;

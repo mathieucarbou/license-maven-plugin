@@ -23,7 +23,6 @@ import org.junit.jupiter.api.Test;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
 
 class ResourceFinderTest {
@@ -32,17 +31,17 @@ class ResourceFinderTest {
 
   @BeforeAll
   static void setup() {
-    finder = new ResourceFinder(Paths.get("."));
+    finder = new ResourceFinder(Path.of("."));
     finder.setCompileClassPath(Arrays.asList("src/test/data/compileCP"));
     finder.setPluginClassPath(ResourceFinderTest.class.getClassLoader());
   }
 
   @Test
   void test_load_absolute_file() throws Exception {
-    final Path path = Paths.get("src").resolve("test/data/compileCP/test.txt").toAbsolutePath();
+    final Path path = Path.of("src").resolve("test/data/compileCP/test.txt").toAbsolutePath();
     Assertions.assertTrue(Files.exists(path));
     final URL u = finder.findResource(path.toString());
-    Assertions.assertEquals(path, Paths.get(u.toURI()));
+    Assertions.assertEquals(path, Path.of(u.toURI()));
   }
 
   @Test
@@ -71,7 +70,7 @@ class ResourceFinderTest {
 
   @Test
   void test_load_from_URL() throws Exception {
-    final Path path = Paths.get("src").resolve("test/data/compileCP/test.txt").toAbsolutePath();
+    final Path path = Path.of("src").resolve("test/data/compileCP/test.txt").toAbsolutePath();
     Assertions.assertTrue(Files.exists(path));
     final String url = path.toUri().toURL().toString();
     Assertions.assertNotNull(finder.findResource(url));
