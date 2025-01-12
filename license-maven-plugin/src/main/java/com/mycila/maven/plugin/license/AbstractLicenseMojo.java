@@ -26,6 +26,8 @@ import com.mycila.maven.plugin.license.header.Header;
 import com.mycila.maven.plugin.license.header.HeaderDefinition;
 import com.mycila.maven.plugin.license.header.HeaderSource;
 import com.mycila.maven.plugin.license.header.HeaderType;
+import com.mycila.maven.plugin.license.util.Fn;
+import com.mycila.maven.plugin.license.util.LazyMap;
 import com.mycila.maven.plugin.license.util.Selection;
 import com.mycila.maven.plugin.license.util.resource.ResourceFinder;
 import com.mycila.xmltool.XMLDoc;
@@ -70,6 +72,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
@@ -637,8 +640,9 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
       final DocumentPropertiesLoader perDocumentProperties = document -> {
 
         // then add per document properties
-        Map<String, String> perDoc = new LinkedHashMap<>(globalProperties);
-        perDoc.put("file.name", document.getFile().getName());
+        LazyMap<String, String> perDoc = new LazyMap<>(key -> {
+          return Objects.equals(key, "file.name") ? document.getFile().getName() : globalProperties.get(key);
+        });
 
         Map<String, String> readOnly = Collections.unmodifiableMap(perDoc);
 
@@ -650,12 +654,8 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
               getLog().debug("provider: " + provider.getClass() + " adjusted these properties:\n"
                   + adjustments);
             }
-            for (Map.Entry<String, String> entry : adjustments.entrySet()) {
-              if (entry.getValue() != null) {
-                perDoc.put(entry.getKey(), entry.getValue());
-              } else {
-                perDoc.remove(entry.getKey());
-              }
+            for (String key : adjustments.keySet()) {
+              perDoc.putSupplier(key, () -> adjustments.get(key));
             }
           } catch (Exception e) {
             if (getLog().isWarnEnabled()) {

@@ -18,11 +18,12 @@ package com.mycila.maven.plugin.license.git;
 import com.mycila.maven.plugin.license.AbstractLicenseMojo;
 import com.mycila.maven.plugin.license.PropertiesProvider;
 import com.mycila.maven.plugin.license.document.Document;
+import com.mycila.maven.plugin.license.util.LazyMap;
+import com.mycila.maven.plugin.license.util.Fn;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -66,17 +67,21 @@ public class CopyrightAuthorProvider implements PropertiesProvider {
   @Override
   public Map<String, String> adjustProperties(AbstractLicenseMojo mojo,
                                               Map<String, String> properties, Document document) {
-    try {
-      Map<String, String> result = new HashMap<>(3);
-      result.put(COPYRIGHT_CREATION_AUTHOR_NAME_KEY,
-          gitLookup.getAuthorNameOfCreation(document.getFile()));
-      result.put(COPYRIGHT_CREATION_AUTHOR_EMAIL_KEY,
-          gitLookup.getAuthorEmailOfCreation(document.getFile()));
-      return Collections.unmodifiableMap(result);
-    } catch (IOException e) {
-      throw new UncheckedIOException(
-          "CopyrightAuthorProvider error on file: " + document.getFile().getAbsolutePath() + ": "
-              + e.getMessage(), e);
-    }
+    LazyMap<String, String> result = new LazyMap<>(2);
+    result.putSupplier(COPYRIGHT_CREATION_AUTHOR_NAME_KEY, Fn.memoize(() -> {
+      try {
+        return gitLookup.getAuthorNameOfCreation(document.getFile());
+      } catch (IOException e) {
+        throw new UncheckedIOException("CopyrightAuthorProvider error on file: " + document.getFile().getAbsolutePath() + ": " + e.getMessage(), e);
+      }
+    }));
+    result.putSupplier(COPYRIGHT_CREATION_AUTHOR_EMAIL_KEY, Fn.memoize(() -> {
+      try {
+        return gitLookup.getAuthorEmailOfCreation(document.getFile());
+      } catch (IOException e) {
+        throw new UncheckedIOException("CopyrightAuthorProvider error on file: " + document.getFile().getAbsolutePath() + ": " + e.getMessage(), e);
+      }
+    }));
+    return Collections.unmodifiableMap(result);
   }
 }
