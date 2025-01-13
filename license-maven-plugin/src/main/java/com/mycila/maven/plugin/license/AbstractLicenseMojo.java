@@ -26,7 +26,6 @@ import com.mycila.maven.plugin.license.header.Header;
 import com.mycila.maven.plugin.license.header.HeaderDefinition;
 import com.mycila.maven.plugin.license.header.HeaderSource;
 import com.mycila.maven.plugin.license.header.HeaderType;
-import com.mycila.maven.plugin.license.util.Fn;
 import com.mycila.maven.plugin.license.util.LazyMap;
 import com.mycila.maven.plugin.license.util.Selection;
 import com.mycila.maven.plugin.license.util.resource.ResourceFinder;
@@ -72,7 +71,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
