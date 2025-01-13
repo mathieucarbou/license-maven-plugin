@@ -31,7 +31,7 @@ license-maven-plugin,com.mycila.maven.plugin.license,LicenseFormatMojo,0,35,1,1,
 license-maven-plugin,com.mycila.maven.plugin.license,PropertiesProvider,4,0,0,0,3,0,3,0,3,0
 license-maven-plugin,com.mycila.maven.plugin.license,LicenseCheckMojo.new AbstractLicenseMojo.AbstractCallback() {...},0,80,1,3,0,14,1,4,0,3
 license-maven-plugin,com.mycila.maven.plugin.license,LicenseFormatMojo.new AbstractLicenseMojo.AbstractCallback() {...},26,93,1,5,4,18,1,5,0,3
-license-maven-plugin,com.mycila.maven.plugin.license,Default,0,615,0,0,0,2,0,1,0,1
+license-maven-plugin,com.mycila.maven.plugin.license,Default,0,619,0,0,0,2,0,1,0,1
 license-maven-plugin,com.mycila.maven.plugin.license,Report,41,309,12,15,8,59,13,8,1,6
 license-maven-plugin,com.mycila.maven.plugin.license,HeaderStyle,0,44,0,0,0,7,0,2,0,2
 license-maven-plugin,com.mycila.maven.plugin.license,Multi,103,27,6,0,17,11,7,8,4,8
