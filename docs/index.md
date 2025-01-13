@@ -206,7 +206,7 @@ options are concatenated together to produce a header template.
 
 The table below shows all the available options you can use in the configure section of the plugin. A lot of are also available from the command-line. To use them, simply launch your maven command with a property like `-Dproperty=value` (i.e. `mvn license:check -Dlicense.header=src/etc/header.txt`)
 
-All plugin configuration options are described in the [Detailed Maven documentation](#detailed-maven-documentation) but here are some details.
+All plugin configuration options are described in the [detailed Maven plugin documentation](#reports) from the reports.
 
 - `useDefaultExcludes`: The default exclusion list can be found [here](https://github.com/mathieucarbou/license-maven-plugin/blob/master/license-maven-plugin/src/main/java/com/mycila/maven/plugin/license/Default.java)
 - `prohibitLegacyUse`: Fail when deprecated configuration options are used (the default behaviour is to warn).
