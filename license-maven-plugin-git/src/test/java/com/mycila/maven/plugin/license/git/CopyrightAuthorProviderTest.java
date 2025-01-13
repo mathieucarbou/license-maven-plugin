@@ -35,7 +35,7 @@ class CopyrightAuthorProviderTest {
   private static Path gitRepoRoot;
 
   @TempDir
-  static File tempFolder;
+  static Path tempFolder;
 
   @Test
   void copyrightAuthor() {
@@ -69,9 +69,9 @@ class CopyrightAuthorProviderTest {
   @BeforeAll
   static void beforeClass() throws IOException {
     URL url = CopyrightAuthorProviderTest.class.getResource("git-test-repo.zip");
-    gitRepoRoot = Path.of(tempFolder.toPath() + File.separator + "git-test-repo");
+    gitRepoRoot = Path.of(tempFolder + File.separator + "git-test-repo");
 
-    GitLookupTest.unzip(url, tempFolder.toPath());
+    GitLookupTest.unzip(url, tempFolder);
   }
 
 }

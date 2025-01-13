@@ -36,7 +36,7 @@ class CopyrightRangeProviderTest {
   private static Path fsRepoRoot;
 
   @TempDir
-  static File tempFolder;
+  static Path tempFolder;
 
   @Test
   void copyrightRange() {
@@ -84,7 +84,7 @@ class CopyrightRangeProviderTest {
 
   @BeforeAll
   static void beforeClass() throws IOException {
-    fsRepoRoot = Path.of(tempFolder.toPath() + File.separator + "fs-test-repo");
+    fsRepoRoot = Path.of(tempFolder + File.separator + "fs-test-repo");
 
     Files.createDirectories(fsRepoRoot.resolve("dir1"));
     Files.createFile(fsRepoRoot.resolve("dir1/file1.txt"));

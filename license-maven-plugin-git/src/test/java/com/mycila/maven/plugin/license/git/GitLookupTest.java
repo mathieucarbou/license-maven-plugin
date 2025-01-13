@@ -42,13 +42,13 @@ class GitLookupTest {
   private static Path gitRepoRoot;
 
   @TempDir
-  static File tempFolder;
+  static Path tempFolder;
 
   @BeforeAll
   static void beforeClass() throws IOException {
     URL url = GitLookupTest.class.getResource("git-test-repo.zip");
-    gitRepoRoot = Path.of(tempFolder.toPath() + File.separator + "git-test-repo");
-    unzip(url, tempFolder.toPath());
+    gitRepoRoot = Path.of(tempFolder + File.separator + "git-test-repo");
+    unzip(url, tempFolder);
   }
 
   static void unzip(URL url, Path unzipDestination) throws IOException {
