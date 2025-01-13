@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.attribute.FileTime;
 import java.time.Instant;
 import java.util.HashMap;
@@ -78,14 +77,14 @@ class CopyrightRangeProviderTest {
   }
 
   private static Document newDocument(String relativePath) {
-    Path path = Paths.get(fsRepoRoot + File.separator
+    Path path = Path.of(fsRepoRoot + File.separator
         + relativePath.replace('/', File.separatorChar));
     return new Document(path.toFile(), null, StandardCharsets.UTF_8, new String[0], null);
   }
 
   @BeforeAll
   static void beforeClass() throws IOException {
-    fsRepoRoot = Paths.get(tempFolder.toPath() + File.separator + "fs-test-repo");
+    fsRepoRoot = Path.of(tempFolder.toPath() + File.separator + "fs-test-repo");
 
     Files.createDirectories(fsRepoRoot.resolve("dir1"));
     Files.createFile(fsRepoRoot.resolve("dir1/file1.txt"));

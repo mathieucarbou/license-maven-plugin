@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -62,7 +61,7 @@ class CopyrightAuthorProviderTest {
   }
 
   private static Document newDocument(String relativePath) {
-    Path path = Paths.get(gitRepoRoot + File.separator
+    Path path = Path.of(gitRepoRoot + File.separator
         + relativePath.replace('/', File.separatorChar));
     return new Document(path.toFile(), null, StandardCharsets.UTF_8, new String[0], null);
   }
@@ -70,7 +69,7 @@ class CopyrightAuthorProviderTest {
   @BeforeAll
   static void beforeClass() throws IOException {
     URL url = CopyrightAuthorProviderTest.class.getResource("git-test-repo.zip");
-    gitRepoRoot = Paths.get(tempFolder.toPath() + File.separator + "git-test-repo");
+    gitRepoRoot = Path.of(tempFolder.toPath() + File.separator + "git-test-repo");
 
     GitLookupTest.unzip(url, tempFolder.toPath());
   }

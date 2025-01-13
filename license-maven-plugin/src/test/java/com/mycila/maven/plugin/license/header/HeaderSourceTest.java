@@ -6,13 +6,13 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 
 import static com.mycila.maven.plugin.license.Multi.DEFAULT_SEPARATOR;
 
 class HeaderSourceTest {
 
-  private ResourceFinder finder = new ResourceFinder(Paths.get("src", "test", "resources"));
+  private ResourceFinder finder = new ResourceFinder(Path.of("src", "test", "resources"));
 
   @Test
   void testOfInline() {
