@@ -25,10 +25,10 @@ import org.junit.jupiter.api.io.TempDir;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URL;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -63,7 +63,7 @@ class GitLookupTest {
           unzippedFile.toFile().mkdirs();
         } else {
           unzippedFile.toFile().getParentFile().mkdirs();
-          try (OutputStream out = new BufferedOutputStream(new FileOutputStream(unzippedFile.toFile()), 2048)) {
+          try (OutputStream out = new BufferedOutputStream(Files.newOutputStream(unzippedFile), 2048)) {
             int len;
             while ((len = zipInputStream.read(buffer)) != -1) {
               out.write(buffer, 0, len);
