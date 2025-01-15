@@ -23,12 +23,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.InputStreamReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.UncheckedIOException;
-import java.net.URL;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
@@ -132,5 +132,11 @@ public final class FileUtils {
         throw new UncheckedIOException(e);
       }
     });
+  }
+
+  public static boolean isSubfolder(File subfolder, File folder) {
+    String subfolderPath = subfolder.getAbsolutePath();
+    String folderPath = folder.getAbsolutePath();
+    return subfolderPath.startsWith(folderPath) && subfolderPath.length() > folderPath.length() && subfolderPath.charAt(folderPath.length()) == File.separatorChar;
   }
 }

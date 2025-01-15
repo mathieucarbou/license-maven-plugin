@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008-2024 Mycila (mathieu.carbou@gmail.com)
+ * Copyright (C) 2008-2025 Mycila (mathieu.carbou@gmail.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ import com.mycila.maven.plugin.license.header.Header;
 import com.mycila.maven.plugin.license.header.HeaderDefinition;
 import com.mycila.maven.plugin.license.header.HeaderSource;
 import com.mycila.maven.plugin.license.header.HeaderType;
+import com.mycila.maven.plugin.license.util.FileUtils;
 import com.mycila.maven.plugin.license.util.LazyMap;
 import com.mycila.maven.plugin.license.util.Selection;
 import com.mycila.maven.plugin.license.util.resource.ResourceFinder;
@@ -85,6 +86,10 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
 
   private static final String[] DEFAULT_KEYWORDS = {"copyright"};
 
+  @Parameter(property = "license.workspace", alias = "workspace")
+  public WorkSpace workspace = new WorkSpace();
+
+
   @Parameter(property = "license.licenseSets", alias = "licenseSets")
   public LicenseSet[] licenseSets;
 
@@ -94,9 +99,12 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
    * This is named `defaultBaseDirectory` as it will be used as the default
    * value for the base directory. This default value can be overridden
    * in each LicenseSet by setting {@link LicenseSet#basedir}.
+   *
+   * @deprecated use {@link WorkSpace#basedir}
    */
+  @Deprecated
   @Parameter(property = "license.basedir", defaultValue = "${project.basedir}", alias = "basedir", required = true)
-  public File defaultBasedir;
+  public File legacyDefaultBasedir;
 
   /**
    * Location of the header. It can be a relative path, absolute path,
@@ -492,13 +500,29 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
       }
 
       // make default base dir canonical
-      this.defaultBasedir = this.getCanonicalFile(this.defaultBasedir, "license.basedir");
+      workspace.basedir = getCanonicalFile(firstNonNull(workspace.basedir, legacyDefaultBasedir), "license.workspace.basedir");
 
       // collect all the license sets together
       final LicenseSet[] allLicenseSets;
 
       // if we abandon the legacy config this contiguous block can be removed
       final LicenseSet legacyLicenseSet = convertLegacyConfigToLicenseSet();
+
+      if (workspace.basedir != null) {
+        if (legacyLicenseSet != null && legacyLicenseSet.basedir != null) {
+          if (!FileUtils.isSubfolder(legacyLicenseSet.basedir, workspace.basedir)) {
+            throw new MojoExecutionException("Legacy basedir parameter should be a subfolder of the workspace basedir.");
+          }
+        }
+        for (LicenseSet licenseSet : licenseSets) {
+          if (licenseSet.basedir != null) {
+            if (!FileUtils.isSubfolder(licenseSet.basedir, workspace.basedir)) {
+              throw new MojoExecutionException(String.format("LicenseSet basedir parameter [%s] should be a subfolder of the workspace basedir.", licenseSet.basedir.getPath()));
+            }
+          }
+        }
+      }
+
       if (legacyLicenseSet != null) {
         if (licenseSets == null) {
           allLicenseSets = new LicenseSet[]{legacyLicenseSet};
@@ -556,7 +580,8 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
   }
 
   private boolean detectLegacyUse() {
-    return legacyConfigHeader != null
+    return legacyDefaultBasedir != null
+            || legacyConfigHeader != null
             || legacyConfigInlineHeader != null
             || (legacyConfigValidHeaders != null && legacyConfigValidHeaders.length > 0)
             || legacyConfigMulti != null
@@ -580,11 +605,12 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
     legacyLicenseSet.includes = legacyConfigIncludes;
     legacyLicenseSet.excludes = legacyConfigExcludes;
     legacyLicenseSet.keywords = legacyConfigKeywords;
+    legacyLicenseSet.basedir = legacyDefaultBasedir;
     return legacyLicenseSet;
   }
 
   private void executeForLicenseSet(final LicenseSet licenseSet, final Callback callback) throws MojoExecutionException, MojoFailureException {
-    final ResourceFinder finder = new ResourceFinder(firstNonNull(asPath(licenseSet.basedir), asPath(defaultBasedir)));
+    final ResourceFinder finder = new ResourceFinder(firstNonNull(asPath(licenseSet.basedir), asPath(workspace.basedir)));
     try {
       finder.setCompileClassPath(project.getCompileClasspathElements());
     } catch (DependencyResolutionRequiredException e) {
@@ -671,7 +697,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
       };
 
       final DocumentFactory documentFactory = new DocumentFactory(
-          firstNonNull(licenseSet.basedir, defaultBasedir), buildMapping(),
+          firstNonNull(licenseSet.basedir, workspace.basedir), buildMapping(),
           buildHeaderDefinitions(licenseSet, finder), Charset.forName(encoding), licenseSet.keywords,
           perDocumentProperties);
 
@@ -786,9 +812,9 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
   private String[] listSelectedFiles(final LicenseSet licenseSet) {
     final boolean useDefaultExcludes = (licenseSet.useDefaultExcludes != null ? licenseSet.useDefaultExcludes : defaultUseDefaultExcludes);
     final Selection selection = new Selection(
-        firstNonNull(licenseSet.basedir, defaultBasedir), licenseSet.includes, buildExcludes(licenseSet), useDefaultExcludes,
+        firstNonNull(licenseSet.basedir, workspace.basedir), licenseSet.includes, buildExcludes(licenseSet), useDefaultExcludes,
         getLog());
-    debug("From: %s", firstNonNull(licenseSet.basedir, defaultBasedir));
+    debug("From: %s", firstNonNull(licenseSet.basedir, workspace.basedir));
     debug("Including: %s", deepToString(selection.getIncluded()));
     debug("Excluding: %s", deepToString(selection.getExcluded()));
     return selection.getSelectedFiles();

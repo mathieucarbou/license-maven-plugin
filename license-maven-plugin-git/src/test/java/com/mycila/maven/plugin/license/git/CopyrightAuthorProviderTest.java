@@ -41,7 +41,7 @@ class CopyrightAuthorProviderTest {
   void copyrightAuthor() {
     Map<String, String> props = new HashMap<>();
     final LicenseCheckMojo mojo = new LicenseCheckMojo();
-    mojo.defaultBasedir = gitRepoRoot.toFile();
+    mojo.legacyDefaultBasedir = gitRepoRoot.toFile();
 
     try (CopyrightAuthorProvider provider = new CopyrightAuthorProvider()) {
       provider.init(mojo, props);

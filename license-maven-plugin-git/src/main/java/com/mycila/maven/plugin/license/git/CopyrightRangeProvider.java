@@ -15,17 +15,16 @@
  */
 package com.mycila.maven.plugin.license.git;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.util.Map;
-
-import org.eclipse.jgit.api.errors.GitAPIException;
-
 import com.mycila.maven.plugin.license.AbstractLicenseMojo;
 import com.mycila.maven.plugin.license.PropertiesProvider;
 import com.mycila.maven.plugin.license.document.Document;
-import com.mycila.maven.plugin.license.util.LazyMap;
 import com.mycila.maven.plugin.license.util.Fn;
+import com.mycila.maven.plugin.license.util.LazyMap;
+import org.eclipse.jgit.api.errors.GitAPIException;
+
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.util.Map;
 
 /**
  * An implementation of {@link PropertiesProvider} that adds {@value #COPYRIGHT_LAST_YEAR_KEY} and
@@ -44,7 +43,7 @@ public class CopyrightRangeProvider implements PropertiesProvider {
 
   @Override
   public void init(AbstractLicenseMojo mojo, Map<String, String> currentProperties) {
-    gitLookup = GitLookup.create(mojo.defaultBasedir, currentProperties);
+    gitLookup = GitLookup.create(mojo.legacyDefaultBasedir, currentProperties);
 
     // One-time warning for shallow repo
     if (mojo.warnIfShallow && gitLookup.isShallowRepository()) {

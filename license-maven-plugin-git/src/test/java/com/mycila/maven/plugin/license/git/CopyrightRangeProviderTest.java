@@ -41,7 +41,7 @@ class CopyrightRangeProviderTest {
   void copyrightRange() {
     Map<String, String> props = new HashMap<>();
     final LicenseCheckMojo mojo = new LicenseCheckMojo();
-    mojo.defaultBasedir = gitRepoRoot.toFile();
+    mojo.legacyDefaultBasedir = gitRepoRoot.toFile();
     try (CopyrightRangeProvider provider = new CopyrightRangeProvider()) {
       provider.init(mojo, props);
 
