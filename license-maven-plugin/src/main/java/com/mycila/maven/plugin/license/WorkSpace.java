@@ -28,12 +28,12 @@ public class WorkSpace {
    * This default value can be overridden in each LicenseSet by setting {@link LicenseSet#basedir}.
    */
 
-    @Parameter(property = "license.workspace.basedir", defaultValue = "${project.basedir}", alias = "basedir")
-    File basedir;
+    @Parameter(property = "license.workspace.basedir", alias = "basedir")
+    public File basedir;
 
     @Parameter
-    String[] includes = new String[0];
+    public String[] includes = new String[0];
 
     @Parameter
-    String[] excludes = new String[0];
+    public String[] excludes = new String[0];
 }

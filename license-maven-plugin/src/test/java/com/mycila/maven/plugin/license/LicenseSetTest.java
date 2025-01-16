@@ -47,7 +47,7 @@ class LicenseSetTest {
     check.licenseSets = licenseSets;
     check.project = new MavenProjectStub();
     check.strictCheck = false;
-    check.legacyDefaultBasedir = new File("src/test/resources");
+    check.legacyDefaultBasedir = new File("src/test/resources/check");
     final MockedLog logger = new MockedLog();
     check.setLog(new DefaultLog(logger));
     check.execute();

@@ -81,6 +81,7 @@ import static com.mycila.maven.plugin.license.util.FileUtils.asPath;
 import static java.lang.String.format;
 import static java.util.Arrays.asList;
 import static java.util.Arrays.deepToString;
+import static java.util.Objects.requireNonNull;
 
 public abstract class AbstractLicenseMojo extends AbstractMojo {
 
@@ -103,7 +104,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
    * @deprecated use {@link WorkSpace#basedir}
    */
   @Deprecated
-  @Parameter(property = "license.basedir", defaultValue = "${project.basedir}", alias = "basedir", required = true)
+  @Parameter(property = "license.basedir", alias = "basedir")
   public File legacyDefaultBasedir;
 
   /**
@@ -499,8 +500,16 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
         throw new MojoExecutionException("Use of legacy parameters has been prohibited by configuration.");
       }
 
-      // make default base dir canonical
-      workspace.basedir = getCanonicalFile(firstNonNull(workspace.basedir, legacyDefaultBasedir), "license.workspace.basedir");
+      // use canonical base dir
+      workspace.basedir = getCanonicalFile(workspace.basedir, "license.workspace.basedir");
+      if (workspace.basedir == null) {
+        if (legacyDefaultBasedir == null) {
+          workspace.basedir = getCanonicalFile(project.getBasedir(), "project.basedir");
+        } else {
+          workspace.basedir = getCanonicalFile(legacyDefaultBasedir, "license.basedir");
+        }
+      }
+      requireNonNull(workspace.basedir);
 
       // collect all the license sets together
       final LicenseSet[] allLicenseSets;
@@ -508,17 +517,17 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
       // if we abandon the legacy config this contiguous block can be removed
       final LicenseSet legacyLicenseSet = convertLegacyConfigToLicenseSet();
 
-      if (workspace.basedir != null) {
-        if (legacyLicenseSet != null && legacyLicenseSet.basedir != null) {
-          if (!FileUtils.isSubfolder(legacyLicenseSet.basedir, workspace.basedir)) {
-            throw new MojoExecutionException("Legacy basedir parameter should be a subfolder of the workspace basedir.");
-          }
+      if (legacyLicenseSet != null && legacyLicenseSet.basedir != null) {
+        if (!FileUtils.isSameOrSubFolder(legacyLicenseSet.basedir, workspace.basedir)) {
+          throw new MojoExecutionException("Legacy basedir parameter should be a subfolder of the workspace basedir.");
         }
-        for (LicenseSet licenseSet : licenseSets) {
-          if (licenseSet.basedir != null) {
-            if (!FileUtils.isSubfolder(licenseSet.basedir, workspace.basedir)) {
-              throw new MojoExecutionException(String.format("LicenseSet basedir parameter [%s] should be a subfolder of the workspace basedir.", licenseSet.basedir.getPath()));
-            }
+      }
+      for (LicenseSet licenseSet : licenseSets) {
+        if (licenseSet.basedir == null) {
+          licenseSet.basedir = workspace.basedir;
+        } else {
+          if (!FileUtils.isSameOrSubFolder(licenseSet.basedir, workspace.basedir)) {
+            throw new MojoExecutionException(String.format("LicenseSet basedir parameter [%s] should be a subfolder of the workspace basedir.", licenseSet.basedir.getPath()));
           }
         }
       }
@@ -610,7 +619,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
   }
 
   private void executeForLicenseSet(final LicenseSet licenseSet, final Callback callback) throws MojoExecutionException, MojoFailureException {
-    final ResourceFinder finder = new ResourceFinder(firstNonNull(asPath(licenseSet.basedir), asPath(workspace.basedir)));
+    final ResourceFinder finder = new ResourceFinder(asPath(licenseSet.basedir));
     try {
       finder.setCompileClassPath(project.getCompileClasspathElements());
     } catch (DependencyResolutionRequiredException e) {
@@ -697,7 +706,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
       };
 
       final DocumentFactory documentFactory = new DocumentFactory(
-          firstNonNull(licenseSet.basedir, workspace.basedir), buildMapping(),
+          licenseSet.basedir, buildMapping(),
           buildHeaderDefinitions(licenseSet, finder), Charset.forName(encoding), licenseSet.keywords,
           perDocumentProperties);
 
@@ -812,9 +821,9 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
   private String[] listSelectedFiles(final LicenseSet licenseSet) {
     final boolean useDefaultExcludes = (licenseSet.useDefaultExcludes != null ? licenseSet.useDefaultExcludes : defaultUseDefaultExcludes);
     final Selection selection = new Selection(
-        firstNonNull(licenseSet.basedir, workspace.basedir), licenseSet.includes, buildExcludes(licenseSet), useDefaultExcludes,
+        licenseSet.basedir, licenseSet.includes, buildExcludes(licenseSet), useDefaultExcludes,
         getLog());
-    debug("From: %s", firstNonNull(licenseSet.basedir, workspace.basedir));
+    debug("From: %s", licenseSet.basedir);
     debug("Including: %s", deepToString(selection.getIncluded()));
     debug("Excluding: %s", deepToString(selection.getExcluded()));
     return selection.getSelectedFiles();
@@ -947,9 +956,5 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
         getLog().debug("no credentials found for server: " + serverID);
     }
     return null;
-  }
-
-  private static <T> T firstNonNull(final T t1, final T t2) {
-    return t1 == null ? t2 : t1;
   }
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<licensePluginReport goal="CHECK" timestamp="1736757823011">
+<licensePluginReport goal="CHECK" timestamp="1737017928065">
     <module artifactId="license-maven-plugin" groupId="com.mycila" version="5.0.0-SNAPSHOT"/>
     <files>
         <file path="pom.xml" result="PRESENT"/>
@@ -16,6 +16,7 @@
         <file path="src/main/java/com/mycila/maven/plugin/license/Multi.java" result="PRESENT"/>
         <file path="src/main/java/com/mycila/maven/plugin/license/PropertiesProvider.java" result="PRESENT"/>
         <file path="src/main/java/com/mycila/maven/plugin/license/Report.java" result="PRESENT"/>
+        <file path="src/main/java/com/mycila/maven/plugin/license/WorkSpace.java" result="PRESENT"/>
         <file path="src/main/java/com/mycila/maven/plugin/license/dependencies/AbstractLicensePolicyEnforcer.java" result="PRESENT"/>
         <file path="src/main/java/com/mycila/maven/plugin/license/dependencies/AggregateLicensePolicyEnforcer.java" result="PRESENT"/>
         <file path="src/main/java/com/mycila/maven/plugin/license/dependencies/ArtifactLicensePolicyEnforcer.java" result="PRESENT"/>

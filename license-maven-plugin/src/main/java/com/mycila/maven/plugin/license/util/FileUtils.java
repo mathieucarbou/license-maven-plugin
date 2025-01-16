@@ -39,6 +39,7 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+import static java.util.Objects.requireNonNull;
 
 public final class FileUtils {
 
@@ -134,9 +135,9 @@ public final class FileUtils {
     });
   }
 
-  public static boolean isSubfolder(File subfolder, File folder) {
-    String subfolderPath = subfolder.getAbsolutePath();
-    String folderPath = folder.getAbsolutePath();
-    return subfolderPath.startsWith(folderPath) && subfolderPath.length() > folderPath.length() && subfolderPath.charAt(folderPath.length()) == File.separatorChar;
+  public static boolean isSameOrSubFolder(File subfolder, File folder) {
+    requireNonNull(subfolder);
+    requireNonNull(folder);
+    return subfolder.toPath().startsWith(folder.toPath());
   }
 }

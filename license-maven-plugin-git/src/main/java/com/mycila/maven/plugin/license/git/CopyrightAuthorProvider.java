@@ -40,7 +40,7 @@ public class CopyrightAuthorProvider implements PropertiesProvider {
 
   @Override
   public void init(AbstractLicenseMojo mojo, Map<String, String> currentProperties) {
-    gitLookup = GitLookup.create(mojo.legacyDefaultBasedir, currentProperties);
+    gitLookup = GitLookup.create(mojo.workspace.basedir, currentProperties);
 
     // One-time warning for shallow repo
     if (mojo.warnIfShallow && gitLookup.isShallowRepository()) {

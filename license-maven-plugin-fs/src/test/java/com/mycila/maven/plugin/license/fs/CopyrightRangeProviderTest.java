@@ -42,7 +42,7 @@ class CopyrightRangeProviderTest {
   void copyrightRange() {
     Map<String, String> props = new HashMap<>();
     final LicenseCheckMojo mojo = new LicenseCheckMojo();
-    mojo.legacyDefaultBasedir = fsRepoRoot.toFile();
+    mojo.workspace.basedir = fsRepoRoot.toFile();
     try (CopyrightRangeProvider provider = new CopyrightRangeProvider()) {
       provider.init(mojo, props);
 
