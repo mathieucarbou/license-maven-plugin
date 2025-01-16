@@ -518,16 +518,23 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
       final LicenseSet legacyLicenseSet = convertLegacyConfigToLicenseSet();
 
       if (legacyLicenseSet != null && legacyLicenseSet.basedir != null) {
+        legacyLicenseSet.basedir = getCanonicalFile(legacyLicenseSet.basedir, "license.basedir");
         if (!FileUtils.isSameOrSubFolder(legacyLicenseSet.basedir, workspace.basedir)) {
           throw new MojoExecutionException("Legacy basedir parameter should be a subfolder of the workspace basedir.");
         }
       }
-      for (LicenseSet licenseSet : licenseSets) {
-        if (licenseSet.basedir == null) {
-          licenseSet.basedir = workspace.basedir;
-        } else {
-          if (!FileUtils.isSameOrSubFolder(licenseSet.basedir, workspace.basedir)) {
-            throw new MojoExecutionException(String.format("LicenseSet basedir parameter [%s] should be a subfolder of the workspace basedir.", licenseSet.basedir.getPath()));
+
+      if (licenseSets != null) {
+        for (LicenseSet licenseSet : licenseSets) {
+          if (licenseSet.basedir == null) {
+            licenseSet.basedir = workspace.basedir;
+          } else {
+            licenseSet.basedir = getCanonicalFile(licenseSet.basedir, "licenseSet.basedir");
+            if (!FileUtils.isSameOrSubFolder(licenseSet.basedir, workspace.basedir)) {
+              throw new MojoExecutionException(
+                  String.format("LicenseSet basedir parameter [%s] should be a subfolder of the workspace basedir.",
+                      licenseSet.basedir.getPath()));
+            }
           }
         }
       }
@@ -574,8 +581,6 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
         warn("No header file specified to check for license in licenseSet: " + i);
         return;
       }
-      // make licenseSet baseDir canonical
-      licenseSet.basedir = this.getCanonicalFile(licenseSet.basedir, "licenseSet[" + i + "].basedir");
     }
     if (!strictCheck) {
       warn("Property 'strictCheck' is not enabled. Please consider adding <strictCheck>true</strictCheck> in your pom.xml file.");

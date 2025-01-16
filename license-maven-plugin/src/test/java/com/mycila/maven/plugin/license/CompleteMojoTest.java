@@ -134,6 +134,7 @@ class CompleteMojoTest {
     FileUtils.copyFilesToFolder(new File("src/test/resources/complete/" + headerType), tmp);
 
     AbstractLicenseMojo plugin = new LicenseFormatMojo();
+    plugin.workspace.basedir = tmp;
     plugin.project = new MavenProjectStub();
     plugin.legacyDefaultBasedir = tmp;
     plugin.legacyConfigHeader = "src/test/resources/complete/header1.txt";
