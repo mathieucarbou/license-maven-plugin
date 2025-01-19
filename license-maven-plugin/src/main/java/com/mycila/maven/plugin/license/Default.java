@@ -126,6 +126,8 @@ public final class Default {
       // gradle files
       "**/.gradle/**",
       "**/build/**",
+      "**/.gradle-enterprise/**",
+      "**/.develocity/**",
 
       // kotlin files
       "**/.kotlin/**",
