@@ -16,10 +16,10 @@
 package com.mycila.maven.plugin.license.document;
 
 import com.mycila.maven.plugin.license.header.HeaderDefinition;
-import org.codehaus.plexus.util.FileUtils;
 
 import java.io.File;
 import java.nio.charset.Charset;
+import java.nio.file.Path;
 import java.util.Map;
 
 public final class DocumentFactory {
@@ -45,7 +45,7 @@ public final class DocumentFactory {
 
   private Document getWrapper(final String file) {
     String headerType = mapping.get("");
-    String lowerFileName = FileUtils.filename(file).toLowerCase();
+    String lowerFileName = Path.of(file).getFileName().toString().toLowerCase();
     for (Map.Entry<String, String> entry : mapping.entrySet()) {
       String lowerKey = entry.getKey().toLowerCase();
       if (lowerFileName.endsWith("." + lowerKey) || lowerFileName.equals(lowerKey)) {
