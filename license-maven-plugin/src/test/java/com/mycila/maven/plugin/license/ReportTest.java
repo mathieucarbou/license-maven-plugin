@@ -30,9 +30,7 @@ import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneId;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class ReportTest {
 
@@ -68,7 +66,7 @@ class ReportTest {
 
     String processed = unixify(FileUtils.read(plugin.reportLocation, Charset.defaultCharset()));
     String expected = FileUtils.read(new File("src/test/resources/issues/issue-122/check.xml"), Charset.defaultCharset());
-    assertThat(processed, is(equalTo(expected)));
+    assertThat(processed).isEqualTo(expected);
   }
 
   @Test
@@ -92,7 +90,7 @@ class ReportTest {
 
     String processed = unixify(FileUtils.read(plugin.reportLocation, Charset.defaultCharset()));
     String expected = FileUtils.read(new File("src/test/resources/issues/issue-122/check.json"), Charset.defaultCharset());
-    assertThat(processed, is(equalTo(expected)));
+    assertThat(processed).isEqualTo(expected);
   }
 
   @Test
@@ -112,7 +110,7 @@ class ReportTest {
 
     String processed = unixify(FileUtils.read(plugin.reportLocation, Charset.defaultCharset()));
     String expected = FileUtils.read(new File("src/test/resources/issues/issue-122/format.xml"), Charset.defaultCharset());
-    assertThat(processed, is(equalTo(expected)));
+    assertThat(processed).isEqualTo(expected);
   }
 
   @Test
@@ -132,7 +130,7 @@ class ReportTest {
 
     String processed = unixify(FileUtils.read(plugin.reportLocation, Charset.defaultCharset()));
     String expected = FileUtils.read(new File("src/test/resources/issues/issue-122/format.json"), Charset.defaultCharset());
-    assertThat(processed, is(equalTo(expected)));
+    assertThat(processed).isEqualTo(expected);
   }
 
   @Test
@@ -152,7 +150,7 @@ class ReportTest {
 
     String processed = unixify(FileUtils.read(plugin.reportLocation, Charset.defaultCharset()));
     String expected = FileUtils.read(new File("src/test/resources/issues/issue-122/remove.xml"), Charset.defaultCharset());
-    assertThat(processed, is(equalTo(expected)));
+    assertThat(processed).isEqualTo(expected);
   }
 
   @Test
@@ -172,7 +170,7 @@ class ReportTest {
 
     String processed = unixify(FileUtils.read(plugin.reportLocation, Charset.defaultCharset()));
     String expected = FileUtils.read(new File("src/test/resources/issues/issue-122/remove.json"), Charset.defaultCharset());
-    assertThat(processed, is(equalTo(expected)));
+    assertThat(processed).isEqualTo(expected);
   }
 
   private static String unixify(String s) {

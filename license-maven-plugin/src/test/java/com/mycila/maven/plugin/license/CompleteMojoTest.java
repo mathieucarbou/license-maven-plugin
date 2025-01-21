@@ -72,9 +72,8 @@ import static java.util.Arrays.asList;
 import static java.util.EnumSet.complementOf;
 import static java.util.EnumSet.copyOf;
 import static java.util.stream.Collectors.toList;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class CompleteMojoTest {
 
@@ -144,7 +143,7 @@ class CompleteMojoTest {
 
     String processed = FileUtils.read(new File(tmp, "file." + extension), Charset.defaultCharset());
     String expected = FileUtils.read(new File("src/test/resources/complete/" + headerType + "/expected1." + extension), Charset.defaultCharset());
-    assertThat(processed, is(equalTo(expected)));
+    assertThat(processed).isEqualTo(expected);
   }
 
   @ParameterizedTest
@@ -173,7 +172,7 @@ class CompleteMojoTest {
 
     String processed = FileUtils.read(new File(tmp, "file." + extension), Charset.defaultCharset());
     String expected = FileUtils.read(new File("src/test/resources/complete/" + headerType + "/expected2." + extension), Charset.defaultCharset());
-    assertThat(processed, is(equalTo(expected)));
+    assertThat(processed).isEqualTo(expected);
   }
 
   @ParameterizedTest
@@ -203,7 +202,7 @@ class CompleteMojoTest {
 
     String processed = FileUtils.read(new File(tmp, "file." + extension), Charset.defaultCharset());
     String expected = FileUtils.read(new File("src/test/resources/complete/" + headerType + "/file." + extension), Charset.defaultCharset());
-    assertThat(processed, is(equalTo(expected)));
+    assertThat(processed).isEqualTo(expected);
   }
 
   @ParameterizedTest
