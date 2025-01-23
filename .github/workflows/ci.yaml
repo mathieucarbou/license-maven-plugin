@@ -12,7 +12,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        java: [11, 17, 21, 22]
+        java: [11, 17, 21, 23, 24-ea]
         distribution: ['temurin']
       fail-fast: false
       max-parallel: 4
@@ -30,8 +30,9 @@ jobs:
       - name: Set up JDK 11 Integration Run (Consumer Run)
         uses: actions/setup-java@v4
         with:
-          java-version: 11
+          cache: 'maven'
           distribution: ${{ runner.os == 'macOS' && 'zulu' || 'temurin' }}
+          java-version: 11
       - name: Load Maven 3.6.3 Integration Run (Consumer Run) using GitHub Provided Maven
         run: mvn org.apache.maven.plugins:maven-wrapper-plugin:3.3.1:wrapper -V -B -D"maven=3.6.3"
       - name: Test with Maven 3.6.3 Java 11 (Consumer Run)

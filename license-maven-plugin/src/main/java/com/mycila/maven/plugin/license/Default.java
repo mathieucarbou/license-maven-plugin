@@ -114,9 +114,11 @@ public final class Default {
       "**/test-output/**",
       "**/release.properties",
       "**/dependency-reduced-pom.xml",
-      "**/release-pom.xml",
+      "**/pom.xml.tag",
       "**/pom.xml.releaseBackup",
       "**/pom.xml.versionsBackup",
+      "**/pom.xml.next",
+      "**/release-pom.xml",
 
       // angular files
       "**/.angular/**",
@@ -147,6 +149,9 @@ public final class Default {
 
       // Netbeans
       "**/nb-configuration.xml",
+
+      // VSCode
+      "**/.vscode/**",
 
       // Hibernate Validator Annotation Processor
       "**/.factorypath",

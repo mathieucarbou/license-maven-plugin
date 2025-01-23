@@ -16,10 +16,10 @@
 package com.mycila.maven.plugin.license.document;
 
 import com.mycila.maven.plugin.license.header.HeaderDefinition;
-import org.codehaus.plexus.util.FileUtils;
 
 import java.io.File;
 import java.nio.charset.Charset;
+import java.nio.file.Path;
 import java.util.Map;
 
 public final class DocumentFactory {
@@ -45,7 +45,7 @@ public final class DocumentFactory {
 
   private Document getWrapper(final String file) {
 <span class="fc" id="L47">    String headerType = mapping.get(&quot;&quot;);</span>
-<span class="fc" id="L48">    String lowerFileName = FileUtils.filename(file).toLowerCase();</span>
+<span class="fc" id="L48">    String lowerFileName = Path.of(file).getFileName().toString().toLowerCase();</span>
 <span class="fc bfc" id="L49" title="All 2 branches covered.">    for (Map.Entry&lt;String, String&gt; entry : mapping.entrySet()) {</span>
 <span class="fc" id="L50">      String lowerKey = entry.getKey().toLowerCase();</span>
 <span class="fc bfc" id="L51" title="All 4 branches covered.">      if (lowerFileName.endsWith(&quot;.&quot; + lowerKey) || lowerFileName.equals(lowerKey)) {</span>

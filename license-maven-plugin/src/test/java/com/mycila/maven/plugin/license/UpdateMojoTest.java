@@ -29,9 +29,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class UpdateMojoTest {
 
@@ -125,7 +123,7 @@ class UpdateMojoTest {
     updater.legacyDefaultBasedir = tmp;
     updater.legacyConfigHeader = "src/test/resources/update/header.txt";
     updater.defaultProperties = ImmutableMap.of("year", "2008");
-    updater.mapping = new LinkedHashMap<String, String>() {{
+    updater.mapping = new LinkedHashMap<>() {{
       put("properties", "SCRIPT_STYLE");
     }};
     updater.project = new MavenProjectStub();
@@ -150,7 +148,7 @@ class UpdateMojoTest {
     updater.legacyDefaultBasedir = tmp;
     updater.legacyConfigHeader = "src/test/resources/update/header.txt";
     updater.defaultProperties = ImmutableMap.of("year", "2008");
-    updater.mapping = new LinkedHashMap<String, String>() {{
+    updater.mapping = new LinkedHashMap<>() {{
       put("properties", "SCRIPT_STYLE");
     }};
     updater.project = new MavenProjectStub();
@@ -254,7 +252,7 @@ class UpdateMojoTest {
     updater.legacyDefaultBasedir = tmp;
     updater.legacyConfigHeader = "src/test/resources/issues/issue-71/issue-71-header.txt";
     updater.project = new MavenProjectStub();
-    updater.mapping = new LinkedHashMap<String, String>() {{
+    updater.mapping = new LinkedHashMap<>() {{
       put("txt.extended", "EXTENDED_STYLE");
     }};
     updater.defaultHeaderDefinitions = new String[]{"/issues/issue-71/issue-71-additionalHeaderDefinitions.xml"};
@@ -263,8 +261,8 @@ class UpdateMojoTest {
 
     // Check that all the skipable header has been correctly skipped
     List<String> linesOfModifiedFile = Files.readLines(new File(tmp, "issue-71.txt.extended"), Charset.defaultCharset());
-    assertThat(linesOfModifiedFile.get(0 /* line 1 */), is("|||"));
-    assertThat(linesOfModifiedFile.get(8) /* line 9 */, is("|||"));
+    assertThat(linesOfModifiedFile.get(0) /* line 1 */).isEqualTo("|||");
+    assertThat(linesOfModifiedFile.get(8) /* line 9 */).isEqualTo("|||");
   }
 
   @Test
@@ -289,7 +287,7 @@ class UpdateMojoTest {
 
     String execution2FileContent = FileUtils.read(new File(tmp, "xwiki.xml"), Charset.defaultCharset());
 
-    assertThat(execution1FileContent, is(execution2FileContent));
+    assertThat(execution1FileContent).isEqualTo(execution2FileContent);
   }
 
   @Test
@@ -308,7 +306,7 @@ class UpdateMojoTest {
     List<String> linesOfUpdatedFile = Files.readLines(new File(tmp, "one-line-comment.ftl"), Charset.defaultCharset());
 
     // check that the original line is kept as the latest one even when introducing a license header
-    assertThat(linesOfOriginFile.get(0), is(linesOfUpdatedFile.get(linesOfUpdatedFile.size() - 1)));
+    assertThat(linesOfOriginFile.get(0)).isEqualTo(linesOfUpdatedFile.get(linesOfUpdatedFile.size() - 1));
   }
 
 
@@ -358,7 +356,7 @@ class UpdateMojoTest {
     updater.legacyDefaultBasedir = tmp;
     updater.legacyConfigHeader = "src/test/resources/update/issue-187/header.txt";
     updater.project = new MavenProjectStub();
-    updater.mapping = new LinkedHashMap<String, String>() {{
+    updater.mapping = new LinkedHashMap<>() {{
       put("java", "JAVAPKG_STYLE");
     }};
 
@@ -367,6 +365,6 @@ class UpdateMojoTest {
     String processed = FileUtils.read(new File(tmp, "Main.java"), Charset.defaultCharset());
     String expected = FileUtils.read(new File("src/test/resources/update/issue-187/expected.txt"), Charset.defaultCharset());
 
-    assertThat(processed, is(equalTo(expected)));
+    assertThat(processed).isEqualTo(expected);
   }
 }
