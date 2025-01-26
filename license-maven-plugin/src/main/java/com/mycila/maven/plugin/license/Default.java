@@ -127,6 +127,9 @@ public final class Default {
       "**/.gradle/**",
       "**/build/**",
 
+      // kotlin files
+      "**/.kotlin/**",
+
       // Node
       "**/node/**",
       "**/node_modules/**",
