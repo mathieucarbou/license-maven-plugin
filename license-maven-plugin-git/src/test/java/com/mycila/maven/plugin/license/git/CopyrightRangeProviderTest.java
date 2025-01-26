@@ -83,15 +83,14 @@ class CopyrightRangeProviderTest {
   }
 
   private static Document newDocument(String relativePath) {
-    Path path = Path.of(gitRepoRoot + File.separator
-        + relativePath.replace('/', File.separatorChar));
+    Path path = Path.of(gitRepoRoot.toString(), relativePath.replace('/', File.separatorChar));
     return new Document(path.toFile(), null, StandardCharsets.UTF_8, new String[0], null);
   }
 
   @BeforeAll
   static void beforeClass() throws IOException {
     URL url = CopyrightAuthorProviderTest.class.getResource("git-test-repo.zip");
-    gitRepoRoot = Path.of(tempFolder + File.separator + "git-test-repo");
+    gitRepoRoot = Path.of(tempFolder.toString(), "git-test-repo");
 
     GitLookupTest.unzip(url, tempFolder);
   }
