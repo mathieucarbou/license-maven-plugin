@@ -132,6 +132,9 @@ public final class Default {
       // kotlin files
       "**/.kotlin/**",
 
+      // mule files
+      "**/.mule/**",
+
       // Node
       "**/node/**",
       "**/node_modules/**",
