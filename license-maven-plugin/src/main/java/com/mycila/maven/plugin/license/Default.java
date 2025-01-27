@@ -139,6 +139,9 @@ public final class Default {
       "**/node/**",
       "**/node_modules/**",
 
+      // Spring
+      "**/.springBeans",
+
       // code coverage tools
       "**/cobertura.ser",
       "**/.clover/**",
