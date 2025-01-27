@@ -77,13 +77,13 @@ class CopyrightRangeProviderTest {
   }
 
   private static Document newDocument(String relativePath) {
-    Path path = Path.of(fsRepoRoot.toString(), relativePath.replace('/', File.separatorChar));
+    Path path = fsRepoRoot.resolve(relativePath.replace('/', File.separatorChar));
     return new Document(path.toFile(), null, StandardCharsets.UTF_8, new String[0], null);
   }
 
   @BeforeAll
   static void beforeClass() throws IOException {
-    fsRepoRoot = Path.of(tempFolder.toString(), "fs-test-repo");
+    fsRepoRoot = tempFolder.resolve("fs-test-repo");
 
     Files.createDirectories(fsRepoRoot.resolve("dir1"));
     Files.createFile(fsRepoRoot.resolve("dir1/file1.txt"));

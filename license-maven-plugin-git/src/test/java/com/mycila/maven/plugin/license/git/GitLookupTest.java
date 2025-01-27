@@ -47,7 +47,7 @@ class GitLookupTest {
   @BeforeAll
   static void beforeClass() throws IOException {
     URL url = GitLookupTest.class.getResource("git-test-repo.zip");
-    gitRepoRoot = Path.of(tempFolder.toString(), "git-test-repo");
+    gitRepoRoot = tempFolder.resolve("git-test-repo");
     unzip(url, tempFolder);
   }
 
@@ -58,7 +58,7 @@ class GitLookupTest {
       while ((entry = zipInputStream.getNextEntry()) != null) {
 
         String fileName = entry.getName();
-        Path unzippedFile = Path.of(unzipDestination.toAbsolutePath().toString(), fileName);
+        Path unzippedFile = unzipDestination.resolve(fileName);
         if (entry.isDirectory()) {
           unzippedFile.toFile().mkdirs();
         } else {
@@ -251,13 +251,13 @@ class GitLookupTest {
 
   private void assertLastChange(GitLookup provider, String relativePath, int expected) throws
       GitAPIException, IOException {
-    int actual = provider.getYearOfLastChange(Path.of(gitRepoRoot.toString(), relativePath.replace('/', File.separatorChar)).toFile());
+    int actual = provider.getYearOfLastChange(gitRepoRoot.resolve(relativePath.replace('/', File.separatorChar)).toFile());
     Assertions.assertEquals(expected, actual);
   }
 
   private void assertCreation(GitLookup provider, String relativePath, int expected) throws
       GitAPIException, IOException {
-    int actual = provider.getYearOfCreation(Path.of(gitRepoRoot.toString(), relativePath.replace('/', File.separatorChar)).toFile());
+    int actual = provider.getYearOfCreation(gitRepoRoot.resolve(relativePath.replace('/', File.separatorChar)).toFile());
     Assertions.assertEquals(expected, actual);
   }
 
