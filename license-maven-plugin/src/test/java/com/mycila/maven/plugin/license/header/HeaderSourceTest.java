@@ -31,14 +31,14 @@ class HeaderSourceTest {
   @Test
   void testOfUrl() {
     HeaderSource actual = HeaderSource.of(null, "", "single-line-header.txt", StandardCharsets.UTF_8, finder);
-    Assertions.assertEquals("just a one line header file for copyright", actual.getContent());
+    Assertions.assertEquals("just a one line header file for copyright", actual.getContent().trim());
     Assertions.assertEquals(false, actual.isInline());
   }
 
   @Test
   void testOfUrlOnly() {
     HeaderSource actual = HeaderSource.of(null, null, "single-line-header.txt", StandardCharsets.UTF_8, finder);
-    Assertions.assertEquals("just a one line header file for copyright", actual.getContent());
+    Assertions.assertEquals("just a one line header file for copyright", actual.getContent().trim());
     Assertions.assertEquals(false, actual.isInline());
   }
 
@@ -141,7 +141,7 @@ class HeaderSourceTest {
     final Multi multi = new Multi();
     multi.setHeaders(new String[]{"single-line-header.txt"});
     final HeaderSource actual = HeaderSource.of(multi, null, null, StandardCharsets.UTF_8, finder);
-    Assertions.assertEquals("just a one line header file for copyright", actual.getContent());
+    Assertions.assertEquals("just a one line header file for copyright", actual.getContent().trim());
     Assertions.assertEquals(false, actual.isInline());
   }
 
@@ -154,7 +154,7 @@ class HeaderSourceTest {
     final String expected = "just a one line header file for copyright" + "\n\n"
         + DEFAULT_SEPARATOR + "\n\n" + "alternative one line header file for copyright";
 
-    Assertions.assertEquals(expected, actual.getContent());
+    Assertions.assertEquals(expected, actual.getContent().trim());
     Assertions.assertEquals(false, actual.isInline());
   }
 
@@ -168,7 +168,7 @@ class HeaderSourceTest {
     final String expected = "just a one line header file for copyright" + "\n\n"
         + "###" + "\n\n" + "alternative one line header file for copyright";
 
-    Assertions.assertEquals(expected, actual.getContent());
+    Assertions.assertEquals(expected, actual.getContent().trim());
     Assertions.assertEquals(false, actual.isInline());
   }
 
@@ -182,7 +182,7 @@ class HeaderSourceTest {
         + DEFAULT_SEPARATOR + "\n\n" + "alternative one line header file for copyright" + "\n\n"
         + DEFAULT_SEPARATOR + "\n\n" + "just a one line header file for copyright";
 
-    Assertions.assertEquals(expected, actual.getContent());
+    Assertions.assertEquals(expected, actual.getContent().trim());
     Assertions.assertEquals(false, actual.isInline());
   }
 
@@ -197,7 +197,7 @@ class HeaderSourceTest {
         + "###" + "\n\n" + "alternative one line header file for copyright" + "\n\n"
         + "###" + "\n\n" + "just a one line header file for copyright";
 
-    Assertions.assertEquals(expected, actual.getContent());
+    Assertions.assertEquals(expected, actual.getContent().trim());
     Assertions.assertEquals(false, actual.isInline());
   }
 
@@ -212,7 +212,7 @@ class HeaderSourceTest {
         + "###" + "\n\n" + "alternative one line header file for copyright" + "\n\n"
         + "*****" + "\n\n" + "just a one line header file for copyright";
 
-    Assertions.assertEquals(expected, actual.getContent());
+    Assertions.assertEquals(expected, actual.getContent().trim());
     Assertions.assertEquals(false, actual.isInline());
   }
 
