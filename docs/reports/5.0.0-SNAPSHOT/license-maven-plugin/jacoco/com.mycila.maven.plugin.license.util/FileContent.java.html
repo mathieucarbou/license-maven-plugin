@@ -61,10 +61,10 @@ public final class FileContent {
 <span class="fc" id="L61">      return null;</span>
     }
 <span class="fc" id="L63">    int lf = fileContent.indexOf(&quot;\n&quot;, position);</span>
-<span class="pc bpc" id="L64" title="1 of 6 branches missed.">    int eol = lf == -1 || lf == 0 ? fileContent.length() : fileContent.charAt(lf - 1) == '\r' ? lf - 1 : lf;</span>
+<span class="pc bpc" id="L64" title="2 of 6 branches missed.">    int eol = lf == -1 || lf == 0 ? fileContent.length() : fileContent.charAt(lf - 1) == '\r' ? lf - 1 : lf;</span>
 <span class="fc" id="L65">    String str = fileContent.substring(position, eol);</span>
 <span class="fc" id="L66">    oldPos = position;</span>
-<span class="fc bfc" id="L67" title="All 2 branches covered.">    position = lf == -1 ? fileContent.length() : lf + 1;</span>
+<span class="pc bpc" id="L67" title="1 of 2 branches missed.">    position = lf == -1 ? fileContent.length() : lf + 1;</span>
 <span class="fc" id="L68">    return str;</span>
   }
 
