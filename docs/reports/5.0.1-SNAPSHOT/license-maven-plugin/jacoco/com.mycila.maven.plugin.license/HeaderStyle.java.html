@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HeaderStyle.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">license-maven-plugin</a> &gt; <a href="index.source.html" class="el_package">com.mycila.maven.plugin.license</a> &gt; <span class="el_source">HeaderStyle.java</span></div><h1>HeaderStyle.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2008-2024 Mycila (mathieu.carbou@gmail.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;).
+ * You may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.mycila.maven.plugin.license;
+
+import com.mycila.maven.plugin.license.header.HeaderDefinition;
+import org.apache.maven.plugins.annotations.Parameter;
+
+<span class="fc" id="L21">public class HeaderStyle {</span>
+
+  /** The name of this header style. */
+  @Parameter(required = true)
+  public String name;
+
+  /**
+   * The first fixed line of this header. Default to none.
+   */
+<span class="fc" id="L30">  @Parameter</span>
+  public String firstLine = &quot;&quot;;
+
+  /**
+   * The last fixed line of this header. Default to none.
+   */
+<span class="fc" id="L36">  @Parameter</span>
+  public String endLine = &quot;&quot;;
+
+  /**
+   * The characters to prepend before each license header lines. Default to empty.
+   */
+<span class="fc" id="L42">  @Parameter</span>
+  public String beforeEachLine = &quot;&quot;;
+
+  /**
+   * The characters to append after each license header lines. Default to empty.
+   */
+<span class="fc" id="L48">  @Parameter</span>
+  public String afterEachLine = &quot;&quot;;
+
+  /**
+   * Specify whether this is a multi-line comment style or not.
+   * &lt;p&gt;
+   * A multi-line comment style is equivalent to what we have in Java, where a first line and line will delimit a whole
+   * multi-line comment section.
+   * &lt;p&gt;
+   * A style that is not multi-line is usually repeating in each line the characters before and after each line to delimit a one-line comment.
+   */
+<span class="fc" id="L59">  @Parameter(alias = &quot;multiline&quot;)</span>
+  public boolean multiLine = true;
+
+  /**
+   * Only for multi-line comments: specify if blank lines are allowed.
+   * &lt;p&gt;
+   * Defaulted to false because most of the time, a header has some characters on each line ({@link #beforeEachLine})
+   */
+  @Parameter
+  public boolean allowBlankLines;
+
+  /**
+   * Only for non multi-line comments: specify if some spaces should be added after the header line and before the {@link #afterEachLine} characters so that all the lines are aligned.
+   * &lt;p&gt;
+   * Default to false.
+   */
+  @Parameter
+  public boolean padLines;
+
+  /**
+   * A regex to define a first line in a file that should be skipped and kept untouched, like the XML declaration at the top of XML documents
+   * &lt;p&gt;
+   * Non set by default.
+   */
+  @Parameter
+  public String skipLinePattern;
+
+  /** The regex used to detect the start of a header section or line. */
+  @Parameter(required = true)
+  public String firstLineDetectionPattern;
+
+  /** The regex used to detect the end of a header section or line. */
+  @Parameter(required = true)
+  public String lastLineDetectionPattern;
+
+  public HeaderDefinition toHeaderDefinition() {
+<span class="fc" id="L95">    return new HeaderDefinition(name, firstLine, beforeEachLine, endLine, afterEachLine, skipLinePattern, firstLineDetectionPattern, lastLineDetectionPattern, allowBlankLines, multiLine, padLines);</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
