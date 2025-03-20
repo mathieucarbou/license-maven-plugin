@@ -82,6 +82,7 @@ Please let me know if your name is missing!
 
 Available in Maven Central Repository: [https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/)
 
+- [5.0.0](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/5.0.0/) (2024-09-25) - see [issues and pull requests](https://github.com/mathieucarbou/license-maven-plugin/milestone/22?closed=1)
 - [4.6](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/4.6/) (2024-09-25) - see [issues and pull requests](https://github.com/mathieucarbou/license-maven-plugin/milestone/22?closed=1)
 - [4.5](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/4.5/) (2024-05-11) - see [issues and pull requests](https://github.com/mathieucarbou/license-maven-plugin/milestone/21?closed=1)
 - [4.4](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/4.4/) (2024-05-07) - see [issues and pull requests](https://github.com/mathieucarbou/license-maven-plugin/milestone/19?closed=1)
@@ -103,6 +104,7 @@ more license configurations in a single execution of the plugin. In simple terms
 wraps the previous configuration options for a license. The previous
 configuration syntax is still supported but deprecated, and may be removed in future.
 
+- [5.0.0](https://mathieu.carbou.me/license-maven-plugin/reports/5.0.0/)
 - [4.6](https://mathieu.carbou.me/license-maven-plugin/reports/4.6/)
 - [4.5](https://mathieu.carbou.me/license-maven-plugin/reports/4.5/)
 - [4.4](https://mathieu.carbou.me/license-maven-plugin/reports/4.4/)
@@ -121,9 +123,9 @@ configuration syntax is still supported but deprecated, and may be removed in fu
 
 ## WARNING : Java version compatibility
 
-**Version 4.6 is the latest release compatible with Java 8.**
+**Version 4.6 was the latest release compatible with Java 8.**
 
-Version >= 5.0.0 will require Java 11.
+**Version >= 5.0.0 requires Java 11.**
 
 Version >= 6.0.0 will require Java 17.
 
@@ -135,7 +137,7 @@ Version >= 6.0.0 will require Java 17.
 <plugin>
   <groupId>com.mycila</groupId>
   <artifactId>license-maven-plugin</artifactId>
-  <version>4.6</version>
+  <version>5.0.0</version>
   <configuration>
     <properties>
       <owner>Mycila</owner>
@@ -171,7 +173,7 @@ options are concatenated together to produce a header template.
 <plugin>
   <groupId>com.mycila</groupId>
   <artifactId>license-maven-plugin</artifactId>
-  <version>4.6</version>
+  <version>5.0.0</version>
   <configuration>
     <licenseSets>
       <licenseSet>
@@ -772,11 +774,8 @@ When developing, build fast with:
 ### Releasing a version
 
 ```bash
-# Example: 4.0.rc1
-./mvnw release:prepare -DreleaseVersion=4.0.rc1 -Dtag=license-maven-plugin-4.0.rc1 -DdevelopmentVersion=4.0-SNAPSHOT
-
-# Example: 4.0
-./mvnw release:prepare -DreleaseVersion=4.0 -Dtag=license-maven-plugin-4.0 -DdevelopmentVersion=4.1-SNAPSHOT
+# Example: 5.0.1
+./mvnw release:prepare -DreleaseVersion=5.0.1 -Dtag=v5.0.1 -DdevelopmentVersion=5.0.2-SNAPSHOT
 ```
 
 Then:
