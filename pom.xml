@@ -65,7 +65,7 @@
 
     <groovy.version>4.0.27</groovy.version>
     <jacoco.minimum.coverage>1.00</jacoco.minimum.coverage>
-    <junit.version>5.13.0</junit.version>
+    <junit.version>5.13.1</junit.version>
     <maven.version>3.9.9</maven.version>
     <maven-plugin.version>3.15.1</maven-plugin.version>
     <surefire.version>3.5.3</surefire.version>
@@ -238,7 +238,10 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-clean-plugin</artifactId>
-          <version>3.4.1</version>
+          <version>3.5.0</version>
+          <configuration>
+            <force>true</force>
+          </configuration>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -382,14 +385,14 @@
             <dependency>
               <groupId>com.puppycrawl.tools</groupId>
               <artifactId>checkstyle</artifactId>
-              <version>10.24.0</version>
+              <version>10.25.0</version>
             </dependency>
           </dependencies>
         </plugin>
         <plugin>
           <groupId>com.mycila</groupId>
           <artifactId>license-maven-plugin</artifactId>
-          <version>4.6</version>
+          <version>5.0.0</version>
           <configuration>
             <licenseSets>
               <licenseSet>
