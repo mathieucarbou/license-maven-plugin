@@ -65,7 +65,7 @@
 
     <groovy.version>4.0.27</groovy.version>
     <jacoco.minimum.coverage>1.00</jacoco.minimum.coverage>
-    <junit.version>5.13.2</junit.version>
+    <junit.version>5.13.3</junit.version>
     <maven.version>3.9.10</maven.version>
     <maven-plugin.version>3.15.1</maven-plugin.version>
     <surefire.version>3.5.3</surefire.version>
@@ -239,6 +239,9 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-clean-plugin</artifactId>
           <version>3.5.0</version>
+          <configuration>
+            <force>true</force>
+          </configuration>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -389,7 +392,7 @@
         <plugin>
           <groupId>com.mycila</groupId>
           <artifactId>license-maven-plugin</artifactId>
-          <version>4.6</version>
+          <version>5.0.0</version>
           <configuration>
             <licenseSets>
               <licenseSet>
