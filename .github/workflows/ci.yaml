@@ -21,14 +21,14 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Set up JDK ${{ matrix.java }} ${{ matrix.distribution }}
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: ${{ matrix.java }}
           distribution: ${{ matrix.distribution }}
       - name: Test with Maven Using Project Maven Wrapper
         run: ./mvnw clean install site -V -B -D"maven.artifact.threads=64" -D"org.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
       - name: Set up JDK 11 Integration Run (Consumer Run)
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           cache: 'maven'
           distribution: ${{ runner.os == 'macOS' && 'zulu' || 'temurin' }}
