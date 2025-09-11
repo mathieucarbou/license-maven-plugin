@@ -63,7 +63,7 @@
     <project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-    <groovy.version>5.0.0</groovy.version>
+    <groovy.version>5.0.1</groovy.version>
     <jacoco.minimum.coverage>1.00</jacoco.minimum.coverage>
     <junit.version>5.13.4</junit.version>
     <maven.version>3.9.11</maven.version>
