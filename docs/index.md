@@ -225,6 +225,8 @@ Maven license plugin comes with the following license templates:
 - CPAL 1
 - GPL 2-ONLY, 2, 3-ONLY, 3
 - LGPL 2.1-ONLY, 2.1, 3-ONLY, 3
+- EPL 1, 2
+- EUPL 1
 - MirOS
 - MIT
 - MPL 1, 2
