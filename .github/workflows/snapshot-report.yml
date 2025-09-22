@@ -7,13 +7,17 @@ on:
     paths-ignore:
       - 'README.md'
       - 'docs/**'
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.sha }}
+  cancel-in-progress: true
 jobs:
   generate-site:
     if: github.repository_owner == 'mathieucarbou'
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         with:
           cache: 'maven'
           distribution: 'zulu'
