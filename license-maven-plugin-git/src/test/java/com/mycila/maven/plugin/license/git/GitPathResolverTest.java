@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008-2024 Mycila (mathieu.carbou@gmail.com)
+ * Copyright (C) 2008-2025 Mycila (mathieu.carbou@gmail.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
