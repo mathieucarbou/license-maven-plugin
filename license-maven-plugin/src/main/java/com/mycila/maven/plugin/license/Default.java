@@ -129,6 +129,9 @@ public final class Default {
       "**/.gradle-enterprise/**",
       "**/.develocity/**",
 
+      // Groovy files
+      "**/.groovy/**",
+
       // kotlin files
       "**/.kotlin/**",
 
@@ -247,7 +250,7 @@ public final class Default {
       // SourceHut
       "**/.build.yml",
 
-      // Maven 3.3+ configs
+      // Maven
       "**/jvm.config",
       "**/maven.config",
 
