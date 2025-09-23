@@ -31,3 +31,6 @@ nb-configuration.xml
 .DS_Store
 release-pom.xml
 .mvn/wrapper/maven-wrapper.jar
+
+# VS Code
+.vscode/
