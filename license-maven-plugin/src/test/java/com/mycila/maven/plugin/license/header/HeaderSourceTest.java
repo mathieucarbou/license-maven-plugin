@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2008-2025 Mycila (mathieu.carbou@gmail.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License").
+ * You may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mycila.maven.plugin.license.header;
 
 import com.mycila.maven.plugin.license.Multi;
@@ -31,14 +46,14 @@ class HeaderSourceTest {
   @Test
   void testOfUrl() {
     HeaderSource actual = HeaderSource.of(null, "", "single-line-header.txt", StandardCharsets.UTF_8, finder);
-    Assertions.assertEquals("just a one line header file for copyright", actual.getContent());
+    Assertions.assertEquals("just a one line header file for copyright", actual.getContent().trim());
     Assertions.assertEquals(false, actual.isInline());
   }
 
   @Test
   void testOfUrlOnly() {
     HeaderSource actual = HeaderSource.of(null, null, "single-line-header.txt", StandardCharsets.UTF_8, finder);
-    Assertions.assertEquals("just a one line header file for copyright", actual.getContent());
+    Assertions.assertEquals("just a one line header file for copyright", actual.getContent().trim());
     Assertions.assertEquals(false, actual.isInline());
   }
 
@@ -141,7 +156,7 @@ class HeaderSourceTest {
     final Multi multi = new Multi();
     multi.setHeaders(new String[]{"single-line-header.txt"});
     final HeaderSource actual = HeaderSource.of(multi, null, null, StandardCharsets.UTF_8, finder);
-    Assertions.assertEquals("just a one line header file for copyright", actual.getContent());
+    Assertions.assertEquals("just a one line header file for copyright", actual.getContent().trim());
     Assertions.assertEquals(false, actual.isInline());
   }
 
@@ -154,7 +169,7 @@ class HeaderSourceTest {
     final String expected = "just a one line header file for copyright" + "\n\n"
         + DEFAULT_SEPARATOR + "\n\n" + "alternative one line header file for copyright";
 
-    Assertions.assertEquals(expected, actual.getContent());
+    Assertions.assertEquals(expected, actual.getContent().trim());
     Assertions.assertEquals(false, actual.isInline());
   }
 
@@ -168,7 +183,7 @@ class HeaderSourceTest {
     final String expected = "just a one line header file for copyright" + "\n\n"
         + "###" + "\n\n" + "alternative one line header file for copyright";
 
-    Assertions.assertEquals(expected, actual.getContent());
+    Assertions.assertEquals(expected, actual.getContent().trim());
     Assertions.assertEquals(false, actual.isInline());
   }
 
@@ -182,7 +197,7 @@ class HeaderSourceTest {
         + DEFAULT_SEPARATOR + "\n\n" + "alternative one line header file for copyright" + "\n\n"
         + DEFAULT_SEPARATOR + "\n\n" + "just a one line header file for copyright";
 
-    Assertions.assertEquals(expected, actual.getContent());
+    Assertions.assertEquals(expected, actual.getContent().trim());
     Assertions.assertEquals(false, actual.isInline());
   }
 
@@ -197,7 +212,7 @@ class HeaderSourceTest {
         + "###" + "\n\n" + "alternative one line header file for copyright" + "\n\n"
         + "###" + "\n\n" + "just a one line header file for copyright";
 
-    Assertions.assertEquals(expected, actual.getContent());
+    Assertions.assertEquals(expected, actual.getContent().trim());
     Assertions.assertEquals(false, actual.isInline());
   }
 
@@ -212,7 +227,7 @@ class HeaderSourceTest {
         + "###" + "\n\n" + "alternative one line header file for copyright" + "\n\n"
         + "*****" + "\n\n" + "just a one line header file for copyright";
 
-    Assertions.assertEquals(expected, actual.getContent());
+    Assertions.assertEquals(expected, actual.getContent().trim());
     Assertions.assertEquals(false, actual.isInline());
   }
 

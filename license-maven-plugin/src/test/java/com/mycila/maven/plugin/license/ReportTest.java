@@ -89,7 +89,7 @@ class ReportTest {
     }
 
     String processed = unixify(FileUtils.read(plugin.reportLocation, Charset.defaultCharset()));
-    String expected = FileUtils.read(new File("src/test/resources/issues/issue-122/check.json"), Charset.defaultCharset());
+    String expected = FileUtils.read(new File("src/test/resources/issues/issue-122/check.json"), Charset.defaultCharset()).trim();
     assertThat(processed).isEqualTo(expected);
   }
 
@@ -129,7 +129,7 @@ class ReportTest {
     plugin.execute();
 
     String processed = unixify(FileUtils.read(plugin.reportLocation, Charset.defaultCharset()));
-    String expected = FileUtils.read(new File("src/test/resources/issues/issue-122/format.json"), Charset.defaultCharset());
+    String expected = FileUtils.read(new File("src/test/resources/issues/issue-122/format.json"), Charset.defaultCharset()).trim();
     assertThat(processed).isEqualTo(expected);
   }
 
@@ -169,7 +169,7 @@ class ReportTest {
     plugin.execute();
 
     String processed = unixify(FileUtils.read(plugin.reportLocation, Charset.defaultCharset()));
-    String expected = FileUtils.read(new File("src/test/resources/issues/issue-122/remove.json"), Charset.defaultCharset());
+    String expected = FileUtils.read(new File("src/test/resources/issues/issue-122/remove.json"), Charset.defaultCharset()).trim();
     assertThat(processed).isEqualTo(expected);
   }
 

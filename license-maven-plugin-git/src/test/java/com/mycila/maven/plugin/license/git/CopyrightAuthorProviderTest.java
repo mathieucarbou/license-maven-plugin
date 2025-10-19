@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008-2024 Mycila (mathieu.carbou@gmail.com)
+ * Copyright (C) 2008-2025 Mycila (mathieu.carbou@gmail.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ class CopyrightAuthorProviderTest {
   private static Path gitRepoRoot;
 
   @TempDir
-  static File tempFolder;
+  static Path tempFolder;
 
   @Test
   void copyrightAuthor() {
@@ -61,17 +61,16 @@ class CopyrightAuthorProviderTest {
   }
 
   private static Document newDocument(String relativePath) {
-    Path path = Path.of(gitRepoRoot + File.separator
-        + relativePath.replace('/', File.separatorChar));
+    Path path = gitRepoRoot.resolve(relativePath.replace('/', File.separatorChar));
     return new Document(path.toFile(), null, StandardCharsets.UTF_8, new String[0], null);
   }
 
   @BeforeAll
   static void beforeClass() throws IOException {
     URL url = CopyrightAuthorProviderTest.class.getResource("git-test-repo.zip");
-    gitRepoRoot = Path.of(tempFolder.toPath() + File.separator + "git-test-repo");
+    gitRepoRoot = tempFolder.resolve("git-test-repo");
 
-    GitLookupTest.unzip(url, tempFolder.toPath());
+    GitLookupTest.unzip(url, tempFolder);
   }
 
 }

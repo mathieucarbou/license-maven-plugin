@@ -59,13 +59,13 @@ final class RemoveMojoTest {
     remove.project = new MavenProjectStub();
     remove.execute();
 
-    Assertions.assertEquals(FileUtils.read(new File(tmp, "doc9.xml"), Charset.defaultCharset()), "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\r\n" +
+    Assertions.assertEquals("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\r\n" +
         "\r\n" +
         "\r\n" +
         "\r\n" +
         "<web-app>\r\n" +
         "\r\n" +
-        "</web-app>\r\n");
+        "</web-app>\r\n", FileUtils.read(new File(tmp, "doc9.xml"), Charset.defaultCharset()));
     Assertions.assertEquals("some data\r\nand other data\r\n", FileUtils.read(new File(tmp, "doc3.txt"), Charset.defaultCharset()));
   }
 
@@ -83,9 +83,9 @@ final class RemoveMojoTest {
     remove.project = new MavenProjectStub();
     remove.execute();
 
-    Assertions.assertEquals(FileUtils.read(new File(tmp, "issue44.rb"), Charset.defaultCharset()), "ruby code here" + LS + "and other data" + LS + "");
-    Assertions.assertEquals(FileUtils.read(new File(tmp, "issue44-2.rb"), Charset.defaultCharset()), "# code comment" + LS + "ruby code here" + LS + "and other data" + LS + "");
-    Assertions.assertEquals(FileUtils.read(new File(tmp, "issue44-3.rb"), Charset.defaultCharset()), "# code comment" + LS + "ruby code here" + LS + "and other data" + LS + "");
+    Assertions.assertEquals("ruby code here" + LS + "and other data" + LS + "", FileUtils.read(new File(tmp, "issue44.rb"), Charset.defaultCharset()));
+    Assertions.assertEquals("# code comment" + LS + "ruby code here" + LS + "and other data" + LS + "", FileUtils.read(new File(tmp, "issue44-2.rb"), Charset.defaultCharset()));
+    Assertions.assertEquals("# code comment" + LS + "ruby code here" + LS + "and other data" + LS + "", FileUtils.read(new File(tmp, "issue44-3.rb"), Charset.defaultCharset()));
   }
 
   @Test
@@ -100,9 +100,9 @@ final class RemoveMojoTest {
     remove.project = new MavenProjectStub();
     remove.execute();
 
-    Assertions.assertEquals(FileUtils.read(new File(tmp, "test.xml"), Charset.defaultCharset()), "<assembly>" + LS + "" +
+    Assertions.assertEquals("<assembly>" + LS + "" +
         "  <id>project</id>" + LS + "" +
-        "</assembly>" + LS + "");
+        "</assembly>" + LS + "", FileUtils.read(new File(tmp, "test.xml"), Charset.defaultCharset()));
   }
 
   @Test
@@ -117,11 +117,11 @@ final class RemoveMojoTest {
     remove.project = new MavenProjectStub();
     remove.execute();
 
-    Assertions.assertEquals(FileUtils.read(new File(tmp, "test1.js"), Charset.defaultCharset()), "/**" + LS + "" +
+    Assertions.assertEquals("/**" + LS + "" +
         " * jrunscript JavaScript built-in functions and objects." + LS + "" +
         " */" + LS + "" +
         "" + LS + "" +
-        "function a(){}");
+        "function a(){}", FileUtils.read(new File(tmp, "test1.js"), Charset.defaultCharset()).trim());
   }
 
   @Test
@@ -136,11 +136,11 @@ final class RemoveMojoTest {
     remove.project = new MavenProjectStub();
     remove.execute();
 
-    Assertions.assertEquals(FileUtils.read(new File(tmp, "test2.js"), Charset.defaultCharset()), "/**" + LS + "" +
+    Assertions.assertEquals("/**" + LS + "" +
         " * jrunscript JavaScript built-in functions and objects." + LS + "" +
         " */" + LS + "" +
         "" + LS + "" +
-        "function a(){}");
+        "function a(){}", FileUtils.read(new File(tmp, "test2.js"), Charset.defaultCharset()).trim());
   }
 
   @Test

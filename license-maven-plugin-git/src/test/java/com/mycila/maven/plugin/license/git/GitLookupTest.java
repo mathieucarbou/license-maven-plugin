@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008-2024 Mycila (mathieu.carbou@gmail.com)
+ * Copyright (C) 2008-2025 Mycila (mathieu.carbou@gmail.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -25,10 +25,10 @@ import org.junit.jupiter.api.io.TempDir;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URL;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -42,13 +42,13 @@ class GitLookupTest {
   private static Path gitRepoRoot;
 
   @TempDir
-  static File tempFolder;
+  static Path tempFolder;
 
   @BeforeAll
   static void beforeClass() throws IOException {
     URL url = GitLookupTest.class.getResource("git-test-repo.zip");
-    gitRepoRoot = Path.of(tempFolder.toPath() + File.separator + "git-test-repo");
-    unzip(url, tempFolder.toPath());
+    gitRepoRoot = tempFolder.resolve("git-test-repo");
+    unzip(url, tempFolder);
   }
 
   static void unzip(URL url, Path unzipDestination) throws IOException {
@@ -58,12 +58,12 @@ class GitLookupTest {
       while ((entry = zipInputStream.getNextEntry()) != null) {
 
         String fileName = entry.getName();
-        Path unzippedFile = Path.of(unzipDestination.toAbsolutePath() + File.separator + fileName);
+        Path unzippedFile = unzipDestination.resolve(fileName);
         if (entry.isDirectory()) {
           unzippedFile.toFile().mkdirs();
         } else {
           unzippedFile.toFile().getParentFile().mkdirs();
-          try (OutputStream out = new BufferedOutputStream(new FileOutputStream(unzippedFile.toFile()), 2048)) {
+          try (OutputStream out = new BufferedOutputStream(Files.newOutputStream(unzippedFile), 2048)) {
             int len;
             while ((len = zipInputStream.read(buffer)) != -1) {
               out.write(buffer, 0, len);
@@ -251,15 +251,13 @@ class GitLookupTest {
 
   private void assertLastChange(GitLookup provider, String relativePath, int expected) throws
       GitAPIException, IOException {
-    int actual = provider.getYearOfLastChange(Path.of(gitRepoRoot + File.separator
-        + relativePath.replace('/', File.separatorChar)).toFile());
+    int actual = provider.getYearOfLastChange(gitRepoRoot.resolve(relativePath.replace('/', File.separatorChar)).toFile());
     Assertions.assertEquals(expected, actual);
   }
 
   private void assertCreation(GitLookup provider, String relativePath, int expected) throws
       GitAPIException, IOException {
-    int actual = provider.getYearOfCreation(Path.of(gitRepoRoot + File.separator
-        + relativePath.replace('/', File.separatorChar)).toFile());
+    int actual = provider.getYearOfCreation(gitRepoRoot.resolve(relativePath.replace('/', File.separatorChar)).toFile());
     Assertions.assertEquals(expected, actual);
   }
 

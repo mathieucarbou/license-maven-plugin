@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008-2024 Mycila (mathieu.carbou@gmail.com)
+ * Copyright (C) 2008-2025 Mycila (mathieu.carbou@gmail.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ class CopyrightRangeProviderTest {
   private static Path fsRepoRoot;
 
   @TempDir
-  static File tempFolder;
+  static Path tempFolder;
 
   @Test
   void copyrightRange() {
@@ -77,14 +77,13 @@ class CopyrightRangeProviderTest {
   }
 
   private static Document newDocument(String relativePath) {
-    Path path = Path.of(fsRepoRoot + File.separator
-        + relativePath.replace('/', File.separatorChar));
+    Path path = fsRepoRoot.resolve(relativePath.replace('/', File.separatorChar));
     return new Document(path.toFile(), null, StandardCharsets.UTF_8, new String[0], null);
   }
 
   @BeforeAll
   static void beforeClass() throws IOException {
-    fsRepoRoot = Path.of(tempFolder.toPath() + File.separator + "fs-test-repo");
+    fsRepoRoot = tempFolder.resolve("fs-test-repo");
 
     Files.createDirectories(fsRepoRoot.resolve("dir1"));
     Files.createFile(fsRepoRoot.resolve("dir1/file1.txt"));

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008-2024 Mycila (mathieu.carbou@gmail.com)
+ * Copyright (C) 2008-2025 Mycila (mathieu.carbou@gmail.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -126,10 +126,24 @@ public final class Default {
       // gradle files
       "**/.gradle/**",
       "**/build/**",
+      "**/.gradle-enterprise/**",
+      "**/.develocity/**",
+
+      // Groovy files
+      "**/.groovy/**",
+
+      // kotlin files
+      "**/.kotlin/**",
+
+      // mule files
+      "**/.mule/**",
 
       // Node
       "**/node/**",
       "**/node_modules/**",
+
+      // Spring
+      "**/.springBeans",
 
       // code coverage tools
       "**/cobertura.ser",
@@ -164,14 +178,14 @@ public final class Default {
       "**/LICENSE_HEADER",
 
       // binary files - images
-      "**/*.jpg",
-      "**/*.png",
+      "**/*.bmp",
+      "**/*.cr2",
       "**/*.gif",
       "**/*.ico",
-      "**/*.bmp",
+      "**/*.jpg",
+      "**/*.png",
       "**/*.tiff",
       "**/*.tif",
-      "**/*.cr2",
       "**/*.xcf",
 
       // binary files - programs
@@ -197,18 +211,17 @@ public final class Default {
       "**/*.pub",
 
       // binary files - archives
+      "**/*.7z",
       "**/*.ear",
+      "**/*.gz",
       "**/*.jar",
-      "**/*.war",
-      "**/*.zip",
       "**/*.rar",
       "**/*.tar",
-      "**/*.tar.gz",
       "**/*.tar.bz2",
       "**/*.tar.bz3",
       "**/*.tar.xz",
-      "**/*.gz",
-      "**/*.7z",
+      "**/*.war",
+      "**/*.zip",
 
       // ServiceLoader files
       "**/META-INF/services/**",
@@ -217,11 +230,11 @@ public final class Default {
       "**/*.md",
 
       // Office documents
-      "**/*.xls",
       "**/*.doc",
       "**/*.odt",
       "**/*.ods",
       "**/*.pdf",
+      "**/*.xls",
 
       // Travis
       "**/.travis.yml",
@@ -237,7 +250,7 @@ public final class Default {
       // SourceHut
       "**/.build.yml",
 
-      // Maven 3.3+ configs
+      // Maven
       "**/jvm.config",
       "**/maven.config",
 
@@ -250,6 +263,9 @@ public final class Default {
       "**/maven-wrapper.properties",
       "**/MavenWrapperDownloader.java",
 
+      // Profiler
+      "**/.profiler/**",
+
       // flash
       "**/*.swf",
 
@@ -257,9 +273,9 @@ public final class Default {
       "**/*.json",
 
       // fonts
-      "**/*.svg",
       "**/*.eot",
       "**/*.otf",
+      "**/*.svg",
       "**/*.ttf",
       "**/*.woff",
       "**/*.woff2",
@@ -268,10 +284,10 @@ public final class Default {
       "**/*.log",
 
       // office documents
-      "**/*.xlsx",
       "**/*.docx",
       "**/*.ppt",
       "**/*.pptx",
+      "**/*.xlsx",
 
       // String Template
       "**/*.st",

@@ -197,11 +197,11 @@ class UpdateMojoTest {
         "# code comment" + LS + "" +
         "ruby code here" + LS + "");
 
-    Assertions.assertEquals(FileUtils.read(new File(tmp, "test.asp"), Charset.defaultCharset()), "<%\n" +
+    Assertions.assertEquals("<%\n" +
         "' My @Copyright license 2 with my-custom-value and 2008 and test.asp\n" +
         "%>" +
         "\n" +
-        "asp code");
+        "asp code", FileUtils.read(new File(tmp, "test.asp"), Charset.defaultCharset()).trim());
   }
 
   @Test
