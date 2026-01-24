@@ -63,10 +63,10 @@
     <project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-    <groovy.version>5.0.3</groovy.version>
+    <groovy.version>5.0.4</groovy.version>
     <jacoco.minimum.coverage>1.00</jacoco.minimum.coverage>
-    <junit.version>6.0.1</junit.version>
-    <maven.version>3.9.11</maven.version>
+    <junit.version>6.0.2</junit.version>
+    <maven.version>3.9.12</maven.version>
     <maven-plugin.version>3.15.2</maven-plugin.version>
     <surefire.version>3.5.4</surefire.version>
   </properties>
@@ -397,7 +397,7 @@
             <dependency>
               <groupId>com.puppycrawl.tools</groupId>
               <artifactId>checkstyle</artifactId>
-              <version>12.2.0</version>
+              <version>12.3.1</version>
             </dependency>
           </dependencies>
         </plugin>
@@ -444,7 +444,7 @@ limitations under the License.
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-release-plugin</artifactId>
-          <version>3.3.0</version>
+          <version>3.3.1</version>
           <configuration>
             <arguments>-Daether.checksums.algorithms=SHA-512,SHA-256,SHA-1,MD5</arguments>
             <autoVersionSubmodules>true</autoVersionSubmodules>
