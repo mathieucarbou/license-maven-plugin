@@ -8,3 +8,8 @@ updates:
     ignore:
       - dependency-name: 'org.eclipse.jgit:org.eclipse.jgit'
         versions: ["> 6.0.0.202111291000-r"]
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: daily
+    open-pull-requests-limit: 20

@@ -65,7 +65,7 @@
 
     <groovy.version>5.0.4</groovy.version>
     <jacoco.minimum.coverage>1.00</jacoco.minimum.coverage>
-    <junit.version>6.0.2</junit.version>
+    <junit.version>6.0.3</junit.version>
     <maven.version>3.9.12</maven.version>
     <maven-plugin.version>3.15.2</maven-plugin.version>
     <surefire.version>3.5.4</surefire.version>
@@ -164,7 +164,19 @@
       <dependency>
         <groupId>org.apache.maven.plugin-testing</groupId>
         <artifactId>maven-plugin-testing-harness</artifactId>
-        <version>4.0.0-alpha-2</version>
+        <version>3.5.1</version>
+      </dependency>
+
+      <!-- Override to latest commons libraries used at runtime. -->
+      <dependency>
+        <groupId>commons-io</groupId>
+        <artifactId>commons-io</artifactId>
+        <version>2.21.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-pool2</artifactId>
+        <version>2.13.1</version>
       </dependency>
 
       <dependency>
@@ -450,7 +462,7 @@ limitations under the License.
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.14.1</version>
+          <version>3.15.0</version>
           <configuration>
             <showDeprecation>true</showDeprecation>
             <showWarnings>true</showWarnings>
