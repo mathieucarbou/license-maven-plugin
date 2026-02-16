@@ -27,7 +27,7 @@ jobs:
       - name: Fix eol markers
         run: cd docs && git grep --null --files-with-matches -I '' | while IFS= read -rd '' f; do tail -c1 < "$f" | read -r _ || echo >> "$f"; done
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@v8
         with:
           commit-message: '[GA] Update snapshot report'
           title: '[GA] Update snapshot report'
