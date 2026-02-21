@@ -23,12 +23,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.InputStreamReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.UncheckedIOException;
-import java.net.URL;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
@@ -39,6 +39,7 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+import static java.util.Objects.requireNonNull;
 
 public final class FileUtils {
 
@@ -132,5 +133,11 @@ public final class FileUtils {
         throw new UncheckedIOException(e);
       }
     });
+  }
+
+  public static boolean isSameOrSubFolder(File subfolder, File folder) {
+    requireNonNull(subfolder);
+    requireNonNull(folder);
+    return subfolder.toPath().startsWith(folder.toPath());
   }
 }
