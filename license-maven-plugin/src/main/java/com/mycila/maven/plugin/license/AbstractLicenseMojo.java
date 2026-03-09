@@ -513,6 +513,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
       // execute
       executeForLicenseSets(allLicenseSets, callback);
 
+      info("%s", report.getSummary());
       report.exportTo(reportLocation);
     }
   }
