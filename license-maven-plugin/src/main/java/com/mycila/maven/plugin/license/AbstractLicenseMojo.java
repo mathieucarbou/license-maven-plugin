@@ -307,6 +307,18 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
   @Parameter(property = "license.warnIfShallow", defaultValue = "true")
   public boolean warnIfShallow = true;
 
+  /**
+   * Fail the build when a shallow git clone or sparse svn checkout is detected.
+   * This is useful in environments such as AI coding agents that use shallow
+   * clones and where running this plugin could produce inaccurate timestamp
+   * updates. When set to {@code true}, the build fails instead of proceeding
+   * with potentially inaccurate year or author property values.
+   * <p>
+   * Default is {@code false} for backwards compatibility.
+   */
+  @Parameter(property = "license.failOnShallow", defaultValue = "false")
+  public boolean failOnShallow;
+
   /** If you do not want to see the list of file having a missing header, you can add the quiet flag that will shorten the output. */
   @Parameter(property = "license.quiet", defaultValue = "false")
   public boolean quiet;
@@ -631,7 +643,11 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
 
       for (final PropertiesProvider provider : ServiceLoader.load(PropertiesProvider.class,
           Thread.currentThread().getContextClassLoader())) {
-        provider.init(this, globalProperties);
+        try {
+          provider.init(this, globalProperties);
+        } catch (ShallowRepositoryException e) {
+          throw new MojoFailureException(e.getMessage(), e);
+        }
         propertiesProviders.add(provider);
       }
 
@@ -655,6 +671,9 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
             for (String key : adjustments.keySet()) {
               perDoc.putSupplier(key, () -> adjustments.get(key));
             }
+          } catch (ShallowRepositoryException e) {
+            // Re-throw to escape the catch(Exception) block below that would otherwise swallow it
+            throw e;
           } catch (Exception e) {
             if (getLog().isWarnEnabled()) {
               getLog().warn("failure occurred while calling " + provider.getClass(), e);
@@ -722,6 +741,9 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
           }
           if (cause instanceof MojoFailureException) {
             throw (MojoFailureException) cause;
+          }
+          if (cause instanceof ShallowRepositoryException) {
+            throw new MojoFailureException(cause.getMessage(), cause);
           }
           if (cause instanceof RuntimeException) {
             throw (RuntimeException) cause;

@@ -23,6 +23,7 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 
 import com.mycila.maven.plugin.license.AbstractLicenseMojo;
 import com.mycila.maven.plugin.license.PropertiesProvider;
+import com.mycila.maven.plugin.license.ShallowRepositoryException;
 import com.mycila.maven.plugin.license.document.Document;
 import com.mycila.maven.plugin.license.util.LazyMap;
 import com.mycila.maven.plugin.license.util.Fn;
@@ -46,9 +47,14 @@ public class CopyrightRangeProvider implements PropertiesProvider {
   public void init(AbstractLicenseMojo mojo, Map<String, String> currentProperties) {
     gitLookup = GitLookup.create(mojo.defaultBasedir, currentProperties);
 
-    // One-time warning for shallow repo
-    if (mojo.warnIfShallow && gitLookup.isShallowRepository()) {
-      mojo.warn("Shallow git repository detected. Year property values may not be accurate.");
+    if (gitLookup.isShallowRepository()) {
+      if (mojo.warnIfShallow) {
+        mojo.warn("Shallow git repository detected. Year property values may not be accurate.");
+      }
+      if (mojo.failOnShallow) {
+        throw new ShallowRepositoryException(
+            "Shallow git repository detected. Year property values may not be accurate.");
+      }
     }
   }
 

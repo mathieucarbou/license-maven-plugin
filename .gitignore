@@ -6,6 +6,9 @@ pom.xml.versionsBackup
 pom.xml.next
 release.properties
 
+# Snapshot reports (generated, not to be committed)
+docs/reports/*-SNAPSHOT/
+
 # Checkstyle
 .checkstyle
 
