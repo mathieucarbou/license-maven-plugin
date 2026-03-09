@@ -1,0 +1,8 @@
+${project.name} - ${project.description}
+Copyright © ${year} ${owner}
+
+Licensed under the Artistic License 2.0 (the "License");
+you may not use this file except in compliance with the License.
+A copy of the License is available at:
+
+https://opensource.org/licenses/Artistic-2.0
