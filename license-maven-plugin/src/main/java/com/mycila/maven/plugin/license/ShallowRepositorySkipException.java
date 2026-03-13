@@ -17,13 +17,13 @@ package com.mycila.maven.plugin.license;
 
 /**
  * Thrown when a shallow or sparse repository is detected and the
- * {@code license.failOnShallow} configuration option is set to {@code true}.
- *
- * @see ShallowRepositorySkipException for the skip variant that silently bypasses execution
+ * {@code license.skipOnShallow} configuration option is set to {@code true}.
+ * When caught by the plugin framework, the entire plugin execution is skipped
+ * rather than failing the build.
  */
-public class ShallowRepositoryException extends RuntimeException {
+public class ShallowRepositorySkipException extends ShallowRepositoryException {
 
-  public ShallowRepositoryException(String message) {
+  public ShallowRepositorySkipException(String message) {
     super(message);
   }
 }

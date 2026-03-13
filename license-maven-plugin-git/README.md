@@ -20,7 +20,9 @@ Which properties is license-maven-plugin-git adding?
 
 The full git history for a file is required for accurate determination of the first commit (for the creation author name/email, creation year, or existence years). The plugin will warn if it detects a shallow git repository. If you are certain your shallow depth will still permit determination of these values you may suppress the warning by setting the parameter `license.warnIfShallow` to false.
 
-To prevent the build from running at all on a shallow clone — for example in environments such as AI coding agents that perform shallow clones and where inaccurate timestamp updates would be undesirable — set the parameter `license.failOnShallow` to `true`. When enabled, the build will fail with an error message instead of proceeding with potentially inaccurate year or author property values.
+To skip the entire plugin execution when a shallow clone is detected — the recommended option for **AI coding agents** and CI workflows that use shallow clones — set the parameter `license.skipOnShallow` to `true`. This prevents potentially widespread and inaccurate timestamp or author updates to existing files. When the plugin skips, it logs an informational message and the build continues normally. Note that new files added during an agent run will not automatically receive license headers in this mode, which is an acceptable tradeoff.
+
+To instead **fail the build** when a shallow clone is detected, set the parameter `license.failOnShallow` to `true`. The build will fail with an error message instead of proceeding with potentially inaccurate year or author property values.
 
 It is possible to filter out specific commits by adding one or more (comma-separated) SHA-1 hashes to the property `license.git.commitsToIgnore`. This property will only affect the computation of the last change year, not of the creation year.
 

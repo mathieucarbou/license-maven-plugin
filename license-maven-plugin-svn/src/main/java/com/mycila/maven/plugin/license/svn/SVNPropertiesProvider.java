@@ -19,6 +19,7 @@ import com.mycila.maven.plugin.license.AbstractLicenseMojo;
 import com.mycila.maven.plugin.license.Credentials;
 import com.mycila.maven.plugin.license.PropertiesProvider;
 import com.mycila.maven.plugin.license.ShallowRepositoryException;
+import com.mycila.maven.plugin.license.ShallowRepositorySkipException;
 import com.mycila.maven.plugin.license.document.Document;
 import org.tmatesoft.svn.core.ISVNLogEntryHandler;
 import org.tmatesoft.svn.core.SVNDepth;
@@ -126,12 +127,16 @@ public class SVNPropertiesProvider implements PropertiesProvider {
     };
 
     try {
-      // One-time warning or failure for shallow/sparse repo
-      if ((mojo.warnIfShallow || mojo.failOnShallow) && !warnedIfShallow.get()) {
+      // One-time warning, skip, or failure for shallow/sparse repo
+      if ((mojo.warnIfShallow || mojo.skipOnShallow || mojo.failOnShallow) && !warnedIfShallow.get()) {
         SVNInfo info = svnClientManager.getWCClient().doInfo(documentFile, SVNRevision.HEAD);
         if (info.getDepth() != SVNDepth.INFINITY && warnedIfShallow.compareAndSet(false, true)) {
           if (mojo.warnIfShallow) {
             mojo.warn("Sparse svn repository detected. Year property values may not be accurate.");
+          }
+          if (mojo.skipOnShallow) {
+            throw new ShallowRepositorySkipException(
+                "Sparse svn repository detected. Skipping plugin execution.");
           }
           if (mojo.failOnShallow) {
             throw new ShallowRepositoryException(

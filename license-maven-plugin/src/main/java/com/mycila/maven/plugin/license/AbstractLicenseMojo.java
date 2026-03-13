@@ -319,6 +319,23 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
   @Parameter(property = "license.failOnShallow", defaultValue = "false")
   public boolean failOnShallow;
 
+  /**
+   * Skip the entire plugin execution when a shallow git clone or sparse svn
+   * checkout is detected. This is the recommended option for AI coding agents
+   * and CI workflows that use shallow clones, where running the plugin would
+   * otherwise produce inaccurate and widespread timestamp or author updates.
+   * <p>
+   * Unlike {@code license.failOnShallow}, this option lets the build continue
+   * normally — the plugin simply skips its execution with an informational
+   * message. New files added during an agent run will not automatically receive
+   * license headers, which is an acceptable tradeoff to prevent large-scale
+   * rewrites of existing headers.
+   * <p>
+   * Default is {@code false} for backwards compatibility.
+   */
+  @Parameter(property = "license.skipOnShallow", defaultValue = "false")
+  public boolean skipOnShallow;
+
   /** If you do not want to see the list of file having a missing header, you can add the quiet flag that will shorten the output. */
   @Parameter(property = "license.quiet", defaultValue = "false")
   public boolean quiet;
@@ -523,7 +540,12 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
       }
 
       // execute
-      executeForLicenseSets(allLicenseSets, callback);
+      try {
+        executeForLicenseSets(allLicenseSets, callback);
+      } catch (ShallowRepositorySkipException e) {
+        getLog().info("License Plugin skipped: " + e.getMessage());
+        return;
+      }
 
       report.exportTo(reportLocation);
     }
@@ -645,6 +667,10 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
           Thread.currentThread().getContextClassLoader())) {
         try {
           provider.init(this, globalProperties);
+        } catch (ShallowRepositorySkipException e) {
+          // ShallowRepositorySkipException must be checked before ShallowRepositoryException
+          // (its parent class). Skip propagates to execute() for graceful bypass.
+          throw e;
         } catch (ShallowRepositoryException e) {
           throw new MojoFailureException(e.getMessage(), e);
         }
@@ -672,7 +698,10 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
               perDoc.putSupplier(key, () -> adjustments.get(key));
             }
           } catch (ShallowRepositoryException e) {
-            // Re-throw to escape the catch(Exception) block below that would otherwise swallow it
+            // Re-throw both ShallowRepositoryException and its subclass ShallowRepositorySkipException
+            // to escape the catch(Exception) block below that would otherwise swallow them.
+            // ShallowRepositorySkipException propagates to execute() for skip handling;
+            // ShallowRepositoryException propagates to the completion loop for fail handling.
             throw e;
           } catch (Exception e) {
             if (getLog().isWarnEnabled()) {
@@ -741,6 +770,12 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
           }
           if (cause instanceof MojoFailureException) {
             throw (MojoFailureException) cause;
+          }
+          // ShallowRepositorySkipException must be checked before ShallowRepositoryException
+          // because it extends ShallowRepositoryException. Skip signals graceful bypass;
+          // fail signals a hard build failure.
+          if (cause instanceof ShallowRepositorySkipException) {
+            throw (ShallowRepositorySkipException) cause;
           }
           if (cause instanceof ShallowRepositoryException) {
             throw new MojoFailureException(cause.getMessage(), cause);
