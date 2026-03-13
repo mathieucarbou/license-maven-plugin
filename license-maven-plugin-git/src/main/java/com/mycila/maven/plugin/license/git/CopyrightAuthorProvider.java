@@ -17,6 +17,8 @@ package com.mycila.maven.plugin.license.git;
 
 import com.mycila.maven.plugin.license.AbstractLicenseMojo;
 import com.mycila.maven.plugin.license.PropertiesProvider;
+import com.mycila.maven.plugin.license.ShallowRepositoryException;
+import com.mycila.maven.plugin.license.ShallowRepositorySkipException;
 import com.mycila.maven.plugin.license.document.Document;
 import com.mycila.maven.plugin.license.util.LazyMap;
 import com.mycila.maven.plugin.license.util.Fn;
@@ -42,9 +44,20 @@ public class CopyrightAuthorProvider implements PropertiesProvider {
   public void init(AbstractLicenseMojo mojo, Map<String, String> currentProperties) {
     gitLookup = GitLookup.create(mojo.defaultBasedir, currentProperties);
 
-    // One-time warning for shallow repo
-    if (mojo.warnIfShallow && gitLookup.isShallowRepository()) {
-      mojo.warn("Shallow git repository detected. Author property values may not be accurate.");
+    if (gitLookup.isShallowRepository()) {
+      if (mojo.warnIfShallow) {
+        mojo.warn("Shallow git repository detected. Author property values may not be accurate.");
+      }
+      if (mojo.skipOnShallow) {
+        throw new ShallowRepositorySkipException(
+            "Shallow git repository detected. Skipping plugin execution.");
+      }
+      if (mojo.failOnShallow) {
+        throw new ShallowRepositoryException(
+            "Shallow git repository detected. Failing build because author property values may not be accurate. " +
+            "To fix this, convert the repository to a full clone or increase the git fetch depth, or disable 'license.failOnShallow' " +
+            "and instead use 'license.skipOnShallow' or 'license.warnIfShallow' as appropriate.");
+      }
     }
   }
 

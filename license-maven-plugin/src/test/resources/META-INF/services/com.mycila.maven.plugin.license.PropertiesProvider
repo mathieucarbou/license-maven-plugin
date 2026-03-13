@@ -1,1 +1,2 @@
 MyPropertiesProvider
+com.mycila.maven.plugin.license.ShallowTestPropertiesProvider
