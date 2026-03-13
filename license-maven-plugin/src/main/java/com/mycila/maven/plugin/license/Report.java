@@ -30,9 +30,11 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Clock;
+import java.util.EnumMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -95,8 +97,35 @@ public class Report {
   }
 
   void add(File file, Result result) {
-    if (!skipped) {
-      results.put(basePath.relativize(file.getAbsoluteFile().toPath()).toString(), result);
+    results.put(basePath.relativize(file.getAbsoluteFile().toPath()).toString(), result);
+  }
+
+  public String getSummary() {
+    Map<Result, Long> counts = results.values().stream()
+        .collect(Collectors.groupingBy(r -> r, () -> new EnumMap<>(Result.class), Collectors.counting()));
+    long total = results.size();
+    switch (action) {
+      case CHECK:
+        return String.format("License check: %d file(s) checked (OK: %d, Missing: %d, Unknown: %d)",
+            total,
+            counts.getOrDefault(Result.PRESENT, 0L),
+            counts.getOrDefault(Result.MISSING, 0L),
+            counts.getOrDefault(Result.UNKNOWN, 0L));
+      case FORMAT:
+        return String.format("License format: %d file(s) processed (Added: %d, Replaced: %d, OK: %d, Unknown: %d)",
+            total,
+            counts.getOrDefault(Result.ADDED, 0L),
+            counts.getOrDefault(Result.REPLACED, 0L),
+            counts.getOrDefault(Result.NOOP, 0L),
+            counts.getOrDefault(Result.UNKNOWN, 0L));
+      case REMOVE:
+        return String.format("License remove: %d file(s) processed (Removed: %d, Skipped: %d, Unknown: %d)",
+            total,
+            counts.getOrDefault(Result.REMOVED, 0L),
+            counts.getOrDefault(Result.NOOP, 0L),
+            counts.getOrDefault(Result.UNKNOWN, 0L));
+      default:
+        return String.format("License plugin completed: %d file(s) processed", total);
     }
   }
 
