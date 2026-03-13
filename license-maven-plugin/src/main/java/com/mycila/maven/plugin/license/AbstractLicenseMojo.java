@@ -555,6 +555,7 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
         return;
       }
 
+      info("%s", report.getSummary());
       report.exportTo(reportLocation);
     }
   }

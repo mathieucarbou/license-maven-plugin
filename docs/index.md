@@ -219,14 +219,18 @@ Maven license plugin comes with the following license templates:
 
 - AGPL 3
 - APACHE 2
+- Artistic 2.0
 - BSD 2, 3, 4
 - Business Source License 1.1
+- CC0 1.0
+- CDDL 1.0
 - Commons Clause
 - CPAL 1
-- GPL 2-ONLY, 2, 3-ONLY, 3
-- LGPL 2.1-ONLY, 2.1, 3-ONLY, 3
 - EPL 1, 2
-- EUPL 1
+- EUPL 1, 1.1, 1.2
+- GPL 2-ONLY, 2, 3-ONLY, 3
+- ISC
+- LGPL 2.1-ONLY, 2.1, 3-ONLY, 3
 - MirOS
 - MIT
 - MPL 1, 2

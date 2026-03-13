@@ -5,6 +5,7 @@ pom.xml.releaseBackup
 pom.xml.versionsBackup
 pom.xml.next
 release.properties
+docs/reports/*-SNAPSHOT/
 
 # Snapshot reports (generated, not to be committed)
 docs/reports/*-SNAPSHOT/
