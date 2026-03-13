@@ -501,7 +501,9 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
       }
 
       // use canonical base dir
-      workspace.basedir = getCanonicalFile(workspace.basedir, "license.workspace.basedir");
+      if (workspace.basedir != null) {
+        workspace.basedir = getCanonicalFile(workspace.basedir, "license.workspace.basedir");
+      }
       if (workspace.basedir == null) {
         if (legacyDefaultBasedir == null) {
           workspace.basedir = getCanonicalFile(project.getBasedir(), "project.basedir");
