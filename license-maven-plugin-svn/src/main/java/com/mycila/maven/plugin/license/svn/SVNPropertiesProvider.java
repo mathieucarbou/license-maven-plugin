@@ -140,7 +140,9 @@ public class SVNPropertiesProvider implements PropertiesProvider {
           }
           if (mojo.failOnShallow) {
             throw new ShallowRepositoryException(
-                "Sparse svn repository detected. Year property values may not be accurate.");
+                "Sparse svn repository detected while 'license.failOnShallow' is enabled. Year property values may "
+                    + "not be accurate. To proceed, perform a non-sparse checkout (or set the working copy depth to "
+                    + "INFINITY), or disable 'license.failOnShallow' if you accept potentially inaccurate year data.");
           }
         }
       }

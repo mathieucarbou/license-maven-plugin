@@ -54,7 +54,9 @@ public class CopyrightAuthorProvider implements PropertiesProvider {
       }
       if (mojo.failOnShallow) {
         throw new ShallowRepositoryException(
-            "Shallow git repository detected. Author property values may not be accurate.");
+            "Shallow git repository detected. Failing build because author property values may not be accurate. " +
+            "To fix this, convert the repository to a full clone or increase the git fetch depth, or disable 'license.failOnShallow' " +
+            "and instead use 'license.skipOnShallow' or 'license.warnIfShallow' as appropriate.");
       }
     }
   }

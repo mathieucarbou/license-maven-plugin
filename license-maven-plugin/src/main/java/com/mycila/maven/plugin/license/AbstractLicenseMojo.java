@@ -314,6 +314,10 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
    * updates. When set to {@code true}, the build fails instead of proceeding
    * with potentially inaccurate year or author property values.
    * <p>
+   * If both {@code license.failOnShallow} and {@code license.skipOnShallow}
+   * are set to {@code true}, {@code skipOnShallow} takes precedence and the
+   * plugin execution is skipped instead of failing the build.
+   * <p>
    * Default is {@code false} for backwards compatibility.
    */
   @Parameter(property = "license.failOnShallow", defaultValue = "false")
@@ -330,6 +334,10 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
    * message. New files added during an agent run will not automatically receive
    * license headers, which is an acceptable tradeoff to prevent large-scale
    * rewrites of existing headers.
+   * <p>
+   * When both {@code license.skipOnShallow} and {@code license.failOnShallow}
+   * are configured to {@code true}, {@code skipOnShallow} takes precedence:
+   * the build continues and the plugin execution is skipped.
    * <p>
    * Default is {@code false} for backwards compatibility.
    */

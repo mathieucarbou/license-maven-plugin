@@ -58,7 +58,9 @@ public class CopyrightRangeProvider implements PropertiesProvider {
       }
       if (mojo.failOnShallow) {
         throw new ShallowRepositoryException(
-            "Shallow git repository detected. Year property values may not be accurate.");
+            "Shallow git repository detected. Year property values may not be accurate. " +
+            "Convert the repository to a full clone or increase the git fetch depth, " +
+            "or disable 'license.failOnShallow' in the plugin configuration.");
       }
     }
   }
