@@ -24,8 +24,8 @@ import java.util.Map;
 public class LicenseSet {
 
   /**
-   * The base directory, in which to search for project files. If {@link WokrSpace#basedir}
-   * is defined, then this base directory should be one of it's subfolders.
+   * The base directory, in which to search for project files. If {@link WorkSpace#basedir}
+   * is defined, then this base directory should be one of its subfolders.
    */
   @Parameter(property = "license.basedir")
   public File basedir;
