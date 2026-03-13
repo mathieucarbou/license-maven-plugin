@@ -19,14 +19,13 @@ import org.apache.maven.monitor.logging.DefaultLog;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
 
 class LicenseSetTest {
 
   @Test
-  void multipleLicenseSets(@TempDir File folder) throws Exception {
+  void multipleLicenseSets() throws Exception {
     final LicenseSet licenseSet1 = new LicenseSet();
     licenseSet1.basedir = new File("src/test/resources/check/multi-license/strict");
     licenseSet1.header = "src/test/resources/test-header1-diff.txt";
