@@ -63,12 +63,12 @@
     <project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-    <groovy.version>5.0.1</groovy.version>
+    <groovy.version>5.0.4</groovy.version>
     <jacoco.minimum.coverage>1.00</jacoco.minimum.coverage>
-    <junit.version>6.0.0</junit.version>
-    <maven.version>3.9.11</maven.version>
-    <maven-plugin.version>3.15.1</maven-plugin.version>
-    <surefire.version>3.5.4</surefire.version>
+    <junit.version>6.0.3</junit.version>
+    <maven.version>3.9.14</maven.version>
+    <maven-plugin.version>3.15.2</maven-plugin.version>
+    <surefire.version>3.5.5</surefire.version>
   </properties>
 
   <modules>
@@ -164,7 +164,19 @@
       <dependency>
         <groupId>org.apache.maven.plugin-testing</groupId>
         <artifactId>maven-plugin-testing-harness</artifactId>
-        <version>4.0.0-alpha-2</version>
+        <version>3.5.1</version>
+      </dependency>
+
+      <!-- Override to latest commons libraries used at runtime. -->
+      <dependency>
+        <groupId>commons-io</groupId>
+        <artifactId>commons-io</artifactId>
+        <version>2.21.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-pool2</artifactId>
+        <version>2.13.1</version>
       </dependency>
 
       <dependency>
@@ -280,7 +292,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-jar-plugin</artifactId>
-          <version>3.4.2</version>
+          <version>3.5.0</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -303,7 +315,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-resources-plugin</artifactId>
-          <version>3.3.1</version>
+          <version>3.5.0</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -385,7 +397,7 @@
             <dependency>
               <groupId>com.puppycrawl.tools</groupId>
               <artifactId>checkstyle</artifactId>
-              <version>12.0.1</version>
+              <version>13.3.0</version>
             </dependency>
           </dependencies>
         </plugin>
@@ -432,7 +444,7 @@ limitations under the License.
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-release-plugin</artifactId>
-          <version>3.1.1</version>
+          <version>3.3.1</version>
           <configuration>
             <arguments>-Daether.checksums.algorithms=SHA-512,SHA-256,SHA-1,MD5</arguments>
             <autoVersionSubmodules>true</autoVersionSubmodules>
@@ -450,7 +462,7 @@ limitations under the License.
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.14.1</version>
+          <version>3.15.0</version>
           <configuration>
             <showDeprecation>true</showDeprecation>
             <showWarnings>true</showWarnings>
@@ -476,7 +488,7 @@ limitations under the License.
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-source-plugin</artifactId>
-          <version>3.3.1</version>
+          <version>3.4.0</version>
         </plugin>
       </plugins>
     </pluginManagement>
