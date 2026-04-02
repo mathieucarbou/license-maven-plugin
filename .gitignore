@@ -35,3 +35,6 @@ nb-configuration.xml
 .DS_Store
 release-pom.xml
 .mvn/wrapper/maven-wrapper.jar
+
+# mkdocs
+/site/
