@@ -4,9 +4,7 @@ on:
   push:
     branches:
       - master
-    paths-ignore:
-      - 'README.md'
-      - 'docs/**'
+    paths-ignore: ["docs/**", "**/*.md", "mkdocs.yml", ".github/workflows/website.yml", ".markdownlint.json"]
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}-${{ github.sha }}
   cancel-in-progress: true
