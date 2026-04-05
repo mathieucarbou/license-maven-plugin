@@ -27,7 +27,7 @@ class IncludesMojoTest {
   @Test
   void test_include() throws Exception {
     LicenseCheckMojo check = new LicenseCheckMojo();
-    check.defaultBasedir = new File("src/test/resources/check");
+    check.legacyDefaultBasedir = new File("src/test/resources/check");
     check.legacyConfigHeader = "header.txt";
     check.project = new MavenProjectStub();
     check.legacyConfigIncludes = new String[]{"inexisting"};
@@ -38,7 +38,7 @@ class IncludesMojoTest {
   @Test
   void test_include_and_fail() throws Exception {
     LicenseCheckMojo check = new LicenseCheckMojo();
-    check.defaultBasedir = new File("src/test/resources/check");
+    check.legacyDefaultBasedir = new File("src/test/resources/check");
     check.legacyConfigHeader = "header.txt";
     check.project = new MavenProjectStub();
     check.legacyConfigIncludes = new String[]{"doc1.txt"};
@@ -51,7 +51,7 @@ class IncludesMojoTest {
   @Test
   void test_include_overrides_default_exclusion() throws Exception {
     LicenseCheckMojo check = new LicenseCheckMojo();
-    check.defaultBasedir = new File("src/test/resources/issues/issue-71");
+    check.legacyDefaultBasedir = new File("src/test/resources/issues/issue-71");
     check.legacyConfigHeader = "../../check/header.txt";
     check.project = new MavenProjectStub();
     check.legacyConfigIncludes = new String[]{"**/.travis.yml"};

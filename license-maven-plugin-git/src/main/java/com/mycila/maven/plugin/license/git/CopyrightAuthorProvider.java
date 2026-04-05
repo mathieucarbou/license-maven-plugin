@@ -20,8 +20,8 @@ import com.mycila.maven.plugin.license.PropertiesProvider;
 import com.mycila.maven.plugin.license.ShallowRepositoryException;
 import com.mycila.maven.plugin.license.ShallowRepositorySkipException;
 import com.mycila.maven.plugin.license.document.Document;
-import com.mycila.maven.plugin.license.util.LazyMap;
 import com.mycila.maven.plugin.license.util.Fn;
+import com.mycila.maven.plugin.license.util.LazyMap;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -42,7 +42,7 @@ public class CopyrightAuthorProvider implements PropertiesProvider {
 
   @Override
   public void init(AbstractLicenseMojo mojo, Map<String, String> currentProperties) {
-    gitLookup = GitLookup.create(mojo.defaultBasedir, currentProperties);
+    gitLookup = GitLookup.create(mojo.workspace.basedir, currentProperties);
 
     if (gitLookup.isShallowRepository()) {
       if (mojo.warnIfShallow) {
