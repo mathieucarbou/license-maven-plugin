@@ -1,0 +1,37 @@
+# Contributors
+
+Thank you to everyone who has contributed to this project!
+
+- [@Flamenco](https://github.com/Flamenco)
+- [@McFoggy](https://github.com/McFoggy)
+- [@adamretter](https://github.com/adamretter)
+- [@akomakom](https://github.com/akomakom)
+- [@ankon](https://github.com/ankon)
+- [@christopherlakey](https://github.com/christopherlakey)
+- [@dbwiddis](https://github.com/dbwiddis)
+- [@eincs](https://github.com/eincs)
+- [@geoff-wasilwa](https://github.com/geoff-wasilwa)
+- [@hazendaz](https://github.com/hazendaz)
+- [@hgschmie](https://github.com/hgschmie)
+- [@jdhoek](https://github.com/jdhoek)
+- [@jfim](https://github.com/jfim)
+- [@jgerken](https://github.com/jgerken)
+- [@liry](https://github.com/liry)
+- [@masakimu](https://github.com/masakimu)
+- [@mathieucarbou](https://github.com/mathieucarbou)
+- [@mcculls](https://github.com/mcculls)
+- [@mirabilos](https://github.com/mirabilos)
+- [@peterlynch](https://github.com/peterlynch)
+- [@philippn](https://github.com/philippn)
+- [@ppalaga](https://github.com/ppalaga)
+- [@rhuss](https://github.com/rhuss)
+- [@rmannibucau](https://github.com/rmannibucau)
+- [@rnc](https://github.com/rnc)
+- [@rremer](https://github.com/rremer)
+- [@sebhoss](https://github.com/sebhoss)
+- [@shane-hp](https://github.com/shane-hp)
+- [@stain](https://github.com/stain)
+- [@vromero](https://github.com/vromero)
+- [@yoosiba](https://github.com/yoosiba)
+
+If your name is missing, please [open an issue](https://github.com/mathieucarbou/license-maven-plugin/issues).

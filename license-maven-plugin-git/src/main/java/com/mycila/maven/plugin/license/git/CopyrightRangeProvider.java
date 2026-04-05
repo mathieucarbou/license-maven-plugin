@@ -17,6 +17,8 @@ package com.mycila.maven.plugin.license.git;
 
 import com.mycila.maven.plugin.license.AbstractLicenseMojo;
 import com.mycila.maven.plugin.license.PropertiesProvider;
+import com.mycila.maven.plugin.license.ShallowRepositoryException;
+import com.mycila.maven.plugin.license.ShallowRepositorySkipException;
 import com.mycila.maven.plugin.license.document.Document;
 import com.mycila.maven.plugin.license.util.Fn;
 import com.mycila.maven.plugin.license.util.LazyMap;
@@ -45,9 +47,20 @@ public class CopyrightRangeProvider implements PropertiesProvider {
   public void init(AbstractLicenseMojo mojo, Map<String, String> currentProperties) {
     gitLookup = GitLookup.create(mojo.workspace.basedir, currentProperties);
 
-    // One-time warning for shallow repo
-    if (mojo.warnIfShallow && gitLookup.isShallowRepository()) {
-      mojo.warn("Shallow git repository detected. Year property values may not be accurate.");
+    if (gitLookup.isShallowRepository()) {
+      if (mojo.warnIfShallow) {
+        mojo.warn("Shallow git repository detected. Year property values may not be accurate.");
+      }
+      if (mojo.skipOnShallow) {
+        throw new ShallowRepositorySkipException(
+            "Shallow git repository detected. Skipping plugin execution.");
+      }
+      if (mojo.failOnShallow) {
+        throw new ShallowRepositoryException(
+            "Shallow git repository detected. Year property values may not be accurate. " +
+            "Convert the repository to a full clone or increase the git fetch depth, " +
+            "or disable 'license.failOnShallow' in the plugin configuration.");
+      }
     }
   }
 

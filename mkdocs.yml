@@ -1,0 +1,104 @@
+#
+# Copyright (C) 2008-2025 Mycila (mathieu.carbou@gmail.com)
+#
+# Licensed under the Apache License, Version 2.0 (the "License").
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#         https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+site_name: License Maven Plugin
+site_url: https://mathieu.carbou.me/license-maven-plugin/
+site_description: Official & Original Maven plugin to manage license headers in source files
+site_author: Mathieu Carbou
+
+repo_url: https://github.com/mathieucarbou/license-maven-plugin
+repo_name: mathieucarbou/license-maven-plugin
+edit_uri: edit/master/docs/
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.sections
+    - navigation.indexes
+    - navigation.top
+    - navigation.footer
+    - toc.follow
+    - search.highlight
+    - search.suggest
+    - content.code.copy
+    - content.code.annotate
+    - content.tabs.link
+  icon:
+    repo: fontawesome/brands/github
+
+plugins:
+  - search
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/mathieucarbou/license-maven-plugin
+
+nav:
+  - Overview: index.md
+  - Getting Started: getting-started.md
+  - Goals: goals.md
+  - Configuration: configuration.md
+  - License Templates: license-templates.md
+  - Properties & Placeholders: properties.md
+  - Comment Styles: comment-styles.md
+  - Custom Header Styles: header-styles.md
+  - Multi-Licensing: multi-licensing.md
+  - Dependency Enforcement: dependency-enforcement.md
+  - SCM Integration:
+      - Overview: scm/index.md
+      - Git: scm/git.md
+      - Subversion: scm/svn.md
+      - Filesystem: scm/filesystem.md
+  - Releases: releases.md
+  - Development: development.md
+  - Contributors: contributors.md

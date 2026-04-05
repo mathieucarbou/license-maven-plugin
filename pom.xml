@@ -63,7 +63,7 @@
     <project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-    <groovy.version>5.0.4</groovy.version>
+    <groovy.version>5.0.5</groovy.version>
     <jacoco.minimum.coverage>1.00</jacoco.minimum.coverage>
     <junit.version>6.0.3</junit.version>
     <maven.version>3.9.14</maven.version>
@@ -280,7 +280,7 @@
             <dependency>
               <groupId>org.codehaus.mojo</groupId>
               <artifactId>extra-enforcer-rules</artifactId>
-              <version>1.11.0</version>
+              <version>1.12.0</version>
             </dependency>
           </dependencies>
         </plugin>
@@ -397,7 +397,7 @@
             <dependency>
               <groupId>com.puppycrawl.tools</groupId>
               <artifactId>checkstyle</artifactId>
-              <version>13.3.0</version>
+              <version>13.4.0</version>
             </dependency>
           </dependencies>
         </plugin>
@@ -434,8 +434,9 @@ limitations under the License.
                   <exclude>src/test/resources/**</exclude>
                   <exclude>docs/**</exclude>
                   <exclude>.config/**</exclude>
-                  <!-- TODO: Remove after 5.0.0 release -->
                   <exclude>.vscode/**</exclude>
+                  <exclude>site/**</exclude>
+                  <exclude>requirements.txt</exclude>
                 </excludes>
               </licenseSet>
             </licenseSets>
