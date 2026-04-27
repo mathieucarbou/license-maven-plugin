@@ -36,5 +36,8 @@ nb-configuration.xml
 release-pom.xml
 .mvn/wrapper/maven-wrapper.jar
 
+# VS Code
+.vscode/
+
 # mkdocs
 /site/
