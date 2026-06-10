@@ -114,7 +114,7 @@ class ReportTest {
     AbstractLicenseMojo plugin = new LicenseCheckMojo();
     plugin.clock = Clock.fixed(Instant.ofEpochMilli(1631615047644L), ZoneId.systemDefault());
     plugin.project = mavenProjectStub;
-    plugin.defaultBasedir = tmp;
+    plugin.legacyDefaultBasedir = tmp;
     plugin.legacyConfigHeader = "src/test/resources/issues/issue-122/header.txt";
     plugin.legacyConfigIncludes = new String[]{"file*.*"};
     plugin.reportLocation = new File(tmp, "report/license-plugin-report.xml");
@@ -138,7 +138,7 @@ class ReportTest {
     AbstractLicenseMojo plugin = new LicenseCheckMojo();
     plugin.clock = Clock.fixed(Instant.ofEpochMilli(1631615047644L), ZoneId.systemDefault());
     plugin.project = mavenProjectStub;
-    plugin.defaultBasedir = tmp;
+    plugin.legacyDefaultBasedir = tmp;
     plugin.legacyConfigHeader = "src/test/resources/issues/issue-122/header.txt";
     plugin.legacyConfigIncludes = new String[]{"file*.*"};
     plugin.reportLocation = new File(tmp, "report/license-plugin-report.json");
@@ -162,7 +162,7 @@ class ReportTest {
     AbstractLicenseMojo plugin = new LicenseFormatMojo();
     plugin.clock = Clock.fixed(Instant.ofEpochMilli(1631615047644L), ZoneId.systemDefault());
     plugin.project = mavenProjectStub;
-    plugin.defaultBasedir = tmp;
+    plugin.legacyDefaultBasedir = tmp;
     plugin.legacyConfigHeader = "src/test/resources/issues/issue-122/header.txt";
     plugin.legacyConfigIncludes = new String[]{"file*.*"};
     plugin.reportLocation = new File(tmp, "report/license-plugin-report.xml");
@@ -182,7 +182,7 @@ class ReportTest {
     AbstractLicenseMojo plugin = new LicenseFormatMojo();
     plugin.clock = Clock.fixed(Instant.ofEpochMilli(1631615047644L), ZoneId.systemDefault());
     plugin.project = mavenProjectStub;
-    plugin.defaultBasedir = tmp;
+    plugin.legacyDefaultBasedir = tmp;
     plugin.legacyConfigHeader = "src/test/resources/issues/issue-122/header.txt";
     plugin.legacyConfigIncludes = new String[]{"file*.*"};
     plugin.reportLocation = new File(tmp, "report/license-plugin-report.json");
@@ -202,7 +202,7 @@ class ReportTest {
     AbstractLicenseMojo plugin = new LicenseRemoveMojo();
     plugin.clock = Clock.fixed(Instant.ofEpochMilli(1631615047644L), ZoneId.systemDefault());
     plugin.project = mavenProjectStub;
-    plugin.defaultBasedir = tmp;
+    plugin.legacyDefaultBasedir = tmp;
     plugin.legacyConfigHeader = "src/test/resources/issues/issue-122/header.txt";
     plugin.legacyConfigIncludes = new String[]{"file*.*"};
     plugin.reportLocation = new File(tmp, "report/license-plugin-report.xml");
@@ -222,7 +222,7 @@ class ReportTest {
     AbstractLicenseMojo plugin = new LicenseRemoveMojo();
     plugin.clock = Clock.fixed(Instant.ofEpochMilli(1631615047644L), ZoneId.systemDefault());
     plugin.project = mavenProjectStub;
-    plugin.defaultBasedir = tmp;
+    plugin.legacyDefaultBasedir = tmp;
     plugin.legacyConfigHeader = "src/test/resources/issues/issue-122/header.txt";
     plugin.legacyConfigIncludes = new String[]{"file*.*"};
     plugin.reportLocation = new File(tmp, "report/license-plugin-report.json");
