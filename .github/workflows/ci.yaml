@@ -25,7 +25,7 @@ jobs:
     name: Test JDK ${{ matrix.java }}, ${{ matrix.os }}
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Set up JDK ${{ matrix.java }} ${{ matrix.distribution }}
         uses: actions/setup-java@v5
         with:
