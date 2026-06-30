@@ -16,6 +16,7 @@
         <file path="src/main/java/com/mycila/maven/plugin/license/Multi.java" result="PRESENT"/>
         <file path="src/main/java/com/mycila/maven/plugin/license/PropertiesProvider.java" result="PRESENT"/>
         <file path="src/main/java/com/mycila/maven/plugin/license/Report.java" result="PRESENT"/>
+        <file path="src/main/java/com/mycila/maven/plugin/license/WorkSpace.java" result="PRESENT"/>
         <file path="src/main/java/com/mycila/maven/plugin/license/dependencies/AbstractLicensePolicyEnforcer.java" result="PRESENT"/>
         <file path="src/main/java/com/mycila/maven/plugin/license/dependencies/AggregateLicensePolicyEnforcer.java" result="PRESENT"/>
         <file path="src/main/java/com/mycila/maven/plugin/license/dependencies/ArtifactLicensePolicyEnforcer.java" result="PRESENT"/>

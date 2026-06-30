@@ -133,8 +133,9 @@ class CompleteMojoTest {
     FileUtils.copyFilesToFolder(new File("src/test/resources/complete/" + headerType), tmp);
 
     AbstractLicenseMojo plugin = new LicenseFormatMojo();
+    plugin.workspace.basedir = tmp;
     plugin.project = new MavenProjectStub();
-    plugin.defaultBasedir = tmp;
+    plugin.legacyDefaultBasedir = tmp;
     plugin.legacyConfigHeader = "src/test/resources/complete/header1.txt";
     plugin.legacyConfigIncludes = new String[]{"file." + extension};
     plugin.mapping = Collections.singletonMap(extension, headerType.name());
@@ -154,7 +155,7 @@ class CompleteMojoTest {
 
     AbstractLicenseMojo plugin = new LicenseFormatMojo();
     plugin.project = new MavenProjectStub();
-    plugin.defaultBasedir = tmp;
+    plugin.legacyDefaultBasedir = tmp;
     plugin.legacyConfigHeader = "src/test/resources/complete/header1.txt";
     plugin.legacyConfigIncludes = new String[]{"file." + extension};
     plugin.mapping = Collections.singletonMap(extension, headerType.name());
@@ -163,7 +164,7 @@ class CompleteMojoTest {
 
     plugin = new LicenseFormatMojo();
     plugin.project = new MavenProjectStub();
-    plugin.defaultBasedir = tmp;
+    plugin.legacyDefaultBasedir = tmp;
     plugin.legacyConfigHeader = "src/test/resources/complete/header2.txt";
     plugin.legacyConfigIncludes = new String[]{"file." + extension};
     plugin.mapping = Collections.singletonMap(extension, headerType.name());
@@ -183,7 +184,7 @@ class CompleteMojoTest {
 
     AbstractLicenseMojo plugin = new LicenseFormatMojo();
     plugin.project = new MavenProjectStub();
-    plugin.defaultBasedir = tmp;
+    plugin.legacyDefaultBasedir = tmp;
     plugin.legacyConfigHeader = "src/test/resources/complete/header1.txt";
     plugin.legacyConfigIncludes = new String[]{"file." + extension};
     plugin.mapping = Collections.singletonMap(extension, headerType.name());
@@ -192,7 +193,7 @@ class CompleteMojoTest {
 
     plugin = new LicenseRemoveMojo();
     plugin.project = new MavenProjectStub();
-    plugin.defaultBasedir = tmp;
+    plugin.legacyDefaultBasedir = tmp;
     plugin.legacyConfigHeader = "src/test/resources/complete/header1.txt";
     plugin.legacyConfigIncludes = new String[]{"file." + extension};
     plugin.mapping = Collections.singletonMap(extension, headerType.name());
@@ -213,7 +214,7 @@ class CompleteMojoTest {
 
     AbstractLicenseMojo plugin = new LicenseCheckMojo();
     plugin.project = new MavenProjectStub();
-    plugin.defaultBasedir = tmp;
+    plugin.legacyDefaultBasedir = tmp;
     plugin.legacyConfigHeader = "src/test/resources/complete/header1.txt";
     plugin.legacyConfigIncludes = new String[]{"file." + extension};
     plugin.mapping = Collections.singletonMap(extension, headerType.name());
@@ -235,7 +236,7 @@ class CompleteMojoTest {
 
     AbstractLicenseMojo plugin = new LicenseFormatMojo();
     plugin.project = new MavenProjectStub();
-    plugin.defaultBasedir = tmp;
+    plugin.legacyDefaultBasedir = tmp;
     plugin.legacyConfigHeader = "src/test/resources/complete/header1.txt";
     plugin.legacyConfigIncludes = new String[]{"file." + extension};
     plugin.mapping = Collections.singletonMap(extension, headerType.name());
@@ -244,7 +245,7 @@ class CompleteMojoTest {
 
     plugin = new LicenseCheckMojo();
     plugin.project = new MavenProjectStub();
-    plugin.defaultBasedir = tmp;
+    plugin.legacyDefaultBasedir = tmp;
     plugin.legacyConfigHeader = "src/test/resources/complete/header1.txt";
     plugin.legacyConfigIncludes = new String[]{"file." + extension};
     plugin.mapping = Collections.singletonMap(extension, headerType.name());
@@ -275,7 +276,7 @@ class CompleteMojoTest {
 
         AbstractLicenseMojo plugin = new LicenseFormatMojo();
         plugin.project = new MavenProjectStub();
-        plugin.defaultBasedir = root;
+        plugin.legacyDefaultBasedir = root;
         plugin.legacyConfigHeader = "src/test/resources/complete/header1.txt";
         plugin.legacyConfigIncludes = new String[]{"expected1." + extension};
         plugin.mapping = Collections.singletonMap(extension, headerType.name());
@@ -287,7 +288,7 @@ class CompleteMojoTest {
 
         plugin = new LicenseFormatMojo();
         plugin.project = new MavenProjectStub();
-        plugin.defaultBasedir = root;
+        plugin.legacyDefaultBasedir = root;
         plugin.legacyConfigHeader = "src/test/resources/complete/header2.txt";
         plugin.legacyConfigIncludes = new String[]{"expected2." + extension};
         plugin.mapping = Collections.singletonMap(extension, headerType.name());

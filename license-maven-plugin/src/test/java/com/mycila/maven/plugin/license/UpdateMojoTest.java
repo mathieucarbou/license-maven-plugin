@@ -43,7 +43,7 @@ class UpdateMojoTest {
     FileUtils.copyFileToFolder(new File("src/test/resources/update/doc2.txt"), tmp);
 
     LicenseFormatMojo updater = new LicenseFormatMojo();
-    updater.defaultBasedir = tmp;
+    updater.legacyDefaultBasedir = tmp;
     updater.legacyConfigHeader = "src/test/resources/update/header.txt";
     updater.project = new MavenProjectStub();
     updater.defaultProperties = ImmutableMap.of("year", "2008");
@@ -61,7 +61,7 @@ class UpdateMojoTest {
     FileUtils.copyFileToFolder(new File("src/test/resources/update/doc2.txt"), tmp);
 
     LicenseFormatMojo updater = new LicenseFormatMojo();
-    updater.defaultBasedir = tmp;
+    updater.legacyDefaultBasedir = tmp;
     updater.legacyConfigInlineHeader = FileUtils.read(new File("src/test/resources/update/header.txt"), StandardCharsets.UTF_8);
     updater.project = new MavenProjectStub();
     updater.defaultProperties = ImmutableMap.of("year", "2008");
@@ -80,7 +80,7 @@ class UpdateMojoTest {
 
     // only update those files without a copyright header
     LicenseFormatMojo updater = new LicenseFormatMojo();
-    updater.defaultBasedir = tmp;
+    updater.legacyDefaultBasedir = tmp;
     updater.legacyConfigHeader = "src/test/resources/update/header.txt";
     updater.project = new MavenProjectStub();
     updater.defaultProperties = ImmutableMap.of("year", "2008");
@@ -92,7 +92,7 @@ class UpdateMojoTest {
 
     // expect unchanged header to fail check against new header
     LicenseCheckMojo check = new LicenseCheckMojo();
-    check.defaultBasedir = tmp;
+    check.legacyDefaultBasedir = tmp;
     check.legacyConfigHeader = "src/test/resources/update/header.txt";
     check.project = new MavenProjectStub();
     check.defaultProperties = ImmutableMap.of("year", "2008");
@@ -120,7 +120,7 @@ class UpdateMojoTest {
     FileUtils.copyFileToFolder(new File("src/test/resources/update/issue50/test3.properties"), tmp);
 
     LicenseFormatMojo updater = new LicenseFormatMojo();
-    updater.defaultBasedir = tmp;
+    updater.legacyDefaultBasedir = tmp;
     updater.legacyConfigHeader = "src/test/resources/update/header.txt";
     updater.defaultProperties = ImmutableMap.of("year", "2008");
     updater.mapping = new LinkedHashMap<>() {{
@@ -145,7 +145,7 @@ class UpdateMojoTest {
     FileUtils.copyFileToFolder(new File("src/test/resources/update/issue48/test2.php"), tmp);
 
     LicenseFormatMojo updater = new LicenseFormatMojo();
-    updater.defaultBasedir = tmp;
+    updater.legacyDefaultBasedir = tmp;
     updater.legacyConfigHeader = "src/test/resources/update/header.txt";
     updater.defaultProperties = ImmutableMap.of("year", "2008");
     updater.mapping = new LinkedHashMap<>() {{
@@ -184,7 +184,7 @@ class UpdateMojoTest {
     FileUtils.copyFileToFolder(new File("src/test/resources/update/issue44/test.asp"), tmp);
 
     LicenseFormatMojo updater = new LicenseFormatMojo();
-    updater.defaultBasedir = tmp;
+    updater.legacyDefaultBasedir = tmp;
     updater.legacyConfigHeader = "src/test/resources/update/header.txt";
     updater.defaultProperties = ImmutableMap.of("year", "2008");
     updater.project = new MavenProjectStub();
@@ -211,7 +211,7 @@ class UpdateMojoTest {
     FileUtils.copyFileToFolder(new File("src/test/resources/update/issue14/test.properties"), tmp);
 
     LicenseFormatMojo updater = new LicenseFormatMojo();
-    updater.defaultBasedir = tmp;
+    updater.legacyDefaultBasedir = tmp;
     updater.legacyConfigHeader = "src/test/resources/update/issue14/header.txt";
     updater.project = new MavenProjectStub();
     updater.execute();
@@ -249,7 +249,7 @@ class UpdateMojoTest {
     FileUtils.copyFileToFolder(new File("src/test/resources/issues/issue-71/issue-71.txt.extended"), tmp);
 
     LicenseFormatMojo updater = new LicenseFormatMojo();
-    updater.defaultBasedir = tmp;
+    updater.legacyDefaultBasedir = tmp;
     updater.legacyConfigHeader = "src/test/resources/issues/issue-71/issue-71-header.txt";
     updater.project = new MavenProjectStub();
     updater.mapping = new LinkedHashMap<>() {{
@@ -272,7 +272,7 @@ class UpdateMojoTest {
     FileUtils.copyFileToFolder(new File("src/test/resources/update/issue37/xwiki.xml"), tmp);
 
     LicenseFormatMojo execution1 = new LicenseFormatMojo();
-    execution1.defaultBasedir = tmp;
+    execution1.legacyDefaultBasedir = tmp;
     execution1.legacyConfigHeader = "src/test/resources/update/issue37/xwiki-license.txt";
     execution1.project = new MavenProjectStub();
     execution1.execute();
@@ -280,7 +280,7 @@ class UpdateMojoTest {
     String execution1FileContent = FileUtils.read(new File(tmp, "xwiki.xml"), Charset.defaultCharset());
 
     LicenseFormatMojo execution2 = new LicenseFormatMojo();
-    execution2.defaultBasedir = tmp;
+    execution2.legacyDefaultBasedir = tmp;
     execution2.legacyConfigHeader = "src/test/resources/update/issue37/xwiki-license.txt";
     execution2.project = new MavenProjectStub();
     execution2.execute();
@@ -297,7 +297,7 @@ class UpdateMojoTest {
     FileUtils.copyFileToFolder(new File("src/test/resources/update/issue30/one-line-comment.ftl"), tmp);
 
     LicenseFormatMojo updater = new LicenseFormatMojo();
-    updater.defaultBasedir = tmp;
+    updater.legacyDefaultBasedir = tmp;
     updater.legacyConfigHeader = "src/test/resources/single-line-header.txt";
     updater.project = new MavenProjectStub();
     updater.execute();
@@ -320,7 +320,7 @@ class UpdateMojoTest {
     FileUtils.copyFileToFolder(new File("src/test/resources/update/issue213/test.xml"), tmp);
 
     LicenseFormatMojo updater = new LicenseFormatMojo();
-    updater.defaultBasedir = tmp;
+    updater.legacyDefaultBasedir = tmp;
 
     LicenseSet licenseSet = new LicenseSet();
     licenseSet.basedir = tmp;
@@ -353,7 +353,7 @@ class UpdateMojoTest {
     FileUtils.copyFileToFolder(new File("src/test/resources/update/issue-187/Main.java"), tmp);
 
     LicenseFormatMojo updater = new LicenseFormatMojo();
-    updater.defaultBasedir = tmp;
+    updater.legacyDefaultBasedir = tmp;
     updater.legacyConfigHeader = "src/test/resources/update/issue-187/header.txt";
     updater.project = new MavenProjectStub();
     updater.mapping = new LinkedHashMap<>() {{

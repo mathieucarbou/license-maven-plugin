@@ -17,8 +17,10 @@ package com.mycila.maven.plugin.license.util;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
@@ -50,5 +52,40 @@ class FileUtilsTest {
     String s = FileUtils.readFirstLines(new File("src/test/data/compileCP/test2.txt"), 3, StandardCharsets.ISO_8859_1);
     Assertions.assertTrue(s.contains("c"));
     Assertions.assertFalse(s.contains("d"));
+  }
+
+  @Test
+  void test_IsSameOrSubFolder_folder_is_direct_child_of_folder(@TempDir File folder) throws IOException {
+    Assertions.assertTrue(FileUtils.isSameOrSubFolder(folder, folder));
+  }
+
+  @Test
+  void test_IsSameOrSubFolder_subfolder_is_direct_child_of_folder(@TempDir File folder) throws IOException {
+    File subfolder = createSubfolder(folder, "subfolder");
+
+    Assertions.assertTrue(FileUtils.isSameOrSubFolder(subfolder, folder));
+  }
+
+  @Test
+  void test_IsSameOrSubFolder_subfolder_is_indirect_child_of_folder(@TempDir File folder) throws IOException {
+    File subfolder = createSubfolder(folder, "subfolder/subsubfolder");
+
+    Assertions.assertTrue(FileUtils.isSameOrSubFolder(subfolder, folder));
+  }
+
+  @Test
+  void test_IsSameOrSubFolder_subfolder_is_not_child_of_folder(@TempDir File folder, @TempDir File otherFolder)
+      throws IOException {
+    File subfolder = createSubfolder(folder, "subfolder");
+
+    Assertions.assertFalse(FileUtils.isSameOrSubFolder(subfolder, otherFolder));
+  }
+
+  private File createSubfolder(File parent, String path) throws IOException {
+    File subfolder = new File(parent, path);
+    if (!subfolder.mkdirs()) {
+      throw new IOException("Failed to create subfolder");
+    }
+    return subfolder;
   }
 }
