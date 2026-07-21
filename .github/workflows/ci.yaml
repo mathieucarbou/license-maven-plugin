@@ -26,11 +26,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v7
-        with:
-          # Full history is required for GitLookupCreationYearTest, which verifies
-          # that copyright creation year follows renames across merges. A shallow
-          # clone (default fetch-depth=1) would only see the latest commit.
-          fetch-depth: 0
       - name: Set up JDK ${{ matrix.java }} ${{ matrix.distribution }}
         uses: actions/setup-java@v5
         with:
