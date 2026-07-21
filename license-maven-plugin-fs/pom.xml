@@ -25,7 +25,7 @@
   <artifactId>license-maven-plugin-fs</artifactId>
   <packaging>jar</packaging>
 
-  <name>license-maven-plugin-fs</name>
+  <name>Filesystem Plugin</name>
   <description>An optional module for license-maven-plugin adding filesystem related functionality</description>
 
   <scm>

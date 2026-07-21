@@ -228,15 +228,6 @@
   </reporting>
 
   <distributionManagement>
-    <repository>
-      <id>mycila-oss-staging</id>
-      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-    </repository>
-    <snapshotRepository>
-      <id>mycila-oss-snapshots</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-      <uniqueVersion>false</uniqueVersion>
-    </snapshotRepository>
     <site>
       <id>report</id>
       <url>https://mathieu.carbou.me/license-maven-plugin/reports/${project.version}</url>
@@ -606,6 +597,15 @@ limitations under the License.
             <phase>pre-site</phase>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.sonatype.central</groupId>
+        <artifactId>central-publishing-maven-plugin</artifactId>
+        <version>0.9.0</version>
+        <extensions>true</extensions>
+        <configuration>
+          <publishingServerId>central</publishingServerId>
+        </configuration>
       </plugin>
     </plugins>
   </build>
