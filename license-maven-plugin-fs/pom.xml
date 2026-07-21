@@ -20,12 +20,12 @@
   <parent>
     <groupId>com.mycila</groupId>
     <artifactId>license-maven-plugin-parent</artifactId>
-    <version>5.1.1-SNAPSHOT</version>
+    <version>5.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>license-maven-plugin-fs</artifactId>
   <packaging>jar</packaging>
 
-  <name>Filesystem Plugin</name>
+  <name>license-maven-plugin-fs</name>
   <description>An optional module for license-maven-plugin adding filesystem related functionality</description>
 
   <scm>

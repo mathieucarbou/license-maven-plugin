@@ -21,13 +21,10 @@
   <parent>
     <groupId>com.mycila</groupId>
     <artifactId>license-maven-plugin-parent</artifactId>
-    <version>5.1.1-SNAPSHOT</version>
+    <version>5.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>license-maven-plugin-svn</artifactId>
   <packaging>jar</packaging>
-
-  <name>Subversion Plugin</name>
-  <description>An optional module for license-maven-plugin adding Subversion related functionality</description>
 
   <scm>
     <connection>scm:git:https://github.com/mathieucarbou/license-maven-plugin.git</connection>
