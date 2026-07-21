@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CopyrightRangeProvider.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Git Plugin</a> &gt; <a href="index.source.html" class="el_package">com.mycila.maven.plugin.license.git</a> &gt; <span class="el_source">CopyrightRangeProvider.java</span></div><h1>CopyrightRangeProvider.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2008-2025 Mycila (mathieu.carbou@gmail.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;).
+ * You may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.mycila.maven.plugin.license.git;
+
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.util.Map;
+
+import org.eclipse.jgit.api.errors.GitAPIException;
+
+import com.mycila.maven.plugin.license.AbstractLicenseMojo;
+import com.mycila.maven.plugin.license.PropertiesProvider;
+import com.mycila.maven.plugin.license.ShallowRepositoryException;
+import com.mycila.maven.plugin.license.ShallowRepositorySkipException;
+import com.mycila.maven.plugin.license.document.Document;
+import com.mycila.maven.plugin.license.util.LazyMap;
+import com.mycila.maven.plugin.license.util.Fn;
+
+/**
+ * An implementation of {@link PropertiesProvider} that adds {@value #COPYRIGHT_LAST_YEAR_KEY} and
+ * {@value #COPYRIGHT_YEARS_KEY} values - see {@link #adjustProperties(AbstractLicenseMojo, Map,
+ * Document)}.
+ */
+<span class="fc" id="L37">public class CopyrightRangeProvider implements PropertiesProvider {</span>
+
+  public static final String COPYRIGHT_LAST_YEAR_KEY = &quot;license.git.copyrightLastYear&quot;;
+  public static final String COPYRIGHT_CREATION_YEAR_KEY = &quot;license.git.copyrightCreationYear&quot;;
+  public static final String COPYRIGHT_EXISTENCE_YEARS_KEY = &quot;license.git.copyrightExistenceYears&quot;;
+  public static final String COPYRIGHT_YEARS_KEY = &quot;license.git.copyrightYears&quot;;
+  public static final String INCEPTION_YEAR_KEY = &quot;project.inceptionYear&quot;;
+
+  private GitLookup gitLookup;
+
+  @Override
+  public void init(AbstractLicenseMojo mojo, Map&lt;String, String&gt; currentProperties) {
+<span class="fc" id="L49">    gitLookup = GitLookup.create(mojo.defaultBasedir, currentProperties);</span>
+
+<span class="pc bpc" id="L51" title="1 of 2 branches missed.">    if (gitLookup.isShallowRepository()) {</span>
+<span class="nc bnc" id="L52" title="All 2 branches missed.">      if (mojo.warnIfShallow) {</span>
+<span class="nc" id="L53">        mojo.warn(&quot;Shallow git repository detected. Year property values may not be accurate.&quot;);</span>
+      }
+<span class="nc bnc" id="L55" title="All 2 branches missed.">      if (mojo.skipOnShallow) {</span>
+<span class="nc" id="L56">        throw new ShallowRepositorySkipException(</span>
+            &quot;Shallow git repository detected. Skipping plugin execution.&quot;);
+      }
+<span class="nc bnc" id="L59" title="All 2 branches missed.">      if (mojo.failOnShallow) {</span>
+<span class="nc" id="L60">        throw new ShallowRepositoryException(</span>
+            &quot;Shallow git repository detected. Year property values may not be accurate. &quot; +
+            &quot;Convert the repository to a full clone or increase the git fetch depth, &quot; +
+            &quot;or disable 'license.failOnShallow' in the plugin configuration.&quot;);
+      }
+    }
+<span class="fc" id="L66">  }</span>
+
+  @Override
+  public void close() {
+<span class="pc bpc" id="L70" title="1 of 2 branches missed.">    if (gitLookup != null) {</span>
+<span class="fc" id="L71">      gitLookup.close();</span>
+    }
+<span class="fc" id="L73">  }</span>
+
+  /**
+   * Returns an unmodifiable map containing the following entries, whose values are set based on inspecting git history.
+   *
+   * &lt;ul&gt;
+   * &lt;li&gt;{@value #COPYRIGHT_LAST_YEAR_KEY} key stores the year from the committer date of the last git commit that has
+   * modified the supplied {@code document}.&lt;/li&gt;
+   * &lt;li&gt;{@value #COPYRIGHT_YEARS_KEY} key stores the range from {@value #INCEPTION_YEAR_KEY} value to
+   * {@value #COPYRIGHT_LAST_YEAR_KEY} value. If both values a equal, only the {@value #INCEPTION_YEAR_KEY} value is
+   * returned; otherwise, the two values are combined using dash, so that the result is e.g. {@code &quot;2000-2010&quot;}.&lt;/li&gt;
+   * &lt;li&gt;{@value #COPYRIGHT_CREATION_YEAR_KEY} key stores the year from the committer date of the first git commit for
+   * the supplied {@code document}.&lt;/li&gt;
+   * &lt;li&gt;{@value #COPYRIGHT_EXISTENCE_YEARS_KEY} key stores the range from {@value #COPYRIGHT_CREATION_YEAR_KEY} value to
+   * {@value #COPYRIGHT_LAST_YEAR_KEY} value.  If both values are equal only the {@value #COPYRIGHT_CREATION_YEAR_KEY} is returned;
+   * otherwise, the two values are combined using dash, so that the result is e.g. {@code &quot;2005-2010&quot;}.&lt;/li&gt;
+   * &lt;/ul&gt;
+   * The {@value #INCEPTION_YEAR_KEY} value is read from the supplied properties and it must available. Otherwise a
+   * {@link RuntimeException} is thrown.
+   */
+  @Override
+  public Map&lt;String, String&gt; adjustProperties(AbstractLicenseMojo mojo,
+                                              Map&lt;String, String&gt; properties, Document document) {
+<span class="fc" id="L96">    var inceptionYear = Fn.memoize(() -&gt; {</span>
+<span class="fc" id="L97">      String year = properties.get(INCEPTION_YEAR_KEY);</span>
+<span class="pc bpc" id="L98" title="1 of 2 branches missed.">      if (year == null) {</span>
+<span class="nc" id="L99">        throw new RuntimeException(&quot;'&quot; + INCEPTION_YEAR_KEY + &quot;' must have a value for file &quot; + document.getFile().getAbsolutePath());</span>
+      }
+      try {
+<span class="fc" id="L102">        return Integer.parseInt(year);</span>
+<span class="nc" id="L103">      } catch (NumberFormatException e1) {</span>
+<span class="nc" id="L104">        throw new RuntimeException(&quot;'&quot; + INCEPTION_YEAR_KEY + &quot;' must be an integer ; found = &quot; + year + &quot; file: &quot; + document.getFile().getAbsolutePath());</span>
+      }
+    });
+
+<span class="fc" id="L108">    var copyrightEnd = Fn.memoize(() -&gt; {</span>
+      try {
+<span class="fc" id="L110">        return gitLookup.getYearOfLastChange(document.getFile());</span>
+<span class="nc" id="L111">      } catch (IOException e) {</span>
+<span class="nc" id="L112">        throw new UncheckedIOException(document.getFile().getAbsolutePath(), e);</span>
+<span class="nc" id="L113">      } catch (GitAPIException e) {</span>
+<span class="nc" id="L114">        throw new RuntimeException(document.getFile().getAbsolutePath(), e);</span>
+      }
+    });
+
+<span class="fc" id="L118">    var copyrightStart = Fn.memoize(() -&gt; {</span>
+      try {
+<span class="fc" id="L120">        return gitLookup.getYearOfCreation(document.getFile());</span>
+<span class="nc" id="L121">      } catch (IOException e) {</span>
+<span class="nc" id="L122">        throw new UncheckedIOException(document.getFile().getAbsolutePath(), e);</span>
+      }
+    });
+
+<span class="fc" id="L126">    LazyMap&lt;String, String&gt; result = new LazyMap&lt;&gt;(4);</span>
+<span class="fc" id="L127">    result.putSupplier(COPYRIGHT_CREATION_YEAR_KEY, Fn.memoize(() -&gt; {</span>
+<span class="fc" id="L128">      return copyrightStart.get().toString();</span>
+    }));
+<span class="fc" id="L130">    result.putSupplier(COPYRIGHT_LAST_YEAR_KEY, Fn.memoize(() -&gt; {</span>
+<span class="fc" id="L131">      return copyrightEnd.get().toString();</span>
+    }));
+<span class="pc bpc" id="L133" title="1 of 2 branches missed.">    final String separator = mojo.copyrightYearRangeSeparator == null</span>
+<span class="pc" id="L134">        ? &quot;-&quot; : mojo.copyrightYearRangeSeparator;</span>
+<span class="fc" id="L135">    result.putSupplier(COPYRIGHT_YEARS_KEY, Fn.memoize(() -&gt; {</span>
+      final String copyrightYears;
+<span class="fc bfc" id="L137" title="All 2 branches covered.">      if (inceptionYear.get() &gt;= copyrightEnd.get()) {</span>
+<span class="fc" id="L138">        copyrightYears = &quot;&quot; + inceptionYear.get();</span>
+      } else {
+<span class="fc" id="L140">        copyrightYears = inceptionYear.get() + separator + copyrightEnd.get();</span>
+      }
+<span class="fc" id="L142">      return copyrightYears;</span>
+    }));
+<span class="fc" id="L144">    result.putSupplier(COPYRIGHT_EXISTENCE_YEARS_KEY, Fn.memoize(() -&gt; {</span>
+      final String copyrightExistenceYears;
+<span class="fc bfc" id="L146" title="All 2 branches covered.">      if (copyrightStart.get() &gt;= copyrightEnd.get()) {</span>
+<span class="fc" id="L147">        copyrightExistenceYears = Integer.toString(copyrightStart.get());</span>
+      } else {
+<span class="fc" id="L149">        copyrightExistenceYears = copyrightStart.get() + separator + copyrightEnd.get();</span>
+      }
+<span class="fc" id="L151">      return copyrightExistenceYears;</span>
+    }));
+<span class="fc" id="L153">    return result;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>

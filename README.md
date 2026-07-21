@@ -29,13 +29,13 @@ Full documentation: **[https://mathieu.carbou.me/license-maven-plugin/](https://
 
 ## Quick Setup
 
-Add the plugin to your `pom.xml`. Replace `5.0.0` with the [latest release](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/):
+Add the plugin to your `pom.xml`. Replace `5.1.0` with the [latest release](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/):
 
 ```xml
 <plugin>
   <groupId>com.mycila</groupId>
   <artifactId>license-maven-plugin</artifactId>
-  <version>5.0.0</version>
+  <version>5.1.0</version>
   <configuration>
     <properties>
       <owner>Your Name or Organisation</owner>
@@ -57,7 +57,7 @@ Add the plugin to your `pom.xml`. Replace `5.0.0` with the [latest release](http
     <dependency>
       <groupId>com.mycila</groupId>
       <artifactId>license-maven-plugin-git</artifactId>
-      <version>5.0.0</version>
+      <version>5.1.0</version>
     </dependency>
   </dependencies>
   <executions>

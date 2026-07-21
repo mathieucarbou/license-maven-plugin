@@ -14,6 +14,7 @@ See [GitHub Releases](https://github.com/mathieucarbou/license-maven-plugin/rele
 
 | Version | Date | Notes |
 |---|---|---|
+| [5.1.0](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/5.1.0/) | 2026-07-22 | Some Git plugin fixes |
 | [5.0.0](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/5.0.0/) | 2024-09-25 | Requires Java 11 |
 | [4.6](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/4.6/) | 2024-09-25 | Last Java 8 compatible release |
 | [4.5](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/4.5/) | 2024-05-11 | |
@@ -30,6 +31,7 @@ Detailed Maven plugin documentation generated per release:
 
 | Version | Report |
 |---|---|
+| 5.1.0 | [report](https://mathieu.carbou.me/license-maven-plugin/reports/5.1.0/) |
 | 5.0.0 | [report](https://mathieu.carbou.me/license-maven-plugin/reports/5.0.0/) |
 | 4.6 | [report](https://mathieu.carbou.me/license-maven-plugin/reports/4.6/) |
 | 4.5 | [report](https://mathieu.carbou.me/license-maven-plugin/reports/4.5/) |
