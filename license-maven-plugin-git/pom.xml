@@ -25,7 +25,7 @@
   <artifactId>license-maven-plugin-git</artifactId>
   <packaging>jar</packaging>
 
-  <name>license-maven-plugin-git</name>
+  <name>Git Plugin</name>
   <description>An optional module for license-maven-plugin adding git related functionality</description>
 
   <scm>

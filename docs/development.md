@@ -54,7 +54,7 @@ cd target/checkout
 
 ### 3. Publish to Maven Central
 
-Go to [https://oss.sonatype.org/](https://oss.sonatype.org/) and **close and release** the staging repository.
+Go to [https://central.sonatype.org/](https://central.sonatype.org/) and **close and release** the staging repository.
 
 The new version will appear on [Maven Central](https://repo1.maven.org/maven2/com/mycila/license-maven-plugin/) within a few minutes.
 
