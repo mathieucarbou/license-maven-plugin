@@ -26,21 +26,21 @@ import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.FollowFilter;
 import org.eclipse.jgit.revwalk.RevCommit;
-import org.eclipse.jgit.revwalk.RevSort;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.revwalk.filter.MaxCountRevFilter;
+import org.eclipse.jgit.diff.DiffEntry;
+import org.eclipse.jgit.diff.RenameDetector;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
-import org.eclipse.jgit.treewalk.filter.AndTreeFilter;
-import org.eclipse.jgit.treewalk.filter.PathFilter;
+import org.eclipse.jgit.treewalk.TreeWalk;
 import org.eclipse.jgit.treewalk.filter.TreeFilter;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Iterator;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -180,7 +180,7 @@ public class GitLookup implements AutoCloseable {
     }
 
     int commitYear = 0;
-    RevWalk walk = getGitRevWalk(repoRelativePath, false);
+    RevWalk walk = getGitRevWalk(repoRelativePath);
     for (RevCommit commit : walk) {
       if (commitsToIgnore.contains(commit.getId())) {
         continue;
@@ -198,51 +198,135 @@ public class GitLookup implements AutoCloseable {
    * Returns the year of creation for the given {@code file} based on the history of the present git branch. The
    * year is taken either from the committer date or from the author identity depending on how {@link #dateSource} was
    * initialized.
+   * <p>
+   * Unlike {@link #getYearOfLastChange(File)}, this method cannot rely on {@link FollowFilter} alone because
+   * {@code FollowFilter} does not traverse merge commits and therefore stops at the first rename that occurs
+   * after a merge, missing the actual creation commit. Instead, this method walks the full history in natural
+   * (newest-first) order and runs {@link RenameDetector} on every commit's diff against all of its parents,
+   * following renames in both directions so that the oldest commit that introduced the file under any of its
+   * historical names is found.
    */
   int getYearOfCreation(File file) throws IOException {
-    String repoRelativePath = pathResolver.relativize(file);
-
-    int commitYear = 0;
-    RevWalk walk = getGitRevWalk(repoRelativePath, true);
-    Iterator<RevCommit> iterator = walk.iterator();
-    if (iterator.hasNext()) {
-      RevCommit commit = iterator.next();
-      commitYear = getYearFromCommit(commit);
-    }
-    walk.dispose();
-
-    // If we couldn't find a creation year from Git assume newly created file
-    if (commitYear == 0) {
+    RevCommit creationCommit = findCreationCommit(file);
+    if (creationCommit == null) {
       return getCurrentYear();
     }
-
-    return commitYear;
+    return getYearFromCommit(creationCommit);
   }
 
   String getAuthorNameOfCreation(File file) throws IOException {
-    String repoRelativePath = pathResolver.relativize(file);
-    String authorName = "";
-    RevWalk walk = getGitRevWalk(repoRelativePath, true);
-    Iterator<RevCommit> iterator = walk.iterator();
-    if (iterator.hasNext()) {
-      RevCommit commit = iterator.next();
-      authorName = getAuthorNameFromCommit(commit);
+    RevCommit creationCommit = findCreationCommit(file);
+    if (creationCommit == null) {
+      return "";
     }
-    walk.dispose();
-    return authorName;
+    return getAuthorNameFromCommit(creationCommit);
   }
 
   String getAuthorEmailOfCreation(File file) throws IOException {
-    String repoRelativePath = pathResolver.relativize(file);
-    String authorEmail = "";
-    RevWalk walk = getGitRevWalk(repoRelativePath, true);
-    Iterator<RevCommit> iterator = walk.iterator();
-    if (iterator.hasNext()) {
-      RevCommit commit = iterator.next();
-      authorEmail = getAuthorEmailFromCommit(commit);
+    RevCommit creationCommit = findCreationCommit(file);
+    if (creationCommit == null) {
+      return "";
     }
-    walk.dispose();
-    return authorEmail;
+    return getAuthorEmailFromCommit(creationCommit);
+  }
+
+  /**
+   * Walks the full git history (newest first) and follows renames across merges to find the commit that first
+   * introduced the given file under any of its historical names.
+   *
+   * @return the creation commit, or {@code null} if the file is not tracked by git (e.g. newly created)
+   */
+  private RevCommit findCreationCommit(File file) throws IOException {
+    String repoRelativePath = pathResolver.relativize(file);
+    DiffConfig diffConfig = repository.getConfig().get(DiffConfig.KEY);
+
+    // Track all known paths that refer to our file (current + renamed predecessors/successors)
+    Set<String> trackedPaths = new HashSet<>();
+    trackedPaths.add(repoRelativePath);
+
+    RevCommit creationCommit = null;
+
+    try (RevWalk walk = new RevWalk(repository)) {
+      walk.markStart(walk.parseCommit(repository.resolve(Constants.HEAD)));
+      walk.setTreeFilter(TreeFilter.ALL);
+      walk.setRevFilter(MaxCountRevFilter.create(checkCommitsCount));
+      walk.setRetainBody(false);
+
+      ObjectId emptyTree = createEmptyTree();
+
+      for (RevCommit c : walk) {
+        RevCommit[] parents = c.getParents();
+        if (parents.length == 0) {
+          // Initial commit: diff against empty tree to detect additions
+          if (touchesAnyPath(diffConfig, emptyTree, c, trackedPaths)) {
+            creationCommit = c;
+          }
+          continue;
+        }
+
+        boolean touched = false;
+        for (RevCommit p : parents) {
+          List<DiffEntry> renames = computeRenames(diffConfig, p.getTree(), c.getTree());
+          for (DiffEntry ent : renames) {
+            String oldP = ent.getOldPath();
+            String newP = ent.getNewPath();
+            boolean oldTracked = trackedPaths.contains(oldP);
+            boolean newTracked = trackedPaths.contains(newP);
+            if (newTracked || oldTracked) {
+              touched = true;
+            }
+            // Follow renames in both directions so that the oldest name is pulled in
+            // as we traverse history backwards (newest first).
+            if (ent.getChangeType() == DiffEntry.ChangeType.RENAME
+                || ent.getChangeType() == DiffEntry.ChangeType.COPY) {
+              if (newTracked && !oldTracked && !oldP.equals(DiffEntry.DEV_NULL)) {
+                trackedPaths.add(oldP);
+              }
+              if (oldTracked && !newTracked && !newP.equals(DiffEntry.DEV_NULL)) {
+                trackedPaths.add(newP);
+              }
+            }
+          }
+        }
+        if (touched) {
+          // In newest-first order, the last touched commit is the oldest.
+          creationCommit = c;
+        }
+      }
+      walk.dispose();
+    }
+
+    return creationCommit;
+  }
+
+  private List<DiffEntry> computeRenames(DiffConfig diffConfig, ObjectId parentTree, ObjectId commitTree) throws IOException {
+    try (TreeWalk tw = new TreeWalk(repository)) {
+      tw.setFilter(TreeFilter.ANY_DIFF);
+      tw.setRecursive(true);
+      tw.reset(parentTree, commitTree);
+      List<DiffEntry> entries = DiffEntry.scan(tw);
+      RenameDetector rd = new RenameDetector(repository.newObjectReader(), diffConfig);
+      rd.addAll(entries);
+      return rd.compute();
+    }
+  }
+
+  private boolean touchesAnyPath(DiffConfig diffConfig, ObjectId parentTree, RevCommit commit, Set<String> paths) throws IOException {
+    List<DiffEntry> entries = computeRenames(diffConfig, parentTree, commit.getTree());
+    for (DiffEntry ent : entries) {
+      if (paths.contains(ent.getNewPath()) || paths.contains(ent.getOldPath())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private ObjectId createEmptyTree() throws IOException {
+    try (org.eclipse.jgit.lib.ObjectInserter ins = repository.newObjectInserter()) {
+      ObjectId id = ins.insert(Constants.OBJ_TREE, new byte[0]);
+      ins.flush();
+      return id;
+    }
   }
 
   boolean isShallowRepository() {
@@ -257,21 +341,20 @@ public class GitLookup implements AutoCloseable {
     return !status.isClean();
   }
 
-  private RevWalk getGitRevWalk(String repoRelativePath, boolean oldestCommitsFirst) throws IOException {
+  private RevWalk getGitRevWalk(String repoRelativePath) throws IOException {
     DiffConfig diffConfig = repository.getConfig().get(DiffConfig.KEY);
 
     RevWalk walk = new RevWalk(repository);
     walk.markStart(walk.parseCommit(repository.resolve(Constants.HEAD)));
-    walk.setTreeFilter(AndTreeFilter.create(Arrays.asList(
-        PathFilter.create(repoRelativePath),
-        FollowFilter.create(repoRelativePath, diffConfig), // Allows us to follow files as they move or are renamed
-        TreeFilter.ANY_DIFF)
-    ));
+    // FollowFilter already performs AND(path, ANY_DIFF) internally and is the only
+    // TreeFilter that supports rename detection: it updates its own path filter to
+    // the prior file name when a rename is encountered while traversing history.
+    // This is sufficient for getYearOfLastChange which only needs the most recent
+    // commit touching the file. getYearOfCreation uses a separate, merge-aware
+    // walk (see findCreationCommit) because FollowFilter does not traverse merges.
+    walk.setTreeFilter(FollowFilter.create(repoRelativePath, diffConfig));
     walk.setRevFilter(MaxCountRevFilter.create(checkCommitsCount));
     walk.setRetainBody(false);
-    if (oldestCommitsFirst) {
-      walk.sort(RevSort.REVERSE);
-    }
 
     return walk;
   }
