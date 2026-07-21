@@ -99,6 +99,19 @@ A value of `1` gives the best performance but may be inaccurate if the most rece
 
 When files have uncommitted changes, the plugin assumes they will be committed in the **current year**. This means `copyrightLastYear` may reflect the current year even before you commit. This can occasionally cause `license:check` to fail after a year boundary — run `license:format` and commit again to resolve.
 
+## Year Range Separator
+
+By default, year ranges are joined with a dash, e.g. `1999-2024`. Use the `license.copyrightYearRangeSeparator` configuration option (also settable as a property) to change the separator. This applies to `license.git.copyrightYears`, `license.git.copyrightExistenceYears`, `license.fs.copyrightYears`, and `license.svn.years.range`.
+
+```xml
+<configuration>
+  <copyrightYearRangeSeparator>, </copyrightYearRangeSeparator>
+  ...
+</configuration>
+```
+
+With the value `", "`, the example above becomes `1999, 2024`. When the inception year and the last change year are equal, no separator is used and only a single year is emitted. See also [SCM Integration — Year Range Separator](index.md#year-range-separator).
+
 ## Shallow Repository Handling
 
 See [SCM Integration — Shallow Clones](index.md#handling-shallow-clones) for the available options (`warnIfShallow`, `skipOnShallow`, `failOnShallow`).

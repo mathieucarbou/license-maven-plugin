@@ -130,12 +130,14 @@ public class CopyrightRangeProvider implements PropertiesProvider {
     result.putSupplier(COPYRIGHT_LAST_YEAR_KEY, Fn.memoize(() -> {
       return copyrightEnd.get().toString();
     }));
+    final String separator = mojo.copyrightYearRangeSeparator == null
+        ? "-" : mojo.copyrightYearRangeSeparator;
     result.putSupplier(COPYRIGHT_YEARS_KEY, Fn.memoize(() -> {
       final String copyrightYears;
       if (inceptionYear.get() >= copyrightEnd.get()) {
         copyrightYears = "" + inceptionYear.get();
       } else {
-        copyrightYears = inceptionYear.get() + "-" + copyrightEnd.get();
+        copyrightYears = inceptionYear.get() + separator + copyrightEnd.get();
       }
       return copyrightYears;
     }));
@@ -144,7 +146,7 @@ public class CopyrightRangeProvider implements PropertiesProvider {
       if (copyrightStart.get() >= copyrightEnd.get()) {
         copyrightExistenceYears = Integer.toString(copyrightStart.get());
       } else {
-        copyrightExistenceYears = copyrightStart.get() + "-" + copyrightEnd.get();
+        copyrightExistenceYears = copyrightStart.get() + separator + copyrightEnd.get();
       }
       return copyrightExistenceYears;
     }));

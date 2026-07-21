@@ -61,6 +61,38 @@ class CopyrightRangeProviderTest {
     }
   }
 
+  @Test
+  void copyrightRangeWithCustomSeparator() {
+    Map<String, String> props = new HashMap<>();
+    final LicenseCheckMojo mojo = new LicenseCheckMojo();
+    mojo.defaultBasedir = gitRepoRoot.toFile();
+    mojo.copyrightYearRangeSeparator = ", ";
+    try (CopyrightRangeProvider provider = new CopyrightRangeProvider()) {
+      provider.init(mojo, props);
+
+      assertRangeWithSeparator(mojo, provider, "dir1/file1.txt", "1999", "2000", "2006", "1999, 2006", "2000, 2006");
+      assertRangeWithSeparator(mojo, provider, "dir2/file2.txt", "1999", "2007", "2007", "1999, 2007", "2007");
+      // when inception equals last change year, no separator is used
+      assertRangeWithSeparator(mojo, provider, "dir1/file3.txt", "1999", "2009", "2009", "1999, 2009", "2009");
+    }
+  }
+
+  private void assertRangeWithSeparator(LicenseCheckMojo mojo, CopyrightRangeProvider provider, String path, String inceptionYear,
+                                        String copyrightStart, String copyrightEnd, String copyrightRange, String copyrightExistence) {
+    Map<String, String> props = new HashMap<>();
+    props.put(CopyrightRangeProvider.INCEPTION_YEAR_KEY, inceptionYear);
+
+    Document document = newDocument(path);
+    Map<String, String> actual = provider.adjustProperties(mojo, props, document);
+
+    HashMap<String, String> expected = new HashMap<String, String>();
+    expected.put(CopyrightRangeProvider.COPYRIGHT_CREATION_YEAR_KEY, copyrightStart);
+    expected.put(CopyrightRangeProvider.COPYRIGHT_LAST_YEAR_KEY, copyrightEnd);
+    expected.put(CopyrightRangeProvider.COPYRIGHT_YEARS_KEY, copyrightRange);
+    expected.put(CopyrightRangeProvider.COPYRIGHT_EXISTENCE_YEARS_KEY, copyrightExistence);
+    Assertions.assertEquals(expected, actual, "for file '" + path + "': ");
+  }
+
   private void assertRange(CopyrightRangeProvider provider, String path, String copyrightStart, String copyrightEnd, String copyrightRange, String copyrightExistence) {
     assertRange(provider, path, "1999", copyrightStart, copyrightEnd, copyrightRange, copyrightExistence);
   }

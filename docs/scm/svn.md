@@ -57,6 +57,19 @@ For a project with `inceptionYear` 2010 and a file last changed in 2024:
 Copyright 2010-2024 Acme Corp
 ```
 
+## Year Range Separator
+
+By default, year ranges are joined with a dash, e.g. `2010-2024`. Use the `license.copyrightYearRangeSeparator` configuration option (also settable as a property) to change the separator. This applies to `license.svn.years.range` (and to the equivalent properties from the Git and Filesystem integrations).
+
+```xml
+<configuration>
+  <copyrightYearRangeSeparator>, </copyrightYearRangeSeparator>
+  ...
+</configuration>
+```
+
+With the value `", "`, the example above becomes `2010, 2024`. When the inception year and the last change year are equal (or `inceptionYear` is not set), no separator is used and only a single year is emitted. See also [SCM Integration — Year Range Separator](index.md#year-range-separator).
+
 ## Authentication
 
 For secured SVN repositories, configure authentication via Maven's `settings.xml` and reference the server ID in the plugin properties.

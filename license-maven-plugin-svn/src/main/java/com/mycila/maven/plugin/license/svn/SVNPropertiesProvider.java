@@ -121,7 +121,9 @@ public class SVNPropertiesProvider implements PropertiesProvider {
           newProperties.put(SVN_COPYRIGHT_YEARS_RANGE_KEY, year);
         } else {
           // a real range can be created
-          newProperties.put(SVN_COPYRIGHT_YEARS_RANGE_KEY, inceptionYear + "-" + year);
+          final String separator = mojo.copyrightYearRangeSeparator == null
+              ? "-" : mojo.copyrightYearRangeSeparator;
+          newProperties.put(SVN_COPYRIGHT_YEARS_RANGE_KEY, inceptionYear + separator + year);
         }
       }
     };
