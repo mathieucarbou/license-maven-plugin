@@ -59,6 +59,34 @@ class CopyrightRangeProviderTest {
     }
   }
 
+  @Test
+  void copyrightRangeWithCustomSeparator() {
+    Map<String, String> props = new HashMap<>();
+    final LicenseCheckMojo mojo = new LicenseCheckMojo();
+    mojo.defaultBasedir = fsRepoRoot.toFile();
+    mojo.copyrightYearRangeSeparator = ", ";
+    try (CopyrightRangeProvider provider = new CopyrightRangeProvider()) {
+      provider.init(mojo, props);
+
+      assertRangeWithSeparator(mojo, provider, "dir1/file1.txt", "1999", "2023", "1999, 2023");
+      // equal years: no separator used
+      assertRangeWithSeparator(mojo, provider, "dir1/file2.txt", "1999", "1999", "1999");
+    }
+  }
+
+  private void assertRangeWithSeparator(LicenseCheckMojo mojo, CopyrightRangeProvider provider, String path, String inceptionYear, String copyrightEnd, String copyrightRange) {
+    Map<String, String> props = new HashMap<>();
+    props.put(CopyrightRangeProvider.INCEPTION_YEAR_KEY, inceptionYear);
+
+    Document document = newDocument(path);
+    Map<String, String> actual = provider.adjustProperties(mojo, props, document);
+
+    HashMap<String, String> expected = new HashMap<String, String>();
+    expected.put(CopyrightRangeProvider.COPYRIGHT_LAST_YEAR_KEY, copyrightEnd);
+    expected.put(CopyrightRangeProvider.COPYRIGHT_YEARS_KEY, copyrightRange);
+    Assertions.assertEquals(expected, actual, "for file '" + path + "': ");
+  }
+
   private void assertRange(CopyrightRangeProvider provider, String path, String copyrightEnd, String copyrightRange) {
     assertRange(provider, path, "1999", copyrightEnd, copyrightRange);
   }

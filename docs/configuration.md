@@ -160,6 +160,7 @@ Relevant when using [SCM integration](scm/index.md) that reads commit history (G
 | `warnIfShallow` | `license.warnIfShallow` | `true` | Log a warning when a shallow clone is detected |
 | `skipOnShallow` | `license.skipOnShallow` | `false` | Skip the entire plugin execution on shallow clones |
 | `failOnShallow` | `license.failOnShallow` | `false` | Fail the build when a shallow clone is detected |
+| `copyrightYearRangeSeparator` | `license.copyrightYearRangeSeparator` | `-` | Separator used between years in copyright ranges (e.g. `copyrightYears`, `copyrightExistenceYears`) |
 
 !!! tip "Recommended for CI / AI Agents"
     Set `license.skipOnShallow=true` in CI pipelines and AI coding agent workflows that use shallow clones to prevent spurious header rewrites.

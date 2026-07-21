@@ -71,11 +71,13 @@ public class CopyrightRangeProvider implements PropertiesProvider {
 
       int copyrightEnd = getYearOfLastChange(document.getFile());
       result.put(COPYRIGHT_LAST_YEAR_KEY, Integer.toString(copyrightEnd));
+      final String separator = mojo.copyrightYearRangeSeparator == null
+          ? "-" : mojo.copyrightYearRangeSeparator;
       final String copyrightYears;
       if (inceptionYearInt >= copyrightEnd) {
         copyrightYears = inceptionYear;
       } else {
-        copyrightYears = inceptionYear + "-" + copyrightEnd;
+        copyrightYears = inceptionYear + separator + copyrightEnd;
       }
       result.put(COPYRIGHT_YEARS_KEY, copyrightYears);
 

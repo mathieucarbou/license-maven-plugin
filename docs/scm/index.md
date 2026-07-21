@@ -49,3 +49,22 @@ When both `skipOnShallow` and `failOnShallow` are `true`, `skipOnShallow` takes 
 
 !!! tip "Recommended for CI / AI Agents"
     Set `license.skipOnShallow=true` in pipelines that use shallow clones to avoid widespread header rewrites from inaccurate year values.
+
+## Year Range Separator
+
+All SCM integrations produce copyright year ranges (e.g. `license.git.copyrightYears`, `license.fs.copyrightYears`, `license.svn.years.range`). By default the two years are joined with a dash, e.g. `1999-2024`.
+
+Use the `copyrightYearRangeSeparator` option (property `license.copyrightYearRangeSeparator`) to change the separator:
+
+| Option | Property | Default | Description |
+|---|---|---|---|
+| `copyrightYearRangeSeparator` | `license.copyrightYearRangeSeparator` | `-` | Separator used between years in copyright ranges |
+
+```xml
+<configuration>
+  <copyrightYearRangeSeparator>, </copyrightYearRangeSeparator>
+  ...
+</configuration>
+```
+
+With the value `", "`, ranges become `1999, 2024`. When the two years are equal, no separator is used and only a single year is emitted.

@@ -298,6 +298,18 @@ public abstract class AbstractLicenseMojo extends AbstractMojo {
   public boolean skip;
 
   /**
+   * Separator used when building copyright year ranges (e.g. for
+   * {@code license.git.copyrightYears}, {@code license.git.copyrightExistenceYears}
+   * and {@code license.fs.copyrightYears}). When the inception year and the last
+   * change year differ, the two values are joined using this separator.
+   * <p>
+   * The default is {@code "-"} (a dash), producing ranges like {@code "2000-2024"}.
+   * Set this to e.g. {@code ", "} to obtain {@code "2000, 2024"}.
+   */
+  @Parameter(property = "license.copyrightYearRangeSeparator", defaultValue = "-")
+  public String copyrightYearRangeSeparator = "-";
+
+  /**
    * Determination of the year and author of the first commit and last change year
    * of a file requires a full git or svn history. By default the plugin will log
    * warning when using these properties on a shallow or sparse repository. If you

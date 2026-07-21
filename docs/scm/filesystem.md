@@ -54,6 +54,19 @@ For a project with `inceptionYear` 1999 and a file last modified in 2024:
 Copyright 1999-2024 Acme Corp
 ```
 
+## Year Range Separator
+
+By default, year ranges are joined with a dash, e.g. `1999-2024`. Use the `license.copyrightYearRangeSeparator` configuration option (also settable as a property) to change the separator. This applies to `license.fs.copyrightYears` (and to the equivalent properties from the Git and SVN integrations).
+
+```xml
+<configuration>
+  <copyrightYearRangeSeparator>, </copyrightYearRangeSeparator>
+  ...
+</configuration>
+```
+
+With the value `", "`, the example above becomes `1999, 2024`. When the inception year and the last change year are equal, no separator is used and only a single year is emitted. See also [SCM Integration — Year Range Separator](index.md#year-range-separator).
+
 ## When to Use This Integration
 
 The filesystem integration is a good choice when:
