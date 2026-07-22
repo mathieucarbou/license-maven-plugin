@@ -45,7 +45,7 @@ for (int i = 1; i <= 2; i++) {
 
   final String actual = new String(Files.readAllBytes(formattedJavaFile))
 
-  assertEquals(expected.toString(), actual)
+  assertEquals(expected.toString(), actual, filename)
 }
 
 return true
