@@ -44,7 +44,7 @@ class UpdateMojoTest {
 
     LicenseFormatMojo updater = new LicenseFormatMojo();
     updater.defaultBasedir = tmp;
-    updater.legacyConfigHeader = "src/test/resources/update/header.txt";
+    updater.licenseSets = LicenseSets.header("src/test/resources/update/header.txt").build();
     updater.project = new MavenProjectStub();
     updater.defaultProperties = ImmutableMap.of("year", "2008");
     updater.execute();
@@ -62,7 +62,7 @@ class UpdateMojoTest {
 
     LicenseFormatMojo updater = new LicenseFormatMojo();
     updater.defaultBasedir = tmp;
-    updater.legacyConfigInlineHeader = FileUtils.read(new File("src/test/resources/update/header.txt"), StandardCharsets.UTF_8);
+    updater.licenseSets = LicenseSets.inlineHeader(FileUtils.read(new File("src/test/resources/update/header.txt"), StandardCharsets.UTF_8)).build();
     updater.project = new MavenProjectStub();
     updater.defaultProperties = ImmutableMap.of("year", "2008");
     updater.execute();
@@ -81,7 +81,7 @@ class UpdateMojoTest {
     // only update those files without a copyright header
     LicenseFormatMojo updater = new LicenseFormatMojo();
     updater.defaultBasedir = tmp;
-    updater.legacyConfigHeader = "src/test/resources/update/header.txt";
+    updater.licenseSets = LicenseSets.header("src/test/resources/update/header.txt").build();
     updater.project = new MavenProjectStub();
     updater.defaultProperties = ImmutableMap.of("year", "2008");
     updater.skipExistingHeaders = true;
@@ -93,7 +93,7 @@ class UpdateMojoTest {
     // expect unchanged header to fail check against new header
     LicenseCheckMojo check = new LicenseCheckMojo();
     check.defaultBasedir = tmp;
-    check.legacyConfigHeader = "src/test/resources/update/header.txt";
+    check.licenseSets = LicenseSets.header("src/test/resources/update/header.txt").build();
     check.project = new MavenProjectStub();
     check.defaultProperties = ImmutableMap.of("year", "2008");
     check.skipExistingHeaders = false;
@@ -121,7 +121,7 @@ class UpdateMojoTest {
 
     LicenseFormatMojo updater = new LicenseFormatMojo();
     updater.defaultBasedir = tmp;
-    updater.legacyConfigHeader = "src/test/resources/update/header.txt";
+    updater.licenseSets = LicenseSets.header("src/test/resources/update/header.txt").build();
     updater.defaultProperties = ImmutableMap.of("year", "2008");
     updater.mapping = new LinkedHashMap<>() {{
       put("properties", "SCRIPT_STYLE");
@@ -146,7 +146,7 @@ class UpdateMojoTest {
 
     LicenseFormatMojo updater = new LicenseFormatMojo();
     updater.defaultBasedir = tmp;
-    updater.legacyConfigHeader = "src/test/resources/update/header.txt";
+    updater.licenseSets = LicenseSets.header("src/test/resources/update/header.txt").build();
     updater.defaultProperties = ImmutableMap.of("year", "2008");
     updater.mapping = new LinkedHashMap<>() {{
       put("properties", "SCRIPT_STYLE");
@@ -185,7 +185,7 @@ class UpdateMojoTest {
 
     LicenseFormatMojo updater = new LicenseFormatMojo();
     updater.defaultBasedir = tmp;
-    updater.legacyConfigHeader = "src/test/resources/update/header.txt";
+    updater.licenseSets = LicenseSets.header("src/test/resources/update/header.txt").build();
     updater.defaultProperties = ImmutableMap.of("year", "2008");
     updater.project = new MavenProjectStub();
     updater.execute();
@@ -212,7 +212,7 @@ class UpdateMojoTest {
 
     LicenseFormatMojo updater = new LicenseFormatMojo();
     updater.defaultBasedir = tmp;
-    updater.legacyConfigHeader = "src/test/resources/update/issue14/header.txt";
+    updater.licenseSets = LicenseSets.header("src/test/resources/update/issue14/header.txt").build();
     updater.project = new MavenProjectStub();
     updater.execute();
     final String expectedString = "#" + LS + "" +
@@ -250,7 +250,7 @@ class UpdateMojoTest {
 
     LicenseFormatMojo updater = new LicenseFormatMojo();
     updater.defaultBasedir = tmp;
-    updater.legacyConfigHeader = "src/test/resources/issues/issue-71/issue-71-header.txt";
+    updater.licenseSets = LicenseSets.header("src/test/resources/issues/issue-71/issue-71-header.txt").build();
     updater.project = new MavenProjectStub();
     updater.mapping = new LinkedHashMap<>() {{
       put("txt.extended", "EXTENDED_STYLE");
@@ -273,7 +273,7 @@ class UpdateMojoTest {
 
     LicenseFormatMojo execution1 = new LicenseFormatMojo();
     execution1.defaultBasedir = tmp;
-    execution1.legacyConfigHeader = "src/test/resources/update/issue37/xwiki-license.txt";
+    execution1.licenseSets = LicenseSets.header("src/test/resources/update/issue37/xwiki-license.txt").build();
     execution1.project = new MavenProjectStub();
     execution1.execute();
 
@@ -281,7 +281,7 @@ class UpdateMojoTest {
 
     LicenseFormatMojo execution2 = new LicenseFormatMojo();
     execution2.defaultBasedir = tmp;
-    execution2.legacyConfigHeader = "src/test/resources/update/issue37/xwiki-license.txt";
+    execution2.licenseSets = LicenseSets.header("src/test/resources/update/issue37/xwiki-license.txt").build();
     execution2.project = new MavenProjectStub();
     execution2.execute();
 
@@ -298,7 +298,7 @@ class UpdateMojoTest {
 
     LicenseFormatMojo updater = new LicenseFormatMojo();
     updater.defaultBasedir = tmp;
-    updater.legacyConfigHeader = "src/test/resources/single-line-header.txt";
+    updater.licenseSets = LicenseSets.header("src/test/resources/single-line-header.txt").build();
     updater.project = new MavenProjectStub();
     updater.execute();
 
@@ -321,12 +321,8 @@ class UpdateMojoTest {
 
     LicenseFormatMojo updater = new LicenseFormatMojo();
     updater.defaultBasedir = tmp;
-
-    LicenseSet licenseSet = new LicenseSet();
-    licenseSet.basedir = tmp;
-    licenseSet.inlineHeader = "All content copyright (c) 2003-2021 Bla, Inc., except as may\n" +
-        "  otherwise be noted in a separate copyright notice. All rights reserved.";
-    updater.licenseSets = new LicenseSet[]{licenseSet};
+    updater.licenseSets = LicenseSets.inlineHeader("All content copyright (c) 2003-2021 Bla, Inc., except as may\n" +
+        "  otherwise be noted in a separate copyright notice. All rights reserved.").basedir(tmp).build();
     updater.project = new MavenProjectStub();
     updater.execute();
 
@@ -354,7 +350,7 @@ class UpdateMojoTest {
 
     LicenseFormatMojo updater = new LicenseFormatMojo();
     updater.defaultBasedir = tmp;
-    updater.legacyConfigHeader = "src/test/resources/update/issue-187/header.txt";
+    updater.licenseSets = LicenseSets.header("src/test/resources/update/issue-187/header.txt").build();
     updater.project = new MavenProjectStub();
     updater.mapping = new LinkedHashMap<>() {{
       put("java", "JAVAPKG_STYLE");

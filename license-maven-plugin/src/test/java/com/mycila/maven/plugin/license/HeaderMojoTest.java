@@ -39,7 +39,7 @@ class HeaderMojoTest {
     MavenProjectStub project = new MavenProjectStub();
     LicenseCheckMojo check = new LicenseCheckMojo();
     check.defaultBasedir = new File("src/test/resources/check");
-    check.legacyConfigHeader = "header.txt";
+    check.licenseSets = LicenseSets.header("header.txt").build();
     check.project = project;
     check.failIfMissing = false;
     check.strictCheck = true;
@@ -51,7 +51,7 @@ class HeaderMojoTest {
     MavenProjectStub project = new MavenProjectStub();
     LicenseCheckMojo check = new LicenseCheckMojo();
     check.defaultBasedir = new File("src/test/resources/check");
-    check.legacyConfigHeader = "src/test/resources/check/header.txt";
+    check.licenseSets = LicenseSets.header("src/test/resources/check/header.txt").build();
     check.project = project;
     check.failIfMissing = false;
     check.strictCheck = true;
@@ -64,7 +64,7 @@ class HeaderMojoTest {
     project.addCompileSourceRoot("src/test/resources/check/cp");
     LicenseCheckMojo check = new LicenseCheckMojo();
     check.defaultBasedir = new File("src/test/resources/check");
-    check.legacyConfigHeader = "header-in-cp.txt";
+    check.licenseSets = LicenseSets.header("header-in-cp.txt").build();
     check.project = project;
     check.failIfMissing = false;
     check.strictCheck = true;
@@ -76,7 +76,7 @@ class HeaderMojoTest {
     MavenProjectStub project = new MavenProjectStub();
     LicenseCheckMojo check = new LicenseCheckMojo();
     check.defaultBasedir = new File("src/test/resources/check");
-    check.legacyConfigHeader = "test-header1.txt";
+    check.licenseSets = LicenseSets.header("test-header1.txt").build();
     check.project = project;
     check.failIfMissing = false;
     check.strictCheck = true;
@@ -88,7 +88,7 @@ class HeaderMojoTest {
     MavenProjectStub project = new MavenProjectStub();
     LicenseCheckMojo check = new LicenseCheckMojo();
     check.defaultBasedir = new File("src/test/resources/check");
-    check.legacyConfigInlineHeader = FileUtils.read(new File("src/test/resources/check/header.txt"), StandardCharsets.UTF_8);
+    check.licenseSets = LicenseSets.inlineHeader(FileUtils.read(new File("src/test/resources/check/header.txt"), StandardCharsets.UTF_8)).build();
     check.project = project;
     check.failIfMissing = false;
     check.strictCheck = true;
@@ -102,7 +102,7 @@ class HeaderMojoTest {
     check.defaultBasedir = new File("src/test/resources/check");
     final Multi multi = new Multi();
     multi.setHeaders(new String[]{"header.txt", "header2.txt"});
-    check.legacyConfigMulti = multi;
+    check.licenseSets = LicenseSets.multi(multi).build();
     check.project = project;
     check.failIfMissing = false;
     check.strictCheck = true;
@@ -116,7 +116,7 @@ class HeaderMojoTest {
     check.defaultBasedir = new File("src/test/resources/check");
     final Multi multi = new Multi();
     multi.setHeaders(new String[]{"src/test/resources/check/header.txt", "src/test/resources/check/header2.txt"});
-    check.legacyConfigMulti = multi;
+    check.licenseSets = LicenseSets.multi(multi).build();
     check.project = project;
     check.failIfMissing = false;
     check.strictCheck = true;
@@ -131,7 +131,7 @@ class HeaderMojoTest {
     check.defaultBasedir = new File("src/test/resources/check");
     final Multi multi = new Multi();
     multi.setHeaders(new String[]{"header-in-cp.txt", "header-in-cp.txt"});
-    check.legacyConfigMulti = multi;
+    check.licenseSets = LicenseSets.multi(multi).build();
     check.project = project;
     check.failIfMissing = false;
     check.strictCheck = true;
@@ -145,7 +145,7 @@ class HeaderMojoTest {
     check.defaultBasedir = new File("src/test/resources/check");
     final Multi multi = new Multi();
     multi.setHeaders(new String[]{"test-header1.txt", "test-header2.txt"});
-    check.legacyConfigMulti = multi;
+    check.licenseSets = LicenseSets.multi(multi).build();
     check.project = project;
     check.failIfMissing = false;
     check.strictCheck = true;
@@ -162,7 +162,7 @@ class HeaderMojoTest {
         FileUtils.read(new File("src/test/resources/check/header.txt"), StandardCharsets.UTF_8),
         FileUtils.read(new File("src/test/resources/check/header2.txt"), StandardCharsets.UTF_8)
     });
-    check.legacyConfigMulti = multi;
+    check.licenseSets = LicenseSets.multi(multi).build();
     check.project = project;
     check.failIfMissing = false;
     check.strictCheck = true;
