@@ -20,6 +20,7 @@ import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
 import org.apache.maven.artifact.resolver.filter.CumulativeScopeArtifactFilter;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.License;
+import org.apache.maven.model.building.ModelBuildingRequest;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.project.DefaultProjectBuilder;
 import org.apache.maven.project.DefaultProjectBuildingRequest;
@@ -94,7 +95,17 @@ public class MavenProjectLicenses implements LicenseMap, LicenseMessage {
   protected Set<License> getLicensesFromArtifact(final Artifact artifact) {
     Set<License> licenses = new HashSet<>();
     try {
-      MavenProject project = getProjectBuilder().build(artifact, getBuildingRequest()).getProject();
+      // We only need the <licenses> from the POM, not a full project build.
+      // Using the session's default building request (which has processPlugins=true)
+      // would trigger extension realm creation and load foreign build extensions
+      // declared in the dependency's POM into the live Maven session (issue #1084).
+      // Setting processPlugins=false prevents this: the POM is still resolved and
+      // parsed (so <licenses> is available), but plugin/extension processing is skipped.
+      ProjectBuildingRequest request = new DefaultProjectBuildingRequest(getBuildingRequest());
+      request.setProcessPlugins(false);
+      request.setValidationLevel(ModelBuildingRequest.VALIDATION_LEVEL_MINIMAL);
+      request.setResolveDependencies(false);
+      MavenProject project = getProjectBuilder().build(artifact, request).getProject();
       licenses.addAll(project.getLicenses());
     } catch (ProjectBuildingException ex) {
       if (getLog().isWarnEnabled()) {
