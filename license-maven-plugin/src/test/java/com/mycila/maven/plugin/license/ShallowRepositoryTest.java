@@ -42,7 +42,7 @@ class ShallowRepositoryTest {
 
     LicenseCheckMojo check = new LicenseCheckMojo();
     check.defaultBasedir = new File("src/test/resources/check");
-    check.legacyConfigHeader = "header.txt";
+    check.licenseSets = LicenseSets.header("header.txt").build();
     check.project = new MavenProjectStub();
     check.skipOnShallow = true;
     check.setLog(new DefaultLog(logger));
@@ -68,7 +68,7 @@ class ShallowRepositoryTest {
 
     LicenseFormatMojo format = new LicenseFormatMojo();
     format.defaultBasedir = new File("src/test/resources/check");
-    format.legacyConfigHeader = "header.txt";
+    format.licenseSets = LicenseSets.header("header.txt").build();
     format.project = new MavenProjectStub();
     format.skipOnShallow = true;
     format.setLog(new DefaultLog(logger));
@@ -89,7 +89,7 @@ class ShallowRepositoryTest {
   void test_failOnShallow_fails_build() {
     LicenseCheckMojo check = new LicenseCheckMojo();
     check.defaultBasedir = new File("src/test/resources/check");
-    check.legacyConfigHeader = "header.txt";
+    check.licenseSets = LicenseSets.header("header.txt").build();
     check.project = new MavenProjectStub();
     check.failOnShallow = true;
 
@@ -108,7 +108,7 @@ class ShallowRepositoryTest {
 
     LicenseCheckMojo check = new LicenseCheckMojo();
     check.defaultBasedir = new File("src/test/resources/check");
-    check.legacyConfigHeader = "header.txt";
+    check.licenseSets = LicenseSets.header("header.txt").build();
     check.project = new MavenProjectStub();
     // skipOnShallow=false (default), failOnShallow=false (default)
     check.setLog(new DefaultLog(logger));

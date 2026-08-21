@@ -29,9 +29,8 @@ class AdditionalHeaderMojoTest {
   void test_additionalHeaderDefinitions() throws Exception {
     LicenseCheckMojo check = new LicenseCheckMojo();
     check.defaultBasedir = new File("src/test/resources/check/def");
-    check.legacyConfigHeader = "src/test/resources/check/header.txt";
+    check.licenseSets = LicenseSets.header("src/test/resources/check/header.txt").excludes("*.xml").build();
     check.project = new MavenProjectStub();
-    check.legacyConfigExcludes = new String[]{"*.xml"};
     check.strictCheck = true;
 
     try {
@@ -49,9 +48,8 @@ class AdditionalHeaderMojoTest {
   void test_inline() throws Exception {
     LicenseCheckMojo check = new LicenseCheckMojo();
     check.defaultBasedir = new File("src/test/resources/check/def");
-    check.legacyConfigHeader = "src/test/resources/check/header.txt";
+    check.licenseSets = LicenseSets.header("src/test/resources/check/header.txt").excludes("*.xml").build();
     check.project = new MavenProjectStub();
-    check.legacyConfigExcludes = new String[]{"*.xml"};
 
     try {
       check.execute();

@@ -28,9 +28,8 @@ class ExcludesMojoTest {
   void test_no_exclusions() throws Exception {
     LicenseCheckMojo check = new LicenseCheckMojo();
     check.defaultBasedir = new File("src/test/resources/check");
-    check.legacyConfigHeader = "header.txt";
+    check.licenseSets = LicenseSets.header("header.txt").excludes().build();
     check.project = new MavenProjectStub();
-    check.legacyConfigExcludes = new String[0];
     check.strictCheck = true;
     Assertions.assertThrows(MojoExecutionException.class, () -> {
       check.execute();
@@ -41,9 +40,8 @@ class ExcludesMojoTest {
   void test_exclusions() throws Exception {
     LicenseCheckMojo check = new LicenseCheckMojo();
     check.defaultBasedir = new File("src/test/resources/check");
-    check.legacyConfigHeader = "header.txt";
+    check.licenseSets = LicenseSets.header("header.txt").excludes("**/*.txt", "**/*.xml", "**/*.java", "**/*.apt.vm").build();
     check.project = new MavenProjectStub();
-    check.legacyConfigExcludes = new String[]{"**/*.txt", "**/*.xml", "**/*.java", "**/*.apt.vm"};
     check.strictCheck = true;
     check.execute();
   }
