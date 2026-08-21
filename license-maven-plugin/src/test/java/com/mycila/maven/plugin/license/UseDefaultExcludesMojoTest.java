@@ -27,7 +27,7 @@ class UseDefaultExcludesMojoTest {
   void test_include_and_fail() throws Exception {
     try {
       LicenseCheckMojo check = new LicenseCheckMojo();
-      check.defaultBasedir = new File("src/test/resources/check");
+      check.legacyDefaultBasedir = new File("src/test/resources/check");
       check.legacyConfigHeader = "header.txt";
       check.project = new MavenProjectStub();
       check.legacyConfigExcludes = new String[]{"doc1.txt"};
@@ -42,7 +42,7 @@ class UseDefaultExcludesMojoTest {
   @Test
   void check_defaultExcludes_exclude_Netbeans_Configuration() throws Exception {
     LicenseCheckMojo check = new LicenseCheckMojo();
-    check.defaultBasedir = new File("src/test/resources/excludes/issue-68");
+    check.legacyDefaultBasedir = new File("src/test/resources/excludes/issue-68");
     check.legacyConfigHeader = "header.txt";
     check.project = new MavenProjectStub();
     check.defaultUseDefaultExcludes = true;
@@ -54,7 +54,7 @@ class UseDefaultExcludesMojoTest {
   void check_withoutDefaultExcludes_Netbeans_Configuration_Is_Reported() {
     try {
       LicenseCheckMojo check = new LicenseCheckMojo();
-      check.defaultBasedir = new File("src/test/resources/excludes/issue-68");
+      check.legacyDefaultBasedir = new File("src/test/resources/excludes/issue-68");
       check.legacyConfigHeader = "header.txt";
       check.project = new MavenProjectStub();
       check.defaultUseDefaultExcludes = false;

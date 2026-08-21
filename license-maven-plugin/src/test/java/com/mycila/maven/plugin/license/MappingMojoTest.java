@@ -33,7 +33,7 @@ class MappingMojoTest {
     LicenseCheckMojo check = new LicenseCheckMojo();
     MockedLog logger = new MockedLog();
     check.setLog(new DefaultLog(logger));
-    check.defaultBasedir = new File("src/test/resources/check");
+    check.legacyDefaultBasedir = new File("src/test/resources/check");
     check.legacyConfigHeader = "header.txt";
     check.project = new MavenProjectStub();
     check.useDefaultMapping = true;
@@ -70,7 +70,7 @@ class MappingMojoTest {
     MockedLog logger = new MockedLog();
     check.setLog(new DefaultLog(logger));
     //check.setLog(new SystemStreamLog());
-    check.defaultBasedir = new File("src/test/resources/check");
+    check.legacyDefaultBasedir = new File("src/test/resources/check");
     check.legacyConfigHeader = "header.txt";
     check.project = new MavenProjectStub();
     check.legacyConfigIncludes = new String[]{"test.apt.vm"};
@@ -101,7 +101,7 @@ class MappingMojoTest {
     MockedLog logger = new MockedLog();
     check.setLog(new DefaultLog(logger));
     //check.setLog(new SystemStreamLog());
-    check.defaultBasedir = new File("src/test/resources/check/issue107");
+    check.legacyDefaultBasedir = new File("src/test/resources/check/issue107");
     check.legacyConfigHeader = "header.txt";
     check.project = new MavenProjectStub();
     check.legacyConfigIncludes = new String[]{"test.xml.tmpl"};
@@ -127,7 +127,7 @@ class MappingMojoTest {
     MockedLog logger = new MockedLog();
     check.setLog(new DefaultLog(logger));
     //check.setLog(new SystemStreamLog());
-    check.defaultBasedir = new File("src/test/resources/extensionless");
+    check.legacyDefaultBasedir = new File("src/test/resources/extensionless");
     check.legacyConfigHeader = "header.txt";
     check.project = new MavenProjectStub();
     check.legacyConfigIncludes = new String[]{"extensionless-file"};
@@ -164,7 +164,7 @@ class MappingMojoTest {
     MockedLog logger = new MockedLog();
     check.setLog(new DefaultLog(logger));
     //check.setLog(new SystemStreamLog());
-    check.defaultBasedir = new File("src/test/resources/unknown");
+    check.legacyDefaultBasedir = new File("src/test/resources/unknown");
     check.legacyConfigHeader = "header.txt";
     check.project = new MavenProjectStub();
     check.legacyConfigIncludes = new String[]{"file.unknown"};

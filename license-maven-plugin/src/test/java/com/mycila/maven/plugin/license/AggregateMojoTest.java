@@ -34,7 +34,7 @@ class AggregateMojoTest {
       }
     };
     LicenseCheckMojo check = new LicenseCheckMojo();
-    check.defaultBasedir = new File("src/test/resources/check/modules");
+    check.legacyDefaultBasedir = new File("src/test/resources/check/modules");
     check.legacyConfigHeader = "header.txt";
     check.project = project;
     check.strictCheck = true;
@@ -51,7 +51,7 @@ class AggregateMojoTest {
     };
     LicenseCheckMojo check = new LicenseCheckMojo();
     check.project = project;
-    check.defaultBasedir = new File("src/test/resources/check/modules");
+    check.legacyDefaultBasedir = new File("src/test/resources/check/modules");
     check.legacyConfigHeader = "header.txt";
     check.aggregate = true;
     check.strictCheck = true;

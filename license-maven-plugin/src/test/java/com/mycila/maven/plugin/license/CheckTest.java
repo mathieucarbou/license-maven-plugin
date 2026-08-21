@@ -37,7 +37,7 @@ class CheckTest {
     MavenProjectStub project = new MavenProjectStub();
 
     LicenseCheckMojo check = new LicenseCheckMojo();
-    check.defaultBasedir = new File("src/test/resources/check/linewrap");
+    check.legacyDefaultBasedir = new File("src/test/resources/check/linewrap");
     check.legacyConfigHeader = "header.txt";
     check.project = project;
 
@@ -59,7 +59,7 @@ class CheckTest {
     FileUtils.copyFileToFolder(new File("src/test/resources/check/linewrap/testconfig.xml"), tmp);
 
     LicenseFormatMojo updater = new LicenseFormatMojo();
-    updater.defaultBasedir = tmp;
+    updater.legacyDefaultBasedir = tmp;
     updater.legacyConfigHeader = "src/test/resources/check/linewrap/header.txt";
     updater.project = project;
     updater.strictCheck = true;
@@ -67,7 +67,7 @@ class CheckTest {
 
     // the check again, strictly. should work now
     check = new LicenseCheckMojo();
-    check.defaultBasedir = tmp;
+    check.legacyDefaultBasedir = tmp;
     check.legacyConfigHeader = "src/test/resources/check/linewrap/header.txt";
     check.project = project;
 

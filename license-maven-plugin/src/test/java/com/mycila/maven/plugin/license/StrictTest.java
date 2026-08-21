@@ -36,7 +36,7 @@ class StrictTest {
 
     // all the headers are by default checked not strictlty
     LicenseCheckMojo check = new LicenseCheckMojo();
-    check.defaultBasedir = new File("src/test/resources/check/issue76");
+    check.legacyDefaultBasedir = new File("src/test/resources/check/issue76");
     check.legacyConfigHeader = "src/test/resources/test-header1.txt";
     check.project = project;
     check.strictCheck = false;
@@ -65,7 +65,7 @@ class StrictTest {
 
     // all the headers are by default checked not strictlty
     LicenseCheckMojo check = new LicenseCheckMojo();
-    check.defaultBasedir = new File("src/test/resources/check/strict");
+    check.legacyDefaultBasedir = new File("src/test/resources/check/strict");
     check.legacyConfigHeader = "src/test/resources/test-header1-diff.txt";
     check.project = project;
     check.execute();
