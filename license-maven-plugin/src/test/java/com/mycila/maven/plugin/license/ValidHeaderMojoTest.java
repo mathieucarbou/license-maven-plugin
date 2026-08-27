@@ -33,7 +33,7 @@ class ValidHeaderMojoTest {
 
     LicenseCheckMojo check = new LicenseCheckMojo();
     check.defaultBasedir = new File("src/test/resources/check/valid");
-    check.legacyConfigHeader = "src/test/resources/test-header1.txt";
+    check.licenseSets = LicenseSets.header("src/test/resources/test-header1.txt").build();
     check.project = new MavenProjectStub();
     check.strictCheck = true;
     try {
@@ -43,7 +43,8 @@ class ValidHeaderMojoTest {
       Assertions.assertEquals("Some files do not have the expected license header. Run license:format to update them.", e.getMessage());
     }
 
-    check.legacyConfigValidHeaders = new String[]{"src/test/resources/check/header2.txt"};
+    check.licenseSets = LicenseSets.header("src/test/resources/test-header1.txt")
+        .validHeaders("src/test/resources/check/header2.txt").build();
     check.execute();
   }
 }

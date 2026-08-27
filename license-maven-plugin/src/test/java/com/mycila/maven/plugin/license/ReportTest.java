@@ -115,8 +115,7 @@ class ReportTest {
     plugin.clock = Clock.fixed(Instant.ofEpochMilli(1631615047644L), ZoneId.systemDefault());
     plugin.project = mavenProjectStub;
     plugin.defaultBasedir = tmp;
-    plugin.legacyConfigHeader = "src/test/resources/issues/issue-122/header.txt";
-    plugin.legacyConfigIncludes = new String[]{"file*.*"};
+    plugin.licenseSets = LicenseSets.header("src/test/resources/issues/issue-122/header.txt").includes("file*.*").build();
     plugin.reportLocation = new File(tmp, "report/license-plugin-report.xml");
 
     try {
@@ -139,8 +138,7 @@ class ReportTest {
     plugin.clock = Clock.fixed(Instant.ofEpochMilli(1631615047644L), ZoneId.systemDefault());
     plugin.project = mavenProjectStub;
     plugin.defaultBasedir = tmp;
-    plugin.legacyConfigHeader = "src/test/resources/issues/issue-122/header.txt";
-    plugin.legacyConfigIncludes = new String[]{"file*.*"};
+    plugin.licenseSets = LicenseSets.header("src/test/resources/issues/issue-122/header.txt").includes("file*.*").build();
     plugin.reportLocation = new File(tmp, "report/license-plugin-report.json");
 
     try {
@@ -163,8 +161,7 @@ class ReportTest {
     plugin.clock = Clock.fixed(Instant.ofEpochMilli(1631615047644L), ZoneId.systemDefault());
     plugin.project = mavenProjectStub;
     plugin.defaultBasedir = tmp;
-    plugin.legacyConfigHeader = "src/test/resources/issues/issue-122/header.txt";
-    plugin.legacyConfigIncludes = new String[]{"file*.*"};
+    plugin.licenseSets = LicenseSets.header("src/test/resources/issues/issue-122/header.txt").includes("file*.*").build();
     plugin.reportLocation = new File(tmp, "report/license-plugin-report.xml");
 
     plugin.execute();
@@ -183,8 +180,7 @@ class ReportTest {
     plugin.clock = Clock.fixed(Instant.ofEpochMilli(1631615047644L), ZoneId.systemDefault());
     plugin.project = mavenProjectStub;
     plugin.defaultBasedir = tmp;
-    plugin.legacyConfigHeader = "src/test/resources/issues/issue-122/header.txt";
-    plugin.legacyConfigIncludes = new String[]{"file*.*"};
+    plugin.licenseSets = LicenseSets.header("src/test/resources/issues/issue-122/header.txt").includes("file*.*").build();
     plugin.reportLocation = new File(tmp, "report/license-plugin-report.json");
 
     plugin.execute();
@@ -203,8 +199,7 @@ class ReportTest {
     plugin.clock = Clock.fixed(Instant.ofEpochMilli(1631615047644L), ZoneId.systemDefault());
     plugin.project = mavenProjectStub;
     plugin.defaultBasedir = tmp;
-    plugin.legacyConfigHeader = "src/test/resources/issues/issue-122/header.txt";
-    plugin.legacyConfigIncludes = new String[]{"file*.*"};
+    plugin.licenseSets = LicenseSets.header("src/test/resources/issues/issue-122/header.txt").includes("file*.*").build();
     plugin.reportLocation = new File(tmp, "report/license-plugin-report.xml");
 
     plugin.execute();
@@ -223,8 +218,7 @@ class ReportTest {
     plugin.clock = Clock.fixed(Instant.ofEpochMilli(1631615047644L), ZoneId.systemDefault());
     plugin.project = mavenProjectStub;
     plugin.defaultBasedir = tmp;
-    plugin.legacyConfigHeader = "src/test/resources/issues/issue-122/header.txt";
-    plugin.legacyConfigIncludes = new String[]{"file*.*"};
+    plugin.licenseSets = LicenseSets.header("src/test/resources/issues/issue-122/header.txt").includes("file*.*").build();
     plugin.reportLocation = new File(tmp, "report/license-plugin-report.json");
 
     plugin.execute();

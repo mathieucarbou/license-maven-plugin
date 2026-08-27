@@ -38,7 +38,7 @@ class CheckTest {
 
     LicenseCheckMojo check = new LicenseCheckMojo();
     check.defaultBasedir = new File("src/test/resources/check/linewrap");
-    check.legacyConfigHeader = "header.txt";
+    check.licenseSets = LicenseSets.header("header.txt").build();
     check.project = project;
 
     // check by default - should work
@@ -60,7 +60,7 @@ class CheckTest {
 
     LicenseFormatMojo updater = new LicenseFormatMojo();
     updater.defaultBasedir = tmp;
-    updater.legacyConfigHeader = "src/test/resources/check/linewrap/header.txt";
+    updater.licenseSets = LicenseSets.header("src/test/resources/check/linewrap/header.txt").build();
     updater.project = project;
     updater.strictCheck = true;
     updater.execute();
@@ -68,7 +68,7 @@ class CheckTest {
     // the check again, strictly. should work now
     check = new LicenseCheckMojo();
     check.defaultBasedir = tmp;
-    check.legacyConfigHeader = "src/test/resources/check/linewrap/header.txt";
+    check.licenseSets = LicenseSets.header("src/test/resources/check/linewrap/header.txt").build();
     check.project = project;
 
     check.strictCheck = true;

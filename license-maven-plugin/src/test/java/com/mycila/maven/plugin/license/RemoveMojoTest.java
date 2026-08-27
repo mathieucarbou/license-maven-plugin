@@ -38,7 +38,7 @@ final class RemoveMojoTest {
 
     LicenseRemoveMojo remove = new LicenseRemoveMojo();
     remove.defaultBasedir = tmp;
-    remove.legacyConfigHeader = "src/test/resources/remove/header.txt";
+    remove.licenseSets = LicenseSets.header("src/test/resources/remove/header.txt").build();
     remove.project = new MavenProjectStub();
     remove.execute();
 
@@ -55,7 +55,7 @@ final class RemoveMojoTest {
 
     LicenseRemoveMojo remove = new LicenseRemoveMojo();
     remove.defaultBasedir = tmp;
-    remove.legacyConfigHeader = "src/test/resources/remove/header.txt";
+    remove.licenseSets = LicenseSets.header("src/test/resources/remove/header.txt").build();
     remove.project = new MavenProjectStub();
     remove.execute();
 
@@ -79,7 +79,7 @@ final class RemoveMojoTest {
 
     LicenseRemoveMojo remove = new LicenseRemoveMojo();
     remove.defaultBasedir = tmp;
-    remove.legacyConfigHeader = "src/test/resources/remove/header.txt";
+    remove.licenseSets = LicenseSets.header("src/test/resources/remove/header.txt").build();
     remove.project = new MavenProjectStub();
     remove.execute();
 
@@ -96,7 +96,7 @@ final class RemoveMojoTest {
 
     LicenseRemoveMojo remove = new LicenseRemoveMojo();
     remove.defaultBasedir = tmp;
-    remove.legacyConfigHeader = "src/test/resources/remove/header.txt";
+    remove.licenseSets = LicenseSets.header("src/test/resources/remove/header.txt").build();
     remove.project = new MavenProjectStub();
     remove.execute();
 
@@ -113,7 +113,7 @@ final class RemoveMojoTest {
 
     LicenseRemoveMojo remove = new LicenseRemoveMojo();
     remove.defaultBasedir = tmp;
-    remove.legacyConfigHeader = "src/test/resources/remove/header.txt";
+    remove.licenseSets = LicenseSets.header("src/test/resources/remove/header.txt").build();
     remove.project = new MavenProjectStub();
     remove.execute();
 
@@ -132,7 +132,7 @@ final class RemoveMojoTest {
 
     LicenseRemoveMojo remove = new LicenseRemoveMojo();
     remove.defaultBasedir = tmp;
-    remove.legacyConfigHeader = "src/test/resources/remove/header.txt";
+    remove.licenseSets = LicenseSets.header("src/test/resources/remove/header.txt").build();
     remove.project = new MavenProjectStub();
     remove.execute();
 
@@ -152,7 +152,7 @@ final class RemoveMojoTest {
 
     LicenseRemoveMojo remove = new LicenseRemoveMojo();
     remove.defaultBasedir = tmp;
-    remove.legacyConfigHeader = "src/test/resources/remove/header.txt";
+    remove.licenseSets = LicenseSets.header("src/test/resources/remove/header.txt").build();
     remove.project = new MavenProjectStub();
     remove.execute();
 
@@ -172,14 +172,14 @@ final class RemoveMojoTest {
     // Let's apply the licene
     LicenseFormatMojo format = new LicenseFormatMojo();
     format.defaultBasedir = tmp;
-    format.legacyConfigHeader = "com/mycila/maven/plugin/license/templates/GPL-3.txt";
+    format.licenseSets = LicenseSets.header("com/mycila/maven/plugin/license/templates/GPL-3.txt").build();
     format.project = new MavenProjectStub();
     format.execute();
 
     // Let's try to remove it
     LicenseRemoveMojo remove = new LicenseRemoveMojo();
     remove.defaultBasedir = tmp;
-    remove.legacyConfigHeader = "com/mycila/maven/plugin/license/templates/GPL-3.txt";
+    remove.licenseSets = LicenseSets.header("com/mycila/maven/plugin/license/templates/GPL-3.txt").build();
     remove.project = new MavenProjectStub();
 //        remove.keywords = new String[]{"GNU"};
     remove.execute();
