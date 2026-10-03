@@ -18,7 +18,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        java: [21, 25, 26-ea, 27-ea]
+        java: [21, 25, 27]
         distribution: ['temurin']
       fail-fast: false
       max-parallel: 4
@@ -33,13 +33,13 @@ jobs:
           distribution: ${{ matrix.distribution }}
       - name: Test with Maven Using Project Maven Wrapper
         run: ./mvnw clean install site -V -B -D"maven.artifact.threads=64" -D"org.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
-      - name: Set up JDK 11 Integration Run (Consumer Run)
+      - name: Set up JDK 17 Integration Run (Consumer Run)
         uses: actions/setup-java@v6
         with:
           cache: 'maven'
           distribution: ${{ runner.os == 'macOS' && 'zulu' || 'temurin' }}
-          java-version: 11
+          java-version: 17
       - name: Load Maven 3.6.3 Integration Run (Consumer Run) using GitHub Provided Maven
         run: mvn org.apache.maven.plugins:maven-wrapper-plugin:3.3.1:wrapper -V -B -D"maven=3.6.3"
-      - name: Test with Maven 3.6.3 Java 11 (Consumer Run)
+      - name: Test with Maven 3.6.3 Java 17 (Consumer Run)
         run: ./mvnw invoker:run -V -B -D"maven.artifact.threads=64" -D"org.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
