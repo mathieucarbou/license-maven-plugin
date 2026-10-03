@@ -299,7 +299,7 @@
             <source>${java.version}</source>
             <quiet>true</quiet>
             <links>
-                <link>https://docs.oracle.com/en/java/javase/11/docs/api/</link>
+                <link>https://docs.oracle.com/en/java/javase/17/docs/api/</link>
             </links>
           </configuration>
         </plugin>
@@ -395,7 +395,7 @@
         <plugin>
           <groupId>com.mycila</groupId>
           <artifactId>license-maven-plugin</artifactId>
-          <version>5.0.0</version>
+          <version>5.1.2</version>
           <configuration>
             <licenseSets>
               <licenseSet>

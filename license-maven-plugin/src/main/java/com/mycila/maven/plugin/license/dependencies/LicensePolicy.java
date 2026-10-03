@@ -71,7 +71,7 @@ public class LicensePolicy {
   @Parameter
   private String value;
 
-  // only here for plexus container injection by maven
+  // Necessary constructor due to constructor override
   public LicensePolicy() {
   }
 

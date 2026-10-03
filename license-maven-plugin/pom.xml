@@ -90,16 +90,6 @@
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <configuration>
-          <failOnError>false</failOnError>
-          <sourceFileExcludes combine.children="append">
-            <sourceFileExclude>**/*Mojo.java</sourceFileExclude>
-          </sourceFileExcludes>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-invoker-plugin</artifactId>
         <configuration>
           <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
@@ -244,7 +234,7 @@
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-xml</artifactId>
-      <version>3.0.2</version>
+      <version>3.1.0</version>
     </dependency>
       
     <dependency>
