@@ -475,7 +475,7 @@ limitations under the License.
         <plugin>
           <groupId>org.jacoco</groupId>
           <artifactId>jacoco-maven-plugin</artifactId>
-          <version>0.8.15</version>
+          <version>0.8.16</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
