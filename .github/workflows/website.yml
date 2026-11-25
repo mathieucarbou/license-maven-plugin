@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - main
+      - master
     paths:
       - "docs/**"
       - "mkdocs.yml"
@@ -20,6 +21,8 @@ concurrency:
 
 jobs:
   build:
+    # Only run in the upstream repository (owned by mathieucarbou), not in forks
+    if: github.repository_owner == 'mathieucarbou'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -43,6 +46,8 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: build
+    # Only run in the upstream repository (owned by mathieucarbou), not in forks
+    if: github.repository_owner == 'mathieucarbou'
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
