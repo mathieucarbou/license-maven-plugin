@@ -9,6 +9,7 @@ on:
     paths:
       - "docs/**"
       - "mkdocs.yml"
+      - ".github/workflows/website.yml"
 
 permissions:
   contents: read
