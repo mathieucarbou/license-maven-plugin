@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LazyMap.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">license-maven-plugin</a> &gt; <a href="index.source.html" class="el_package">com.mycila.maven.plugin.license.util</a> &gt; <span class="el_source">LazyMap.java</span></div><h1>LazyMap.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2008-2025 Mycila (mathieu.carbou@gmail.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;).
+ * You may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.mycila.maven.plugin.license.util;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+
+public class LazyMap&lt;K, V&gt; implements Map&lt;K, V&gt; {
+  private final Map&lt;K, Supplier&lt;V&gt;&gt; suppliers;
+  private final Function&lt;K, V&gt; alternative; // used when no supplier is present
+
+<span class="nc" id="L32">  public LazyMap() {</span>
+<span class="nc" id="L33">    this.suppliers = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L34">    this.alternative = k -&gt; null;</span>
+<span class="nc" id="L35">  }</span>
+
+<span class="nc" id="L37">  public LazyMap(int initialCapacity) {</span>
+<span class="nc" id="L38">    this.suppliers = new HashMap&lt;&gt;(initialCapacity);</span>
+<span class="nc" id="L39">    this.alternative = k -&gt; null;</span>
+<span class="nc" id="L40">  }</span>
+
+<span class="fc" id="L42">  public LazyMap(Function&lt;K, V&gt; alternative) {</span>
+<span class="fc" id="L43">    this.suppliers = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L44">    this.alternative = alternative;</span>
+<span class="fc" id="L45">  }</span>
+
+<span class="nc" id="L47">  public LazyMap(int initialCapacity, Function&lt;K, V&gt; alternative) {</span>
+<span class="nc" id="L48">    this.suppliers = new HashMap&lt;&gt;(initialCapacity);</span>
+<span class="nc" id="L49">    this.alternative = alternative;</span>
+<span class="nc" id="L50">  }</span>
+
+  public Supplier&lt;V&gt; getSupplier(K key) {
+<span class="nc" id="L53">    return suppliers.get(key);</span>
+  }
+
+  public void putSupplier(K key, Supplier&lt;V&gt; supplier) {
+<span class="fc" id="L57">    suppliers.put(key, supplier);</span>
+<span class="fc" id="L58">  }</span>
+
+  /**
+   * Returns the value from a supplier associated with the given key.
+   * If no supplier found, the alternative function is used to compute the value.
+   */
+  @Override
+  @SuppressWarnings(&quot;unchecked&quot;)
+  public V get(Object key) {
+<span class="fc" id="L67">    Supplier&lt;V&gt; supplier = suppliers.get(key);</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">    return supplier == null ? alternative.apply((K) key) : supplier.get();</span>
+  }
+
+  @Override
+  public V put(K key, V value) {
+<span class="nc" id="L73">    suppliers.put(key, () -&gt; value);</span>
+<span class="nc" id="L74">    return null; // does not adhere to the Map contract, but is consistent with the behavior of</span>
+                 // this map implementation
+  }
+
+  @Override
+  public V remove(Object key) {
+<span class="nc" id="L80">    suppliers.remove(key);</span>
+<span class="nc" id="L81">    return null; // does not adhere to the Map contract, but is consistent with the behavior of</span>
+                 // this map implementation
+  }
+
+  @Override
+  public void putAll(Map&lt;? extends K, ? extends V&gt; m) {
+<span class="nc" id="L87">    m.forEach(this::put);</span>
+<span class="nc" id="L88">  }</span>
+
+  @Override
+  public void clear() {
+<span class="nc" id="L92">    suppliers.clear();</span>
+<span class="nc" id="L93">  }</span>
+
+  @Override
+  public boolean containsKey(Object key) {
+<span class="nc" id="L97">    return suppliers.containsKey(key);</span>
+  }
+
+  @Override
+  public boolean containsValue(Object value) {
+<span class="nc" id="L102">    return suppliers.values().stream().anyMatch(supplier -&gt; Objects.equals(supplier.get(), value));</span>
+  }
+
+  @Override
+  public int size() {
+<span class="nc" id="L107">    return suppliers.size();</span>
+  }
+
+  @Override
+  public boolean isEmpty() {
+<span class="nc" id="L112">    return suppliers.isEmpty();</span>
+  }
+
+  @Override
+  public Set&lt;K&gt; keySet() {
+<span class="nc" id="L117">    return suppliers.keySet();</span>
+  }
+
+  @Override
+  public Set&lt;Entry&lt;K, V&gt;&gt; entrySet() {
+<span class="fc" id="L122">    return suppliers.entrySet().stream().collect(Collectors.toMap(Entry::getKey, e -&gt; get(e.getKey()))).entrySet();</span>
+  }
+
+  @Override
+  public Collection&lt;V&gt; values() {
+<span class="nc" id="L127">    return suppliers.values().stream().map(Supplier::get).collect(Collectors.toList());</span>
+  }
+
+  @Override
+  public boolean equals(Object o) {
+<span class="nc bnc" id="L132" title="All 2 branches missed.">    if (o == this) {</span>
+<span class="nc" id="L133">      return true;</span>
+    }
+
+<span class="nc bnc" id="L136" title="All 2 branches missed.">    if (!(o instanceof Map)) {</span>
+<span class="nc" id="L137">      return false;</span>
+    }
+
+<span class="nc" id="L140">    Map&lt;?, ?&gt; m = (Map&lt;?, ?&gt;) o;</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">    if (m.size() != size()) {</span>
+<span class="nc" id="L142">      return false;</span>
+    }
+
+    try {
+<span class="nc bnc" id="L146" title="All 2 branches missed.">      for (Entry&lt;K, V&gt; e : entrySet()) {</span>
+<span class="nc" id="L147">        K key = e.getKey();</span>
+<span class="nc" id="L148">        V value = e.getValue();</span>
+<span class="nc bnc" id="L149" title="All 2 branches missed.">        if (value == null) {</span>
+<span class="nc bnc" id="L150" title="All 4 branches missed.">          if (!(m.get(key) == null &amp;&amp; m.containsKey(key))) {</span>
+<span class="nc" id="L151">            return false;</span>
+          }
+        } else {
+<span class="nc bnc" id="L154" title="All 2 branches missed.">          if (!value.equals(m.get(key))) {</span>
+<span class="nc" id="L155">            return false;</span>
+          }
+        }
+<span class="nc" id="L158">      }</span>
+<span class="nc" id="L159">    } catch (ClassCastException unused) {</span>
+<span class="nc" id="L160">      return false;</span>
+<span class="nc" id="L161">    } catch (NullPointerException unused) {</span>
+<span class="nc" id="L162">      return false;</span>
+<span class="nc" id="L163">    }</span>
+
+<span class="nc" id="L165">    return true;</span>
+  }
+
+  @Override
+  public int hashCode() {
+<span class="nc" id="L170">    return suppliers.hashCode();</span>
+  }
+
+  @Override
+  public String toString() {
+<span class="nc" id="L175">    Iterator&lt;Entry&lt;K, V&gt;&gt; i = entrySet().iterator();</span>
+<span class="nc bnc" id="L176" title="All 2 branches missed.">    if (!i.hasNext()) {</span>
+<span class="nc" id="L177">      return &quot;{}&quot;;</span>
+    }
+
+<span class="nc" id="L180">    StringBuilder sb = new StringBuilder();</span>
+<span class="nc" id="L181">    sb.append('{');</span>
+    for (;;) {
+<span class="nc" id="L183">      Entry&lt;K, V&gt; e = i.next();</span>
+<span class="nc" id="L184">      K key = e.getKey();</span>
+<span class="nc" id="L185">      V value = e.getValue();</span>
+<span class="nc bnc" id="L186" title="All 2 branches missed.">      sb.append(key == this ? &quot;(this Map)&quot; : key);</span>
+<span class="nc" id="L187">      sb.append('=');</span>
+<span class="nc bnc" id="L188" title="All 2 branches missed.">      sb.append(value == this ? &quot;(this Map)&quot; : value);</span>
+<span class="nc bnc" id="L189" title="All 2 branches missed.">      if (!i.hasNext()) {</span>
+<span class="nc" id="L190">        return sb.append('}').toString();</span>
+      }
+<span class="nc" id="L192">      sb.append(',').append(' ');</span>
+<span class="nc" id="L193">    }</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>
